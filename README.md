@@ -13,7 +13,7 @@ aimee-bernard/
 ## Getting started
 
 ```sh
-npm install --prefix web
+npm install
 npm install --prefix studio
 npm run dev:web      # Astro — http://localhost:4321
 npm run dev:studio   # Sanity Studio — http://localhost:3333

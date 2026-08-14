@@ -2,13 +2,18 @@
   "name": "aimee-bernard",
   "private": true,
   "version": "0.0.1",
+  "workspaces": ["web"],
+  "engines": {
+    "node": ">=22.12.0"
+  },
   "scripts": {
-    "dev": "npm run dev --prefix web",
-    "dev:web": "npm run dev --prefix web",
+    "dev": "npm run dev --workspace=aimee-bernard-web",
+    "dev:web": "npm run dev --workspace=aimee-bernard-web",
     "dev:studio": "npm run dev --prefix studio",
-    "build": "npm run build --prefix web",
+    "build": "npm run build --workspace=aimee-bernard-web && npm run vercel:sync-output",
+    "vercel:sync-output": "rm -rf .vercel/output && mkdir -p .vercel && cp -R web/.vercel/output .vercel/output",
     "build:studio": "npm run build --prefix studio",
-    "check": "npm run check --prefix web",
+    "check": "npm run check --workspace=aimee-bernard-web",
     "typegen": "npm run typegen --prefix studio"
   }
 }
