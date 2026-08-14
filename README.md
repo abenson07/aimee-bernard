@@ -2,24 +2,34 @@
 
 Client site built on [Lumos for Astro](https://github.com/lumosframework/lumos-for-astro), with Sanity as the CMS and Vercel as the host.
 
+```
+aimee-bernard/
+├── studio/   # Sanity Studio (standalone)
+└── web/      # Astro app (Lumos scaffold)
+```
+
 > Lumos is still beta (`v0.0.1`). The component API is settling, so prop names may shift before `v0.1.0`.
 
 ## Getting started
 
 ```sh
-npm install
-npm run dev
+npm install --prefix web
+npm install --prefix studio
+npm run dev:web      # Astro — http://localhost:4321
+npm run dev:studio   # Sanity Studio — http://localhost:3333
 ```
 
-| Script            | What it does                    |
-| ----------------- | ------------------------------- |
-| `npm run dev`     | Starts the dev server           |
-| `npm run build`   | Builds the site to `dist/`      |
-| `npm run preview` | Serves the built site           |
-| `npm run check`   | Type-checks every `.astro` file |
-| `npm run format`  | Formats the project with Prettier |
+| Script             | What it does                         |
+| ------------------ | ------------------------------------ |
+| `npm run dev:web`  | Starts the Astro dev server          |
+| `npm run dev:studio` | Starts Sanity Studio               |
+| `npm run build`    | Builds the Astro site                |
+| `npm run check`    | Type-checks every `.astro` file      |
+| `npm run typegen`  | Generates types from Studio schema   |
 
-Node 22.12 or newer is required.
+Copy `web/.env.example` to `web/.env` (already gitignored). Node 22.12 or newer is required.
+
+Sanity project `18kcd13f`, dataset `production`. Studio is standalone — it is not embedded in the Astro app.
 
 ---
 
@@ -149,4 +159,4 @@ search live in [`src/consts.ts`](src/consts.ts).
 
 ## License
 
-[MIT](LICENSE)
+This site is proprietary. See [LICENSE](LICENSE).

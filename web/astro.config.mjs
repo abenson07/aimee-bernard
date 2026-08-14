@@ -1,10 +1,17 @@
 // @ts-check
 import { defineConfig } from "astro/config";
 import sitemap from "@astrojs/sitemap";
+import sanity from "@sanity/astro";
+import { loadEnv } from "vite";
+import vercel from "@astrojs/vercel";
 import { SITE_URL } from "./src/consts.ts";
 import { isNoindexRoute } from "./src/utils/seo.ts";
 
-import vercel from "@astrojs/vercel";
+const { PUBLIC_SANITY_PROJECT_ID, PUBLIC_SANITY_DATASET } = loadEnv(
+  process.env.NODE_ENV ?? "development",
+  process.cwd(),
+  "",
+);
 
 export default defineConfig({
   site: SITE_URL,
@@ -12,6 +19,12 @@ export default defineConfig({
   integrations: [
     sitemap({
       filter: (page) => !isNoindexRoute(new URL(page).pathname),
+    }),
+    sanity({
+      projectId: PUBLIC_SANITY_PROJECT_ID,
+      dataset: PUBLIC_SANITY_DATASET,
+      apiVersion: "2026-08-14",
+      useCdn: false,
     }),
   ],
 

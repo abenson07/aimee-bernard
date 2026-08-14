@@ -1,0 +1,14 @@
+{
+  "name": "aimee-bernard",
+  "private": true,
+  "version": "0.0.1",
+  "scripts": {
+    "dev": "npm run dev --prefix web",
+    "dev:web": "npm run dev --prefix web",
+    "dev:studio": "npm run dev --prefix studio",
+    "build": "npm run build --prefix web",
+    "build:studio": "npm run build --prefix studio",
+    "check": "npm run check --prefix web",
+    "typegen": "npm run typegen --prefix studio"
+  }
+}
