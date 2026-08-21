@@ -45,6 +45,17 @@ Portable Text so the site can render it).
 
 ## Deployment
 
-Deployed as its own Vercel project (Root Directory: `dashboard`), separate
-from the `web/` Astro site. Set the env vars above in the Vercel project
-settings.
+Two Vercel projects, one domain. The `web/` Astro site owns the domain root;
+this app is its own project (Root Directory: `dashboard`) and is served under
+`/dashboard` via `basePath`, which the site proxies to with a rewrite in the
+root `vercel.json`.
+
+1. Create a second Vercel project from this repo with Root Directory
+   `dashboard`. It gets its own `*.vercel.app` URL — that URL serves the app at
+   `/dashboard`, not at `/`.
+2. Set the env vars above on it, including `DASHBOARD_PUBLIC_HOST` (the *site's*
+   hostname, since that is where the browser thinks it is).
+3. Point the site's rewrite at the dashboard project's URL in the root
+   `vercel.json`, then redeploy the site.
+
+`basePath` is inlined at build time, so changing the sub-path means rebuilding.
