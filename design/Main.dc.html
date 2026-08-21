@@ -1,0 +1,572 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <style>
+    body { margin: 0; font-family: system-ui, -apple-system, "Segoe UI", sans-serif; }
+    a { color: #1f1d1e; } a:hover { color: #1f1d1e; }
+    * { box-sizing: border-box; }
+    button { font: inherit; background: none; border: 0; padding: 0; text-align: inherit; cursor: pointer; color: inherit; }
+
+    .root {
+      position: relative; width: 1280px; height: 1040px; overflow: hidden;
+      background: #ebebeb; color: #1f1d1e;
+      font-size: 15px; line-height: 1.45; -webkit-font-smoothing: antialiased;
+    }
+
+    /* ---- top bar ---- */
+    .topbar {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 22px 40px; border-bottom: 1px solid #dcdbdb;
+    }
+    .wordmark { font-size: 20px; font-weight: 500; letter-spacing: -0.02em; }
+
+    .btn-primary {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 11px 20px; border-radius: 8px;
+      background: #c6fb50; color: #1f1d1e; font-size: 15px; font-weight: 500;
+      transition: background-color 180ms, color 180ms;
+    }
+    .btn-primary:hover { background: #1f1d1e; color: #ebebeb; }
+
+    .btn-secondary {
+      display: inline-flex; align-items: center; justify-content: center;
+      padding: 11px 20px; border-radius: 8px;
+      border: 1px solid #d3d2d2; color: #1f1d1e; font-size: 15px; font-weight: 500;
+      transition: background-color 180ms, color 180ms, border-color 180ms;
+    }
+    .btn-secondary:hover { background: #1f1d1e; color: #ebebeb; border-color: #1f1d1e; }
+
+    .btn-quiet {
+      padding: 11px 4px; font-size: 15px; color: #6b6869;
+      transition: color 180ms;
+    }
+    .btn-quiet:hover { color: #1f1d1e; }
+
+    .page { padding: 32px 40px 0; }
+
+    /* ---- category cards ---- */
+    .cat-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; }
+
+    .cat-card {
+      display: flex; flex-direction: column;
+      background: #ffffff; border-radius: 16px; overflow: hidden;
+      box-shadow: inset 0 0 0 0 #1f1d1e;
+      transition: box-shadow 180ms;
+    }
+    .cat-card:hover { box-shadow: inset 0 0 0 1.5px #1f1d1e; }
+
+    .cat-body {
+      display: flex; flex-direction: column; gap: 22px;
+      padding: 22px 22px 20px; flex-grow: 1;
+    }
+    .cat-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
+    .cat-name { font-size: 17px; font-weight: 500; letter-spacing: -0.01em; line-height: 1.25; text-wrap: balance; }
+    .cat-plus {
+      flex: none; display: grid; place-items: center; width: 28px; height: 28px;
+      border-radius: 100vw; background: #ebebeb; color: #6b6869;
+      transition: background-color 180ms, color 180ms;
+    }
+    .cat-card:hover .cat-plus { background: #c6fb50; color: #1f1d1e; }
+    .cat-count { display: flex; align-items: baseline; gap: 7px; }
+    .cat-num { font-size: 34px; font-weight: 500; letter-spacing: -0.03em; line-height: 1; }
+    .cat-lbl { font-size: 13px; color: #6b6869; }
+
+    .cat-rule { height: 1px; background: #e6e5e5; }
+
+    .quiz-strip {
+      display: flex; align-items: center; gap: 9px;
+      padding: 13px 22px; font-size: 13px;
+      transition: background-color 180ms;
+    }
+    .quiz-strip.is-live { color: #1f1d1e; font-weight: 500; }
+    .quiz-strip.is-live:hover { background: #f4f4f4; }
+    .quiz-strip.is-empty { color: #8a8788; }
+    .quiz-dot { flex: none; width: 7px; height: 7px; border-radius: 100vw; background: #c6fb50; box-shadow: inset 0 0 0 1px rgba(31,29,30,0.16); }
+    .quiz-arrow { margin-left: auto; color: #8a8788; display: flex; }
+
+    /* ---- content log ---- */
+    .log { margin-top: 24px; background: #ffffff; border-radius: 16px; overflow: hidden; }
+    .log-head {
+      display: flex; align-items: center; justify-content: space-between; gap: 16px;
+      padding: 20px 24px 16px;
+    }
+    .log-title { display: flex; align-items: baseline; gap: 9px; }
+    .log-title h2 { margin: 0; font-size: 17px; font-weight: 500; letter-spacing: -0.01em; }
+    .log-count { font-size: 13px; color: #6b6869; }
+    .search {
+      display: flex; align-items: center; gap: 8px; width: 240px;
+      padding: 8px 12px; border: 1px solid #d3d2d2; border-radius: 8px; color: #8a8788;
+    }
+    .search span { font-size: 13.5px; }
+
+    table { width: 100%; border-collapse: collapse; }
+    th {
+      text-align: left; padding: 9px 24px; border-top: 1px solid #e6e5e5; border-bottom: 1px solid #e6e5e5;
+      font-size: 11.5px; font-weight: 500; letter-spacing: 0.07em; text-transform: uppercase; color: #6b6869;
+      background: #fafafa;
+    }
+    td { padding: 15px 24px; border-bottom: 1px solid #f0efef; font-size: 14.5px; vertical-align: middle; }
+    tbody tr:last-child td { border-bottom: 0; }
+    tbody tr { transition: background-color 140ms; }
+    tbody tr:hover { background: #fafafa; }
+    .row-title { font-weight: 500; letter-spacing: -0.005em; }
+    .chip {
+      display: inline-block; padding: 3px 11px; border-radius: 100vw;
+      background: #ebebeb; font-size: 12.5px; white-space: nowrap;
+    }
+    .type-cell { display: flex; align-items: center; gap: 8px; color: #6b6869; font-size: 13.5px; }
+    .date-cell { color: #6b6869; font-size: 13.5px; white-space: nowrap; }
+
+    /* ---- modal ---- */
+    .overlay {
+      position: absolute; inset: 0; display: grid; place-items: center;
+      background: rgba(31,29,30,0.42); padding: 40px;
+    }
+    .modal {
+      width: 520px; max-height: 100%; overflow: auto;
+      background: #ffffff; border-radius: 16px;
+      box-shadow: 0 24px 64px rgba(31,29,30,0.22);
+    }
+    .modal-head {
+      display: flex; align-items: flex-start; justify-content: space-between; gap: 16px;
+      padding: 24px 24px 0;
+    }
+    .modal-title { font-size: 19px; font-weight: 500; letter-spacing: -0.015em; }
+    .modal-sub { margin-top: 3px; font-size: 13px; color: #6b6869; }
+    .x-btn {
+      flex: none; display: grid; place-items: center; width: 30px; height: 30px;
+      border-radius: 100vw; color: #6b6869; transition: background-color 180ms, color 180ms;
+    }
+    .x-btn:hover { background: #ebebeb; color: #1f1d1e; }
+    .modal-body { padding: 20px 24px 4px; display: flex; flex-direction: column; gap: 18px; }
+    .modal-foot {
+      display: flex; align-items: center; justify-content: space-between; gap: 12px;
+      padding: 20px 24px 24px;
+    }
+
+    .field { display: flex; flex-direction: column; gap: 7px; }
+    .label { font-size: 13px; font-weight: 500; }
+    .label .opt-tag { font-weight: 400; color: #8a8788; }
+    .input {
+      padding: 11px 13px; border: 1px solid #d3d2d2; border-radius: 8px;
+      font-size: 14.5px; color: #8a8788; background: #ffffff;
+    }
+    textarea.input { resize: none; }
+
+    .locked-chip {
+      display: inline-flex; align-items: center; gap: 8px; align-self: flex-start;
+      padding: 7px 13px 7px 11px; border-radius: 100vw;
+      background: #ebebeb; font-size: 13.5px; font-weight: 500;
+    }
+    .locked-chip svg { color: #6b6869; }
+
+    .segmented { display: flex; gap: 3px; padding: 3px; background: #ebebeb; border-radius: 9px; }
+    .seg {
+      flex: 1; padding: 8px 0; border-radius: 7px; text-align: center;
+      font-size: 13.5px; font-weight: 500; color: #6b6869;
+      transition: background-color 160ms, color 160ms;
+    }
+    .seg.is-on { background: #ffffff; color: #1f1d1e; }
+    .seg:not(.is-on):hover { color: #1f1d1e; }
+
+    .dropzone {
+      display: flex; flex-direction: column; align-items: center; gap: 6px;
+      padding: 30px 20px; border: 1px dashed #cfcece; border-radius: 12px;
+      color: #6b6869; text-align: center;
+      transition: border-color 180ms, background-color 180ms;
+    }
+    .dropzone:hover { border-color: #1f1d1e; background: #fafafa; }
+    .dz-strong { font-size: 14.5px; color: #1f1d1e; font-weight: 500; }
+    .dz-strong u { text-underline-offset: 2px; }
+    .dz-hint { font-size: 12.5px; }
+
+    /* ---- quiz ---- */
+    .q-text { font-size: 18px; font-weight: 500; line-height: 1.35; letter-spacing: -0.015em; text-wrap: pretty; }
+    .opts { display: flex; flex-direction: column; gap: 9px; }
+    .opt {
+      display: flex; align-items: center; gap: 12px;
+      padding: 14px 15px; border: 1px solid #d3d2d2; border-radius: 12px;
+      font-size: 14.5px; line-height: 1.35;
+      transition: box-shadow 160ms, background-color 160ms, border-color 160ms;
+    }
+    .opt:hover { background: #fafafa; }
+    .opt.is-picked { border-color: #1f1d1e; box-shadow: inset 0 0 0 1px #1f1d1e; background: #fafafa; }
+    .opt-mark {
+      flex: none; display: grid; place-items: center; width: 20px; height: 20px;
+      border-radius: 100vw; border: 1px solid #cfcece; color: transparent;
+    }
+    .opt.is-picked .opt-mark { background: #1f1d1e; border-color: #1f1d1e; color: #ffffff; }
+
+    .done { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 4px; padding: 26px 12px 10px; }
+    .done-mark { display: grid; place-items: center; width: 46px; height: 46px; border-radius: 100vw; background: #ebebeb; margin-bottom: 12px; }
+    .done-title { font-size: 17px; font-weight: 500; letter-spacing: -0.01em; }
+    .done-sub { font-size: 13.5px; color: #6b6869; text-wrap: pretty; max-width: 300px; }
+
+    .progress { font-size: 12.5px; color: #6b6869; white-space: nowrap; }
+  </style>
+</helmet>
+
+<div class="root">
+
+  <!-- ============ TOP BAR ============ -->
+  <div class="topbar">
+    <div class="wordmark">Aimee Bernard</div>
+    <button class="btn-primary" onClick="{{ openUpload }}">
+      <svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M8 12.5V3.5"></path><path d="M4 7.2 8 3.2l4 4"></path><path d="M2.5 13.2h11"></path></svg>
+      Upload
+    </button>
+  </div>
+
+  <div class="page">
+
+    <!-- ============ CATEGORY CARDS ============ -->
+    <div class="cat-grid">
+      <sc-for list="{{ cats }}" as="cat" hint-placeholder-count="4">
+        <div class="cat-card">
+          <button class="cat-body" onClick="{{ cat.upload }}">
+            <div class="cat-head">
+              <span class="cat-name">{{ cat.name }}</span>
+              <span class="cat-plus">
+                <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M8 3.6v8.8"></path><path d="M3.6 8h8.8"></path></svg>
+              </span>
+            </div>
+            <div class="cat-count">
+              <span class="cat-num">{{ cat.count }}</span>
+              <span class="cat-lbl">uploaded</span>
+            </div>
+          </button>
+          <div class="cat-rule"></div>
+          <sc-if value="{{ cat.hasQuiz }}" hint-placeholder-val="{{ true }}">
+            <button class="quiz-strip is-live" onClick="{{ cat.quiz }}">
+              <span class="quiz-dot"></span>
+              {{ cat.quizLabel }}
+              <span class="quiz-arrow">
+                <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3.5 10.5 8 6 12.5"></path></svg>
+              </span>
+            </button>
+          </sc-if>
+          <sc-if value="{{ cat.noQuiz }}" hint-placeholder-val="{{ false }}">
+            <div class="quiz-strip is-empty">No questions</div>
+          </sc-if>
+        </div>
+      </sc-for>
+    </div>
+
+    <!-- ============ CONTENT LOG ============ -->
+    <div class="log">
+      <div class="log-head">
+        <div class="log-title">
+          <h2>Content log</h2>
+          <span class="log-count">{{ total }} items</span>
+        </div>
+        <div class="search">
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="7.2" cy="7.2" r="4.2"></circle><path d="m10.4 10.4 2.6 2.6"></path></svg>
+          <span>Search</span>
+        </div>
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th style="width: 46%">Title</th>
+            <th style="width: 22%">Category</th>
+            <th style="width: 17%">Type</th>
+            <th style="width: 15%">Added</th>
+          </tr>
+        </thead>
+        <tbody>
+          <sc-for list="{{ rows }}" as="row" hint-placeholder-count="6">
+            <tr>
+              <td class="row-title">{{ row.title }}</td>
+              <td><span class="chip">{{ row.cat }}</span></td>
+              <td>
+                <span class="type-cell">
+                  <sc-if value="{{ row.isFile }}" hint-placeholder-val="{{ true }}">
+                    <svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 1.8H4.4a1.2 1.2 0 0 0-1.2 1.2v10a1.2 1.2 0 0 0 1.2 1.2h7.2a1.2 1.2 0 0 0 1.2-1.2V5.6z"></path><path d="M9 1.8v3.8h3.8"></path></svg>
+                  </sc-if>
+                  <sc-if value="{{ row.isLink }}" hint-placeholder-val="{{ false }}">
+                    <svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6.6 8.7a2.6 2.6 0 0 0 3.9.3l1.9-1.9a2.6 2.6 0 0 0-3.7-3.7l-1 1"></path><path d="M9.4 7.3a2.6 2.6 0 0 0-3.9-.3L3.6 8.9a2.6 2.6 0 0 0 3.7 3.7l1-1"></path></svg>
+                  </sc-if>
+                  {{ row.type }}
+                </span>
+              </td>
+              <td class="date-cell">{{ row.date }}</td>
+            </tr>
+          </sc-for>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ============ UPLOAD MODAL ============ -->
+  <sc-if value="{{ showUpload }}" hint-placeholder-val="{{ false }}">
+    <div class="overlay">
+      <div class="modal">
+        <div class="modal-head">
+          <div>
+            <div class="modal-title">Upload content</div>
+            <div class="modal-sub">Add a file or a link to your library.</div>
+          </div>
+          <button class="x-btn" onClick="{{ close }}">
+            <svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M4 4l8 8"></path><path d="M12 4l-8 8"></path></svg>
+          </button>
+        </div>
+
+        <div class="modal-body">
+          <div class="field">
+            <span class="label">Title</span>
+            <div class="input">Give this a name</div>
+          </div>
+
+          <div class="field">
+            <span class="label">Source</span>
+            <div class="segmented">
+              <button class="{{ fileSegClass }}" onClick="{{ pickFile }}">File</button>
+              <button class="{{ urlSegClass }}" onClick="{{ pickUrl }}">Link</button>
+            </div>
+            <sc-if value="{{ isFileTab }}" hint-placeholder-val="{{ true }}">
+              <div class="dropzone">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 16.5V6.8"></path><path d="M7.8 11 12 6.8l4.2 4.2"></path><path d="M4 17.5v1.2A1.3 1.3 0 0 0 5.3 20h13.4a1.3 1.3 0 0 0 1.3-1.3v-1.2"></path></svg>
+                <span class="dz-strong">Drop a file here or <u>browse</u></span>
+                <span class="dz-hint">PDF, DOC, image, or video — up to 25 MB</span>
+              </div>
+            </sc-if>
+            <sc-if value="{{ isUrlTab }}" hint-placeholder-val="{{ false }}">
+              <div class="input">https://</div>
+            </sc-if>
+          </div>
+
+          <div class="field">
+            <span class="label">Category</span>
+            <sc-if value="{{ catLocked }}" hint-placeholder-val="{{ true }}">
+              <span class="locked-chip">
+                <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5.2 7.2V5.4a2.8 2.8 0 0 1 5.6 0v1.8"></path><rect x="3.6" y="7.2" width="8.8" height="6.2" rx="1.4"></rect></svg>
+                {{ lockedCatName }}
+              </span>
+            </sc-if>
+            <sc-if value="{{ catOpen }}" hint-placeholder-val="{{ false }}">
+              <div class="input" style="display: flex; align-items: center; justify-content: space-between;">
+                Choose a category
+                <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6.2 8 10.2l4-4"></path></svg>
+              </div>
+            </sc-if>
+          </div>
+
+          <div class="field">
+            <span class="label">Description <span class="opt-tag">— optional</span></span>
+            <div class="input" style="height: 62px;">What is this, in a line or two?</div>
+          </div>
+        </div>
+
+        <div class="modal-foot">
+          <button class="btn-quiet" onClick="{{ close }}">Cancel</button>
+          <button class="btn-primary" onClick="{{ close }}">Upload</button>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <!-- ============ QUIZ MODAL ============ -->
+  <sc-if value="{{ showQuiz }}" hint-placeholder-val="{{ false }}">
+    <div class="overlay">
+      <div class="modal">
+        <div class="modal-head">
+          <div>
+            <div class="modal-title">{{ quizCatName }}</div>
+            <div class="modal-sub">Helping define what belongs here.</div>
+          </div>
+          <button class="x-btn" onClick="{{ close }}">
+            <svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M4 4l8 8"></path><path d="M12 4l-8 8"></path></svg>
+          </button>
+        </div>
+
+        <sc-if value="{{ quizActive }}" hint-placeholder-val="{{ true }}">
+          <div class="modal-body">
+            <span class="progress">Question {{ qNumber }} of {{ qTotal }}</span>
+            <div class="q-text">{{ qText }}</div>
+
+            <sc-if value="{{ isChoice }}" hint-placeholder-val="{{ true }}">
+              <div class="opts">
+                <sc-for list="{{ options }}" as="opt" hint-placeholder-count="3">
+                  <button class="{{ opt.cls }}" onClick="{{ opt.pick }}">
+                    <span class="opt-mark">
+                      <svg width="11" height="11" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m3.6 8.4 2.9 2.9 5.9-6.6"></path></svg>
+                    </span>
+                    {{ opt.label }}
+                  </button>
+                </sc-for>
+              </div>
+            </sc-if>
+
+            <sc-if value="{{ isOpen }}" hint-placeholder-val="{{ false }}">
+              <div class="input" style="height: 108px;">Answer in your own words…</div>
+            </sc-if>
+          </div>
+
+          <div class="modal-foot">
+            <button class="btn-quiet" onClick="{{ next }}">Skip</button>
+            <button class="btn-primary" onClick="{{ next }}">{{ submitLabel }}</button>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ quizDone }}" hint-placeholder-val="{{ false }}">
+          <div class="done">
+            <span class="done-mark">
+              <svg width="20" height="20" viewBox="0 0 16 16" fill="none" stroke="#1f1d1e" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="m3.6 8.4 2.9 2.9 5.9-6.6"></path></svg>
+            </span>
+            <span class="done-title">All caught up</span>
+            <span class="done-sub">No more questions for {{ quizCatName }} right now. New ones show up here when they are added.</span>
+          </div>
+          <div class="modal-foot" style="justify-content: center;">
+            <button class="btn-secondary" onClick="{{ close }}">Close</button>
+          </div>
+        </sc-if>
+      </div>
+    </div>
+  </sc-if>
+
+</div>
+</x-dc>
+
+<script data-dc-script data-props='{"$preview":{"width":1280,"height":1040}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { modal: null, uploadCat: null, quizCat: null, qIndex: 0, choice: null, tab: 'file' };
+  }
+
+  categories() {
+    return [
+      {
+        id: 'outreach',
+        name: 'Community outreach',
+        count: 6,
+        questions: [
+          {
+            type: 'choice',
+            text: 'You gave a guest lecture at CU Boulder. Which bucket does that belong in?',
+            options: [
+              'Community outreach — they were not my students',
+              'Educator — it is still teaching, wherever it happens',
+              'Both, and I would sort it out later'
+            ]
+          },
+          {
+            type: 'open',
+            text: 'In your own words: what makes something outreach rather than science communication?'
+          }
+        ]
+      },
+      { id: 'educator', name: 'Educator', count: 11, questions: [] },
+      { id: 'immunologist', name: 'Immunologist', count: 8, questions: [] },
+      {
+        id: 'sciencecomm',
+        name: 'Science communicator',
+        count: 14,
+        questions: [
+          {
+            type: 'open',
+            text: 'When a piece is written for press rather than the public, does it still belong here?'
+          }
+        ]
+      }
+    ];
+  }
+
+  rows() {
+    return [
+      { title: 'Vaccine hesitancy panel — Denver Public Library', cat: 'Community outreach', type: 'Link', date: 'Aug 14, 2026' },
+      { title: 'Immune memory explainer (draft script)', cat: 'Science communicator', type: 'File', date: 'Aug 12, 2026' },
+      { title: 'T-cell exhaustion review, annotated', cat: 'Immunologist', type: 'File', date: 'Aug 9, 2026' },
+      { title: 'Intro to Immunology syllabus, Fall 2026', cat: 'Educator', type: 'File', date: 'Aug 5, 2026' },
+      { title: 'KUNC interview: what mRNA actually does', cat: 'Science communicator', type: 'Link', date: 'Jul 30, 2026' },
+      { title: 'Middle-school lab safety handout', cat: 'Educator', type: 'File', date: 'Jul 28, 2026' }
+    ];
+  }
+
+  findCat(id) {
+    return this.categories().filter(function (c) { return c.id === id; })[0] || null;
+  }
+
+  renderVals() {
+    var self = this;
+    var st = this.state;
+    var all = this.categories();
+
+    var cats = all.map(function (c) {
+      var n = c.questions.length;
+      return {
+        name: c.name,
+        count: c.count,
+        hasQuiz: n > 0,
+        noQuiz: n === 0,
+        quizLabel: n === 1 ? '1 question to answer' : n + ' questions to answer',
+        upload: function () { self.setState({ modal: 'upload', uploadCat: c.id, tab: 'file' }); },
+        quiz: function () { self.setState({ modal: 'quiz', quizCat: c.id, qIndex: 0, choice: null }); }
+      };
+    });
+
+    var rows = this.rows().map(function (r) {
+      return {
+        title: r.title, cat: r.cat, type: r.type, date: r.date,
+        isFile: r.type === 'File',
+        isLink: r.type === 'Link'
+      };
+    });
+
+    var lockedCat = st.uploadCat ? this.findCat(st.uploadCat) : null;
+    var quizCat = st.quizCat ? this.findCat(st.quizCat) : null;
+    var qList = quizCat ? quizCat.questions : [];
+    var q = qList[st.qIndex] || null;
+    var isLast = st.qIndex >= qList.length - 1;
+
+    var options = (q && q.type === 'choice' ? q.options : []).map(function (label, i) {
+      return {
+        label: label,
+        cls: st.choice === i ? 'opt is-picked' : 'opt',
+        pick: function () { self.setState({ choice: i }); }
+      };
+    });
+
+    return {
+      cats: cats,
+      rows: rows,
+      total: rows.length,
+
+      showUpload: st.modal === 'upload',
+      catLocked: !!lockedCat,
+      catOpen: !lockedCat,
+      lockedCatName: lockedCat ? lockedCat.name : '',
+      isFileTab: st.tab === 'file',
+      isUrlTab: st.tab === 'url',
+      fileSegClass: st.tab === 'file' ? 'seg is-on' : 'seg',
+      urlSegClass: st.tab === 'url' ? 'seg is-on' : 'seg',
+      pickFile: function () { self.setState({ tab: 'file' }); },
+      pickUrl: function () { self.setState({ tab: 'url' }); },
+
+      showQuiz: st.modal === 'quiz',
+      quizCatName: quizCat ? quizCat.name : '',
+      quizActive: !!q,
+      quizDone: !q,
+      qText: q ? q.text : '',
+      qNumber: st.qIndex + 1,
+      qTotal: qList.length,
+      isChoice: !!q && q.type === 'choice',
+      isOpen: !!q && q.type === 'open',
+      options: options,
+      submitLabel: isLast ? 'Submit' : 'Next',
+      next: function () { self.setState({ qIndex: st.qIndex + 1, choice: null }); },
+
+      openUpload: function () { self.setState({ modal: 'upload', uploadCat: null, tab: 'file' }); },
+      close: function () { self.setState({ modal: null, uploadCat: null, quizCat: null, qIndex: 0, choice: null }); }
+    };
+  }
+}
+</script>
+</body>
+</html>

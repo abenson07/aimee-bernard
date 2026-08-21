@@ -6,6 +6,13 @@
       "runtimeExecutable": "npm",
       "runtimeArgs": ["run", "dev"],
       "port": 4321
+    },
+    {
+      "name": "dashboard-dev",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "dev:dashboard"],
+      "port": 3000,
+      "autoPort": true
     }
   ]
 }

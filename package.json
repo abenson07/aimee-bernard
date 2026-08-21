@@ -10,9 +10,11 @@
     "dev": "npm run dev --workspace=aimee-bernard-web",
     "dev:web": "npm run dev --workspace=aimee-bernard-web",
     "dev:studio": "npm run dev --prefix studio",
+    "dev:dashboard": "npm run dev --prefix dashboard",
     "build": "npm run build --workspace=aimee-bernard-web && npm run vercel:sync-output",
     "vercel:sync-output": "rm -rf .vercel/output && mkdir -p .vercel && cp -R web/.vercel/output .vercel/output",
     "build:studio": "npm run build --prefix studio",
+    "build:dashboard": "npm run build --prefix dashboard",
     "check": "npm run check --workspace=aimee-bernard-web",
     "typegen": "npm run typegen --prefix studio"
   }

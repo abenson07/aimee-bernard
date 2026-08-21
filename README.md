@@ -4,8 +4,9 @@ Client site built on [Lumos for Astro](https://github.com/lumosframework/lumos-f
 
 ```
 aimee-bernard/
-├── studio/   # Sanity Studio (standalone)
-└── web/      # Astro app (Lumos scaffold)
+├── studio/     # Sanity Studio (standalone)
+├── web/        # Astro app (Lumos scaffold)
+└── dashboard/  # Content upload/categorization dashboard (Next.js, standalone)
 ```
 
 > Lumos is still beta (`v0.0.1`). The component API is settling, so prop names may shift before `v0.1.0`.
@@ -15,19 +16,24 @@ aimee-bernard/
 ```sh
 npm install
 npm install --prefix studio
-npm run dev:web      # Astro — http://localhost:4321
-npm run dev:studio   # Sanity Studio — http://localhost:3333
+npm install --prefix dashboard
+npm run dev:web        # Astro — http://localhost:4321
+npm run dev:studio     # Sanity Studio — http://localhost:3333
+npm run dev:dashboard  # Content dashboard — http://localhost:3000
 ```
 
-| Script             | What it does                         |
-| ------------------ | ------------------------------------ |
-| `npm run dev:web`  | Starts the Astro dev server          |
-| `npm run dev:studio` | Starts Sanity Studio               |
-| `npm run build`    | Builds the Astro site                |
-| `npm run check`    | Type-checks every `.astro` file      |
-| `npm run typegen`  | Generates types from Studio schema   |
+| Script                    | What it does                       |
+| -------------------------- | ----------------------------------- |
+| `npm run dev:web`          | Starts the Astro dev server        |
+| `npm run dev:studio`       | Starts Sanity Studio               |
+| `npm run dev:dashboard`    | Starts the content dashboard       |
+| `npm run build`            | Builds the Astro site              |
+| `npm run build:dashboard`  | Builds the content dashboard       |
+| `npm run check`            | Type-checks every `.astro` file    |
+| `npm run typegen`          | Generates types from Studio schema |
 
-Copy `web/.env.example` to `web/.env` (already gitignored). Node 22.12 or newer is required.
+Copy `web/.env.example` to `web/.env`, and `dashboard/.env.example` to
+`dashboard/.env.local` (both gitignored). Node 22.12 or newer is required.
 
 Sanity project `18kcd13f`, dataset `production`. Studio is standalone — it is not embedded in the Astro app.
 

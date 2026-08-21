@@ -15,6 +15,75 @@
 export declare const internalGroqTypeReferenceTo: unique symbol;
 
 // Source: schema.json
+export type SanityFileAssetReference = {
+  _ref: string;
+  _type: "reference";
+  _weak?: boolean;
+  [internalGroqTypeReferenceTo]?: "sanity.fileAsset";
+};
+
+export type CategoryReference = {
+  _ref: string;
+  _type: "reference";
+  _weak?: boolean;
+  [internalGroqTypeReferenceTo]?: "category";
+};
+
+export type ContentItem = {
+  _id: string;
+  _type: "contentItem";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  title?: string;
+  file?: {
+    asset?: SanityFileAssetReference;
+    media?: unknown;
+    _type: "file";
+  };
+  url?: string;
+  body?: Array<{
+    children?: Array<{
+      marks?: Array<string>;
+      text?: string;
+      _type: "span";
+      _key: string;
+    }>;
+    style?: "normal" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "blockquote";
+    listItem?: "bullet" | "number";
+    markDefs?: Array<{
+      href?: string;
+      _type: "link";
+      _key: string;
+    }>;
+    level?: number;
+    _type: "block";
+    _key: string;
+  }>;
+  category?: CategoryReference;
+  categoryNote?: string;
+  description?: string;
+};
+
+export type Category = {
+  _id: string;
+  _type: "category";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  name?: string;
+  definition?: string;
+  refinementQA?: Array<{
+    question?: string;
+    questionType?: "open" | "choice";
+    options?: Array<string>;
+    answer?: string;
+    answeredAt?: string;
+    _type: "qaEntry";
+    _key: string;
+  }>;
+};
+
 export type SanityImagePaletteSwatch = {
   _type: "sanity.imagePaletteSwatch";
   background?: string;
@@ -134,20 +203,48 @@ export type Slug = {
   source?: string;
 };
 
-export type AllSanitySchemaTypes = SanityImagePaletteSwatch | SanityImagePalette | SanityImageDimensions | SanityImageMetadata | SanityImageHotspot | SanityImageCrop | SanityFileAsset | SanityAssetSourceData | SanityImageAsset | Geopoint | Slug;
+export type AllSanitySchemaTypes =
+  | SanityFileAssetReference
+  | CategoryReference
+  | ContentItem
+  | Category
+  | SanityImagePaletteSwatch
+  | SanityImagePalette
+  | SanityImageDimensions
+  | SanityImageMetadata
+  | SanityImageHotspot
+  | SanityImageCrop
+  | SanityFileAsset
+  | SanityAssetSourceData
+  | SanityImageAsset
+  | Geopoint
+  | Slug;
 
 // Source: ../web/src/utils/sanity.ts
 // Variable: DOCUMENTS_QUERY
 // Query: *[] | order(_updatedAt desc)[0...10]{ _id, _type, _updatedAt }
-export type DOCUMENTS_QUERY_RESULT = Array<{
-  _id: string;
-  _type: "sanity.fileAsset";
-  _updatedAt: string;
-} | {
-  _id: string;
-  _type: "sanity.imageAsset";
-  _updatedAt: string;
-}>;
+export type DOCUMENTS_QUERY_RESULT = Array<
+  | {
+      _id: string;
+      _type: "category";
+      _updatedAt: string;
+    }
+  | {
+      _id: string;
+      _type: "contentItem";
+      _updatedAt: string;
+    }
+  | {
+      _id: string;
+      _type: "sanity.fileAsset";
+      _updatedAt: string;
+    }
+  | {
+      _id: string;
+      _type: "sanity.imageAsset";
+      _updatedAt: string;
+    }
+>;
 
 // Query TypeMap
 import "@sanity/client";
@@ -156,4 +253,3 @@ declare module "@sanity/client" {
     "*[] | order(_updatedAt desc)[0...10]{ _id, _type, _updatedAt }": DOCUMENTS_QUERY_RESULT;
   }
 }
-
