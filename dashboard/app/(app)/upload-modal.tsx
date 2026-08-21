@@ -2,6 +2,7 @@
 
 import { useActionState, useEffect, useRef, useState } from "react";
 import type { Category, SourceKind } from "@/lib/types";
+import { withHttps } from "@/lib/url";
 import { createContentItem } from "./actions";
 import { ChevronDownIcon, DropIcon, LockIcon } from "./icons";
 import { ModalShell } from "./modal-shell";
@@ -99,7 +100,15 @@ export function UploadModal({
             )}
 
             {tab === "url" && (
-              <input type="url" name="url" className="input" placeholder="https://" />
+              <input
+                type="text"
+                name="url"
+                className="input"
+                placeholder="example.com"
+                onBlur={(event) => {
+                  event.target.value = withHttps(event.target.value);
+                }}
+              />
             )}
 
             {tab === "body" && <RichText name="body" />}

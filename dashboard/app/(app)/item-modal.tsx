@@ -1,10 +1,12 @@
 "use client";
 
-import { useActionState, useEffect } from "react";
+import { useActionState, useEffect, useRef, useState } from "react";
 import type { Category, ContentItem } from "@/lib/types";
+import { withHttps } from "@/lib/url";
 import { updateContentItem } from "./actions";
-import { FileIcon, LinkIcon, TextIcon } from "./icons";
+import { DropIcon, FileIcon } from "./icons";
 import { ModalShell } from "./modal-shell";
+import { RichText } from "./rich-text";
 
 export function ItemModal({
   item,
@@ -18,6 +20,8 @@ export function ItemModal({
   onClose: () => void;
 }) {
   const [state, formAction, pending] = useActionState(updateContentItem, undefined);
+  const [replacementName, setReplacementName] = useState<string | null>(null);
+  const fileRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     if (state?.ok) onClose();
@@ -29,20 +33,33 @@ export function ItemModal({
         <input type="hidden" name="id" value={item._id} />
 
         <div className="modal-body">
-          <div className="field">
-            <span className="label">Source</span>
-            {item.url ? (
-              <a
-                className="locked-chip"
-                href={item.url}
-                target="_blank"
-                rel="noreferrer"
-                style={{ color: "inherit" }}
-              >
-                <LinkIcon size={13} />
-                {item.url}
-              </a>
-            ) : item.fileUrl ? (
+          <label className="field">
+            <span className="label">Title</span>
+            <input
+              type="text"
+              name="title"
+              className="input"
+              defaultValue={item.title}
+              required
+            />
+          </label>
+
+          {item.url ? (
+            <label className="field">
+              <span className="label">Link</span>
+              <input
+                type="text"
+                name="url"
+                className="input"
+                defaultValue={item.url}
+                onBlur={(event) => {
+                  event.target.value = withHttps(event.target.value);
+                }}
+              />
+            </label>
+          ) : item.fileUrl ? (
+            <div className="field">
+              <span className="label">File</span>
               <a
                 className="locked-chip"
                 href={item.fileUrl}
@@ -53,13 +70,30 @@ export function ItemModal({
                 <FileIcon size={13} />
                 {item.fileName ?? "File"}
               </a>
-            ) : (
-              <span className="locked-chip">
-                <TextIcon size={13} />
-                Written content
-              </span>
-            )}
-          </div>
+              <input
+                type="file"
+                name="file"
+                ref={fileRef}
+                hidden
+                onChange={(event) => setReplacementName(event.target.files?.[0]?.name ?? null)}
+              />
+              <button
+                type="button"
+                className="dropzone"
+                onClick={() => fileRef.current?.click()}
+              >
+                <DropIcon size={18} />
+                <span className="dz-strong">
+                  {replacementName ? replacementName : "Replace with a different file"}
+                </span>
+              </button>
+            </div>
+          ) : (
+            <div className="field">
+              <span className="label">Content</span>
+              <RichText name="body" initialValue={item.body} />
+            </div>
+          )}
 
           {categorizationEnabled && (
             <>

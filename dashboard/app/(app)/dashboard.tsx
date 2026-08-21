@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo, useState, type MouseEvent } from "react";
 import type { Category, ContentItem } from "@/lib/types";
 import { logout } from "./actions";
 import {
@@ -38,6 +38,31 @@ function sourceIcon(item: ContentItem) {
   if (item.url) return <LinkIcon />;
   if (item.fileName) return <FileIcon />;
   return <TextIcon />;
+}
+
+function SourceCell({ item }: { item: ContentItem }) {
+  const stop = (event: MouseEvent) => event.stopPropagation();
+  if (item.url) {
+    return (
+      <a href={item.url} target="_blank" rel="noreferrer" className="truncate-cell" onClick={stop}>
+        {item.url}
+      </a>
+    );
+  }
+  if (item.fileUrl) {
+    return (
+      <a
+        href={item.fileUrl}
+        target="_blank"
+        rel="noreferrer"
+        className="truncate-cell"
+        onClick={stop}
+      >
+        {item.fileName ?? "File"}
+      </a>
+    );
+  }
+  return <span className="truncate-cell muted">{item.bodyPreview || "—"}</span>;
 }
 
 export function Dashboard({
@@ -155,23 +180,30 @@ export function Dashboard({
             <table>
               <thead>
                 <tr>
-                  <th style={{ width: categorizationEnabled ? "46%" : "68%" }}>Title</th>
-                  {categorizationEnabled && <th style={{ width: "22%" }}>Category</th>}
-                  <th style={{ width: "17%" }}>Type</th>
-                  <th style={{ width: "15%" }}>Added</th>
+                  <th style={{ width: categorizationEnabled ? "16%" : "20%" }}>Title</th>
+                  {categorizationEnabled && <th style={{ width: "12%" }}>Category</th>}
+                  <th style={{ width: categorizationEnabled ? "20%" : "24%" }}>Source</th>
+                  <th style={{ width: categorizationEnabled ? "20%" : "24%" }}>Description</th>
+                  <th style={{ width: "16%" }}>Type</th>
+                  <th style={{ width: "16%" }}>Added</th>
                 </tr>
               </thead>
               <tbody>
                 {visible.map((item) => (
-                  <tr key={item._id}>
+                  <tr
+                    key={item._id}
+                    className="row-clickable"
+                    tabIndex={0}
+                    onClick={() => setModal({ kind: "item", item })}
+                    onKeyDown={(event) => {
+                      if (event.key === "Enter" || event.key === " ") {
+                        event.preventDefault();
+                        setModal({ kind: "item", item });
+                      }
+                    }}
+                  >
                     <td>
-                      <button
-                        type="button"
-                        className="cell row-title"
-                        onClick={() => setModal({ kind: "item", item })}
-                      >
-                        {item.title}
-                      </button>
+                      <span className="cell row-title truncate-cell">{item.title}</span>
                     </td>
                     {categorizationEnabled && (
                       <td>
@@ -180,6 +212,16 @@ export function Dashboard({
                         </span>
                       </td>
                     )}
+                    <td>
+                      <span className="cell">
+                        <SourceCell item={item} />
+                      </span>
+                    </td>
+                    <td>
+                      <span className="cell">
+                        <span className="truncate-cell muted">{item.description || "—"}</span>
+                      </span>
+                    </td>
                     <td>
                       <span className="cell type-cell">
                         {sourceIcon(item)}

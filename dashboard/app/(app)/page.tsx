@@ -19,9 +19,10 @@ const ITEMS_QUERY = `*[_type == "contentItem"] | order(_createdAt desc){
   url,
   description,
   categoryNote,
+  body,
+  "bodyPreview": pt::text(body),
   "fileName": file.asset->originalFilename,
   "fileUrl": file.asset->url,
-  "hasBody": count(body) > 0,
   "categoryId": category._ref,
   "categoryName": category->name
 }`;

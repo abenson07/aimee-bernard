@@ -8,6 +8,7 @@ import { verifySession } from "@/lib/dal";
 import { categorizationEnabled } from "@/lib/flags";
 import { sanityClient } from "@/lib/sanity";
 import { SESSION_COOKIE } from "@/lib/session";
+import { withHttps } from "@/lib/url";
 
 export type FormState = { error?: string; ok?: boolean; key?: string } | undefined;
 
@@ -106,7 +107,7 @@ export async function createContentItem(
       const asset = await sanityClient.assets.upload("file", file, { filename: file.name });
       doc.file = { _type: "file", asset: { _type: "reference", _ref: asset._id } };
     } else if (hasUrl && typeof url === "string") {
-      doc.url = url.trim();
+      doc.url = withHttps(url);
     } else if (blocks) {
       doc.body = blocks;
     }
@@ -160,14 +161,40 @@ export async function updateContentItem(
   await verifySession();
 
   const id = formData.get("id");
+  const title = formData.get("title");
+  const url = formData.get("url");
+  const file = formData.get("file");
+  const body = formData.get("body");
   const categoryId = formData.get("category");
   const categoryNote = formData.get("categoryNote");
   const description = formData.get("description");
 
   if (typeof id !== "string" || !id) return { error: "Something went wrong." };
+  if (typeof title !== "string" || !title.trim()) {
+    return { error: "Give this a title." };
+  }
 
-  const set: Record<string, unknown> = {};
+  const set: Record<string, unknown> = { title: title.trim() };
   const unset: string[] = [];
+
+  /* The form only ever includes the one source field that matches this
+     item's existing type (the modal renders just that one), so there's no
+     both-or-neither case to guard against here the way create has to. */
+  if (typeof url === "string" && url.trim()) {
+    set.url = withHttps(url);
+  }
+  if (file instanceof File && file.size > 0) {
+    try {
+      const asset = await sanityClient.assets.upload("file", file, { filename: file.name });
+      set.file = { _type: "file", asset: { _type: "reference", _ref: asset._id } };
+    } catch {
+      return { error: "That file didn't upload. Try again." };
+    }
+  }
+  if (typeof body === "string" && body.trim()) {
+    const blocks = parsePortableText(body);
+    if (blocks) set.body = blocks;
+  }
 
   if (categorizationEnabled) {
     if (typeof categoryId === "string" && categoryId) {

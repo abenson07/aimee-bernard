@@ -14,6 +14,8 @@ export interface Category {
   pending: RefinementQuestion[];
 }
 
+import type { PortableTextBlock } from "@portabletext/editor";
+
 export type SourceKind = "file" | "url" | "body";
 
 export interface ContentItem {
@@ -23,7 +25,8 @@ export interface ContentItem {
   url?: string;
   fileName?: string;
   fileUrl?: string;
-  hasBody?: boolean;
+  body?: PortableTextBlock[];
+  bodyPreview?: string;
   categoryId?: string;
   categoryName?: string;
   categoryNote?: string;

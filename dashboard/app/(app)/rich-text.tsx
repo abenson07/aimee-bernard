@@ -226,8 +226,14 @@ function Toolbar() {
 }
 
 /** Writes Portable Text into a hidden input so it rides the normal form POST. */
-export function RichText({ name }: { name: string }) {
-  const [value, setValue] = useState<PortableTextBlock[] | undefined>(undefined);
+export function RichText({
+  name,
+  initialValue,
+}: {
+  name: string;
+  initialValue?: PortableTextBlock[];
+}) {
+  const [value, setValue] = useState<PortableTextBlock[] | undefined>(initialValue);
 
   const isEmpty =
     !value ||
@@ -242,7 +248,7 @@ export function RichText({ name }: { name: string }) {
 
   return (
     <div className="rt">
-      <EditorProvider initialConfig={{ schemaDefinition }}>
+      <EditorProvider initialConfig={{ schemaDefinition, initialValue }}>
         <EventListenerPlugin
           on={(event) => {
             if (event.type === "mutation") setValue(event.value);
