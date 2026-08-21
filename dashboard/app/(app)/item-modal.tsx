@@ -1,9 +1,9 @@
 "use client";
 
-import { useActionState, useEffect, useRef, useState } from "react";
+import { useActionState, useEffect, useRef, useState, useTransition } from "react";
 import type { Category, ContentItem } from "@/lib/types";
 import { withHttps } from "@/lib/url";
-import { updateContentItem } from "./actions";
+import { deleteContentItem, updateContentItem } from "./actions";
 import { DropIcon, FileIcon } from "./icons";
 import { ModalShell } from "./modal-shell";
 import { RichText } from "./rich-text";
@@ -23,9 +23,24 @@ export function ItemModal({
   const [replacementName, setReplacementName] = useState<string | null>(null);
   const fileRef = useRef<HTMLInputElement>(null);
 
+  const [confirmDelete, setConfirmDelete] = useState(false);
+  const [deleteError, setDeleteError] = useState<string | null>(null);
+  const [isDeleting, startDelete] = useTransition();
+
   useEffect(() => {
     if (state?.ok) onClose();
   }, [state, onClose]);
+
+  const handleDelete = () => {
+    startDelete(async () => {
+      const result = await deleteContentItem(item._id);
+      if (result?.error) {
+        setDeleteError(result.error);
+      } else {
+        onClose();
+      }
+    });
+  };
 
   return (
     <ModalShell title={item.title} subtitle="Edit how this is filed." onClose={onClose}>
@@ -146,14 +161,48 @@ export function ItemModal({
           {state?.error && <p className="form-error">{state.error}</p>}
         </div>
 
-        <div className="modal-foot">
-          <button type="button" className="btn-quiet" onClick={onClose}>
-            Cancel
-          </button>
-          <button type="submit" className="btn-primary" disabled={pending}>
-            {pending ? "Saving…" : "Save"}
-          </button>
-        </div>
+        {confirmDelete ? (
+          <div className="modal-foot confirm-delete">
+            <p className="confirm-delete-text">Delete this item? This can&apos;t be undone.</p>
+            {deleteError && <p className="form-error">{deleteError}</p>}
+            <div className="confirm-delete-actions">
+              <button
+                type="button"
+                className="btn-quiet"
+                onClick={() => setConfirmDelete(false)}
+                disabled={isDeleting}
+              >
+                Keep it
+              </button>
+              <button
+                type="button"
+                className="btn-danger"
+                onClick={handleDelete}
+                disabled={isDeleting}
+              >
+                {isDeleting ? "Deleting…" : "Delete"}
+              </button>
+            </div>
+          </div>
+        ) : (
+          <div className="modal-foot">
+            <button
+              type="button"
+              className="btn-danger-text"
+              onClick={() => setConfirmDelete(true)}
+            >
+              Delete
+            </button>
+            <div className="modal-foot-actions">
+              <button type="button" className="btn-quiet" onClick={onClose}>
+                Cancel
+              </button>
+              <button type="submit" className="btn-primary" disabled={pending}>
+                {pending ? "Saving…" : "Save"}
+              </button>
+            </div>
+          </div>
+        )}
       </form>
     </ModalShell>
   );

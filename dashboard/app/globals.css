@@ -127,6 +127,37 @@ select {
   color: var(--text);
 }
 
+/* Destructive actions get red — reserved for this, never used elsewhere. */
+.btn-danger-text {
+  padding: 11px 4px;
+  font-size: 15px;
+  color: #b3261e;
+  transition: color 180ms;
+}
+.btn-danger-text:hover {
+  color: #8f1e17;
+}
+
+.btn-danger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 11px 20px;
+  border-radius: var(--radius-control);
+  background: #b3261e;
+  color: #ffffff;
+  font-size: 15px;
+  font-weight: 500;
+  transition: background-color 180ms;
+}
+.btn-danger:hover:not(:disabled) {
+  background: #8f1e17;
+}
+.btn-danger:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
 /* ==========================================================================
    Chrome
    ========================================================================== */
@@ -481,6 +512,25 @@ a.truncate-cell:hover {
   justify-content: space-between;
   gap: 12px;
   padding: 20px 24px 24px;
+}
+.modal-foot-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.modal-foot.confirm-delete {
+  flex-direction: column;
+  align-items: stretch;
+  gap: 10px;
+}
+.confirm-delete-text {
+  font-size: 14px;
+}
+.confirm-delete-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
 }
 
 /* ==========================================================================

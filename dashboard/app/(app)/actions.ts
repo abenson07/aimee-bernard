@@ -154,6 +154,18 @@ export async function answerQuestion(
   return { ok: true, key };
 }
 
+export async function deleteContentItem(id: string): Promise<{ error?: string } | undefined> {
+  await verifySession();
+
+  try {
+    await sanityClient.delete(id);
+  } catch {
+    return { error: "That didn't delete. Try again." };
+  }
+
+  revalidatePath("/");
+}
+
 export async function updateContentItem(
   _prevState: FormState,
   formData: FormData,
