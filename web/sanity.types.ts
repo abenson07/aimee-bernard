@@ -15,11 +15,29 @@
 export declare const internalGroqTypeReferenceTo: unique symbol;
 
 // Source: schema.json
+export type Testimonial = {
+  _id: string;
+  _type: "testimonial";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  speaker?: string;
+  role?: string;
+  quote?: string;
+};
+
 export type SanityFileAssetReference = {
   _ref: string;
   _type: "reference";
   _weak?: boolean;
   [internalGroqTypeReferenceTo]?: "sanity.fileAsset";
+};
+
+export type ContentItemReference = {
+  _ref: string;
+  _type: "reference";
+  _weak?: boolean;
+  [internalGroqTypeReferenceTo]?: "contentItem";
 };
 
 export type CategoryReference = {
@@ -36,6 +54,17 @@ export type ContentItem = {
   _updatedAt: string;
   _rev: string;
   title?: string;
+  kind?:
+    | "talk"
+    | "podcast"
+    | "press-mentions"
+    | "article"
+    | "educational-content"
+    | "position"
+    | "course"
+    | "award"
+    | "research-publication";
+  uncertain?: boolean;
   file?: {
     asset?: SanityFileAssetReference;
     media?: unknown;
@@ -60,9 +89,25 @@ export type ContentItem = {
     _type: "block";
     _key: string;
   }>;
+  venue?: string;
+  date?: string;
+  startDate?: string;
+  endDate?: string;
+  links?: Array<{
+    label?: string;
+    url?: string;
+    _type: "link";
+    _key: string;
+  }>;
+  topics?: Array<string>;
+  description?: string;
+  relatedItems?: Array<
+    {
+      _key: string;
+    } & ContentItemReference
+  >;
   category?: CategoryReference;
   categoryNote?: string;
-  description?: string;
 };
 
 export type Category = {
@@ -204,7 +249,9 @@ export type Slug = {
 };
 
 export type AllSanitySchemaTypes =
+  | Testimonial
   | SanityFileAssetReference
+  | ContentItemReference
   | CategoryReference
   | ContentItem
   | Category
@@ -242,6 +289,11 @@ export type DOCUMENTS_QUERY_RESULT = Array<
   | {
       _id: string;
       _type: "sanity.imageAsset";
+      _updatedAt: string;
+    }
+  | {
+      _id: string;
+      _type: "testimonial";
       _updatedAt: string;
     }
 >;
