@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Aimee Bernard — Content",
+  title: "Aimee Pugh Bernard — Content",
   description: "Upload and categorize content.",
 };
 

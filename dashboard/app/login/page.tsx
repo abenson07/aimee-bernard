@@ -9,7 +9,7 @@ export default function LoginPage() {
   return (
     <div className="login-wrap">
       <form action={formAction} className="login-card">
-        <h1>Aimee Bernard</h1>
+        <h1>Aimee Pugh Bernard</h1>
         <label className="field">
           <span className="label">Password</span>
           <input type="password" name="password" className="input" required autoFocus />

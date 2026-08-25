@@ -92,7 +92,7 @@ export function Dashboard({
   return (
     <>
       <header className="topbar">
-        <div className="wordmark">Aimee Bernard</div>
+        <div className="wordmark">Aimee Pugh Bernard</div>
         <div className="topbar-actions">
           <form action={logout}>
             <button type="submit" className="btn-quiet">
