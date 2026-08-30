@@ -106,6 +106,8 @@ select {
   border: 1px solid var(--border);
   font-size: 15px;
   font-weight: 500;
+  text-decoration: none;
+  color: inherit;
   transition:
     background-color 180ms,
     color 180ms,
@@ -359,6 +361,10 @@ select {
 .log table {
   width: 100%;
   border-collapse: collapse;
+  /* Without this, a column's declared % width is only a hint — a long
+     unbroken string still forces the table wider than its container instead
+     of truncating via .truncate-cell's ellipsis. */
+  table-layout: fixed;
 }
 .log th {
   text-align: left;
@@ -404,6 +410,16 @@ select {
   font-weight: 500;
   letter-spacing: -0.005em;
 }
+.log td > .cell.cell-stack {
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+}
+.row-desc {
+  font-size: 13.5px;
+  line-height: 1.4;
+  color: var(--text-muted);
+}
 .truncate-cell {
   display: block;
   min-width: 0;
@@ -420,22 +436,26 @@ a.truncate-cell:hover {
 .truncate-cell.muted {
   color: var(--text-muted);
 }
+.wrap-cell {
+  display: block;
+  min-width: 0;
+  max-width: 100%;
+  overflow-wrap: break-word;
+  color: inherit;
+  text-decoration: none;
+}
+a.wrap-cell:hover {
+  text-decoration: underline;
+}
+.wrap-cell.muted {
+  color: var(--text-muted);
+}
 .chip {
   display: inline-block;
   padding: 3px 11px;
   border-radius: var(--radius-round);
   background: var(--canvas);
   font-size: 12.5px;
-  white-space: nowrap;
-}
-.type-cell {
-  gap: 8px;
-  color: var(--text-muted);
-  font-size: 13.5px;
-}
-.date-cell {
-  color: var(--text-muted);
-  font-size: 13.5px;
   white-space: nowrap;
 }
 .log-empty {
@@ -492,6 +512,7 @@ a.truncate-cell:hover {
   height: 30px;
   border-radius: var(--radius-round);
   color: var(--text-muted);
+  text-decoration: none;
   transition:
     background-color 180ms,
     color 180ms;
@@ -517,6 +538,12 @@ a.truncate-cell:hover {
   display: flex;
   align-items: center;
   gap: 12px;
+}
+
+.modal-divider {
+  height: 1px;
+  background: var(--border-soft);
+  margin: 2px 0;
 }
 
 .modal-foot.confirm-delete {
@@ -549,6 +576,25 @@ a.truncate-cell:hover {
 .label .opt-tag {
   font-weight: 400;
   color: var(--text-subtle);
+}
+.field.field-row {
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+a.link-label {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  text-decoration-color: var(--border);
+  transition: text-decoration-color 160ms;
+}
+a.link-label:hover {
+  text-decoration-color: var(--text);
+}
+.details-toggle {
+  align-self: flex-start;
 }
 
 .input {
@@ -864,6 +910,508 @@ textarea.input {
 }
 
 /* ==========================================================================
+   Questionnaire
+   ========================================================================== */
+
+.q-page {
+  max-width: 640px;
+  margin-inline: auto;
+  padding: 40px 20px 64px;
+}
+.q-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 28px;
+}
+.q-header > div {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+.q-section-label {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-subtle);
+}
+.q-help {
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+/* Checkbox-style mark for multi-select — same ring/fill technique as .opt,
+   just a rounded square instead of a circle so it reads as "check" not
+   "radio". */
+.opt-mark-check {
+  border-radius: 4px;
+}
+.opt:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+.opt:disabled:hover {
+  background: none;
+}
+.opt-limit {
+  font-size: 12.5px;
+  color: var(--text-muted);
+}
+
+/* 1-5 rating scale */
+.scale {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 10px 12px;
+  margin-inline: -12px;
+  border-radius: 12px;
+  transition: background-color 140ms;
+}
+.scale:hover {
+  background: var(--surface-hover);
+}
+.scale-label {
+  flex: 1;
+  font-size: 13px;
+  color: var(--text-muted);
+  text-wrap: balance;
+}
+.scale-label:last-child {
+  text-align: right;
+}
+.scale-pips {
+  flex: none;
+  display: flex;
+  gap: 8px;
+}
+.scale-pip {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-round);
+  font-size: 14.5px;
+  font-weight: 500;
+  color: var(--text-muted);
+  transition:
+    box-shadow 160ms,
+    background-color 160ms,
+    border-color 160ms,
+    color 160ms;
+}
+.scale-pip:hover {
+  background: var(--surface-hover);
+}
+.scale-pip.is-picked {
+  border-color: var(--text);
+  box-shadow: inset 0 0 0 1px var(--text);
+  background: var(--text);
+  color: var(--surface);
+}
+
+/* A page can hold several fields at once (e.g. the tone-dial rank block) —
+   each field gets this wrapper so spacing stays the same 18px rhythm as a
+   plain single-field page, whether it's one field or several. */
+.q-field {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+.q-field-label {
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.35;
+  letter-spacing: -0.01em;
+  text-wrap: pretty;
+}
+
+/* Search-and-link-existing-content field (point to prior work) */
+.content-link {
+  position: relative;
+}
+.content-link .search {
+  width: 100%;
+}
+.content-link-dropdown {
+  position: absolute;
+  z-index: 5;
+  top: calc(100% + 6px);
+  left: 0;
+  right: 0;
+  display: flex;
+  flex-direction: column;
+  max-height: 280px;
+  overflow-y: auto;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  box-shadow: 0 12px 32px rgba(31, 29, 30, 0.16);
+}
+.content-link-option {
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--border-faint);
+  font-size: 13.5px;
+  text-align: left;
+  transition: background-color 140ms;
+}
+.content-link-option:last-child {
+  border-bottom: 0;
+}
+.content-link-option:hover {
+  background: var(--surface-hover);
+}
+.content-link-add {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+/* Long-paragraph choice cards (calibration) — sibling to .opt, not a
+   modifier, since the layout genuinely differs. */
+.opts.opt-cards {
+  gap: 10px;
+}
+.opt-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  width: 100%;
+  padding: 16px 17px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  font-size: 14px;
+  line-height: 1.5;
+  text-align: left;
+  transition:
+    box-shadow 160ms,
+    background-color 160ms,
+    border-color 160ms;
+}
+.opt-card:hover {
+  background: var(--surface-hover);
+}
+.opt-card.is-picked {
+  border-color: var(--text);
+  box-shadow: inset 0 0 0 1px var(--text);
+  background: var(--surface-hover);
+}
+.opt-card-badge {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  border-radius: var(--radius-round);
+  border: 1px solid #cfcece;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-muted);
+}
+.opt-card.is-picked .opt-card-badge {
+  background: var(--text);
+  border-color: var(--text);
+  color: var(--surface);
+}
+.opt-card-text {
+  flex: 1;
+  color: var(--text);
+}
+
+/* Completion screen's section list — navigation only (not a data dump),
+   modeled on .review-banner/.quiz-strip's "summary + arrow" language. */
+.section-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+  max-width: 420px;
+  margin: 28px auto 0;
+}
+.section-nav-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 14px 16px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 500;
+  transition:
+    background-color 160ms,
+    border-color 160ms;
+}
+.section-nav-item:hover {
+  background: var(--surface-hover);
+  border-color: var(--text);
+}
+.section-nav-count {
+  margin-left: auto;
+  font-size: 12.5px;
+  font-weight: 400;
+  color: var(--text-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ==========================================================================
+   Category review
+   ========================================================================== */
+
+.suggestion-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 14px 15px;
+  border-radius: 12px;
+  background: var(--canvas);
+}
+.suggestion-chips {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 7px;
+}
+.chip-outline {
+  background: none;
+  box-shadow: inset 0 0 0 1px var(--border);
+}
+.suggestion-rationale {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--text-muted);
+}
+.reset-link {
+  color: var(--text);
+  font-weight: 500;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.reset-link:hover {
+  color: var(--text-muted);
+}
+.flag-mark {
+  font-size: 11.5px;
+  font-weight: 500;
+  color: var(--text-muted);
+  letter-spacing: 0.01em;
+}
+
+.review-banner {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  margin-top: 16px;
+  padding: 15px 22px;
+  background: var(--surface);
+  border-radius: var(--radius-card);
+  font-size: 14px;
+  font-weight: 500;
+  transition: background-color 180ms;
+}
+.review-banner:hover {
+  background: var(--surface-hover);
+}
+
+.log td > .cell.cell-category {
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+}
+.status-note {
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+/* ==========================================================================
+   Category ledger — full-view review, replaces a modal so the whole set
+   stays scannable and filterable at once instead of one item at a time.
+   ========================================================================== */
+
+.ledger-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  background: var(--canvas);
+  display: flex;
+  flex-direction: column;
+}
+.ledger-head {
+  flex: none;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 22px 40px;
+  border-bottom: 1px solid #dcdbdb;
+  background: var(--surface);
+}
+.ledger-title {
+  font-size: 20px;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+}
+.ledger-sub {
+  margin-top: 3px;
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+.ledger-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 24px 40px 64px;
+  max-width: 1440px;
+  margin-inline: auto;
+  width: 100%;
+}
+
+.ledger-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 9px;
+  margin-bottom: 16px;
+}
+.ledger-chip {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 16px;
+  border-radius: var(--radius-round);
+  border: 1px solid var(--border);
+  background: var(--surface);
+  font-size: 13.5px;
+  font-weight: 500;
+  transition:
+    border-color 160ms,
+    background-color 160ms,
+    color 160ms;
+}
+.ledger-chip:hover {
+  background: var(--surface-hover);
+}
+.ledger-chip[data-active="true"] {
+  border-color: var(--text);
+  background: var(--text);
+  color: var(--canvas);
+}
+.ledger-chip .count {
+  font-variant-numeric: tabular-nums;
+  opacity: 0.6;
+}
+
+.ledger-controls {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 14px;
+}
+.ledger-controls .search {
+  width: 320px;
+}
+.ledger-toggle {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 13px;
+  color: var(--text-muted);
+  cursor: pointer;
+  user-select: none;
+}
+.ledger-count {
+  margin-left: auto;
+  font-size: 12.5px;
+  color: var(--text-subtle);
+  font-variant-numeric: tabular-nums;
+}
+
+.ledger-table {
+  background: var(--surface);
+  border-radius: var(--radius-card);
+  overflow: hidden;
+}
+.ledger-row-head,
+.ledger-row-main {
+  display: grid;
+  grid-template-columns: 1fr 1fr 150px;
+  gap: 20px;
+  align-items: start;
+}
+.ledger-row-head {
+  padding: 11px 22px;
+  border-bottom: 1px solid var(--border-soft);
+  background: var(--surface-hover);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+.ledger-row {
+  border-bottom: 1px solid var(--border-faint);
+}
+.ledger-row:last-child {
+  border-bottom: 0;
+}
+.ledger-row[data-flagged="true"] {
+  box-shadow: inset 3px 0 0 var(--text);
+}
+.ledger-row-main {
+  padding: 16px 22px;
+}
+.ledger-cell {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+.ledger-col-title {
+  gap: 3px;
+}
+.ledger-item-title {
+  font-size: 14.5px;
+  font-weight: 500;
+  letter-spacing: -0.005em;
+  line-height: 1.35;
+}
+.ledger-item-context {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+.ledger-was-suggested {
+  font-size: 11.5px;
+  color: var(--text-subtle);
+}
+.ledger-col-actions {
+  align-items: flex-start;
+  gap: 8px;
+}
+.ledger-action-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.btn-sm {
+  padding: 6px 12px;
+  font-size: 13px;
+}
+
+@media (max-width: 900px) {
+  .ledger-row-head {
+    display: none;
+  }
+  .ledger-row-main {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ==========================================================================
    Login
    ========================================================================== */
 
@@ -902,7 +1450,8 @@ textarea.input {
 
 @media (max-width: 720px) {
   .topbar,
-  .page {
+  .page,
+  .q-page {
     padding-inline: 20px;
   }
   .cat-grid {
@@ -918,5 +1467,17 @@ textarea.input {
   .log th:nth-child(3),
   .log td:nth-child(3) {
     display: none;
+  }
+  .scale {
+    flex-direction: column;
+    align-items: stretch;
+    text-align: center;
+    gap: 10px;
+  }
+  .scale-label:last-child {
+    text-align: center;
+  }
+  .scale-pips {
+    justify-content: center;
   }
 }

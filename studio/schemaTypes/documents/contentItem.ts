@@ -137,10 +137,56 @@ export const contentItem = defineType({
       to: [{ type: "category" }],
     }),
     defineField({
+      name: "categorySecondary",
+      title: "Secondary category",
+      description: "Only when this item genuinely does a second category's job too. Most items don't need one.",
+      type: "reference",
+      to: [{ type: "category" }],
+    }),
+    defineField({
       name: "categoryNote",
       title: "Category note",
-      description: "Notes on why this item might belong in a different category than assigned.",
+      description:
+        "Aimee's own reasoning for the category above — especially why she moved it away from the suggestion below.",
       type: "text",
+    }),
+    defineField({
+      name: "categorySuggested",
+      title: "Suggested category",
+      description:
+        "The classification pass's original suggested primary category. Frozen once set — never edited after the fact, so it stays a true record of what was suggested.",
+      type: "reference",
+      to: [{ type: "category" }],
+      readOnly: true,
+    }),
+    defineField({
+      name: "categorySuggestedSecondary",
+      title: "Suggested secondary category",
+      description: "The classification pass's suggested secondary category, if any. Also frozen.",
+      type: "reference",
+      to: [{ type: "category" }],
+      readOnly: true,
+    }),
+    defineField({
+      name: "categoryRationale",
+      title: "Suggested category rationale",
+      description: "Why the classification pass suggested this category. Frozen alongside the suggestion above.",
+      type: "text",
+      readOnly: true,
+    }),
+    defineField({
+      name: "categoryFlaggedForReview",
+      title: "Flagged for review",
+      description: "The classification pass thought this one was a close call, worth a second look.",
+      type: "boolean",
+      initialValue: false,
+      readOnly: true,
+    }),
+    defineField({
+      name: "categoryReviewedAt",
+      title: "Category reviewed at",
+      description: "Set the first time the category above is confirmed or changed. Empty means still pending review.",
+      type: "datetime",
     }),
   ],
   validation: (rule) =>

@@ -13,22 +13,28 @@ export function UploadModal({
   lockedCategoryId,
   categorizationEnabled,
   onClose,
+  onCreated,
 }: {
   categories: Category[];
   lockedCategoryId: string | null;
   categorizationEnabled: boolean;
   onClose: () => void;
+  onCreated?: (title: string) => void;
 }) {
   const [state, formAction, pending] = useActionState(createContentItem, undefined);
   const [tab, setTab] = useState<SourceKind>("file");
   const [fileName, setFileName] = useState<string | null>(null);
   const fileRef = useRef<HTMLInputElement>(null);
+  const titleRef = useRef<HTMLInputElement>(null);
 
   const locked = categories.find((category) => category._id === lockedCategoryId) ?? null;
 
   useEffect(() => {
-    if (state?.ok) onClose();
-  }, [state, onClose]);
+    if (state?.ok) {
+      onCreated?.(titleRef.current?.value.trim() ?? "");
+      onClose();
+    }
+  }, [state, onClose, onCreated]);
 
   return (
     <ModalShell
@@ -43,6 +49,7 @@ export function UploadModal({
             <input
               type="text"
               name="title"
+              ref={titleRef}
               className="input"
               placeholder="Give this a name"
               required

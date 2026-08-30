@@ -54,16 +54,7 @@ export type ContentItem = {
   _updatedAt: string;
   _rev: string;
   title?: string;
-  kind?:
-    | "talk"
-    | "podcast"
-    | "press-mentions"
-    | "article"
-    | "educational-content"
-    | "position"
-    | "course"
-    | "award"
-    | "research-publication";
+  kind?: "talk" | "podcast" | "press-mentions" | "article" | "educational-content" | "position" | "course" | "award" | "research-publication";
   uncertain?: boolean;
   file?: {
     asset?: SanityFileAssetReference;
@@ -101,11 +92,9 @@ export type ContentItem = {
   }>;
   topics?: Array<string>;
   description?: string;
-  relatedItems?: Array<
-    {
-      _key: string;
-    } & ContentItemReference
-  >;
+  relatedItems?: Array<{
+    _key: string;
+  } & ContentItemReference>;
   category?: CategoryReference;
   categoryNote?: string;
 };
@@ -248,55 +237,32 @@ export type Slug = {
   source?: string;
 };
 
-export type AllSanitySchemaTypes =
-  | Testimonial
-  | SanityFileAssetReference
-  | ContentItemReference
-  | CategoryReference
-  | ContentItem
-  | Category
-  | SanityImagePaletteSwatch
-  | SanityImagePalette
-  | SanityImageDimensions
-  | SanityImageMetadata
-  | SanityImageHotspot
-  | SanityImageCrop
-  | SanityFileAsset
-  | SanityAssetSourceData
-  | SanityImageAsset
-  | Geopoint
-  | Slug;
+export type AllSanitySchemaTypes = Testimonial | SanityFileAssetReference | ContentItemReference | CategoryReference | ContentItem | Category | SanityImagePaletteSwatch | SanityImagePalette | SanityImageDimensions | SanityImageMetadata | SanityImageHotspot | SanityImageCrop | SanityFileAsset | SanityAssetSourceData | SanityImageAsset | Geopoint | Slug;
 
 // Source: ../web/src/utils/sanity.ts
 // Variable: DOCUMENTS_QUERY
 // Query: *[] | order(_updatedAt desc)[0...10]{ _id, _type, _updatedAt }
-export type DOCUMENTS_QUERY_RESULT = Array<
-  | {
-      _id: string;
-      _type: "category";
-      _updatedAt: string;
-    }
-  | {
-      _id: string;
-      _type: "contentItem";
-      _updatedAt: string;
-    }
-  | {
-      _id: string;
-      _type: "sanity.fileAsset";
-      _updatedAt: string;
-    }
-  | {
-      _id: string;
-      _type: "sanity.imageAsset";
-      _updatedAt: string;
-    }
-  | {
-      _id: string;
-      _type: "testimonial";
-      _updatedAt: string;
-    }
->;
+export type DOCUMENTS_QUERY_RESULT = Array<{
+  _id: string;
+  _type: "category";
+  _updatedAt: string;
+} | {
+  _id: string;
+  _type: "contentItem";
+  _updatedAt: string;
+} | {
+  _id: string;
+  _type: "sanity.fileAsset";
+  _updatedAt: string;
+} | {
+  _id: string;
+  _type: "sanity.imageAsset";
+  _updatedAt: string;
+} | {
+  _id: string;
+  _type: "testimonial";
+  _updatedAt: string;
+}>;
 
 // Query TypeMap
 import "@sanity/client";
@@ -305,3 +271,4 @@ declare module "@sanity/client" {
     "*[] | order(_updatedAt desc)[0...10]{ _id, _type, _updatedAt }": DOCUMENTS_QUERY_RESULT;
   }
 }
+

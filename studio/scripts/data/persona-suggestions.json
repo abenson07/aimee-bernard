@@ -1,0 +1,569 @@
+{
+  "contentItem-article-001": {
+    "title": "10 Tips for Effective Science Communication",
+    "primary": "Science Communicator",
+    "secondary": "Educator",
+    "rationale": "A short tip-sheet aimed at scientists and healthcare professionals, not a structured course — format keeps Science Communicator primary, with Educator secondary because it's training-adjacent.",
+    "flagged": true
+  },
+  "contentItem-article-002": {
+    "title": "Immunology 101 Blog Series",
+    "primary": "Science Communicator",
+    "secondary": null,
+    "rationale": "Public blog series arming parents and general readers against vaccine mis/disinformation. The audience receives facts; it isn't an academic curriculum.",
+    "flagged": false
+  },
+  "contentItem-article-006": {
+    "title": "Guest Commentary. The death of Colorado's reasonable vaccine bill should be a call to action",
+    "primary": "Science Communicator",
+    "secondary": null,
+    "rationale": "An op-ed in a general-circulation newspaper. Readers form an opinion from it; they don't use or replicate anything, which is the plain Science Communicator case.",
+    "flagged": false
+  },
+  "contentItem-article-003": {
+    "title": "Guest Editorial. An Immunologist Offers Tips for Assessing Health & Science Information on the Internet",
+    "primary": "Science Communicator",
+    "secondary": null,
+    "rationale": "Public Medium post teaching lay readers to spot misinformation. Broadcast to an undefined general audience rather than a classroom, so Science Communicator.",
+    "flagged": false
+  },
+  "contentItem-article-004": {
+    "title": "Immune health is all about balance. An immunologist explains...",
+    "primary": "Science Communicator",
+    "secondary": null,
+    "rationale": "Written for The Conversation and syndicated to Slate, correcting a popular supplement myth for general readers outside academia. Science Communicator.",
+    "flagged": false
+  },
+  "contentItem-article-005": {
+    "title": "The Creation and Use of Analogies as an Effective Tool for Teaching Immunology Concepts",
+    "primary": "Educator",
+    "secondary": null,
+    "rationale": "Topic is immunology, but the job is entirely about how it's taught. Published for AAI's educator-heavy membership — the pedagogy tiebreaker fires directly.",
+    "flagged": false
+  },
+  "contentItem-award-002": {
+    "title": "CU Chancellor's Teaching Recognition Award",
+    "primary": "Educator",
+    "secondary": null,
+    "rationale": "One award given campus-wide at commencement. Pure evidence of recognized teaching leadership, with no research or outreach dimension to it.",
+    "flagged": false
+  },
+  "contentItem-award-001": {
+    "title": "CU Child Health Advocate/Physician Assistant 'Guest Lecture' Teaching Award",
+    "primary": "Educator",
+    "secondary": null,
+    "rationale": "Student-voted award from first-year PA trainees for a guest lecture. Establishes teaching leadership within that specific program.",
+    "flagged": false
+  },
+  "contentItem-award-005": {
+    "title": "CU Denver College of Liberal Arts & Sciences Non-Tenure Faculty Teaching Award",
+    "primary": "Educator",
+    "secondary": null,
+    "rationale": "A faculty teaching award with no other stated purpose — squarely evidence of recognized leadership in classroom teaching, nothing more to weigh.",
+    "flagged": false
+  },
+  "contentItem-award-006": {
+    "title": "CU Denver College of Liberal Arts & Sciences Non-Tenure Faculty Teaching Award",
+    "primary": "Educator",
+    "secondary": null,
+    "rationale": "Earlier cycle of the same award as its 2014 sibling. Both exist purely to document sustained teaching recognition over time.",
+    "flagged": false
+  },
+  "contentItem-award-003": {
+    "title": "CU School of Medicine S.T.A.R.ling Award",
+    "primary": "Educator",
+    "secondary": null,
+    "rationale": "Student-selected outstanding-faculty award for a single course block. Evidence of teaching leadership with no sci-comm or outreach angle.",
+    "flagged": false
+  },
+  "contentItem-award-004": {
+    "title": "CU School of Medicine STAR Award",
+    "primary": "Educator",
+    "secondary": null,
+    "rationale": "Student-selected award covering the entire first year, one of three given among 100+ faculty. Another data point for teaching leadership.",
+    "flagged": false
+  },
+  "contentItem-course-013": {
+    "title": "Academic Year: Immunology",
+    "primary": "Educator",
+    "secondary": null,
+    "rationale": "A for-credit course inside the PA program's curriculum. Students being taught immunology is the clearest possible Educator signal available.",
+    "flagged": false
+  },
+  "contentItem-course-014": {
+    "title": "Academic Year: Immunology",
+    "primary": "Educator",
+    "secondary": null,
+    "rationale": "Second-year continuation of the same PA program curriculum, covering hypersensitivity and immunodeficiency. Same inside-academia reasoning as its Year 1 counterpart.",
+    "flagged": false
+  },
+  "contentItem-course-015": {
+    "title": "DSBS5511 Invaders & Protectors (Microbiology & Immunology)",
+    "primary": "Educator",
+    "secondary": null,
+    "rationale": "Required first-year dental school course integrating immunology and microbiology. Students are formally graded learners, not the general public.",
+    "flagged": false
+  },
+  "contentItem-course-001": {
+    "title": "Fun-Size Immunology Workshop",
+    "primary": "Educator",
+    "secondary": null,
+    "rationale": "A structured 2.5-day workshop on foundational concepts, read as training within a research institute rather than a public broadcast — worth confirming who actually attends.",
+    "flagged": true
+  },
+  "contentItem-course-002": {
+    "title": "IDPT5016 Foundational Principles",
+    "primary": "Educator",
+    "secondary": null,
+    "rationale": "Required first-year medical school module covering MHC, T cells, and antibodies. Graded students inside academia, the core Educator audience.",
+    "flagged": false
+  },
+  "contentItem-course-003": {
+    "title": "IDPT5017 Hematologic & Lymphatic Systems",
+    "primary": "Educator",
+    "secondary": null,
+    "rationale": "Medical school module on vaccines and immunodeficiency case studies. Same required-curriculum, inside-academia pattern as the rest of this course cluster.",
+    "flagged": false
+  },
+  "contentItem-course-004": {
+    "title": "IDPT5018 Gastrointestinal System",
+    "primary": "Educator",
+    "secondary": null,
+    "rationale": "Module on mucosal immunity and inflammatory bowel disease, part of the required first-year curriculum she directs content for.",
+    "flagged": false
+  },
+  "contentItem-course-005": {
+    "title": "IDPT5019 Pulmonary & Cardiovascular Systems",
+    "primary": "Educator",
+    "secondary": null,
+    "rationale": "Module on pulmonary immune defense and asthma. Same required-curriculum reasoning as its sibling IDPT modules.",
+    "flagged": false
+  },
+  "contentItem-course-006": {
+    "title": "IDPT5021 Renal & Urinary Systems",
+    "primary": "Educator",
+    "secondary": null,
+    "rationale": "Module on renal immunology and transplantation, required curriculum for first-year medical students under her content direction.",
+    "flagged": false
+  },
+  "contentItem-course-007": {
+    "title": "IDPT5022 Nervous System",
+    "primary": "Educator",
+    "secondary": null,
+    "rationale": "Module on inflammatory neuropathy including MS and Guillain-Barré. Required first-year curriculum content, not public-facing material.",
+    "flagged": false
+  },
+  "contentItem-course-008": {
+    "title": "IDPT5023 Musculoskeletal & Integumentary Systems",
+    "primary": "Educator",
+    "secondary": null,
+    "rationale": "Module on rheumatologic disease for first-year medical students. Students being taught, not the public receiving science, decides this one.",
+    "flagged": false
+  },
+  "contentItem-course-009": {
+    "title": "IDPT5025 Endocrine & Metabolic Systems",
+    "primary": "Educator",
+    "secondary": null,
+    "rationale": "Module on thyroid autoimmunity and Type 1 diabetes. Same required-curriculum pattern as the rest of the IDPT sequence.",
+    "flagged": false
+  },
+  "contentItem-course-010": {
+    "title": "IDPT5026 Reproductive System & Life Cycles",
+    "primary": "Educator",
+    "secondary": null,
+    "rationale": "Module on immunity across pregnancy and the lifespan, required first-year curriculum content she directs.",
+    "flagged": false
+  },
+  "contentItem-course-011": {
+    "title": "IDPT8039 Advanced Sciences Immunology & Immunotherapy",
+    "primary": "Educator",
+    "secondary": null,
+    "rationale": "Third-year 'Alpine Summit' course covering CAR-T and checkpoint blockade. Advanced material, but still graded instruction inside academia.",
+    "flagged": false
+  },
+  "contentItem-course-016": {
+    "title": "MIMS6062 Introduction to Science Communication",
+    "primary": "Educator",
+    "secondary": "Science Communicator",
+    "rationale": "A graded graduate course, so curriculum and course-structure emphasis wins primary — but it trains scientists in sci comm, the guide's own named dual case.",
+    "flagged": true
+  },
+  "contentItem-course-017": {
+    "title": "MIMS7530 Introduction to Immunology",
+    "primary": "Educator",
+    "secondary": null,
+    "rationale": "Graduate-level immunology course for students with a biology background. Standard for-credit instruction delivered entirely inside academia.",
+    "flagged": false
+  },
+  "contentItem-course-012": {
+    "title": "Summer Immersion: Immunology & Microbiology",
+    "primary": "Educator",
+    "secondary": null,
+    "rationale": "Intensive intro course for incoming PA program students. Structured curriculum for enrolled students, not a public outreach event.",
+    "flagged": false
+  },
+  "contentItem-course-018": {
+    "title": "UNHL4820. Scientific Thinking",
+    "primary": "Educator",
+    "secondary": null,
+    "rationale": "Undergraduate honors course on critically analyzing scientific literature. Enrolled CU Denver students being formally taught decides it.",
+    "flagged": false
+  },
+  "contentItem-educational-content-004": {
+    "title": "AAI Immunology Explained",
+    "primary": "Science Communicator",
+    "secondary": null,
+    "rationale": "Explicitly built to help the general public understand the immune system. Despite the 'educational' label, the audience sits outside academia — Science Communicator.",
+    "flagged": false
+  },
+  "contentItem-educational-content-002": {
+    "title": "Allergies and the Immune Response",
+    "primary": "Science Communicator",
+    "secondary": null,
+    "rationale": "Short public explainer video on AAI's public site. General audience receives a simplified answer rather than adopting a teaching practice.",
+    "flagged": false
+  },
+  "contentItem-educational-content-001": {
+    "title": "Fun Size Science",
+    "primary": "Science Communicator",
+    "secondary": null,
+    "rationale": "Public YouTube series answering audience-submitted questions in under five minutes. Broadcast to an undefined public audience, the core Science Communicator test.",
+    "flagged": false
+  },
+  "contentItem-educational-content-003": {
+    "title": "The immune system is a mobile defense system - like calling 911",
+    "primary": "Science Communicator",
+    "secondary": null,
+    "rationale": "Public explainer built on a '911' analogy for lay readers. General audience on a public-facing site, not academic instruction.",
+    "flagged": false
+  },
+  "contentItem-podcast-004": {
+    "title": "Career in Teaching and Sci Comm",
+    "primary": "Science Communicator",
+    "secondary": null,
+    "rationale": "A podcast interview about her career, but the job of any podcast appearance is broadcast media reaching an audience who follows or subscribes.",
+    "flagged": false
+  },
+  "contentItem-podcast-003": {
+    "title": "Science Communication to the Public",
+    "primary": "Science Communicator",
+    "secondary": null,
+    "rationale": "Co-hosted with AAI's president, explicitly about public sci comm. About as textbook a Science Communicator placement as this dataset has.",
+    "flagged": false
+  },
+  "contentItem-podcast-002": {
+    "title": "The Life of a Dedicated Educator",
+    "primary": "Science Communicator",
+    "secondary": null,
+    "rationale": "Despite the title, this is a broadcast interview for an undefined listening audience, not a classroom artifact — the title names the topic, not the job.",
+    "flagged": false
+  },
+  "contentItem-podcast-001": {
+    "title": "The World of Autoimmunity",
+    "primary": "Science Communicator",
+    "secondary": null,
+    "rationale": "Public podcast episode explaining autoimmunity in plain language for general listeners. Classic broadcast sci-comm format.",
+    "flagged": false
+  },
+  "contentItem-position-003": {
+    "title": "Content Director, Immunology",
+    "primary": "Educator",
+    "secondary": null,
+    "rationale": "Curriculum leadership over required immunology content across all four years of medical school. Audience is enrolled students throughout.",
+    "flagged": false
+  },
+  "contentItem-position-006": {
+    "title": "Content Director, Immunology",
+    "primary": "Educator",
+    "secondary": null,
+    "rationale": "Parallel curriculum-leadership role over the PA program's immunology content across two years. Same inside-academia reasoning as its SOM counterpart.",
+    "flagged": false
+  },
+  "contentItem-position-007": {
+    "title": "Course Director, DSBS5511 Invaders & Protectors",
+    "primary": "Educator",
+    "secondary": null,
+    "rationale": "Directs a required dental school course. Leadership over curriculum delivered to enrolled students, not a public program.",
+    "flagged": false
+  },
+  "contentItem-position-005": {
+    "title": "Course Director, MIMS6062 Introduction to Science Communication",
+    "primary": "Educator",
+    "secondary": "Science Communicator",
+    "rationale": "Directs a graded course, so curriculum emphasis wins primary — but she's training grad-student scientists in sci comm, so Science Communicator applies secondarily, same as the course itself.",
+    "flagged": true
+  },
+  "contentItem-position-004": {
+    "title": "Course Director, MIMS7530 Introduction to Immunology",
+    "primary": "Educator",
+    "secondary": null,
+    "rationale": "Directs a graduate immunology course. Standard curriculum-leadership role inside academia, nothing public-facing about the position itself.",
+    "flagged": false
+  },
+  "contentItem-position-008": {
+    "title": "Course Director, UNHL4820 Scientific Thinking",
+    "primary": "Educator",
+    "secondary": null,
+    "rationale": "Directs an undergraduate honors course. Curriculum leadership for enrolled students, not a public-facing role.",
+    "flagged": false
+  },
+  "contentItem-position-001": {
+    "title": "Unbiased Science — Immunology Expert",
+    "primary": "Science Communicator",
+    "secondary": null,
+    "rationale": "Volunteer role feeding immunology content to a mass-audience mythbusting platform. Public trust-building, not classroom teaching or a defined program.",
+    "flagged": false
+  },
+  "contentItem-position-002": {
+    "title": "co-Director, CCTSI Workshop Series — Communicating Your Science to the Public",
+    "primary": "Science Communicator",
+    "secondary": "Educator",
+    "rationale": "The guide's own named example: sci-comm leadership is primary, with the workshop's teaching structure carried as a secondary Educator angle.",
+    "flagged": false
+  },
+  "contentItem-press-mentions-002": {
+    "title": "'Ask a Scientist' feature with Aimee Pugh Bernard, PhD",
+    "primary": "Science Communicator",
+    "secondary": null,
+    "rationale": "Recurring public Q&A column in a donor/alumni newsletter. Readers submit questions and receive answers — the definition of broadcast sci comm.",
+    "flagged": false
+  },
+  "contentItem-press-mentions-011": {
+    "title": "5 Sneaky Signs You're Getting Sick",
+    "primary": "Science Communicator",
+    "secondary": null,
+    "rationale": "HuffPost lifestyle piece quoting her expertise for a general readership. The reader receives tips; they don't run a program from it.",
+    "flagged": false
+  },
+  "contentItem-press-mentions-006": {
+    "title": "COVID Vaccines: One dose or two? Experts weigh in",
+    "primary": "Science Communicator",
+    "secondary": null,
+    "rationale": "CU news piece where she weighs in on dosing evidence for a general campus and public readership.",
+    "flagged": false
+  },
+  "contentItem-press-mentions-001": {
+    "title": "CU Immunology Prof discusses mRNA research funding",
+    "primary": "Science Communicator",
+    "secondary": null,
+    "rationale": "Live radio interview reaching a general morning-news audience about mRNA funding cuts. Broadcast media with an undefined listenership.",
+    "flagged": false
+  },
+  "contentItem-press-mentions-008": {
+    "title": "Creating Vaccine Confidence Through Building Community. Casual Conversations about Vaccines",
+    "primary": "Science Communicator",
+    "secondary": null,
+    "rationale": "The item itself is a blog post covering her community Q&A work — readers of the post receive a story, they don't run the sessions. Close enough to Outreach to flag.",
+    "flagged": true
+  },
+  "contentItem-press-mentions-007": {
+    "title": "How an Immunity Gap May Be Fueling the Recent Spike in Respiratory Viruses",
+    "primary": "Science Communicator",
+    "secondary": null,
+    "rationale": "SELF magazine health piece for general readers, explaining a popular immunology concept through her expert commentary.",
+    "flagged": false
+  },
+  "contentItem-press-mentions-009": {
+    "title": "Investigating Immunity. Uncovering the Mechanisms of the Immune System",
+    "primary": "Science Communicator",
+    "secondary": null,
+    "rationale": "Careers magazine profile aimed at students exploring STEM. General and student readership outside any formal course she teaches.",
+    "flagged": false
+  },
+  "contentItem-press-mentions-004": {
+    "title": "Preventing the Next Pandemic. Better Next Time",
+    "primary": "Science Communicator",
+    "secondary": null,
+    "rationale": "Alumni magazine feature gathering expert lessons from COVID-19 for a broad alumni readership, not a classroom audience.",
+    "flagged": false
+  },
+  "contentItem-press-mentions-003": {
+    "title": "Science Communicators Strategize How to Demystify Science",
+    "primary": "Science Communicator",
+    "secondary": null,
+    "rationale": "CU news coverage of a sci-comm panel discussion. Explicitly about sci comm itself, read by a general campus audience.",
+    "flagged": false
+  },
+  "contentItem-press-mentions-005": {
+    "title": "Fake News: Medical Quackery Enters a New Dimension. The spread of misinformation evolves, heightening threats to patients and medical science",
+    "primary": "Science Communicator",
+    "secondary": null,
+    "rationale": "CU news feature on pandemic-era misinformation for a general campus and public readership, with her quoted as an expert commentator.",
+    "flagged": false
+  },
+  "contentItem-press-mentions-010": {
+    "title": "Translating Research to Drive Patient Care. How novel discoveries in the lab make their way to the patient",
+    "primary": "Science Communicator",
+    "secondary": null,
+    "rationale": "Donor-facing magazine piece translating HI3 lab research into accessible language for a general readership.",
+    "flagged": false
+  },
+  "contentItem-research-publication-002": {
+    "title": "Mini-Review: CREATE-ive Use of Primary Literature in the Science Classroom",
+    "primary": "Educator",
+    "secondary": null,
+    "rationale": "Peer-reviewed, but entirely about a pedagogical method for teaching undergraduates via primary literature. Proves teaching scholarship, not bench research.",
+    "flagged": false
+  },
+  "contentItem-research-publication-001": {
+    "title": "The Use and Creation of Analogies as a Teaching Tool for Understanding Immunology",
+    "primary": "Educator",
+    "secondary": null,
+    "rationale": "AAI poster and breakout session on a classroom technique. Pedagogy research, matching the same tiebreaker as the AAI Newsletter analogies article.",
+    "flagged": false
+  },
+  "contentItem-research-publication-003": {
+    "title": "University of Colorado COVID-19 Pandemic Response Course: Beyond the Virtual Classroom",
+    "primary": "Educator",
+    "secondary": null,
+    "rationale": "Describes a course's design and service-learning pillars for medical-education peers judging a curriculum challenge, not the public — flagged since outreach pillars are part of the story.",
+    "flagged": true
+  },
+  "contentItem-talk-020": {
+    "title": "AI: Super Hero or Super Villain? The Use of AI in Teaching & Learning",
+    "primary": "Educator",
+    "secondary": null,
+    "rationale": "Breakout session at a higher-ed teaching-with-technology conference. Audience is faculty and educators, not the general public.",
+    "flagged": false
+  },
+  "contentItem-talk-016": {
+    "title": "Addressing Mis & Disinformation in Health and Science Communication",
+    "primary": "Science Communicator",
+    "secondary": null,
+    "rationale": "Panel talk at a research summit positioning her as a misinformation and sci-comm expert — a talk she gives, not a course she teaches.",
+    "flagged": false
+  },
+  "contentItem-talk-012": {
+    "title": "COVID-19 Vaccines. Formulations and Immune Response",
+    "primary": "Educator",
+    "secondary": null,
+    "rationale": "Informal talk to an undergraduate student club. Students on campus, inside academia even outside a formal course, tips this to Educator.",
+    "flagged": true
+  },
+  "contentItem-talk-001": {
+    "title": "Confessions of a Scientist: Science education needs communication training",
+    "primary": "Science Communicator",
+    "secondary": null,
+    "rationale": "A TEDx talk: public-facing video that positions her as a sci-comm leader and speaker, matching the guide's own worked example exactly.",
+    "flagged": false
+  },
+  "contentItem-talk-004": {
+    "title": "From Data to Dialogue: Science Communication for the Real World",
+    "primary": "Science Communicator",
+    "secondary": "Educator",
+    "rationale": "Full-day sci-comm retreat for grad students and postdocs at her alma mater. Workshop format establishing her as a trainer, so Science Communicator leads with Educator secondary.",
+    "flagged": true
+  },
+  "contentItem-talk-018": {
+    "title": "Killing Cancer from the Inside: Harness the Immune System & Immunotherapy",
+    "primary": "Community Outreach",
+    "secondary": null,
+    "rationale": "Talk to high school students and teachers at a regional science fair. Audience matches the K-12/teachers definition for Community Outreach directly.",
+    "flagged": false
+  },
+  "contentItem-talk-011": {
+    "title": "Lessons on Challenging Communication of Science in Society",
+    "primary": "Science Communicator",
+    "secondary": null,
+    "rationale": "Panel at a public, museum-affiliated science-policy symposium. Broadcasts her sci-comm perspective to an open, undefined audience.",
+    "flagged": false
+  },
+  "contentItem-talk-003": {
+    "title": "Navigating Vaccine Hesitancy",
+    "primary": "Science Communicator",
+    "secondary": null,
+    "rationale": "Panel on communication strategy for vaccine hesitancy at a symposium. Positions her as a public-engagement expert, not a classroom instructor.",
+    "flagged": false
+  },
+  "contentItem-talk-006": {
+    "title": "New Year! New Life Hacks? Don't Believe Everything You Read!",
+    "primary": "Science Communicator",
+    "secondary": null,
+    "rationale": "Alumni talk on misinformation, recorded and posted publicly to YouTube. The recording extends it to a broadcast, undefined audience.",
+    "flagged": false
+  },
+  "contentItem-talk-013": {
+    "title": "Parents Talk: Why We Immunize for Good",
+    "primary": "Community Outreach",
+    "secondary": null,
+    "rationale": "Part of Immunize for Good's named parent-advocacy program. A defined community of parents, peer-to-peer advocacy rather than broadcast expertise.",
+    "flagged": false
+  },
+  "contentItem-talk-002": {
+    "title": "Research Day Keynote Speaker",
+    "primary": "Educator",
+    "secondary": "Science Communicator",
+    "rationale": "Keynote explicitly meant to inspire grad students toward a sci-comm career path — 'sees a career path modeled' is the guide's own literal Educator test.",
+    "flagged": true
+  },
+  "contentItem-talk-009": {
+    "title": "Sci Comm. The Art of Making Science Interesting and Relatable to the General Public",
+    "primary": "Science Communicator",
+    "secondary": "Educator",
+    "rationale": "Invited talk on sci-comm best practices to a faculty teaching-development community. Speaker positioning wins primary, faculty-development context secondary.",
+    "flagged": true
+  },
+  "contentItem-talk-010": {
+    "title": "Sci Comm. The Art of Making Science Interesting and Relatable to the General Public",
+    "primary": "Science Communicator",
+    "secondary": null,
+    "rationale": "Repeat delivery of the same invited talk at a different institution's biology department. Same sci-comm speaker positioning as its sibling talk.",
+    "flagged": false
+  },
+  "contentItem-talk-007": {
+    "title": "The Future of Immunotherapy: Breakthroughs Beyond Cancer",
+    "primary": "Science Communicator",
+    "secondary": null,
+    "rationale": "Public-facing CU lecture series translating cutting-edge immunotherapy for a general community and donor audience alongside treating physicians.",
+    "flagged": false
+  },
+  "contentItem-talk-008": {
+    "title": "The Impact of Artificial Intelligence (AI) on Education",
+    "primary": "Educator",
+    "secondary": null,
+    "rationale": "AAI webinar explicitly aimed at helping immunology educators use AI in lesson planning. Audience is teaching faculty, not the public.",
+    "flagged": false
+  },
+  "contentItem-talk-017": {
+    "title": "The Science Behind Vaccines",
+    "primary": "Educator",
+    "secondary": null,
+    "rationale": "Talk to community college biology students. Students being taught matches the inside-academia half of the Educator/Science Communicator tiebreaker.",
+    "flagged": false
+  },
+  "contentItem-talk-014": {
+    "title": "The Science Behind Vaccines and the Immune Response",
+    "primary": "Community Outreach",
+    "secondary": null,
+    "rationale": "Explicitly billed as a 'community education webinar' by two named advocacy organizations. A defined community, not a broadcast placement.",
+    "flagged": false
+  },
+  "contentItem-talk-005": {
+    "title": "Translating Medicine. Science Communication Academic and Clinical Tool",
+    "primary": "Educator",
+    "secondary": null,
+    "rationale": "Grand Rounds asking CU physicians to adopt a new practice in patient conversations. Academic-teaching format outweighs the sci-comm topic here.",
+    "flagged": true
+  },
+  "contentItem-talk-021": {
+    "title": "Vaccine Questions at Home. Have a Question? Get an Answer!",
+    "primary": "Community Outreach",
+    "secondary": null,
+    "rationale": "Q&A safe space with named community partners. A defined community, not an undefined broadcast audience, decides this one.",
+    "flagged": false
+  },
+  "contentItem-talk-015": {
+    "title": "Your Shot at Protection. How Vaccines Train the Immune System to Fight Disease",
+    "primary": "Community Outreach",
+    "secondary": null,
+    "rationale": "Aimee's own description calls this a 'collaborative community outreach event' — about as direct a signal as this dataset provides.",
+    "flagged": true
+  },
+  "contentItem-talk-019": {
+    "title": "Your Shot at Protection. How Vaccines Train the Immune System to Fight Disease",
+    "primary": "Science Communicator",
+    "secondary": null,
+    "rationale": "Same talk topic as its Tattered Cover sibling, but this delivery was recorded and posted to YouTube — deliberately split from it on format, not content.",
+    "flagged": true
+  }
+}

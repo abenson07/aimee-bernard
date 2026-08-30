@@ -1,68 +1,42 @@
 "use client";
 
 import { useMemo, useState, type MouseEvent } from "react";
+import Link from "next/link";
 import type { Category, ContentItem } from "@/lib/types";
 import { logout } from "./actions";
-import {
-  ChevronRightIcon,
-  FileIcon,
-  LinkIcon,
-  PlusIcon,
-  SearchIcon,
-  TextIcon,
-  UploadIcon,
-} from "./icons";
+import { ChevronRightIcon, PlusIcon, SearchIcon, UploadIcon } from "./icons";
 import { UploadModal } from "./upload-modal";
 import { QuizModal } from "./quiz-modal";
 import { ItemModal } from "./item-modal";
+import { CategoryLedgerView } from "./category-ledger";
 
 type Modal =
   | { kind: "upload"; categoryId: string | null }
   | { kind: "quiz"; category: Category }
   | { kind: "item"; item: ContentItem }
+  | { kind: "review" }
   | null;
-
-const dateFormat = new Intl.DateTimeFormat("en-US", {
-  month: "short",
-  day: "numeric",
-  year: "numeric",
-});
-
-function sourceLabel(item: ContentItem) {
-  if (item.url) return "Link";
-  if (item.fileName) return "File";
-  return "Content";
-}
-
-function sourceIcon(item: ContentItem) {
-  if (item.url) return <LinkIcon />;
-  if (item.fileName) return <FileIcon />;
-  return <TextIcon />;
-}
 
 function SourceCell({ item }: { item: ContentItem }) {
   const stop = (event: MouseEvent) => event.stopPropagation();
   if (item.url) {
     return (
-      <a href={item.url} target="_blank" rel="noreferrer" className="truncate-cell" onClick={stop}>
+      <a href={item.url} target="_blank" rel="noreferrer" className="wrap-cell" onClick={stop}>
         {item.url}
       </a>
     );
   }
   if (item.fileUrl) {
     return (
-      <a
-        href={item.fileUrl}
-        target="_blank"
-        rel="noreferrer"
-        className="truncate-cell"
-        onClick={stop}
-      >
+      <a href={item.fileUrl} target="_blank" rel="noreferrer" className="wrap-cell" onClick={stop}>
         {item.fileName ?? "File"}
       </a>
     );
   }
-  return <span className="truncate-cell muted">{item.bodyPreview || "—"}</span>;
+  if (item.bodyPreview) {
+    return <span className="wrap-cell muted">{item.bodyPreview}</span>;
+  }
+  return <span className="wrap-cell muted">{item.venue || "—"}</span>;
 }
 
 export function Dashboard({
@@ -76,6 +50,14 @@ export function Dashboard({
 }) {
   const [modal, setModal] = useState<Modal>(null);
   const [query, setQuery] = useState("");
+
+  /* Category still drives the table column, item modal, and the review
+     view — just keeping the cards + banner off the main page for now. */
+  const showCategoryOverview = false;
+
+  const pendingReview = items.filter(
+    (item) => item.categorySuggestedId && !item.categoryReviewedAt,
+  ).length;
 
   const visible = useMemo(() => {
     const q = query.trim().toLowerCase();
@@ -99,6 +81,9 @@ export function Dashboard({
               Sign out
             </button>
           </form>
+          <Link href="/questionnaire" className="btn-secondary">
+            Voice &amp; Tone Questionnaire
+          </Link>
           <button
             type="button"
             className="btn-primary"
@@ -111,7 +96,7 @@ export function Dashboard({
       </header>
 
       <main className="page">
-        {categorizationEnabled && (
+        {categorizationEnabled && showCategoryOverview && (
         <div className="cat-grid">
           {categories.map((category) => (
             <div key={category._id} className="cat-card">
@@ -156,6 +141,20 @@ export function Dashboard({
         </div>
         )}
 
+        {categorizationEnabled && showCategoryOverview && pendingReview > 0 && (
+          <button
+            type="button"
+            className="review-banner"
+            onClick={() => setModal({ kind: "review" })}
+          >
+            <span className="quiz-dot" />
+            {pendingReview === 1 ? "1 item ready to review" : `${pendingReview} items ready to review`}
+            <span className="quiz-arrow">
+              <ChevronRightIcon />
+            </span>
+          </button>
+        )}
+
         <section className="log">
           <div className="log-head">
             <div className="log-title">
@@ -180,12 +179,9 @@ export function Dashboard({
             <table>
               <thead>
                 <tr>
-                  <th style={{ width: categorizationEnabled ? "16%" : "20%" }}>Title</th>
-                  {categorizationEnabled && <th style={{ width: "12%" }}>Category</th>}
-                  <th style={{ width: categorizationEnabled ? "20%" : "24%" }}>Source</th>
-                  <th style={{ width: categorizationEnabled ? "20%" : "24%" }}>Description</th>
-                  <th style={{ width: "16%" }}>Type</th>
-                  <th style={{ width: "16%" }}>Added</th>
+                  <th style={{ width: categorizationEnabled ? "60%" : "80%" }}>Title</th>
+                  <th style={{ width: "20%" }}>Source</th>
+                  {categorizationEnabled && <th style={{ width: "20%" }}>Category</th>}
                 </tr>
               </thead>
               <tbody>
@@ -203,36 +199,29 @@ export function Dashboard({
                     }}
                   >
                     <td>
-                      <span className="cell row-title truncate-cell">{item.title}</span>
+                      <div className="cell cell-stack">
+                        <span className="row-title">{item.title}</span>
+                        <span className="row-desc">{item.description || "—"}</span>
+                      </div>
                     </td>
-                    {categorizationEnabled && (
-                      <td>
-                        <span className="cell">
-                          <span className="chip">{item.categoryName ?? "Unsorted"}</span>
-                        </span>
-                      </td>
-                    )}
                     <td>
                       <span className="cell">
                         <SourceCell item={item} />
                       </span>
                     </td>
-                    <td>
-                      <span className="cell">
-                        <span className="truncate-cell muted">{item.description || "—"}</span>
-                      </span>
-                    </td>
-                    <td>
-                      <span className="cell type-cell">
-                        {sourceIcon(item)}
-                        {sourceLabel(item)}
-                      </span>
-                    </td>
-                    <td>
-                      <span className="cell date-cell">
-                        {dateFormat.format(new Date(item._createdAt))}
-                      </span>
-                    </td>
+                    {categorizationEnabled && (
+                      <td>
+                        <span className="cell cell-category">
+                          <span className="chip">{item.categoryName ?? "Unsorted"}</span>
+                          {item.categoryStatus === "pending" && (
+                            <span className="status-note">Pending review</span>
+                          )}
+                          {item.categoryStatus === "changed" && (
+                            <span className="status-note">Changed from suggestion</span>
+                          )}
+                        </span>
+                      </td>
+                    )}
                   </tr>
                 ))}
               </tbody>
@@ -269,6 +258,10 @@ export function Dashboard({
           categorizationEnabled={categorizationEnabled}
           onClose={close}
         />
+      )}
+
+      {modal?.kind === "review" && categorizationEnabled && (
+        <CategoryLedgerView items={items} categories={categories} onClose={close} />
       )}
     </>
   );

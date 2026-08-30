@@ -13,6 +13,13 @@
       "runtimeArgs": ["run", "dev:dashboard"],
       "port": 3000,
       "autoPort": true
+    },
+    {
+      "name": "studio-dev",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "dev", "--prefix", "studio"],
+      "port": 3333,
+      "autoPort": true
     }
   ]
 }

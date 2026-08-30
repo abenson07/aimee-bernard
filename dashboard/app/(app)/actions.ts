@@ -154,6 +154,50 @@ export async function answerQuestion(
   return { ok: true, key };
 }
 
+export async function reviewCategory(
+  _prevState: FormState,
+  formData: FormData,
+): Promise<FormState> {
+  await verifySession();
+  if (!categorizationEnabled) return { error: "Not available yet." };
+
+  const id = formData.get("id");
+  const categoryId = formData.get("category");
+  const categorySecondaryId = formData.get("categorySecondary");
+  const note = formData.get("categoryNote");
+
+  if (typeof id !== "string" || !id) return { error: "Something went wrong." };
+  if (typeof categoryId !== "string" || !categoryId) return { error: "Pick a category." };
+
+  const set: Record<string, unknown> = {
+    category: { _type: "reference", _ref: categoryId },
+    categoryReviewedAt: new Date().toISOString(),
+  };
+  const unset: string[] = [];
+
+  if (typeof categorySecondaryId === "string" && categorySecondaryId) {
+    set.categorySecondary = { _type: "reference", _ref: categorySecondaryId };
+  } else {
+    unset.push("categorySecondary");
+  }
+  if (typeof note === "string" && note.trim()) {
+    set.categoryNote = note.trim();
+  } else {
+    unset.push("categoryNote");
+  }
+
+  try {
+    let patch = sanityClient.patch(id).set(set);
+    if (unset.length) patch = patch.unset(unset);
+    await patch.commit();
+  } catch {
+    return { error: "That didn't save. Try again." };
+  }
+
+  revalidatePath("/");
+  return { ok: true, key: id };
+}
+
 export async function deleteContentItem(id: string): Promise<{ error?: string } | undefined> {
   await verifySession();
 
@@ -174,6 +218,9 @@ export async function updateContentItem(
 
   const id = formData.get("id");
   const title = formData.get("title");
+  const kind = formData.get("kind");
+  const venue = formData.get("venue");
+  const date = formData.get("date");
   const url = formData.get("url");
   const file = formData.get("file");
   const body = formData.get("body");
@@ -182,12 +229,28 @@ export async function updateContentItem(
   const description = formData.get("description");
 
   if (typeof id !== "string" || !id) return { error: "Something went wrong." };
-  if (typeof title !== "string" || !title.trim()) {
-    return { error: "Give this a title." };
-  }
 
-  const set: Record<string, unknown> = { title: title.trim() };
+  const set: Record<string, unknown> = {};
   const unset: string[] = [];
+
+  /* "Details" (title, kind, venue, date, the source) only render as inputs
+     once she opens the details editor — outside that, these simply aren't
+     present in the form, so leave whatever's already saved untouched. */
+  if (typeof title === "string") {
+    if (!title.trim()) return { error: "Give this a title." };
+    set.title = title.trim();
+  }
+  if (typeof kind === "string" && kind) {
+    set.kind = kind;
+  }
+  if (typeof venue === "string") {
+    if (venue.trim()) set.venue = venue.trim();
+    else unset.push("venue");
+  }
+  if (typeof date === "string") {
+    if (date.trim()) set.date = date.trim();
+    else unset.push("date");
+  }
 
   /* The form only ever includes the one source field that matches this
      item's existing type (the modal renders just that one), so there's no
@@ -211,6 +274,9 @@ export async function updateContentItem(
   if (categorizationEnabled) {
     if (typeof categoryId === "string" && categoryId) {
       set.category = { _type: "reference", _ref: categoryId };
+      /* Picking (or keeping) a category here is itself a review — it's what
+         moves an item out of the review queue even if she never opens it. */
+      set.categoryReviewedAt = new Date().toISOString();
     }
     if (typeof categoryNote === "string" && categoryNote.trim()) {
       set.categoryNote = categoryNote.trim();
