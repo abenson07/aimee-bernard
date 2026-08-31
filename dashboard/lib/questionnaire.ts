@@ -553,12 +553,9 @@ export function validateAnswer(question: Question, value: unknown): boolean {
     case "scale":
       return typeof value === "string" && ["1", "2", "3", "4", "5"].includes(value);
     case "choice_with_note":
-      return (
-        Array.isArray(value) &&
-        value.length === 2 &&
-        isNonEmptyString(value[0]) &&
-        isNonEmptyString(value[1])
-      );
+      // The note is a bonus, not a requirement — picking the option alone
+      // is already a meaningful, worth-keeping answer.
+      return Array.isArray(value) && value.length === 2 && isNonEmptyString(value[0]);
     case "multi_choice":
       return (
         Array.isArray(value) &&
