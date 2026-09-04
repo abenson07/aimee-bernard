@@ -25,16 +25,23 @@ export function UploadModal({
   const [tab, setTab] = useState<SourceKind>("file");
   const [fileName, setFileName] = useState<string | null>(null);
   const fileRef = useRef<HTMLInputElement>(null);
-  const titleRef = useRef<HTMLInputElement>(null);
+  /* Controlled, rather than left to defaultValue/refs, so a failed submit
+     (e.g. missing category) doesn't wipe what she already typed — React
+     resets uncontrolled fields on every form action dispatch, success or
+     not, and re-typing a title/link/description after a validation error
+     is exactly the kind of friction that reads as "the upload is broken." */
+  const [title, setTitle] = useState("");
+  const [url, setUrl] = useState("");
+  const [description, setDescription] = useState("");
 
   const locked = categories.find((category) => category._id === lockedCategoryId) ?? null;
 
   useEffect(() => {
     if (state?.ok) {
-      onCreated?.(titleRef.current?.value.trim() ?? "");
+      onCreated?.(title.trim());
       onClose();
     }
-  }, [state, onClose, onCreated]);
+  }, [state, onClose, onCreated, title]);
 
   return (
     <ModalShell
@@ -46,13 +53,16 @@ export function UploadModal({
         <div className="modal-body">
           <label className="field">
             <span className="label">Title</span>
+            {/* Not `required` — same reasoning as Category below: a native
+                validation block here is silent and easy to miss, and the
+                server already validates and surfaces a real error. */}
             <input
               type="text"
               name="title"
-              ref={titleRef}
               className="input"
               placeholder="Give this a name"
-              required
+              value={title}
+              onChange={(event) => setTitle(event.target.value)}
             />
           </label>
 
@@ -112,9 +122,9 @@ export function UploadModal({
                 name="url"
                 className="input"
                 placeholder="example.com"
-                onBlur={(event) => {
-                  event.target.value = withHttps(event.target.value);
-                }}
+                value={url}
+                onChange={(event) => setUrl(event.target.value)}
+                onBlur={(event) => setUrl(withHttps(event.target.value))}
               />
             )}
 
@@ -134,7 +144,19 @@ export function UploadModal({
               </>
             ) : (
               <div style={{ position: "relative", display: "flex" }}>
-                <select name="category" className="input" required defaultValue="">
+                {/* Not `required` — a native validation error on this field
+                    blocks form submission silently (no request, no visible
+                    feedback), which is indistinguishable from the upload
+                    just not working. The server already validates this and
+                    surfaces a real error below. */}
+                {/* Uncontrolled on purpose — a disabled placeholder option
+                    can't stay "selected" once a controlled value forces a
+                    re-render to it, so the browser silently falls back to
+                    the first real option, which would then read back as an
+                    (unintended) selection on the next submit. defaultValue
+                    avoids that; the tradeoff is that a pick here is lost if
+                    some other field fails validation, same as before. */}
+                <select name="category" className="input" defaultValue="">
                   <option value="" disabled>
                     Choose a category
                   </option>
@@ -172,6 +194,8 @@ export function UploadModal({
               className="input"
               rows={2}
               placeholder="What is this, in a line or two?"
+              value={description}
+              onChange={(event) => setDescription(event.target.value)}
             />
           </label>
 

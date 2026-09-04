@@ -1,12 +1,18 @@
 "use client";
 
 import { useActionState, useEffect, useRef, useState, useTransition } from "react";
-import { KIND_OPTIONS, type Category, type ContentItem } from "@/lib/types";
+import { KIND_OPTIONS, type Category, type ContentItem, type ContentLink } from "@/lib/types";
 import { withHttps } from "@/lib/url";
 import { deleteContentItem, updateContentItem } from "./actions";
 import { itemContext } from "./category-suggestion";
-import { DropIcon, FileIcon } from "./icons";
+import { CloseIcon, DropIcon, FileIcon, PlusIcon } from "./icons";
 import { ModalShell } from "./modal-shell";
+
+function newLinkKey() {
+  return typeof crypto !== "undefined" && "randomUUID" in crypto
+    ? crypto.randomUUID()
+    : Math.random().toString(36).slice(2);
+}
 
 export function ItemModal({
   item,
@@ -24,6 +30,14 @@ export function ItemModal({
   const fileRef = useRef<HTMLInputElement>(null);
   const [editingDetails, setEditingDetails] = useState(false);
   const link = item.url || item.firstLinkUrl || "";
+  const [links, setLinks] = useState<ContentLink[]>(item.links ?? []);
+  const updateLink = (key: string, field: "label" | "url", value: string) => {
+    setLinks((current) =>
+      current.map((row) => (row._key === key ? { ...row, [field]: value } : row)),
+    );
+  };
+  const addLink = () => setLinks((current) => [...current, { _key: newLinkKey(), label: "", url: "" }]);
+  const removeLink = (key: string) => setLinks((current) => current.filter((row) => row._key !== key));
   const [selectedCategory, setSelectedCategory] = useState(item.categoryId ?? "");
   const recommendedCategory = item.categorySuggestedId ?? item.categoryId ?? "";
   const recommendedCategoryName = item.categorySuggestedName ?? item.categoryName ?? "";
@@ -182,6 +196,48 @@ export function ItemModal({
               </button>
             </div>
           )}
+
+          <div className="field">
+            <span className="label">
+              Links <span className="opt-tag">— optional</span>
+            </span>
+            {links.length > 0 && (
+              <div className="links-list">
+                {links.map((row) => (
+                  <div className="link-row" key={row._key}>
+                    <input
+                      type="text"
+                      className="input link-row-label"
+                      placeholder="Label — e.g. Spanish, Apple Podcasts"
+                      value={row.label ?? ""}
+                      onChange={(event) => updateLink(row._key, "label", event.target.value)}
+                    />
+                    <input
+                      type="text"
+                      className="input link-row-url"
+                      placeholder="https://…"
+                      value={row.url}
+                      onChange={(event) => updateLink(row._key, "url", event.target.value)}
+                      onBlur={(event) => updateLink(row._key, "url", withHttps(event.target.value))}
+                    />
+                    <button
+                      type="button"
+                      className="link-remove"
+                      onClick={() => removeLink(row._key)}
+                      aria-label="Remove link"
+                    >
+                      <CloseIcon size={13} />
+                    </button>
+                  </div>
+                ))}
+              </div>
+            )}
+            <button type="button" className="btn-quiet btn-sm add-link-btn" onClick={addLink}>
+              <PlusIcon size={12} />
+              Add link
+            </button>
+            <input type="hidden" name="links" value={JSON.stringify(links)} />
+          </div>
 
           <label className="field">
             <span className="label">

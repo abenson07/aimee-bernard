@@ -5,7 +5,7 @@ import type { Category } from "@/lib/types";
 import { QuestionnaireWizard } from "./questionnaire-wizard";
 
 const QUESTIONNAIRE_QUERY = `*[_id == $id][0]{ answers, completedAt, _createdAt }`;
-const CONTENT_ITEMS_QUERY = `*[_type == "contentItem"] | order(title asc){ _id, title }`;
+const CONTENT_ITEMS_QUERY = `*[_type == "contentItem"] | order(title asc){ _id, title, venue }`;
 const CATEGORIES_QUERY = `*[_type == "category"] | order(name asc){ _id, name }`;
 
 export default async function QuestionnairePage() {
@@ -15,7 +15,7 @@ export default async function QuestionnairePage() {
       completedAt?: string;
       _createdAt?: string;
     } | null>(QUESTIONNAIRE_QUERY, { id: QUESTIONNAIRE_DOC_ID }),
-    sanityClient.fetch<{ _id: string; title: string }[]>(CONTENT_ITEMS_QUERY),
+    sanityClient.fetch<{ _id: string; title: string; venue?: string }[]>(CONTENT_ITEMS_QUERY),
     categorizationEnabled
       ? sanityClient.fetch<{ _id: string; name: string }[]>(CATEGORIES_QUERY)
       : Promise.resolve([]),

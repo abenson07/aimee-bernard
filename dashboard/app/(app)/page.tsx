@@ -24,6 +24,7 @@ const ITEMS_QUERY = `*[_type == "contentItem"] | order(_createdAt desc){
   date,
   url,
   "firstLinkUrl": links[0].url,
+  links[]{_key, label, url},
   description,
   categoryNote,
   body,

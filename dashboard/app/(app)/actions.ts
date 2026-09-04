@@ -51,6 +51,33 @@ function parsePortableText(input: string): PortableTextBlock[] | null {
   }));
 }
 
+/** The links editor posts its rows as JSON. Parse defensively — this arrives
+ *  as a form field, so it is untrusted regardless of what the UI sends. */
+function parseLinks(input: string): { _key: string; _type: "link"; label?: string; url: string }[] | null {
+  let parsed: unknown;
+  try {
+    parsed = JSON.parse(input);
+  } catch {
+    return null;
+  }
+
+  if (!Array.isArray(parsed)) return null;
+
+  return parsed
+    .filter((row): row is { _key?: unknown; label?: unknown; url?: unknown } =>
+      typeof row === "object" && row !== null,
+    )
+    .map((row) => ({
+      _key: typeof row._key === "string" && row._key ? row._key : randomUUID(),
+      _type: "link" as const,
+      url: withHttps(typeof row.url === "string" ? row.url.trim() : ""),
+      ...(typeof row.label === "string" && row.label.trim()
+        ? { label: row.label.trim() }
+        : {}),
+    }))
+    .filter((row) => row.url);
+}
+
 export async function logout() {
   const cookieStore = await cookies();
   cookieStore.delete(SESSION_COOKIE);
@@ -224,6 +251,7 @@ export async function updateContentItem(
   const url = formData.get("url");
   const file = formData.get("file");
   const body = formData.get("body");
+  const links = formData.get("links");
   const categoryId = formData.get("category");
   const categoryNote = formData.get("categoryNote");
   const description = formData.get("description");
@@ -269,6 +297,11 @@ export async function updateContentItem(
   if (typeof body === "string" && body.trim()) {
     const blocks = parsePortableText(body);
     if (blocks) set.body = blocks;
+  }
+  if (typeof links === "string") {
+    const parsedLinks = parseLinks(links);
+    if (parsedLinks && parsedLinks.length > 0) set.links = parsedLinks;
+    else unset.push("links");
   }
 
   if (categorizationEnabled) {

@@ -32,6 +32,12 @@ export const KIND_OPTIONS = [
 
 export type CategoryReviewStatus = "pending" | "confirmed" | "changed";
 
+export interface ContentLink {
+  _key: string;
+  label?: string;
+  url: string;
+}
+
 export interface ContentItem {
   _id: string;
   _createdAt: string;
@@ -41,6 +47,7 @@ export interface ContentItem {
   date?: string;
   url?: string;
   firstLinkUrl?: string;
+  links?: ContentLink[];
   fileName?: string;
   fileUrl?: string;
   body?: PortableTextBlock[];

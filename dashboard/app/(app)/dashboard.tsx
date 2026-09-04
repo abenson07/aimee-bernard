@@ -65,6 +65,7 @@ export function Dashboard({
     return items.filter(
       (item) =>
         item.title.toLowerCase().includes(q) ||
+        (item.venue ?? "").toLowerCase().includes(q) ||
         (item.categoryName ?? "").toLowerCase().includes(q),
     );
   }, [items, query]);

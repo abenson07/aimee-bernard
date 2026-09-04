@@ -14,7 +14,7 @@ export function ContentLinkControl({
 }: {
   value?: string;
   onChange: (value: string) => void;
-  contentItems: { _id: string; title: string }[];
+  contentItems: { _id: string; title: string; venue?: string }[];
   categories: Category[];
   categorizationEnabled: boolean;
 }) {
@@ -25,7 +25,10 @@ export function ContentLinkControl({
 
   const matches = (
     query.trim()
-      ? items.filter((item) => item.title.toLowerCase().includes(query.trim().toLowerCase()))
+      ? items.filter((item) => {
+          const q = query.trim().toLowerCase();
+          return item.title.toLowerCase().includes(q) || (item.venue ?? "").toLowerCase().includes(q);
+        })
       : items
   ).slice(0, 8);
 

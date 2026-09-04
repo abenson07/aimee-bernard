@@ -59,7 +59,7 @@ export function QuestionnaireWizard({
   initialCompleted: boolean;
   startedAt?: string;
   completedAt?: string;
-  contentItems: { _id: string; title: string }[];
+  contentItems: { _id: string; title: string; venue?: string }[];
   categories: Category[];
   categorizationEnabled: boolean;
 }) {

@@ -696,6 +696,48 @@ textarea.input {
   color: var(--text);
 }
 
+.links-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+.link-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.link-row-label {
+  flex: 0 0 34%;
+}
+.link-row-url {
+  flex: 1;
+}
+.link-remove {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border-radius: var(--radius-round);
+  color: var(--text-muted);
+  transition:
+    background-color 180ms,
+    color 180ms;
+}
+.link-remove:hover {
+  background: var(--surface-hover);
+  color: var(--text);
+}
+.add-link-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  align-self: flex-start;
+}
+
 .form-error {
   font-size: 13px;
   color: #b3261e;
