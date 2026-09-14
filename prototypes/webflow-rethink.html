@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aimee Explains Hero</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Serif:ital@0;1&family=IBM+Plex+Sans:wght@400;500&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --light: #f7f7f2;
+    --dark: #191818;
+    --dark-88: rgba(25, 24, 24, 0.88);
+    --lift: #efede7;
+    --depth: #e1dcd5;
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0;
+    background: var(--light);
+    font-family: "IBM Plex Sans", Arial, sans-serif;
+    color: var(--dark-88);
+  }
+  .main-container {
+    width: 100%;
+    max-width: 1800px;
+    margin: 0 auto;
+    padding: 0 32px;
+    display: flex;
+  }
+  .hero-section {
+    padding-top: 120px;
+    padding-bottom: 32px;
+    height: 100vh;
+    display: flex;
+    align-items: stretch;
+  }
+  .master-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    width: 100%;
+    align-items: stretch;
+  }
+  .left-col {
+    max-width: 564px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 48px;
+  }
+  .headline-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+    filter: blur(12px);
+    opacity: 0;
+    animation: blur-in 0.9s ease-out forwards;
+    animation-delay: 0.1s;
+  }
+  @keyframes blur-in { to { filter: blur(0); opacity: 1; } }
+  .tag-label {
+    display: inline-flex;
+    padding: 4px 8px;
+    border-radius: 16px;
+    background: var(--lift);
+    backdrop-filter: blur(10px);
+    width: fit-content;
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 10px;
+    letter-spacing: 0.75px;
+    text-transform: uppercase;
+  }
+  .text-wrap { display: flex; flex-direction: column; gap: 24px; }
+  .text-h1 {
+    font-family: "IBM Plex Serif", serif;
+    font-size: 64px;
+    line-height: 72px;
+    letter-spacing: -2.5px;
+    font-weight: 400;
+    margin: 0;
+  }
+  .text-h1 em { font-style: italic; color: var(--dark-88); }
+  .rotator {
+    white-space: nowrap;
+    height: 76px;
+    overflow: clip;
+    position: relative;
+  }
+  .rotator-line {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    /* Same display size as the h1 above it — these read as one headline. */
+    font-family: "IBM Plex Serif", serif;
+    font-size: 64px;
+    line-height: 72px;
+    letter-spacing: -2.5px;
+    font-weight: 400;
+    transform: translateY(100%);
+    opacity: 0;
+    transition: transform 0.7s cubic-bezier(0.34, 1.2, 0.64, 1), opacity 0.4s ease;
+  }
+  .rotator-line.active { transform: translateY(0); opacity: 1; }
+  .rotator-line.exiting { transform: translateY(-100%); opacity: 0; }
+  .description { font-size: 16px; line-height: 24px; }
+  .button-wrap { display: flex; flex-wrap: wrap; gap: 8px; }
+  .cta-main {
+    padding: 12px 16px;
+    border-radius: 16px;
+    font-size: 16px;
+    font-weight: 500;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    color: var(--light);
+  }
+  .cta-main .bg { position: absolute; inset: 0; border-radius: 16px; z-index: -1; transition: background 0.3s; }
+  .cta-main.dark .bg { background: var(--dark); }
+  .cta-main.dark:hover .bg { background: var(--dark-88); }
+  .cta-main.secondary { color: var(--dark); }
+  .cta-main.secondary .bg { background: transparent; border: 1px solid rgba(25, 24, 24, 0.16); }
+  .cta-main.secondary:hover { color: var(--light); }
+  .cta-main.secondary:hover .bg { background: var(--dark-88); border-color: transparent; }
+  .btn-mask { height: 24px; overflow: hidden; }
+  .btn-stack { transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1); }
+  .cta-main:hover .btn-stack { transform: translateY(-24px); }
+  .btn-stack div { height: 24px; display: flex; align-items: center; }
+
+  .avatars-row { display: flex; flex-direction: column; gap: 16px; }
+  .avatars { display: flex; }
+  .avatar {
+    border: 2px solid var(--light);
+    border-radius: 100vw;
+    width: 48px;
+    height: 48px;
+    overflow: hidden;
+    flex: none;
+    opacity: 0;
+    transform: translateX(30px);
+    animation: slide-in 0.8s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
+  }
+  .avatar img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .avatar:not(:first-child) { margin-left: -16px; }
+  @keyframes slide-in { to { opacity: 1; transform: translateX(0); } }
+  .trusted-text {
+    font-size: 14px;
+    opacity: 0;
+    animation: fade-in 0.8s ease forwards;
+    animation-delay: 0.8s;
+  }
+  @keyframes fade-in { to { opacity: 1; } }
+
+  .right-col {
+    position: relative;
+    border-radius: 12px;
+    overflow: hidden;
+    height: 100%;
+    opacity: 0;
+    animation: fade-in 1s ease forwards;
+    animation-delay: 0.2s;
+  }
+  .right-col img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+  .hero-case {
+    padding: 8px 8px 0 0;
+    border-top-left-radius: 12px;
+    background: var(--light);
+    position: absolute;
+    right: 0;
+    bottom: 0;
+  }
+  .case-card {
+    padding: 12px;
+    display: flex;
+    gap: 16px;
+    border-radius: 12px;
+    background: var(--lift);
+    max-width: 361px;
+    text-decoration: none;
+    color: var(--dark-88);
+  }
+  .case-img { border-radius: 8px; width: 96px; height: 96px; flex: none; overflow: hidden; }
+  .case-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .case-content { display: flex; flex-direction: column; justify-content: space-between; gap: 24px; }
+  .case-text { font-size: 14px; font-weight: 500; }
+  .case-tag {
+    display: inline-flex;
+    padding: 4px 8px;
+    border-radius: 16px;
+    background: var(--depth);
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 10px;
+    letter-spacing: 0.75px;
+    text-transform: uppercase;
+    width: fit-content;
+  }
+  .hero-mask {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 12%;
+    height: 40%;
+    border-bottom-right-radius: 12px;
+    background: var(--light);
+  }
+
+  @media (max-width: 991px) {
+    /* Release the 100vh lock once the grid stacks, so content isn't squeezed. */
+    .hero-section { height: auto; min-height: 100vh; }
+    .master-grid { grid-template-columns: 1fr; }
+    .left-col { max-width: none; }
+    .right-col { height: 393px; }
+  }
+  @media (max-width: 767px) {
+    .text-h1, .rotator-line { font-size: 44px; line-height: 48px; letter-spacing: -2px; }
+    .rotator { height: 50px; }
+    .hero-mask { display: none; }
+  }
+</style>
+</head>
+<body>
+  <section class="hero-section">
+    <div class="main-container">
+      <div class="master-grid">
+        <div class="left-col">
+          <div class="headline-wrap">
+            <div class="tag-label">Educator &amp; Author</div>
+            <div class="text-wrap">
+              <div>
+                <h1 class="text-h1">Aimee explains</h1>
+                <div class="rotator" id="rotator">
+                  <div class="rotator-line active"><em>T Cell Biology</em></div>
+                  <div class="rotator-line"><em>Vaccine Science</em></div>
+                  <div class="rotator-line"><em>Immune Training</em></div>
+                  <div class="rotator-line"><em>Community Outreach</em></div>
+                  <div class="rotator-line"><em>Sci Comm Tips</em></div>
+                </div>
+              </div>
+              <div class="description">She helps curious minds make sense of the immune system, one story at a time</div>
+            </div>
+            <div class="button-wrap">
+              <a href="#" class="cta-main dark">
+                <span class="bg"></span>
+                <span class="btn-mask"><span class="btn-stack"><div>Read Her Bio</div><div>Read Her Bio</div></span></span>
+              </a>
+              <a href="#" class="cta-main secondary">
+                <span class="bg"></span>
+                <span class="btn-mask"><span class="btn-stack"><div>Get in touch</div><div>Get in touch</div></span></span>
+              </a>
+            </div>
+          </div>
+
+          <div class="avatars-row">
+            <div class="avatars">
+              <div class="avatar" style="animation-delay:0.3s"><img src="https://byqsupply-components.netlify.app/HaldenMiller/images/ContactAvatar.webp" alt=""></div>
+              <div class="avatar" style="animation-delay:0.4s"><img src="https://byqsupply-components.netlify.app/HaldenMiller/images/ContactAvatar-1.webp" alt=""></div>
+              <div class="avatar" style="animation-delay:0.5s"><img src="https://byqsupply-components.netlify.app/HaldenMiller/images/ContactAvatar-2.webp" alt=""></div>
+              <div class="avatar" style="animation-delay:0.6s"><img src="https://byqsupply-components.netlify.app/HaldenMiller/images/ContactAvatar-3.webp" alt=""></div>
+            </div>
+            <div class="trusted-text">Trusted by med students &amp; peers</div>
+          </div>
+        </div>
+
+        <div class="right-col">
+          <img src="https://byqsupply-components.netlify.app/HaldenMiller/images/HomeA.webp" alt="">
+          <div class="hero-mask"></div>
+          <div class="hero-case">
+            <a href="#" class="case-card">
+              <div class="case-img"><img src="https://byqsupply-components.netlify.app/HaldenMiller/images/CaseImage.png" alt=""></div>
+              <!-- Real talk from Sanity (contentItem, kind: talk, TEDxCU, April 2026). -->
+              <div class="case-content">
+                <div class="case-text">Confessions of a Scientist: Science education needs communication training</div>
+                <div class="case-tag">TEDx Talk</div>
+              </div>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    const lines = document.querySelectorAll('.rotator-line');
+    let current = 0;
+    setInterval(() => {
+      const prev = lines[current];
+      current = (current + 1) % lines.length;
+      const next = lines[current];
+      prev.classList.remove('active');
+      prev.classList.add('exiting');
+      next.classList.remove('exiting');
+      next.classList.add('active');
+      setTimeout(() => prev.classList.remove('exiting'), 700);
+    }, 2200);
+  </script>
+</body>
+</html>

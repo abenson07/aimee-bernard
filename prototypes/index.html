@@ -5,6 +5,13 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="robots" content="noindex, nofollow">
 <title>Homepage Directions · Aimee Pugh Bernard</title>
+<script>
+  // Card links are relative, so /prototypes (no trailing slash) would send
+  // them to the site root. Add the slash before anything renders.
+  if (!/\/$|\.html$/.test(location.pathname)) {
+    location.replace(location.pathname + '/' + location.search + location.hash);
+  }
+</script>
 <style>
   :root {
     --bg: #f4f0ea;

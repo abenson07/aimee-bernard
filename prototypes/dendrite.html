@@ -151,6 +151,7 @@
     object-fit: cover;
     object-position: center 25%;
     background: #ccc;
+    transition: opacity 0.3s ease;
   }
   /* One-time entrance, played once on first load only (never on the
      home/about toggle). The portrait starts as a big centered loader photo;
@@ -167,10 +168,16 @@
     position: fixed;
     top: 50%;
     left: 50%;
-    /* Same 1.4:0.85 (~1.647:1) ratio as the final inline slot, just bigger —
-       so the shrink is a pure scale, never a reshape. */
-    width: 62vmin;
-    height: 37.65vmin;
+    /* Full-bleed cover, not just "big" — sized like a fullscreen background
+       photo (same trick as a CSS cover video: set both axes from vw, then
+       let min-width/min-height in vh take over and win together whenever
+       the viewport is too tall for that to cover). Still the exact 1.4:0.85
+       ratio as the final inline slot, so the Flip shrink is a pure scale,
+       never a reshape. */
+    width: 100vw;
+    height: 60.71vw;
+    min-width: 164.71vh;
+    min-height: 100vh;
     margin: 0;
     transform: translate(-50%, -50%);
     z-index: 100;
@@ -372,10 +379,10 @@
      lower edge while its top/label stays peeking above. No JS drives the
      position at all, only the optional dim/scale recede on scroll. */
   .mission-stack {
-    max-width: 42rem;
+    max-width: 54rem;
     margin: 0 auto;
     position: relative;
-    height: 230vh;
+    height: 320vh;
   }
   .mission-card {
     border-radius: 16px;
@@ -404,7 +411,7 @@
   .mission-card-image {
     background-size: cover;
     background-position: center;
-    aspect-ratio: 3 / 2;
+    aspect-ratio: 4 / 3;
     width: 100%;
   }
   .mission-card-caption {
@@ -433,11 +440,44 @@
     text-decoration: underline;
     text-underline-offset: 3px;
   }
+  .work,
   .awards,
   .appearances {
     position: relative;
     padding: 9rem var(--gutter);
   }
+  .work-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 2rem;
+  }
+  .work-card {
+    padding: 2rem;
+    border-radius: 16px;
+    background: color-mix(in srgb, var(--ink) 6%, var(--bg));
+    border: 1px solid color-mix(in srgb, var(--ink) 12%, transparent);
+  }
+  .work-kicker {
+    font-family: var(--font-mono);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    font-size: 0.75rem;
+    font-weight: 500;
+    opacity: 0.55;
+    margin: 0 0 0.85rem;
+  }
+  .work-card h3 {
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin: 0 0 0.75rem;
+  }
+  .work-card p {
+    font-size: 1rem;
+    line-height: 1.5;
+    margin: 0;
+    opacity: 0.85;
+  }
+  .work h2,
   .awards h2,
   .appearances h2 {
     font-size: clamp(1.75rem, 3.5vw, 3rem);
@@ -570,11 +610,12 @@
       margin-bottom: 3rem;
     }
     .mission-stack {
-      height: 260vh;
+      height: 320vh;
     }
     .mission-card {
       min-height: 52vh;
     }
+    .work,
     .awards,
     .appearances {
       padding: 3.5rem 1.5rem;
@@ -667,6 +708,30 @@
             <a href="#" class="mission-cta">Learn about the program &rarr;</a>
           </div>
         </article>
+      </div>
+    </section>
+
+    <section class="work">
+      <h2 class="reveal-heading">What She's Building Now</h2>
+      <div class="work-grid">
+        <div class="work-card">
+          <!-- Real program from Sanity (educational-content: "Think Like a Scientist (TLaS) outreach program"). -->
+          <p class="work-kicker">Program</p>
+          <h3>Think Like a Scientist</h3>
+          <p>Hands-on science outreach for elementary and middle-school kids, alongside volunteer scientists at CU Anschutz.</p>
+        </div>
+        <div class="work-card">
+          <!-- Real program from Sanity (educational-content: "CU Anschutz Teacher Training Program (TTP)"). -->
+          <p class="work-kicker">Program</p>
+          <h3>Teacher Training Program</h3>
+          <p>Mentors PhD students and postdocs on curriculum design, teaching practice, and assessment.</p>
+        </div>
+        <div class="work-card">
+          <!-- Real program from Sanity (educational-content: REACH curriculum). -->
+          <p class="work-kicker">Community</p>
+          <h3>REACH</h3>
+          <p>A 5-week outreach program teaching elementary and middle-schoolers how the environment shapes human health.</p>
+        </div>
       </div>
     </section>
 
@@ -774,6 +839,7 @@
     const body = document.body;
     const nameEl = document.getElementById('name');
     const nameTail = document.querySelector('.name-tail');
+    const introImg = document.querySelector('h1 img');
     const wipeEl = document.querySelector('.wipe');
     const homeFooter = document.querySelector('footer');
     const navAbout = document.getElementById('nav-about');
@@ -871,6 +937,40 @@
         tl.to(card, { filter: 'brightness(0.55)', scale: 0.94, duration: 1, ease: 'none' }, i + 0.5);
       });
     }
+
+    // The name-lockup photo cycles through a few shots of Aimee — same idea
+    // as paulkalkbrenner.net's hero, but on a slower 3s interval. It starts
+    // on page load rather than waiting for the intro shrink to finish, so
+    // the big loader photo is already cycling before it settles inline.
+    // Reuses photos already on the site (the role-hover images below) —
+    // .img-slot fixes the box at 1.4:0.85 and h1 img is object-fit:cover,
+    // so every source crops to that same ratio regardless of its own size.
+    const heroImages = [
+      introImg.getAttribute('src'),
+      'src/educator.webp',
+      'src/immunologist.webp',
+      'src/communicator.webp',
+    ];
+    let heroImageIndex = 0;
+    const reduceMotionHero = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    function startHeroImageCycle() {
+      if (reduceMotionHero || heroImages.length < 2) return;
+      setInterval(() => {
+        heroImageIndex = (heroImageIndex + 1) % heroImages.length;
+        // Preload so the crossfade never reveals a blank/half-loaded frame.
+        const preload = new Image();
+        preload.onload = () => {
+          introImg.style.opacity = '0';
+          setTimeout(() => {
+            introImg.src = heroImages[heroImageIndex];
+            introImg.style.opacity = '1';
+          }, 300);
+        };
+        preload.src = heroImages[heroImageIndex];
+      }, 3000);
+    }
+    startHeroImageCycle();
 
     // Landing directly on the About URL (a hard load or refresh of
     // hero-v1.html#about) should settle straight into the About state with
@@ -1077,7 +1177,6 @@
     // state, then removing the class snaps it straight to its real inline
     // size/position, and Flip.from animates the visual gap between the two.
     (function playIntro() {
-      const introImg = document.querySelector('h1 img');
       if (!introImg || !body.classList.contains('intro-loading')) return;
 
       function start() {

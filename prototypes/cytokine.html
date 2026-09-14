@@ -293,9 +293,64 @@
     .mask > .slide, .fade { transform: none !important; opacity: 1 !important; transition: none !important; }
     .p-tab { transition: none; }
   }
+
+  /* ---------- Nav ---------- */
+  .navbar {
+    position: fixed;
+    inset: 0 0 auto 0;
+    z-index: 80;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 28px 32px;
+  }
+  .menu-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 70;
+    height: 0;
+    overflow: hidden;
+    background: var(--white);
+    transition: height 0.5s var(--ease-out);
+  }
+  .menu-overlay.is-open { height: 100vh; }
+  .menu-links {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 8px;
+    padding: 0 32px;
+  }
+  .menu-links a {
+    display: block;
+    overflow: hidden;
+    font-size: clamp(72px, 5.85vw, 99px);
+  }
+  .menu-links a:hover { color: var(--muted); }
+  @media (max-width: 767px) {
+    .navbar { padding: 20px 16px; }
+    .menu-links { padding: 0 16px; }
+  }
 </style>
 </head>
 <body>
+  <header class="navbar">
+    <a href="#" class="label">BRAND</a>
+    <button type="button" class="btn label" id="menuToggle" aria-expanded="false">Menu</button>
+  </header>
+
+  <div class="menu-overlay" id="menuOverlay">
+    <nav class="menu-links">
+      <a class="display display-sm" href="#">Home</a>
+      <a class="display display-sm" href="#">About</a>
+      <a class="display display-sm" href="#">Educator</a>
+      <a class="display display-sm" href="#">Communicator</a>
+      <a class="display display-sm" href="#">Immunologist</a>
+      <a class="display display-sm" href="#">Outreach</a>
+    </nav>
+  </div>
+
   <!-- ============ Hero ============ -->
   <section class="about-hero">
     <div class="main-container">
@@ -401,17 +456,18 @@
         <div class="label" style="margin-bottom:28px">By the numbers</div>
         <p class="display display-md fade" data-reveal>Teaching, writing, and outreach built so complex science becomes easy to trust.</p>
       </div>
+      <!-- Real numbers: "25+" spans her earliest dated Sanity contentItem (a 2001 JCI paper) to today; the other two are direct Sanity kind counts. -->
       <div class="stats-thirds">
         <div class="stat">
           <div class="mask" data-reveal><div class="display stat-num slide">25+</div></div>
           <div class="label muted">Years as an educator,<br>scientist &amp; communicator</div>
         </div>
         <div class="stat">
-          <div class="mask" data-reveal><div class="display stat-num slide">180+</div></div>
-          <div class="label muted">Classes taught</div>
+          <div class="mask" data-reveal><div class="display stat-num slide">18</div></div>
+          <div class="label muted">Courses taught</div>
         </div>
         <div class="stat">
-          <div class="mask" data-reveal><div class="display stat-num slide">90</div></div>
+          <div class="mask" data-reveal><div class="display stat-num slide">21</div></div>
           <div class="label muted">Talks given</div>
         </div>
       </div>
@@ -426,12 +482,13 @@
         <div class="mask" data-reveal><h2 class="display display-lg slide">What she's building now</h2></div>
       </div>
       <div class="bento-stack">
+        <!-- Real program from Sanity (educational-content: "Think Like a Scientist (TLaS) outreach program"). -->
         <div class="card bento-story fade" data-reveal>
           <div class="bento-copy">
             <span class="label muted">Program</span>
             <div class="stack">
-              <h3 class="display display-md">Teach Like a Scientist</h3>
-              <p class="body">Hands-on outreach that turns curious kids into young scientists — asking questions, testing ideas, and learning that “I don't know yet” is where science starts.</p>
+              <h3 class="display display-md">Think Like a Scientist</h3>
+              <p class="body">Hands-on science outreach for elementary and middle-school kids, alongside volunteer scientists at CU Anschutz.</p>
               <a class="btn label" href="#">Explore the program →</a>
             </div>
           </div>
@@ -439,13 +496,14 @@
         </div>
 
         <div class="bento-lower">
+          <!-- Real position from Sanity (contentItem: "Unbiased Science — Immunology Expert", 2025+), plus the podcast episode it led to. -->
           <a class="photo-card fade" data-reveal href="#">
             <img src="https://images.unsplash.com/photo-1478737270239-2f02b77fc618?auto=format&fit=crop&w=1400&q=80" alt="" loading="lazy">
             <div class="bento-copy">
               <span class="label muted">Podcast · Recurring guest</span>
               <div class="stack">
-                <h3 class="display display-md">This Week in Immunity</h3>
-                <p class="body">Talking through the newest immunology papers, in plain language.</p>
+                <h3 class="display display-md">Unbiased Science Podcast</h3>
+                <p class="body">Volunteers as the show's official immunology expert — most recently on "The World of Autoimmunity."</p>
               </div>
             </div>
           </a>
@@ -454,19 +512,20 @@
               <span class="label muted">Program</span>
               <div class="stack">
                 <h3 class="display display-md">Teacher Training Program</h3>
-                <p class="body">Workshops that give classroom teachers the tools to teach science as inquiry — so the thinking keeps going long after the workshop ends.</p>
+                <p class="body">Mentors PhD students and postdocs on curriculum design, teaching practice, and assessment — so the training keeps paying off long into their own faculty careers.</p>
                 <a class="btn label" href="#">Upcoming sessions →</a>
               </div>
             </div>
           </div>
         </div>
 
+        <!-- Real account from Sanity (contentItem: Instagram/TikTok @funsizeimmuninja). -->
         <div class="card bento-story fade" data-reveal>
           <div class="bento-copy">
             <span class="label muted">Social · @funsizeimmuninja</span>
             <div class="stack">
               <h3 class="display display-md">Fun Size Immuninja</h3>
-              <p class="body">Short videos that explain the immune system in about a minute — for anyone who scrolled past a scary headline and wanted the real answer.</p>
+              <p class="body">Uses her expertise as an immunologist to break down the science of the immune system for anyone who comes across her page.</p>
               <div class="btn-row">
                 <a class="btn label" href="https://www.tiktok.com/@funsizeimmuninja" target="_blank" rel="noopener">TikTok →</a>
                 <a class="btn label" href="https://www.instagram.com/funsizeimmuninja/" target="_blank" rel="noopener">Instagram →</a>
@@ -486,30 +545,31 @@
         <div class="label">Latest</div>
         <div class="mask" data-reveal><h2 class="display display-lg slide">Appearances &amp; writing</h2></div>
       </div>
+      <!-- Real items from Sanity contentItem documents, sorted by date. -->
       <div class="recent-halves">
         <a href="#" class="article fade" data-reveal>
           <div class="article-image"><img src="https://images.unsplash.com/photo-1540575467063-178a50c2df87?auto=format&fit=crop&w=1400&q=80" alt="" loading="lazy" data-parallax></div>
           <div class="article-text">
-            <span class="label muted">Talk · TEDxCU · March 2026</span>
-            <h3 class="display display-sm is-large article-title">Why vaccines still need translators</h3>
-            <p class="body">The science is settled; the story isn't. On closing the gap between what immunologists know and what people hear.</p>
+            <span class="label muted">Talk · TEDxCU · April 2026</span>
+            <h3 class="display display-sm is-large article-title">Confessions of a Scientist: Science education needs communication training</h3>
+            <p class="body">Aimee makes the case that science communication should be an essential, intentionally taught skill in graduate and medical education.</p>
           </div>
         </a>
         <div class="recent-small-halves">
           <a href="#" class="article fade" data-reveal>
             <div class="article-image small"><img src="https://images.unsplash.com/photo-1590602847861-f357a9332bbc?auto=format&fit=crop&w=900&q=80" alt="" loading="lazy" data-parallax></div>
             <div class="article-text">
-              <span class="label muted">Appearance · NPR · Jan 2026</span>
-              <h3 class="display display-sm article-title">On air: flu season, without the scare</h3>
-              <p class="body">What this year's flu season actually looks like, and what's worth worrying about.</p>
+              <span class="label muted">Appearance · KOA Morning News · Aug 2025</span>
+              <h3 class="display display-sm article-title">On air: mRNA vaccine research funding</h3>
+              <p class="body">A live conversation on mRNA, its therapeutic potential, and the funding behind it.</p>
             </div>
           </a>
           <a href="#" class="article fade" data-reveal>
             <div class="article-image small"><img src="https://images.unsplash.com/photo-1581092160562-40aa08e78837?auto=format&fit=crop&w=900&q=80" alt="" loading="lazy" data-parallax></div>
             <div class="article-text">
-              <span class="label muted">Article · Feb 2026</span>
-              <h3 class="display display-sm article-title">A plain map of the adaptive immune system</h3>
-              <p class="body">T cells, B cells, and antibodies — the whole cast, with every term explained.</p>
+              <span class="label muted">Article · The Conversation · Oct 2025</span>
+              <h3 class="display display-sm article-title">How does your immune system stay balanced? A Nobel-prize winning answer!</h3>
+              <p class="body">Regulatory T cells and the FOXP3 gene — this year's Nobel-winning discoveries — and how they keep the immune system in check.</p>
             </div>
           </a>
         </div>
@@ -518,7 +578,79 @@
     </div>
   </section>
 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/SplitText.min.js"></script>
   <script>
+    gsap.registerPlugin(SplitText);
+
+    const menuToggle = document.getElementById('menuToggle');
+    const menuOverlay = document.getElementById('menuOverlay');
+    const menuLinkEls = [...document.querySelectorAll('.menu-links a')];
+    const reduceMotionMenu = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    let menuChars = [];
+    let menuOpen = false;
+    let menuTl;
+
+    function splitMenuType() {
+      menuLinkEls.forEach((link) => {
+        if (link._split) link._split.revert();
+        link._split = new SplitText(link, { type: 'chars, lines', mask: 'lines' });
+      });
+      menuChars = menuLinkEls.flatMap((link) => link._split.chars);
+      gsap.set(menuChars, { yPercent: 110 });
+    }
+
+    function setMenuChrome(open) {
+      menuOpen = open;
+      menuToggle.textContent = open ? 'Close' : 'Menu';
+      menuToggle.setAttribute('aria-expanded', String(open));
+    }
+
+    function openMenu() {
+      setMenuChrome(true);
+      menuOverlay.classList.add('is-open');
+      menuTl?.kill();
+      if (reduceMotionMenu || !menuChars.length) {
+        gsap.set(menuChars, { yPercent: 0 });
+        return;
+      }
+      menuTl = gsap.timeline();
+      menuTl.fromTo(menuChars, { yPercent: 110 }, {
+        yPercent: 0,
+        duration: 0.72,
+        ease: 'power3.out',
+        stagger: 0.018,
+        delay: 0.12,
+      });
+    }
+
+    function closeMenu() {
+      setMenuChrome(false);
+      menuTl?.kill();
+      const collapse = () => menuOverlay.classList.remove('is-open');
+      if (reduceMotionMenu || !menuChars.length) {
+        gsap.set(menuChars, { yPercent: 110 });
+        collapse();
+        return;
+      }
+      menuTl = gsap.timeline({ onComplete: collapse });
+      menuTl.to(menuChars, {
+        yPercent: 110,
+        duration: 0.42,
+        ease: 'power2.in',
+        stagger: { each: 0.012, from: 'end' },
+      });
+    }
+
+    menuToggle.addEventListener('click', () => {
+      if (menuOpen) closeMenu();
+      else openMenu();
+    });
+
+    const afterFonts = document.fonts?.ready || Promise.resolve();
+    afterFonts.then(splitMenuType);
+
     const clamp = (v, min, max) => Math.max(min, Math.min(max, v));
 
     // Video widens as you scroll through the pinned section

@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Explained Beautifully Hero</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f4f4f4;
+    --dark: #121212;
+    --dark-32: rgba(18, 18, 18, 0.32);
+    --light: #fff;
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0;
+    background: var(--bg);
+    font-family: "Inter", sans-serif;
+    color: var(--dark);
+  }
+  .main-container {
+    width: 100%;
+    max-width: 1800px;
+    margin: 0 auto;
+    padding: 0 32px;
+  }
+  .hero-section {
+    padding-top: 11.4vw;
+    padding-bottom: 5.7vw;
+  }
+  .hero-grid {
+    display: grid;
+    grid-template-columns: 25% 1fr;
+    gap: 32px;
+  }
+  .right-col {
+    display: flex;
+    flex-direction: column;
+    gap: 5.7vw;
+  }
+  .heading-home {
+    display: flex;
+    flex-direction: column;
+  }
+  h1, .text-h1 {
+    font-size: 6.86vw;
+    letter-spacing: -0.06em;
+    line-height: 91.6%;
+    font-weight: 600;
+    margin: 0;
+  }
+  .rotator {
+    white-space: nowrap;
+    height: 8.5vw;
+    position: relative;
+    overflow: hidden;
+  }
+  .rotator-line {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: flex-start;
+    padding-bottom: 2.143vw;
+    /* Matches .text-h1 — these lines are the same display size as the static
+       headline above them, just in the muted tint. */
+    font-size: 6.86vw;
+    line-height: 91.6%;
+    letter-spacing: -0.06em;
+    font-weight: 600;
+    color: var(--dark-32);
+    transform: translateY(20%);
+    opacity: 0;
+    transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.4s ease;
+  }
+  .rotator-line.active {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  .rotator-line.exiting {
+    transform: translateY(-30%);
+    opacity: 0;
+  }
+  .project-master { display: flex; gap: 32px; }
+  .label {
+    font-size: 0.857vw;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    font-weight: 500;
+    line-height: 120%;
+    flex: none;
+    padding-top: 8px;
+  }
+  .project-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 32px;
+    flex: 1;
+  }
+  .project-tile {
+    width: 100%;
+    max-width: 14.286vw;
+    height: 14.286vw;
+    position: relative;
+    border-radius: 4px;
+    overflow: hidden;
+    text-decoration: none;
+    display: block;
+  }
+  .project-img-wrap { width: 100%; height: 100%; overflow: hidden; }
+  .project-img {
+    width: 100%;
+    height: 130%;
+    object-fit: cover;
+    transform: translateY(-10%);
+    display: block;
+  }
+  .project-dark-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(18, 18, 18, 0.16);
+  }
+  .project-link-overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    transition: opacity 0.3s;
+    pointer-events: none;
+  }
+  .project-tile:hover .project-link-overlay { opacity: 1; }
+  .project-tile:hover .project-small-overlay { opacity: 0; }
+  .view-project-pill {
+    border: 2px solid var(--light);
+    background: var(--light);
+    color: var(--dark);
+    border-radius: 100vw;
+    padding: 8px 16px;
+    font-size: 14px;
+    font-weight: 500;
+  }
+  .project-small-overlay {
+    position: absolute;
+    inset: 0;
+    padding: 1.143vw;
+    color: var(--light);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: opacity 0.3s;
+  }
+  .project-small-overlay .text-big {
+    font-size: 1.429vw;
+    letter-spacing: -0.03em;
+    font-weight: 500;
+    line-height: 140%;
+  }
+
+  .logo-section { padding: 5.7vw 0; }
+  .logo-tile { position: relative; }
+  .home-a-logo {
+    /* inline-block so its box shrink-wraps to the text for measurement —
+       a block box would report the full container width instead. */
+    display: inline-block;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 0.85;
+    white-space: nowrap;
+    transform-origin: left center;
+  }
+  .logo-label { position: absolute; right: 0; bottom: 0; }
+
+  @media (max-width: 991px) {
+    .hero-grid { grid-template-columns: 1fr; }
+    .left-col-spacer { display: none; }
+    .project-link-overlay { display: none; }
+    h1, .text-h1, .rotator-line { font-size: 6.4vw; }
+    .rotator { height: 9vw; }
+    .project-grid { grid-template-columns: 1fr 1fr; }
+    .project-tile { max-width: none; height: 30vw; }
+  }
+  @media (max-width: 479px) {
+    .main-container { padding: 0 16px; }
+    h1, .text-h1, .rotator-line { font-size: 40px; }
+    .rotator { height: 50px; }
+    .project-grid { grid-template-columns: 1fr; gap: 16px; }
+    .project-tile { height: 60vw; }
+  }
+</style>
+</head>
+<body>
+  <section class="hero-section">
+    <div class="main-container">
+      <div class="hero-grid">
+        <div class="left-col-spacer"></div>
+        <div class="right-col">
+          <div class="heading-home">
+            <h1>Explained beautifully.</h1>
+            <div class="rotator" id="rotator">
+              <div class="rotator-line active">Taught boldly.</div>
+              <div class="rotator-line">Answered honestly.</div>
+              <div class="rotator-line">Explained clearly.</div>
+              <div class="rotator-line">Translated carefully.</div>
+              <div class="rotator-line">Framed thoughtfully.</div>
+            </div>
+          </div>
+
+          <div class="project-master">
+            <div class="label">(recent<br>features)</div>
+            <div class="project-grid">
+              <a href="#" class="project-tile">
+                <div class="project-img-wrap"><img class="project-img parallax" data-speed="0.06" src="https://byqsupply-components.netlify.app/aiaiaiai/images/proj1.jpg" alt=""></div>
+                <div class="project-dark-overlay"></div>
+                <div class="project-small-overlay">
+                  <div class="text-big">The TEDx Talk</div>
+                  <div class="text-big">(2026)</div>
+                </div>
+                <div class="project-link-overlay"><span class="view-project-pill">See details</span></div>
+              </a>
+              <a href="#" class="project-tile">
+                <div class="project-img-wrap"><img class="project-img parallax" data-speed="0.06" src="https://byqsupply-components.netlify.app/aiaiaiai/images/proj2.jpg" alt=""></div>
+                <div class="project-dark-overlay"></div>
+                <!-- Real Substack from Sanity (contentItem: "Science Crosstalk Substack"); no date on file, so this reads as ongoing rather than a fabricated year. -->
+                <div class="project-small-overlay">
+                  <div class="text-big">Sci Crosstalk</div>
+                  <div class="text-big">(ongoing)</div>
+                </div>
+                <div class="project-link-overlay"><span class="view-project-pill">See details</span></div>
+              </a>
+              <a href="#" class="project-tile">
+                <div class="project-img-wrap"><img class="project-img parallax" data-speed="0.06" src="https://byqsupply-components.netlify.app/aiaiaiai/images/proj3.jpg" alt=""></div>
+                <div class="project-dark-overlay"></div>
+                <div class="project-small-overlay">
+                  <div class="text-big">AAI Webinar</div>
+                  <div class="text-big">(2024)</div>
+                </div>
+                <div class="project-link-overlay"><span class="view-project-pill">See details</span></div>
+              </a>
+              <a href="#" class="project-tile">
+                <div class="project-img-wrap"><img class="project-img parallax" data-speed="0.06" src="https://byqsupply-components.netlify.app/aiaiaiai/images/proj4.jpg" alt=""></div>
+                <div class="project-dark-overlay"></div>
+                <div class="project-small-overlay">
+                  <div class="text-big">Immunity Paper</div>
+                  <div class="text-big">(2024)</div>
+                </div>
+                <div class="project-link-overlay"><span class="view-project-pill">See details</span></div>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="logo-section">
+    <div class="main-container">
+      <div class="logo-tile">
+        <div class="home-a-logo" id="footerWordmark">aimee pugh bernard</div>
+        <div class="logo-label"><div class="label">(scroll)</div></div>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    const lines = document.querySelectorAll('.rotator-line');
+    let current = 0;
+    setInterval(() => {
+      const prev = lines[current];
+      current = (current + 1) % lines.length;
+      const next = lines[current];
+      prev.classList.remove('active');
+      prev.classList.add('exiting');
+      next.classList.remove('exiting');
+      next.classList.add('active');
+      setTimeout(() => prev.classList.remove('exiting'), 600);
+    }, 2500);
+
+    const parallaxImgs = document.querySelectorAll('.parallax');
+    function updateParallax() {
+      const vh = window.innerHeight;
+      parallaxImgs.forEach((img) => {
+        const rect = img.parentElement.getBoundingClientRect();
+        const center = rect.top + rect.height / 2;
+        const offset = (center - vh / 2) * 0.08;
+        img.style.transform = `translateY(${-10 + offset * 0.1}%)`;
+      });
+    }
+    document.addEventListener('scroll', () => requestAnimationFrame(updateParallax), { passive: true });
+    updateParallax();
+
+    // Stretch the footer wordmark to exactly fill the container width, the
+    // way the original template's full-bleed SVG logo did.
+    const footerWordmark = document.getElementById('footerWordmark');
+    function fitFooterWordmark() {
+      footerWordmark.style.transform = 'none';
+      footerWordmark.style.fontSize = '10vw';
+      const containerWidth = footerWordmark.parentElement.getBoundingClientRect().width;
+      const textWidth = footerWordmark.getBoundingClientRect().width;
+      footerWordmark.style.transform = `scaleX(${containerWidth / textWidth})`;
+    }
+    window.addEventListener('load', fitFooterWordmark);
+    window.addEventListener('resize', fitFooterWordmark);
+  </script>
+</body>
+</html>

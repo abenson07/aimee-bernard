@@ -24,6 +24,7 @@
     "astro": "^7.1.4",
     "astro-portabletext": "^0.13.0",
     "groq": "^6.9.2",
+    "html2canvas-pro": "^2.4.2",
     "typescript": "^6.0.3"
   },
   "devDependencies": {

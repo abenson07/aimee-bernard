@@ -1,0 +1,358 @@
+---
+// brief: web/docs/content-plan.md#review--commenting-system
+//
+// Opt-in review/commenting layer. Drop <ReviewOverlay /> into a page under
+// review; it does nothing unless the page is loaded with a `?review=<name>`
+// query param, so it's zero-cost for normal visitors and doesn't need its
+// own route or gate. `<name>` becomes the default comment author (e.g.
+// `?review=Aimee`) — the whole point is that both reviewers open the same
+// kind of link with their own name.
+//
+// Pin positions are stored as a fraction (0–1) of the full document
+// width/height at capture time, not raw pixels, so they replay in the right
+// spot regardless of the viewer's screen size or aspect ratio — see the
+// brief doc for the full design.
+const pageVersion = import.meta.env.VERCEL_GIT_COMMIT_REF ?? "local";
+---
+
+<div id="review-overlay" data-page-version={pageVersion} hidden>
+  <button id="review-toggle" type="button">+ Add comment</button>
+  <div id="review-pins"></div>
+  <div id="review-popover" hidden>
+    <form id="review-form">
+      <img id="review-popover-screenshot" alt="" hidden />
+      <label>
+        Name
+        <input id="review-author" type="text" required />
+      </label>
+      <label>
+        Comment
+        <textarea id="review-text" rows="3" required></textarea>
+      </label>
+      <div class="review-popover-actions">
+        <button type="button" id="review-cancel">Cancel</button>
+        <button type="submit" id="review-submit">Post</button>
+      </div>
+    </form>
+    <div id="review-view" hidden>
+      <img id="review-view-screenshot" alt="Screenshot of the commented area" />
+      <p id="review-view-meta"></p>
+      <p id="review-view-text"></p>
+      <button type="button" id="review-view-close">Close</button>
+    </div>
+  </div>
+</div>
+
+<style>
+  #review-overlay[hidden] {
+    display: none;
+  }
+
+  #review-toggle {
+    position: fixed;
+    right: 1rem;
+    bottom: 1rem;
+    z-index: 9999;
+    padding: 0.6rem 1rem;
+    border-radius: 999px;
+    border: none;
+    background: #ff5a36;
+    color: #fff;
+    font: 600 0.85rem system-ui, sans-serif;
+    cursor: pointer;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.25);
+  }
+
+  #review-toggle[aria-pressed="true"] {
+    background: #1a1a1a;
+  }
+
+  #review-overlay.placing {
+    cursor: crosshair;
+  }
+
+  .review-pin {
+    position: absolute;
+    z-index: 9998;
+    width: 1.75rem;
+    height: 1.75rem;
+    margin-left: -0.875rem;
+    margin-top: -1.75rem;
+    border-radius: 50% 50% 50% 0;
+    background: #ff5a36;
+    border: 2px solid #fff;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.35);
+    transform: rotate(45deg);
+    cursor: pointer;
+  }
+
+  .review-pin[data-status="resolved"] {
+    background: #6b7280;
+  }
+
+  #review-popover {
+    position: fixed;
+    z-index: 10000;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: min(360px, calc(100vw - 2rem));
+    max-height: calc(100vh - 2rem);
+    overflow: auto;
+    background: #fff;
+    color: #111;
+    border-radius: 12px;
+    padding: 1rem;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.35);
+    font: 0.85rem/1.4 system-ui, sans-serif;
+  }
+
+  #review-popover[hidden] {
+    display: none;
+  }
+
+  #review-popover img {
+    width: 100%;
+    border-radius: 8px;
+    margin-bottom: 0.75rem;
+    display: block;
+  }
+
+  #review-popover label {
+    display: block;
+    font-weight: 600;
+    margin-top: 0.5rem;
+  }
+
+  #review-popover input,
+  #review-popover textarea {
+    width: 100%;
+    margin-top: 0.25rem;
+    padding: 0.4rem;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font: inherit;
+  }
+
+  .review-popover-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.5rem;
+    margin-top: 0.75rem;
+  }
+
+  .review-popover-actions button,
+  #review-view-close {
+    padding: 0.4rem 0.9rem;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    background: #f4f4f4;
+    cursor: pointer;
+    font: inherit;
+  }
+
+  #review-submit {
+    background: #ff5a36;
+    color: #fff;
+    border-color: transparent;
+  }
+</style>
+
+<script>
+  // html2canvas-pro (~200KB) is only fetched when review mode actually
+  // activates, so normal visitors never pay for it. Using the "-pro" fork
+  // rather than upstream html2canvas because this site's CSS uses modern
+  // color functions (oklch/lab) that upstream can't parse and fails on.
+  const params = new URLSearchParams(location.search);
+  if (!params.has("review")) {
+    // Not in review mode — nothing else in this script runs.
+  } else {
+    const defaultAuthor = params.get("review") || localStorage.getItem("review-author") || "";
+
+    const root = document.getElementById("review-overlay")!;
+    const pageVersion = root.dataset.pageVersion || "local";
+    const pageSlug = location.pathname;
+
+    const toggle = document.getElementById("review-toggle") as HTMLButtonElement;
+    const pinsLayer = document.getElementById("review-pins")!;
+    const popover = document.getElementById("review-popover")!;
+    const form = document.getElementById("review-form") as HTMLFormElement;
+    const authorInput = document.getElementById("review-author") as HTMLInputElement;
+    const textInput = document.getElementById("review-text") as HTMLTextAreaElement;
+    const formScreenshot = document.getElementById("review-popover-screenshot") as HTMLImageElement;
+    const cancelBtn = document.getElementById("review-cancel")!;
+    const viewPane = document.getElementById("review-view")!;
+    const viewScreenshot = document.getElementById("review-view-screenshot") as HTMLImageElement;
+    const viewMeta = document.getElementById("review-view-meta")!;
+    const viewText = document.getElementById("review-view-text")!;
+    const viewClose = document.getElementById("review-view-close")!;
+
+    authorInput.value = defaultAuthor;
+    root.hidden = false;
+
+    let placing = false;
+    let pendingScreenshot = "";
+    let pendingXPercent = 0;
+    let pendingYPercent = 0;
+
+    type Comment = {
+      id: string;
+      xPercent: number;
+      yPercent: number;
+      screenshotUrl: string | null;
+      text: string;
+      author: string;
+      status: "open" | "resolved";
+      createdAt: string;
+    };
+
+    let comments: Comment[] = [];
+
+    function docSize() {
+      return { width: document.documentElement.scrollWidth, height: document.documentElement.scrollHeight };
+    }
+
+    function renderPins() {
+      pinsLayer.innerHTML = "";
+      const { width, height } = docSize();
+      for (const comment of comments) {
+        const pin = document.createElement("div");
+        pin.className = "review-pin";
+        pin.dataset.status = comment.status;
+        pin.style.left = `${comment.xPercent * width}px`;
+        pin.style.top = `${comment.yPercent * height}px`;
+        pin.title = `${comment.author}: ${comment.text}`;
+        pin.addEventListener("click", (event) => {
+          event.stopPropagation();
+          openView(comment);
+        });
+        pinsLayer.appendChild(pin);
+      }
+    }
+
+    async function loadComments() {
+      const res = await fetch(
+        `/api/comments?pageVersion=${encodeURIComponent(pageVersion)}&pageSlug=${encodeURIComponent(pageSlug)}`,
+      );
+      if (!res.ok) return;
+      comments = await res.json();
+      renderPins();
+    }
+
+    function openView(comment: Comment) {
+      form.hidden = true;
+      viewPane.hidden = false;
+      popover.hidden = false;
+      viewScreenshot.hidden = !comment.screenshotUrl;
+      if (comment.screenshotUrl) viewScreenshot.src = comment.screenshotUrl;
+      viewMeta.textContent = `${comment.author} · ${new Date(comment.createdAt).toLocaleString()}`;
+      viewText.textContent = comment.text;
+    }
+
+    function closePopover() {
+      popover.hidden = true;
+      form.hidden = false;
+      viewPane.hidden = true;
+      form.reset();
+      authorInput.value = localStorage.getItem("review-author") || defaultAuthor;
+      formScreenshot.hidden = true;
+    }
+
+    viewClose.addEventListener("click", closePopover);
+    cancelBtn.addEventListener("click", closePopover);
+
+    toggle.addEventListener("click", () => {
+      placing = !placing;
+      toggle.setAttribute("aria-pressed", String(placing));
+      toggle.textContent = placing ? "Click on the page…" : "+ Add comment";
+      root.classList.toggle("placing", placing);
+    });
+
+    document.addEventListener(
+      "click",
+      async (event) => {
+        if (!placing) return;
+        const target = event.target as HTMLElement;
+        if (target.closest("#review-overlay")) return;
+
+        event.preventDefault();
+        event.stopPropagation();
+
+        placing = false;
+        toggle.setAttribute("aria-pressed", "false");
+        toggle.textContent = "+ Add comment";
+        root.classList.remove("placing");
+
+        const { width, height } = docSize();
+        const x = event.pageX;
+        const y = event.pageY;
+        pendingXPercent = x / width;
+        pendingYPercent = y / height;
+
+        const cropWidth = Math.min(420, width);
+        const cropHeight = Math.min(300, height);
+        const cropX = Math.max(0, Math.min(width - cropWidth, x - cropWidth / 2));
+        const cropY = Math.max(0, Math.min(height - cropHeight, y - cropHeight / 2));
+
+        try {
+          const { default: html2canvas } = await import("html2canvas-pro");
+          const canvas = await html2canvas(document.body, {
+            x: cropX,
+            y: cropY,
+            width: cropWidth,
+            height: cropHeight,
+            useCORS: true,
+          });
+          pendingScreenshot = canvas.toDataURL("image/png");
+          formScreenshot.src = pendingScreenshot;
+          formScreenshot.hidden = false;
+        } catch (err) {
+          console.error("review overlay: screenshot capture failed", err);
+          pendingScreenshot = "";
+          formScreenshot.hidden = true;
+        }
+
+        popover.hidden = false;
+        textInput.focus();
+      },
+      true,
+    );
+
+    form.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      const author = authorInput.value.trim();
+      const text = textInput.value.trim();
+      if (!author || !text) return;
+
+      localStorage.setItem("review-author", author);
+
+      const res = await fetch("/api/comments", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          pageVersion,
+          pageSlug,
+          xPercent: pendingXPercent,
+          yPercent: pendingYPercent,
+          viewportWidth: window.innerWidth,
+          viewportHeight: window.innerHeight,
+          text,
+          author,
+          screenshotDataUrl: pendingScreenshot || undefined,
+        }),
+      });
+
+      if (res.ok) {
+        const created: Comment = await res.json();
+        comments.push(created);
+        renderPins();
+        closePopover();
+      } else {
+        alert("Couldn't save that comment — please try again.");
+      }
+    });
+
+    window.addEventListener("resize", renderPins);
+    loadComments();
+  }
+</script>

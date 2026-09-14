@@ -20,6 +20,31 @@
       "runtimeArgs": ["run", "dev", "--prefix", "studio"],
       "port": 3333,
       "autoPort": true
+    },
+    {
+      "name": "prototypes-dev",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": ["-m", "http.server", "4173", "--directory", "prototypes"],
+      "port": 4173
+    },
+    {
+      "name": "prototypes-dev-alt",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": ["-m", "http.server", "4174", "--directory", "prototypes"],
+      "port": 4174
+    },
+    {
+      "name": "prototypes-share",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": ["-m", "http.server", "4175", "--directory", "prototypes"],
+      "port": 4175
+    },
+    {
+      "name": "prototypes-verify",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": ["-m", "http.server", "4176", "--directory", "prototypes"],
+      "port": 4176,
+      "autoPort": true
     }
   ]
 }

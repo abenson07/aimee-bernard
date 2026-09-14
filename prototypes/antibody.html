@@ -768,10 +768,73 @@
     .recent-card.is-invert .recent-when { color: rgba(247, 247, 242, 0.78); }
     .section-head { flex-direction: column; align-items: flex-start; }
   }
+  /* ---------- Nav ---------- */
+  .navbar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 32px;
+    color: var(--light);
+    background: none;
+  }
+  .navbar .brand {
+    font-family: "IBM Plex Serif", serif;
+    font-size: 20px;
+    color: var(--light);
+    text-decoration: none;
+  }
+  .nav-links { display: flex; gap: 28px; }
+  .nav-links a {
+    color: var(--light);
+    text-decoration: none;
+    font-size: 15px;
+  }
+  .nav-links a:hover { text-decoration: underline; }
+  .nav-toggle {
+    display: none;
+    border: none;
+    background: none;
+    color: var(--light);
+    font: inherit;
+    cursor: pointer;
+  }
+  @media (max-width: 767px) {
+    .nav-links {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      flex-direction: column;
+      gap: 0;
+      background: var(--dark);
+      padding: 8px 32px;
+    }
+    .nav-links.is-open { display: flex; }
+    .nav-links a { display: block; padding: 12px 0; border-bottom: 1px solid rgba(247, 247, 242, 0.12); }
+    .nav-toggle { display: block; }
+  }
 </style>
 </head>
 <body>
   <section class="hero">
+    <header class="navbar">
+      <a href="#" class="brand">BRAND</a>
+      <nav class="nav-links" id="navLinks">
+        <a href="#">Home</a>
+        <a href="#">About</a>
+        <a href="#">Educator</a>
+        <a href="#">Communicator</a>
+        <a href="#">Immunologist</a>
+        <a href="#">Outreach</a>
+      </nav>
+      <button type="button" class="nav-toggle" id="navToggle" aria-expanded="false" aria-label="Toggle menu">Menu</button>
+    </header>
     <video autoplay loop muted playsinline id="bgVideo">
       <source src="videos/a-woman-professor-12041545.mp4" type="video/mp4">
     </video>
@@ -899,44 +962,46 @@
           <h2 class="section-title">A record you can count.</h2>
           <p class="cred-support">Years of the same science, said out loud in rooms that needed it.</p>
         </div>
+        <!-- Real counts from Sanity contentItem documents, grouped by kind. -->
         <div class="cred-grid reveal" data-delay="1">
           <div class="cred-stat">
-            <p class="cred-num">42</p>
+            <p class="cred-num">12</p>
             <p class="cred-label">Publications</p>
           </div>
           <div class="cred-stat">
-            <p class="cred-num">180+</p>
-            <p class="cred-label">Classes taught</p>
+            <p class="cred-num">18</p>
+            <p class="cred-label">Courses taught</p>
           </div>
           <div class="cred-stat">
-            <p class="cred-num">65</p>
+            <p class="cred-num">13</p>
             <p class="cred-label">Press appearances</p>
           </div>
           <div class="cred-stat">
-            <p class="cred-num">90</p>
+            <p class="cred-num">21</p>
             <p class="cred-label">Talks given</p>
           </div>
         </div>
       </div>
       <p class="cred-marquee-label reveal">Trusted by / appeared with</p>
+      <!-- Real venues pulled from Sanity contentItem `venue` fields. -->
       <div class="cred-marquee reveal" data-delay="1" aria-hidden="true">
         <div class="cred-track">
           <span class="cred-logo">CU Anschutz</span>
           <span class="cred-logo">CU Denver</span>
           <span class="cred-logo">TEDx</span>
           <span class="cred-logo">AAI</span>
-          <span class="cred-logo">NPR</span>
-          <span class="cred-logo">Scientific American</span>
-          <span class="cred-logo">CU Boulder</span>
-          <span class="cred-logo">HHMI</span>
+          <span class="cred-logo">The Conversation</span>
+          <span class="cred-logo">MedPage Today</span>
+          <span class="cred-logo">SELF</span>
+          <span class="cred-logo">HuffPost</span>
           <span class="cred-logo">CU Anschutz</span>
           <span class="cred-logo">CU Denver</span>
           <span class="cred-logo">TEDx</span>
           <span class="cred-logo">AAI</span>
-          <span class="cred-logo">NPR</span>
-          <span class="cred-logo">Scientific American</span>
-          <span class="cred-logo">CU Boulder</span>
-          <span class="cred-logo">HHMI</span>
+          <span class="cred-logo">The Conversation</span>
+          <span class="cred-logo">MedPage Today</span>
+          <span class="cred-logo">SELF</span>
+          <span class="cred-logo">HuffPost</span>
         </div>
       </div>
     </div>
@@ -964,10 +1029,11 @@
           <div class="now-icon" aria-hidden="true">
             <svg viewBox="0 0 32 32" fill="currentColor"><path fill-opacity="0.32" d="M9.3 0H5.3A5.3 5.3 0 0 0 0 5.3v4a5.3 5.3 0 0 0 5.3 5.3h4A5.3 5.3 0 0 0 14.7 9.3v-4A5.3 5.3 0 0 0 9.3 0Zm17.4 0h-4A5.3 5.3 0 0 0 17.3 5.3v4a5.3 5.3 0 0 0 5.4 5.3h4A5.3 5.3 0 0 0 32 9.3v-4A5.3 5.3 0 0 0 26.7 0ZM9.3 17.3H5.3A5.3 5.3 0 0 0 0 22.7v4A5.3 5.3 0 0 0 5.3 32h4a5.3 5.3 0 0 0 5.4-5.3v-4a5.3 5.3 0 0 0-5.4-5.4Zm17.4 0h-4a5.3 5.3 0 0 0-5.4 5.4v4A5.3 5.3 0 0 0 22.7 32h4A5.3 5.3 0 0 0 32 26.7v-4a5.3 5.3 0 0 0-5.3-5.4Z"/></svg>
           </div>
+          <!-- Real program from Sanity (educational-content: "Think Like a Scientist (TLaS) outreach program"). -->
           <div class="now-copy">
             <p class="now-kicker">Program</p>
             <h3 class="now-name">Think Like a Scientist</h3>
-            <p class="now-line">Hands-on outreach for young scientists — the same work featured in the hero.</p>
+            <p class="now-line">Hands-on science outreach for elementary and middle-school kids, alongside volunteer scientists at CU Anschutz.</p>
           </div>
         </a>
         <a href="#" class="now-card is-feature">
@@ -975,40 +1041,44 @@
           <div class="now-icon" aria-hidden="true">
             <svg viewBox="0 0 32 32" fill="currentColor"><path fill-opacity="0.85" d="M23.6 4 21.7 1.6A5.3 5.3 0 0 0 18.6 0h-5.2a5.3 5.3 0 0 0-3.2 1.6L8.4 4h15.2ZM16 24a5.3 5.3 0 1 0 0-10.7A5.3 5.3 0 0 0 16 24Zm9.3-17.3H6.7A6.7 6.7 0 0 0 0 13.3v12A6.7 6.7 0 0 0 6.7 32h18.6A6.7 6.7 0 0 0 32 25.3v-12a6.7 6.7 0 0 0-6.7-6.6ZM16 26.7a8 8 0 1 1 0-16 8 8 0 0 1 0 16Z"/></svg>
           </div>
+          <!-- Real position from Sanity (contentItem: "Unbiased Science — Immunology Expert", 2025+), plus the real podcast appearance it led to. -->
           <div class="now-copy">
-            <p class="now-kicker">Podcast · Host</p>
-            <h3 class="now-name">Immune in Color</h3>
-            <p class="now-line">A weekly show that turns immunology into stories people can actually follow.</p>
+            <p class="now-kicker">Position</p>
+            <h3 class="now-name">Unbiased Science — Immunology Expert</h3>
+            <p class="now-line">Volunteers as the team's official immunology expert; recently their guest on "The World of Autoimmunity."</p>
           </div>
         </a>
         <a href="#" class="now-card">
           <div class="now-icon" aria-hidden="true">
             <svg viewBox="0 0 32 30" fill="currentColor"><path fill-opacity="0.32" d="M29.6 1.9A8 8 0 0 0 24 0.5L21.7 1A6.3 6.3 0 0 0 17.3 6.3v20.6a14 14 0 0 1-2.6 0V6.3A6.3 6.3 0 0 0 10.4 1L7.9.4A8 8 0 0 0 0 7v14.4a6.7 6.7 0 0 0 5.5 6.6l8.4 1.5a14 14 0 0 0 4.3 0l8.4-1.5A6.7 6.7 0 0 0 32 21.4V7a8 8 0 0 0-2.4-5.1Z"/></svg>
           </div>
+          <!-- Real program from Sanity (educational-content: "CU Anschutz Teacher Training Program (TTP)"). -->
           <div class="now-copy">
             <p class="now-kicker">Program</p>
             <h3 class="now-name">Teacher Training Program</h3>
-            <p class="now-line">Workshops that give classroom teachers the tools to teach science as inquiry.</p>
+            <p class="now-line">Mentors PhD students and postdocs on curriculum design, teaching practice, and assessment.</p>
           </div>
         </a>
         <a href="#" class="now-card">
           <div class="now-icon" aria-hidden="true">
             <svg viewBox="0 0 32 32" fill="currentColor"><path fill-opacity="0.32" d="M25.3 5.3h-1.4A6.7 6.7 0 0 0 17.3 0h-2.6a6.7 6.7 0 0 0-6.6 5.3H6.7A6.7 6.7 0 0 0 0 12v4h32v-4a6.7 6.7 0 0 0-6.7-6.7ZM10.9 5.3A4 4 0 0 1 14.7 2.7h2.6a4 4 0 0 1 3.8 2.6H10.9ZM17.3 20a1.3 1.3 0 1 1-2.6 0v-1.3H0v6.6A6.7 6.7 0 0 0 6.7 32h18.6A6.7 6.7 0 0 0 32 25.3V18.7H17.3V20Z"/></svg>
           </div>
+          <!-- Real podcast guest spot from Sanity (contentItem, kind: podcast, Jan 2024). -->
           <div class="now-copy">
-            <p class="now-kicker">Podcast</p>
-            <h3 class="now-name">This Week in Immunity</h3>
-            <p class="now-line">Recurring guest chair on current papers.</p>
+            <p class="now-kicker">Podcast · Guest</p>
+            <h3 class="now-name">The Immunology Podcast</h3>
+            <p class="now-line">Joined AAI President Akiko Iwasaki to talk about the importance of public outreach.</p>
           </div>
         </a>
         <a href="#" class="now-card">
           <div class="now-icon" aria-hidden="true">
             <svg viewBox="0 0 32 32" fill="currentColor"><path fill-opacity="0.32" d="M16 0C7.2 0 0 7.2 0 16s7.2 16 16 16 16-7.2 16-16S24.8 0 16 0Zm0 5.3a4 4 0 1 1 0 8 4 4 0 0 1 0-8Zm0 21.4c-3.6 0-6.8-1.8-8.7-4.6.1-2.9 5.8-4.5 8.7-4.5s8.6 1.6 8.7 4.5c-1.9 2.8-5.1 4.6-8.7 4.6Z"/></svg>
           </div>
+          <!-- Real program from Sanity (educational-content: REACH curriculum). -->
           <div class="now-copy">
             <p class="now-kicker">Community</p>
-            <h3 class="now-name">Science for neighbors</h3>
-            <p class="now-line">Public nights that keep the same science available outside the university.</p>
+            <h3 class="now-name">REACH</h3>
+            <p class="now-line">A 5-week outreach program teaching elementary and middle-schoolers how the environment shapes human health.</p>
           </div>
         </a>
       </div>
@@ -1023,71 +1093,80 @@
         </div>
         <a href="#" class="section-link">See all work</a>
       </div>
+      <!-- Real items from Sanity contentItem documents, sorted by date. -->
       <div class="recent-grid reveal" data-delay="1">
         <a href="#" class="recent-card is-invert">
           <img class="recent-photo" src="https://images.unsplash.com/photo-1475721027785-f74eccf877e2?auto=format&fit=crop&w=900&q=80" alt="">
           <div class="recent-meta">
             <p class="recent-type">Talk</p>
-            <h3 class="recent-title">Why vaccines still need translators</h3>
+            <h3 class="recent-title">Confessions of a Scientist: Science education needs communication training</h3>
           </div>
-          <p class="recent-when">TEDxCU · Mar 2026</p>
+          <p class="recent-when">TEDxCU · Apr 2026</p>
         </a>
         <a href="#" class="recent-card">
           <div class="recent-meta">
             <p class="recent-type">Article</p>
-            <h3 class="recent-title">A plain map of the adaptive immune system</h3>
+            <h3 class="recent-title">Neutrality Is Dangerous in the Face of Medical Misinformation</h3>
           </div>
-          <p class="recent-when">Essay · Feb 2026</p>
+          <p class="recent-when">MedPage Today · Mar 2026</p>
         </a>
         <a href="#" class="recent-card is-invert">
           <img class="recent-photo" src="https://images.unsplash.com/photo-1540575467063-178a50c2df87?auto=format&fit=crop&w=900&q=80" alt="">
           <div class="recent-meta">
             <p class="recent-type">Appearance</p>
-            <h3 class="recent-title">On air: flu season, without the scare</h3>
+            <h3 class="recent-title">On air: mRNA vaccine research funding</h3>
           </div>
-          <p class="recent-when">NPR · Jan 2026</p>
+          <p class="recent-when">KOA Morning News · Aug 2025</p>
         </a>
         <a href="#" class="recent-card">
           <div class="recent-meta">
             <p class="recent-type">Video</p>
-            <h3 class="recent-title">How T cells decide what to attack</h3>
+            <h3 class="recent-title">TLaS Science-at-Home Experiments</h3>
           </div>
-          <p class="recent-when">Lecture clip · Jan 2026</p>
+          <p class="recent-when">YouTube series</p>
         </a>
         <a href="#" class="recent-card">
           <div class="recent-meta">
             <p class="recent-type">Article</p>
-            <h3 class="recent-title">Teaching uncertainty without losing trust</h3>
+            <h3 class="recent-title">How does your immune system stay balanced? A Nobel-prize winning answer!</h3>
           </div>
-          <p class="recent-when">Op-ed · Dec 2025</p>
+          <p class="recent-when">The Conversation · Oct 2025</p>
         </a>
         <a href="#" class="recent-card is-invert">
           <img class="recent-photo" src="https://images.unsplash.com/photo-1524178232363-1fb2b075b655?auto=format&fit=crop&w=900&q=80" alt="">
           <div class="recent-meta">
             <p class="recent-type">Classroom</p>
-            <h3 class="recent-title">A day inside Think Like a Scientist</h3>
+            <h3 class="recent-title">Inside the Think Like a Scientist curriculum</h3>
           </div>
-          <p class="recent-when">Field note · Nov 2025</p>
+          <p class="recent-when">Curriculum · Aug 2024</p>
         </a>
         <a href="#" class="recent-card">
           <div class="recent-meta">
             <p class="recent-type">Podcast</p>
-            <h3 class="recent-title">Guest hour on This Week in Immunity</h3>
+            <h3 class="recent-title">The Life of a Dedicated Educator</h3>
           </div>
-          <p class="recent-when">Episode 214 · Nov 2025</p>
+          <p class="recent-when">Project Bridge Science Podcast · Jan 2025</p>
         </a>
         <a href="#" class="recent-card">
           <div class="recent-meta">
             <p class="recent-type">Award</p>
-            <h3 class="recent-title">CU Anschutz teaching honor</h3>
+            <h3 class="recent-title">Chancellor's Teaching Recognition Award</h3>
           </div>
-          <p class="recent-when">Campus news · Oct 2025</p>
+          <p class="recent-when">CU School of Medicine · 2024</p>
         </a>
       </div>
     </div>
   </section>
 
   <script>
+    const navToggle = document.getElementById('navToggle');
+    const navLinks = document.getElementById('navLinks');
+    navToggle.addEventListener('click', () => {
+      const isOpen = navLinks.classList.toggle('is-open');
+      navToggle.textContent = isOpen ? 'Close' : 'Menu';
+      navToggle.setAttribute('aria-expanded', String(isOpen));
+    });
+
     const video = document.getElementById('bgVideo');
     const btn = document.getElementById('playToggle');
     const iconPause = document.getElementById('iconPause');

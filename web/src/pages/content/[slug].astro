@@ -1,0 +1,19 @@
+---
+// brief: web/docs/content-plan.md#content-page-template
+// Dual-mode template: full page on direct load/reload, bottom sheet when
+// opened via client-side navigation from another page. See brief for details.
+import Layout from '@/layouts/BaseLayout.astro';
+import Section from '@/components/Section.astro';
+import Heading from '@/components/Heading.astro';
+import Eyebrow from '@/components/Eyebrow.astro';
+
+export const prerender = false;
+
+const { slug } = Astro.params;
+---
+<Layout theme="dark" title="Content">
+  <Section paddingTop="even" paddingBottom="even">
+    <Eyebrow variant="tag">Content</Eyebrow>
+    <Heading variant="display" tag="h1">{slug}</Heading>
+  </Section>
+</Layout>

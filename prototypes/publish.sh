@@ -4,7 +4,7 @@
 set -e
 out=.vercel/output/static/prototypes
 mkdir -p "$out"
-cp prototypes/index.html prototypes/antibody.html prototypes/dendrite.html prototypes/cytokine.html "$out"/
+cp prototypes/*.html "$out"/
 cp -R prototypes/src prototypes/videos prototypes/screenshots "$out"/
 # Only the web font files the pages load, not the desktop otf/ttf set.
 mkdir -p "$out/fonts/Neue Montreal Mono/web"
