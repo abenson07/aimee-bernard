@@ -11,7 +11,7 @@
     "dev:web": "npm run dev --workspace=aimee-bernard-web",
     "dev:studio": "npm run dev --prefix studio",
     "dev:dashboard": "npm run dev --prefix dashboard",
-    "build": "npm run build --workspace=aimee-bernard-web && npm run vercel:sync-output",
+    "build": "npm run build --workspace=aimee-bernard-web && npm run vercel:sync-output && sh prototypes/publish.sh",
     "vercel:sync-output": "rm -rf .vercel/output && mkdir -p .vercel && cp -R web/.vercel/output .vercel/output",
     "build:studio": "npm run build --prefix studio",
     "build:dashboard": "npm run build --prefix dashboard",

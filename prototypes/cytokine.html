@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cytokine · Aimee Pugh Bernard (prototype)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500&family=Instrument+Serif&display=swap" rel="stylesheet">
+<style>
+  /* One system, taken from the hero: white page, black ink, Instrument Serif
+     display type, small uppercase DM Sans labels, 24px corners like the video. */
+  :root {
+    --white: #fff;
+    --black: #0e0e0e;
+    --muted: rgba(14, 14, 14, 0.6);
+    --line: rgba(14, 14, 14, 0.12);
+    --radius: 24px;
+    --serif: "Instrument Serif", Georgia, serif;
+    --sans: "DM Sans", sans-serif;
+    --ease-out: cubic-bezier(0.215, 0.61, 0.355, 1);
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0;
+    background: var(--white);
+    font-family: var(--sans);
+    color: var(--black);
+    letter-spacing: -0.02em;
+    font-weight: 500;
+  }
+  img { max-width: 100%; display: block; }
+  a { color: inherit; text-decoration: none; }
+  p { margin: 0; }
+  h2, h3 { margin: 0; font-weight: 400; }
+
+  .main-container {
+    width: 100%;
+    max-width: 1800px;
+    margin: 0 auto;
+    padding: 0 32px;
+  }
+  /* Each section carries half the gap on top and bottom, so neighbours sit
+     roughly 2x this apart. */
+  :root { --space: clamp(140px, 12vw, 220px); }
+  .section { padding-block: var(--space); }
+  .section-end { padding-bottom: var(--space); }
+
+  /* ---------- Shared type ---------- */
+  .label {
+    letter-spacing: 0.7px;
+    text-transform: uppercase;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 16px;
+  }
+  .label.muted { color: var(--muted); }
+  .display {
+    font-family: var(--serif);
+    font-weight: 400;
+    letter-spacing: -0.04em;
+    line-height: 0.9;
+  }
+  .display-xl { font-size: 12vw; line-height: 86.5%; white-space: nowrap; }
+  .display-lg { font-size: clamp(56px, 7.5vw, 136px); }
+  .display-md { font-size: clamp(44px, 4.4vw, 80px); line-height: 0.95; }
+  .display-sm { font-size: clamp(32px, 2.6vw, 44px); line-height: 1; letter-spacing: -0.03em; }
+  .body {
+    font-size: 18px;
+    line-height: 1.5;
+    font-weight: 400;
+    letter-spacing: -0.01em;
+    color: var(--muted);
+    max-width: 52ch;
+  }
+
+  .section-head {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 28px;
+    text-align: center;
+    margin-bottom: 96px;
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 24px;
+    border: 1px solid currentColor;
+    border-radius: 999px;
+    transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+  }
+  .btn:hover { background: var(--black); color: var(--white); border-color: var(--black); }
+  .btn.on-dark:hover { background: var(--white); color: var(--black); border-color: var(--white); }
+  .btn-row { display: flex; gap: 12px; flex-wrap: wrap; }
+
+  /* ---------- Reveal helpers ---------- */
+  .mask { overflow: hidden; padding-bottom: 0.12em; margin-bottom: -0.12em; }
+  .mask > .slide { display: block; transform: translateY(110%); transition: transform 0.9s var(--ease-out); }
+  .is-in > .slide { transform: none; }
+  .fade { opacity: 0; transform: translateY(16px); transition: opacity 1s var(--ease-out), transform 1s var(--ease-out); }
+  .fade.is-in { opacity: 1; transform: none; }
+
+  /* ---------- Hero ---------- */
+  .about-hero { padding-top: 152px; padding-bottom: 40px; }
+  .hero-label { text-align: center; margin-bottom: 32px; }
+  .name-wrap { padding-bottom: 30px; text-align: center; overflow: clip; }
+
+  /* ---------- Video + mission statement ---------- */
+  .parallax-master { height: 400vh; position: relative; overflow: clip; }
+  .video-parallax {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+  .video-inner {
+    position: relative;
+    width: 70%;
+    height: 100%;
+    border-radius: var(--radius);
+    overflow: hidden;
+    background: var(--black);
+  }
+  .video-inner video { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .video-overlay-dark { position: absolute; inset: 0; background: rgba(0, 0, 0, 0.35); }
+  .parallax-text {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 2;
+    width: 100%;
+    height: 80%;
+    padding: 100vh 40px 40vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    text-align: center;
+    color: var(--white);
+    pointer-events: none;
+  }
+  .parallax-video-text { max-width: 1100px; }
+  .parallax-video-text .display { text-shadow: 0 2px 30px rgba(0, 0, 0, 0.2); }
+
+  /* ---------- Persona tabs ---------- */
+  .tab-menu { display: flex; gap: 16px; height: 680px; }
+  .p-tab {
+    position: relative;
+    flex: 0 0 120px;
+    display: flex;
+    align-items: flex-end;
+    padding: 32px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: var(--white);
+    overflow: hidden;
+    cursor: pointer;
+    transition: flex-grow 0.7s var(--ease-out), flex-basis 0.7s var(--ease-out), border-color 0.3s;
+    outline-offset: 4px;
+  }
+  .p-tab:hover:not(.is-active) { border-color: var(--black); }
+  .p-tab.is-active { flex: 1 1 0; cursor: default; color: var(--white); border-color: transparent; }
+  .tab-label {
+    position: absolute;
+    left: 50%;
+    bottom: 32px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    writing-mode: vertical-rl;
+    transform: translateX(-50%) rotate(180deg);
+    white-space: nowrap;
+    transition: opacity 0.2s;
+  }
+  .tab-label .display-sm { font-size: 44px; }
+  .p-tab.is-active .tab-label { opacity: 0; pointer-events: none; }
+  .tab-image, .tab-overlay, .tab-copy { opacity: 0; transition: opacity 0.4s; }
+  .p-tab.is-active .tab-image,
+  .p-tab.is-active .tab-overlay,
+  .p-tab.is-active .tab-copy { opacity: 1; transition-delay: 0.3s; }
+  .tab-image { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .tab-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(14, 14, 14, 0.8) 0%, rgba(14, 14, 14, 0.15) 55%, rgba(14, 14, 14, 0.1) 100%); }
+  .tab-copy {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+    width: 100%;
+    min-width: 0;
+  }
+  .tab-copy .tab-row { display: flex; justify-content: space-between; align-items: flex-end; gap: 32px; width: 100%; flex-wrap: wrap; }
+  .tab-copy .body { color: rgba(255, 255, 255, 0.85); }
+
+  /* ---------- Stats ---------- */
+  .stats-statement { text-align: center; max-width: 1200px; margin: 0 auto 120px; }
+  .stats-thirds { display: grid; grid-template-columns: repeat(3, 1fr); border-top: 1px solid var(--line); }
+  .stat { display: flex; flex-direction: column; align-items: center; gap: 28px; padding-top: 64px; text-align: center; }
+  .stat + .stat { border-left: 1px solid var(--line); }
+  .stat-num { font-size: clamp(88px, 10vw, 180px); line-height: 0.85; }
+
+  /* ---------- Current work (bento) ---------- */
+  .bento-stack { display: flex; flex-direction: column; gap: 16px; }
+  .card {
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    overflow: hidden;
+    background: var(--white);
+  }
+  .bento-story { display: grid; grid-template-columns: 1fr 1fr; min-height: 560px; height: 76vh; max-height: 820px; }
+  .bento-copy { display: flex; flex-direction: column; justify-content: space-between; gap: 48px; padding: 48px; }
+  .bento-copy .stack { display: flex; flex-direction: column; align-items: flex-start; gap: 24px; }
+  .bento-media { overflow: hidden; min-height: 320px; }
+  .bento-media img { width: 100%; height: 100%; object-fit: cover; transition: transform 1s var(--ease-out); }
+  .card:hover .bento-media img, .photo-card:hover img { transform: scale(1.03); }
+  .bento-lower { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .bento-lower .bento-copy { min-height: 520px; }
+  .photo-card {
+    position: relative;
+    display: flex;
+    align-items: flex-end;
+    min-height: 520px;
+    border-radius: var(--radius);
+    overflow: hidden;
+    background: var(--black);
+    color: var(--white);
+  }
+  .photo-card img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: transform 1s var(--ease-out); }
+  .photo-card::after { content: ""; position: absolute; inset: 0; background: linear-gradient(to top, rgba(14, 14, 14, 0.8), rgba(14, 14, 14, 0.1) 60%); }
+  .photo-card .bento-copy { position: relative; z-index: 1; width: 100%; min-height: 0; }
+  .photo-card .body { color: rgba(255, 255, 255, 0.85); }
+  .photo-card .label.muted { color: rgba(255, 255, 255, 0.7); }
+
+  /* ---------- Recent appearances & writing ---------- */
+  .recent-halves { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .recent-small-halves { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .article { display: flex; flex-direction: column; gap: 24px; }
+  .article-image { height: 520px; border-radius: var(--radius); overflow: hidden; display: flex; align-items: center; justify-content: center; background: var(--black); }
+  .article-image.small { height: 260px; }
+  .article-image img { width: 100%; height: 120%; max-width: none; object-fit: cover; flex: none; will-change: transform; }
+  .article-text { display: flex; flex-direction: column; gap: 14px; }
+  .article-title { transition: opacity 0.3s; }
+  .article:hover .article-title { opacity: 0.6; }
+  .article .display-sm.is-large { font-size: clamp(36px, 3.2vw, 56px); }
+  .article .body { font-size: 16px; }
+  .recent-foot { display: flex; justify-content: center; margin-top: 96px; }
+
+  /* ---------- Responsive ---------- */
+  @media (max-width: 991px) {
+    :root { --space: 104px; }
+    .section-head { margin-bottom: 72px; }
+    .tab-menu { display: grid; grid-template-columns: 1fr; height: auto; }
+    .p-tab, .p-tab.is-active { min-height: 520px; color: var(--white); cursor: default; border-color: transparent; }
+    .p-tab .tab-label { display: none; }
+    .p-tab .tab-image, .p-tab .tab-overlay, .p-tab .tab-copy { opacity: 1; }
+    .stats-statement { margin-bottom: 80px; }
+    .bento-story { grid-template-columns: 1fr; height: auto; min-height: 0; max-height: none; }
+    .bento-media { height: 420px; }
+    .bento-lower, .recent-halves { grid-template-columns: 1fr; }
+    .bento-lower .bento-copy, .photo-card { min-height: 460px; }
+    .recent-halves { gap: 56px; }
+  }
+  @media (max-width: 767px) {
+    .main-container { padding: 0 20px; }
+    .display-xl { font-size: 18vw; }
+    .about-hero { padding-top: 100px; }
+    .video-inner { border-radius: 16px; }
+    .parallax-text { padding-left: 24px; padding-right: 24px; }
+    .stats-thirds { grid-template-columns: 1fr; }
+    .stat { padding-block: 48px; }
+    .stat + .stat { border-left: 0; border-top: 1px solid var(--line); }
+    .bento-copy { padding: 28px; gap: 32px; }
+    .bento-media { height: 300px; }
+    .recent-small-halves { grid-template-columns: 1fr; gap: 56px; }
+    .article-image, .article-image.small { height: 320px; }
+    .p-tab { padding: 24px; }
+  }
+  @media (max-width: 479px) {
+    .main-container { padding: 0 16px; }
+    :root { --space: 72px; }
+    .section-head { margin-bottom: 56px; }
+    .label { font-size: 11px; line-height: 12px; }
+    .body { font-size: 16px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .mask > .slide, .fade { transform: none !important; opacity: 1 !important; transition: none !important; }
+    .p-tab { transition: none; }
+  }
+</style>
+</head>
+<body>
+  <!-- ============ Hero ============ -->
+  <section class="about-hero">
+    <div class="main-container">
+      <div class="hero-label label">Educator. Immunologist. Communicator.</div>
+    </div>
+    <div class="name-wrap">
+      <h1 class="display display-xl" style="margin:0">Aimee Pugh Bernard</h1>
+    </div>
+  </section>
+
+  <!-- ============ Video + mission statement (three parts) ============ -->
+  <section aria-label="Mission" class="section-end">
+    <div class="parallax-master" id="parallaxMaster">
+      <div class="parallax-text">
+        <div class="parallax-video-text mask" data-reveal><h2 class="display display-lg slide">The immune system is endlessly fascinating,</h2></div>
+        <div class="parallax-video-text mask" data-reveal><p class="display display-lg slide">and my job — across teaching, communication, and&nbsp;outreach&nbsp;—</p></div>
+        <div class="parallax-video-text mask" data-reveal><p class="display display-lg slide">is to inspire you to think so too!</p></div>
+      </div>
+      <div class="video-parallax">
+        <div class="video-inner" id="videoInner">
+          <video autoplay loop muted playsinline poster="https://uploads-ssl.webflow.com/666d6bc611696797a3f4cf3f%2F667174e8432a0258ae2c74b8_17954856-hd_1920_1080_24fps-poster-00001.jpg">
+            <source src="https://byqsupply-components.netlify.app/Hummingbird/videos/17954856-hd_1920_1080_24fps-transcode.mp4" type="video/mp4">
+            <source src="https://byqsupply-components.netlify.app/Hummingbird/videos/17954856-hd_1920_1080_24fps-transcode.webm" type="video/webm">
+          </video>
+          <div class="video-overlay-dark"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ Persona tabs ============ -->
+  <section class="section" aria-label="Personas">
+    <div class="main-container">
+      <div class="section-head">
+        <div class="label">Three ways in</div>
+        <div class="mask" data-reveal><h2 class="display display-lg slide">One scientist,<br>three roles</h2></div>
+      </div>
+      <div class="tab-menu" role="tablist" aria-label="Aimee's roles">
+        <div class="p-tab is-active" role="tab" tabindex="0" aria-selected="true">
+          <div class="tab-label" aria-hidden="true">
+            <span class="label muted">01</span>
+            <span class="display display-sm">Educator</span>
+          </div>
+          <img class="tab-image" src="src/educator.webp" alt="Aimee teaching an immunology class">
+          <div class="tab-overlay"></div>
+          <div class="tab-copy">
+            <span class="label">01 — Educator</span>
+            <div class="tab-row">
+              <div style="display:flex;flex-direction:column;gap:16px">
+                <h3 class="display display-md">Teaching that sticks</h3>
+                <p class="body">Classrooms and teacher programs built so students leave knowing how to think like a scientist, not just recite a fact.</p>
+              </div>
+              <a class="btn on-dark label" href="#">Educator page →</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="p-tab" role="tab" tabindex="-1" aria-selected="false">
+          <div class="tab-label" aria-hidden="true">
+            <span class="label muted">02</span>
+            <span class="display display-sm">Immunologist</span>
+          </div>
+          <img class="tab-image" src="src/immunologist.webp" alt="Scientist running an experiment at a lab bench">
+          <div class="tab-overlay"></div>
+          <div class="tab-copy">
+            <span class="label">02 — Immunologist</span>
+            <div class="tab-row">
+              <div style="display:flex;flex-direction:column;gap:16px">
+                <h3 class="display display-md">How immunity actually works</h3>
+                <p class="body">From bench to bedside, a career spent asking how the immune system works, and publishing what she finds.</p>
+              </div>
+              <a class="btn on-dark label" href="#">Immunology page →</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="p-tab" role="tab" tabindex="-1" aria-selected="false">
+          <div class="tab-label" aria-hidden="true">
+            <span class="label muted">03</span>
+            <span class="display display-sm">Communicator</span>
+          </div>
+          <img class="tab-image" src="src/communicator.webp" alt="Aimee speaking in a filmed interview">
+          <div class="tab-overlay"></div>
+          <div class="tab-copy">
+            <span class="label">03 — Communicator</span>
+            <div class="tab-row">
+              <div style="display:flex;flex-direction:column;gap:16px">
+                <h3 class="display display-md">Science people can follow</h3>
+                <p class="body">Talks, podcasts, and short videos that turn immunology into stories people can actually use.</p>
+              </div>
+              <a class="btn on-dark label" href="#">Communication page →</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ Stats ============ -->
+  <section class="section" aria-label="By the numbers">
+    <div class="main-container">
+      <div class="stats-statement">
+        <div class="label" style="margin-bottom:28px">By the numbers</div>
+        <p class="display display-md fade" data-reveal>Teaching, writing, and outreach built so complex science becomes easy to trust.</p>
+      </div>
+      <div class="stats-thirds">
+        <div class="stat">
+          <div class="mask" data-reveal><div class="display stat-num slide">25+</div></div>
+          <div class="label muted">Years as an educator,<br>scientist &amp; communicator</div>
+        </div>
+        <div class="stat">
+          <div class="mask" data-reveal><div class="display stat-num slide">180+</div></div>
+          <div class="label muted">Classes taught</div>
+        </div>
+        <div class="stat">
+          <div class="mask" data-reveal><div class="display stat-num slide">90</div></div>
+          <div class="label muted">Talks given</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ Current work: TLAS, TTP, podcast, social ============ -->
+  <section class="section" aria-label="Current work">
+    <div class="main-container">
+      <div class="section-head">
+        <div class="label">Current work</div>
+        <div class="mask" data-reveal><h2 class="display display-lg slide">What she's building now</h2></div>
+      </div>
+      <div class="bento-stack">
+        <div class="card bento-story fade" data-reveal>
+          <div class="bento-copy">
+            <span class="label muted">Program</span>
+            <div class="stack">
+              <h3 class="display display-md">Teach Like a Scientist</h3>
+              <p class="body">Hands-on outreach that turns curious kids into young scientists — asking questions, testing ideas, and learning that “I don't know yet” is where science starts.</p>
+              <a class="btn label" href="#">Explore the program →</a>
+            </div>
+          </div>
+          <div class="bento-media"><img src="https://images.unsplash.com/photo-1577896851231-70ef18881754?auto=format&fit=crop&w=1400&q=80" alt="Students raising their hands in a classroom" loading="lazy"></div>
+        </div>
+
+        <div class="bento-lower">
+          <a class="photo-card fade" data-reveal href="#">
+            <img src="https://images.unsplash.com/photo-1478737270239-2f02b77fc618?auto=format&fit=crop&w=1400&q=80" alt="" loading="lazy">
+            <div class="bento-copy">
+              <span class="label muted">Podcast · Recurring guest</span>
+              <div class="stack">
+                <h3 class="display display-md">This Week in Immunity</h3>
+                <p class="body">Talking through the newest immunology papers, in plain language.</p>
+              </div>
+            </div>
+          </a>
+          <div class="card fade" data-reveal>
+            <div class="bento-copy">
+              <span class="label muted">Program</span>
+              <div class="stack">
+                <h3 class="display display-md">Teacher Training Program</h3>
+                <p class="body">Workshops that give classroom teachers the tools to teach science as inquiry — so the thinking keeps going long after the workshop ends.</p>
+                <a class="btn label" href="#">Upcoming sessions →</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card bento-story fade" data-reveal>
+          <div class="bento-copy">
+            <span class="label muted">Social · @funsizeimmuninja</span>
+            <div class="stack">
+              <h3 class="display display-md">Fun Size Immuninja</h3>
+              <p class="body">Short videos that explain the immune system in about a minute — for anyone who scrolled past a scary headline and wanted the real answer.</p>
+              <div class="btn-row">
+                <a class="btn label" href="https://www.tiktok.com/@funsizeimmuninja" target="_blank" rel="noopener">TikTok →</a>
+                <a class="btn label" href="https://www.instagram.com/funsizeimmuninja/" target="_blank" rel="noopener">Instagram →</a>
+              </div>
+            </div>
+          </div>
+          <div class="bento-media"><img src="https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?auto=format&fit=crop&w=1400&q=80" alt="Social media app icons, including TikTok and Instagram" loading="lazy"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ Recent appearances & writing ============ -->
+  <section class="section" aria-label="Recent appearances and writing">
+    <div class="main-container">
+      <div class="section-head">
+        <div class="label">Latest</div>
+        <div class="mask" data-reveal><h2 class="display display-lg slide">Appearances &amp; writing</h2></div>
+      </div>
+      <div class="recent-halves">
+        <a href="#" class="article fade" data-reveal>
+          <div class="article-image"><img src="https://images.unsplash.com/photo-1540575467063-178a50c2df87?auto=format&fit=crop&w=1400&q=80" alt="" loading="lazy" data-parallax></div>
+          <div class="article-text">
+            <span class="label muted">Talk · TEDxCU · March 2026</span>
+            <h3 class="display display-sm is-large article-title">Why vaccines still need translators</h3>
+            <p class="body">The science is settled; the story isn't. On closing the gap between what immunologists know and what people hear.</p>
+          </div>
+        </a>
+        <div class="recent-small-halves">
+          <a href="#" class="article fade" data-reveal>
+            <div class="article-image small"><img src="https://images.unsplash.com/photo-1590602847861-f357a9332bbc?auto=format&fit=crop&w=900&q=80" alt="" loading="lazy" data-parallax></div>
+            <div class="article-text">
+              <span class="label muted">Appearance · NPR · Jan 2026</span>
+              <h3 class="display display-sm article-title">On air: flu season, without the scare</h3>
+              <p class="body">What this year's flu season actually looks like, and what's worth worrying about.</p>
+            </div>
+          </a>
+          <a href="#" class="article fade" data-reveal>
+            <div class="article-image small"><img src="https://images.unsplash.com/photo-1581092160562-40aa08e78837?auto=format&fit=crop&w=900&q=80" alt="" loading="lazy" data-parallax></div>
+            <div class="article-text">
+              <span class="label muted">Article · Feb 2026</span>
+              <h3 class="display display-sm article-title">A plain map of the adaptive immune system</h3>
+              <p class="body">T cells, B cells, and antibodies — the whole cast, with every term explained.</p>
+            </div>
+          </a>
+        </div>
+      </div>
+      <div class="recent-foot"><a href="#" class="btn label">See all work →</a></div>
+    </div>
+  </section>
+
+  <script>
+    const clamp = (v, min, max) => Math.max(min, Math.min(max, v));
+
+    // Video widens as you scroll through the pinned section
+    const master = document.getElementById('parallaxMaster');
+    const videoInner = document.getElementById('videoInner');
+    function updateScrub() {
+      const rect = master.getBoundingClientRect();
+      const total = rect.height - window.innerHeight;
+      const progress = clamp(-rect.top / total, 0, 1);
+      videoInner.style.width = `${70 + clamp(progress / 0.3, 0, 1) * 30}%`;
+    }
+
+    // Article images drift slightly inside their frames
+    const parallaxImgs = [...document.querySelectorAll('[data-parallax]')];
+    function updateParallax() {
+      const vh = window.innerHeight;
+      for (const img of parallaxImgs) {
+        const r = img.parentElement.getBoundingClientRect();
+        if (r.bottom < 0 || r.top > vh) continue;
+        const p = clamp((vh - r.top) / (vh + r.height), 0, 1);
+        img.style.transform = `translateY(${(p - 0.5) * -16}%)`;
+      }
+    }
+
+    let ticking = false;
+    function onScroll() {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => { updateScrub(); updateParallax(); ticking = false; });
+    }
+    document.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll);
+    onScroll();
+
+    // Reveal on scroll
+    const io = new IntersectionObserver((entries) => {
+      for (const e of entries) {
+        if (e.isIntersecting) { e.target.classList.add('is-in'); io.unobserve(e.target); }
+      }
+    }, { rootMargin: '0px 0px -12% 0px' });
+    document.querySelectorAll('[data-reveal]').forEach((el) => io.observe(el));
+
+    // Persona tabs
+    const tabs = [...document.querySelectorAll('.p-tab')];
+    function activate(tab) {
+      tabs.forEach((t) => {
+        const on = t === tab;
+        t.classList.toggle('is-active', on);
+        t.setAttribute('aria-selected', on);
+        t.tabIndex = on ? 0 : -1;
+      });
+    }
+    tabs.forEach((tab, i) => {
+      tab.addEventListener('click', () => activate(tab));
+      tab.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); activate(tab); }
+        if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
+          const next = tabs[(i + (e.key === 'ArrowRight' ? 1 : tabs.length - 1)) % tabs.length];
+          activate(next);
+          next.focus();
+        }
+      });
+    });
+  </script>
+</body>
+</html>

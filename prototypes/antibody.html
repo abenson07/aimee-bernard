@@ -1,0 +1,1280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Antibody · Aimee Pugh Bernard (prototype)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Serif:ital@0;1&family=IBM+Plex+Sans:wght@400;500&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --light: #f7f7f2;
+    --dark: #191818;
+    --dark-88: rgba(25, 24, 24, 0.88);
+    --lift: #efede7;
+    --depth: #e1dcd5;
+    --depth-dark: #22201f;
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0;
+    background: var(--light);
+    font-family: "IBM Plex Sans", Arial, sans-serif;
+    color: var(--dark-88);
+  }
+  .hero {
+    position: relative;
+    isolation: isolate;
+    min-height: 100vh;
+    width: 100%;
+    overflow: hidden;
+    background: var(--dark);
+    display: flex;
+  }
+  .hero video {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -2;
+  }
+  .hero-overlay {
+    position: absolute;
+    inset: 0;
+    height: 30%;
+    background: linear-gradient(180deg, rgba(25, 24, 24, 0.64), transparent);
+    z-index: -1;
+  }
+  /* A light, even scrim over the whole video — just enough to keep the
+     white text legible without flattening the footage. */
+  .hero-scrim {
+    position: absolute;
+    inset: 0;
+    background: rgba(10, 9, 9, 0.22);
+    z-index: -1;
+  }
+  .main-container {
+    width: 100%;
+    max-width: 1800px;
+    margin: 0 auto;
+    padding: 32px;
+    display: flex;
+  }
+  .master {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+  /* Auto side margins absorb the free space, centering this block while the
+     bottom tile falls to the bottom of the full-height column. */
+  .hero-center {
+    margin: auto 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 48px;
+    filter: blur(12px);
+    opacity: 0;
+    animation: blur-in 0.9s ease-out forwards;
+    animation-delay: 0.1s;
+  }
+  @keyframes blur-in {
+    to { filter: blur(0); opacity: 1; }
+  }
+  .left-col { max-width: 564px; display: flex; flex-direction: column; gap: 32px; }
+  .text-h1 {
+    font-family: "IBM Plex Serif", serif;
+    font-size: 64px;
+    line-height: 72px;
+    letter-spacing: -2.5px;
+    font-weight: 400;
+    margin: 0;
+    color: var(--light);
+  }
+  .text-h1 em { font-style: italic; }
+  .button-wrap { display: flex; flex-wrap: wrap; gap: 8px; }
+  .cta-main {
+    padding: 12px 16px;
+    border-radius: 16px;
+    font-size: 16px;
+    font-weight: 500;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+  }
+  .cta-main.dark { color: var(--light); }
+  .cta-main.dark .bg { background: var(--dark); }
+  .cta-main.secondary { color: var(--light); }
+  .cta-main.secondary .bg { background: rgba(247, 247, 242, 0.04); border: 1px solid rgba(247, 247, 242, 0.08); }
+  .cta-main .bg {
+    position: absolute;
+    inset: 0;
+    border-radius: 16px;
+    z-index: -1;
+    transition: background 0.3s;
+  }
+  .cta-main.dark:hover .bg { background: rgba(25, 24, 24, 0.88); }
+  .cta-main.secondary:hover .bg { background: rgba(247, 247, 242, 0.16); }
+  .btn-mask { height: 24px; overflow: hidden; }
+  .btn-stack { transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1); }
+  .cta-main:hover .btn-stack { transform: translateY(-24px); }
+  .btn-stack div { height: 24px; display: flex; align-items: center; }
+  .right-col { max-width: 332px; color: var(--light); font-size: 16px; line-height: 24px; }
+
+  .bottom-tile {
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-end;
+    gap: 12px;
+    filter: blur(12px);
+    opacity: 0;
+    animation: blur-in 0.9s ease-out forwards;
+    animation-delay: 0.6s;
+  }
+  .card {
+    padding: 12px;
+    display: flex;
+    gap: 16px;
+    border-radius: 12px;
+    background: var(--lift);
+    max-width: 361px;
+    text-decoration: none;
+    color: var(--dark-88);
+    overflow: hidden;
+  }
+  .card.dark { background: var(--dark); color: var(--light); }
+  .card-img {
+    border-radius: 8px;
+    width: 96px;
+    height: 96px;
+    flex: none;
+    overflow: hidden;
+  }
+  .card-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .card-content { display: flex; flex-direction: column; justify-content: space-between; gap: 24px; }
+  .card-text { font-size: 14px; font-weight: 500; }
+  .card-bottom { display: flex; justify-content: space-between; align-items: flex-end; }
+  .tag {
+    padding: 4px 8px;
+    border-radius: 16px;
+    background: var(--depth);
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 10px;
+    letter-spacing: 0.75px;
+    text-transform: uppercase;
+  }
+  .card.dark .tag { background: var(--depth-dark); color: var(--light); }
+  .icon-arrow { width: 12px; height: 12px; }
+
+  .play-toggle {
+    position: absolute;
+    right: 32px;
+    bottom: 32px;
+    width: 48px;
+    height: 48px;
+    border-radius: 100vw;
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    color: var(--light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 3;
+  }
+
+  .mission-scene { background: var(--light); }
+  .mission-runway {
+    height: 420vh;
+    position: relative;
+  }
+  .mission-pin {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow: hidden;
+    background: var(--light);
+  }
+  .mission-headline {
+    position: absolute;
+    left: 50%;
+    top: 46%;
+    transform: translate(-50%, -50%);
+    width: min(720px, 86vw);
+    margin: 0;
+    z-index: 2;
+    font-family: "IBM Plex Serif", serif;
+    font-size: clamp(40px, 5.4vw, 68px);
+    line-height: 1.08;
+    letter-spacing: -2px;
+    font-weight: 400;
+    color: var(--dark);
+    text-align: center;
+    text-wrap: balance;
+    pointer-events: none;
+  }
+  .mission-support {
+    position: absolute;
+    left: 50%;
+    bottom: 40px;
+    transform: translateX(-50%);
+    width: min(420px, 80vw);
+    margin: 0;
+    z-index: 3;
+    font-size: 14px;
+    line-height: 22px;
+    text-align: center;
+    color: var(--dark-88);
+    pointer-events: none;
+  }
+  .mission-photo {
+    position: absolute;
+    margin: 0;
+    width: 280px;
+    height: 280px;
+    border-radius: 16px;
+    overflow: hidden;
+    background: var(--depth);
+    will-change: transform, opacity;
+    pointer-events: none;
+  }
+  .mission-photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .mission-photo.is-lg { width: 460px; height: 460px; }
+  .mission-photo.is-md { width: 340px; height: 340px; }
+  .mission-photo.is-overlap { z-index: 4; }
+
+  .persona-scene { background: var(--light); }
+  .persona-runway { height: 360vh; position: relative; }
+  .persona-pin {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow: hidden;
+    background: var(--light);
+    display: grid;
+    grid-template-columns: minmax(240px, 0.9fr) 12px minmax(220px, 0.85fr) minmax(340px, 1.35fr);
+    column-gap: 28px;
+    padding: 36px 32px 32px;
+  }
+  .persona-left {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    min-height: 0;
+    height: 100%;
+  }
+  .persona-nav {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: 4px;
+    min-width: 0;
+  }
+  .persona-nav button {
+    appearance: none;
+    border: 0;
+    background: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    text-align: left;
+    cursor: pointer;
+    font-family: "IBM Plex Serif", serif;
+    font-size: clamp(32px, 3.4vw, 48px);
+    line-height: 1.15;
+    letter-spacing: -1.4px;
+    color: rgba(25, 24, 24, 0.28);
+    transition: color 0.25s ease;
+  }
+  .persona-nav button.is-active { color: var(--dark); }
+  .persona-arrow {
+    width: 28px;
+    flex: none;
+    opacity: 0;
+    transform: translateX(-4px);
+    transition: opacity 0.2s ease, transform 0.2s ease;
+    font-family: "IBM Plex Sans", sans-serif;
+    font-size: 0.7em;
+  }
+  .persona-nav button.is-active .persona-arrow {
+    opacity: 1;
+    transform: none;
+  }
+  .persona-aside {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    margin-top: auto;
+    padding-bottom: 8px;
+  }
+  .persona-caption {
+    margin: 0 0 14px;
+    max-width: 180px;
+    font-size: 14px;
+    line-height: 20px;
+    color: var(--dark-88);
+  }
+  .persona-caption span { margin-left: 6px; }
+  .persona-thumbs {
+    width: 168px;
+    height: 120px;
+    overflow: hidden;
+    background: var(--depth);
+  }
+  .persona-thumb-stack,
+  .persona-media-stack {
+    display: flex;
+    flex-direction: column;
+    will-change: transform;
+  }
+  .persona-thumbs figure {
+    margin: 0;
+    width: 168px;
+    height: 120px;
+    flex: none;
+    overflow: hidden;
+  }
+  .persona-thumbs img,
+  .persona-media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .persona-rail {
+    position: relative;
+    width: 2px;
+    justify-self: center;
+    background: var(--depth);
+    align-self: stretch;
+  }
+  .persona-rail-fill {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 0;
+    background: var(--dark);
+  }
+  .persona-copy {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    padding-top: 6px;
+  }
+  .persona-kicker {
+    margin: 0;
+    font-size: clamp(28px, 2.6vw, 40px);
+    line-height: 1.15;
+    letter-spacing: -1px;
+    font-weight: 400;
+    color: rgba(25, 24, 24, 0.38);
+    font-family: "IBM Plex Serif", serif;
+  }
+  .persona-body {
+    margin-top: auto;
+    margin-bottom: 12px;
+    max-width: 34ch;
+    font-size: 15px;
+    line-height: 24px;
+    color: var(--dark-88);
+  }
+  .persona-media {
+    min-width: 0;
+    min-height: 0;
+    overflow: hidden;
+    background: var(--depth);
+  }
+  .persona-media figure {
+    margin: 0;
+    width: 100%;
+    height: calc(100vh - 68px);
+    flex: none;
+    overflow: hidden;
+  }
+
+  .page-section {
+    padding: 200px 32px;
+    background: var(--light);
+  }
+  .page-section.is-after-personas { padding-top: 240px; }
+  .reveal {
+    opacity: 0;
+    transform: translateY(28px);
+    transition: opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1), transform 0.85s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .reveal.is-in {
+    opacity: 1;
+    transform: none;
+  }
+  .reveal[data-delay="1"] { transition-delay: 0.08s; }
+  .reveal[data-delay="2"] { transition-delay: 0.16s; }
+  @media (prefers-reduced-motion: reduce) {
+    .reveal,
+    .reveal.is-in {
+      opacity: 1;
+      transform: none;
+      transition: none;
+    }
+  }
+  .page-inner {
+    width: 100%;
+    max-width: 1800px;
+    margin: 0 auto;
+  }
+  .section-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 24px;
+    margin-bottom: 40px;
+  }
+  .section-title {
+    margin: 0;
+    font-family: "IBM Plex Serif", serif;
+    font-size: clamp(32px, 4vw, 52px);
+    line-height: 1.08;
+    letter-spacing: -1.4px;
+    font-weight: 400;
+    color: var(--dark);
+  }
+  .section-link {
+    color: var(--dark-88);
+    text-decoration: none;
+    font-size: 15px;
+    white-space: nowrap;
+    border-bottom: 1px solid rgba(25, 24, 24, 0.2);
+    padding-bottom: 2px;
+  }
+
+  .cred-master {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    max-width: 920px;
+    margin: 0 auto 64px;
+    gap: 48px;
+  }
+  .cred-headline {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    max-width: 780px;
+  }
+  .cred-headline .section-title {
+    text-wrap: balance;
+  }
+  .cred-support {
+    margin: 0;
+    max-width: 480px;
+    font-size: 16px;
+    line-height: 24px;
+    color: rgba(25, 24, 24, 0.55);
+  }
+  .cred-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 48px 32px;
+    width: 100%;
+    max-width: 880px;
+    justify-items: center;
+  }
+  .cred-stat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+  .cred-num {
+    margin: 0;
+    font-family: "IBM Plex Serif", serif;
+    font-size: clamp(48px, 6vw, 88px);
+    line-height: 0.95;
+    letter-spacing: -2.5px;
+    color: var(--dark);
+  }
+  .cred-label {
+    margin: 0;
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--dark);
+  }
+  .cred-marquee-label {
+    margin: 0 0 16px;
+    text-align: center;
+    font-size: 13px;
+    color: rgba(25, 24, 24, 0.48);
+  }
+  .cred-marquee {
+    overflow: hidden;
+    mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+  }
+  .cred-track {
+    display: flex;
+    gap: 48px;
+    width: max-content;
+    animation: cred-scroll 32s linear infinite;
+  }
+  .cred-marquee:hover .cred-track { animation-play-state: paused; }
+  .cred-logo {
+    flex: none;
+    min-width: 160px;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: "IBM Plex Serif", serif;
+    font-size: 22px;
+    letter-spacing: -0.6px;
+    color: var(--dark);
+    opacity: 0.72;
+    white-space: nowrap;
+  }
+  @keyframes cred-scroll {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+
+  .now-head {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 16px;
+    max-width: 636px;
+    margin: 0 auto 80px;
+  }
+  .now-head .section-title { text-wrap: balance; }
+  .now-cta {
+    color: var(--dark);
+    background: var(--depth);
+  }
+  .now-cta .bg { background: var(--depth); }
+  .now-cta:hover .bg { background: var(--dark); }
+  .now-cta:hover { color: var(--light); }
+  .now-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 8px;
+  }
+  .now-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 32px;
+    width: 100%;
+    min-height: 280px;
+    padding: 24px;
+    border-radius: 8px;
+    background: #fff;
+    text-decoration: none;
+    color: var(--dark);
+  }
+  .now-card.is-feature {
+    position: relative;
+    grid-row: span 2;
+    overflow: hidden;
+    color: var(--light);
+    background: var(--dark);
+    min-height: 0;
+  }
+  .now-card.is-feature img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0.42;
+  }
+  .now-card.is-feature .now-icon,
+  .now-card.is-feature .now-copy { position: relative; z-index: 1; }
+  .now-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 64px;
+    height: 64px;
+    border-radius: 8px;
+    background: var(--light);
+    color: var(--dark);
+    flex: none;
+  }
+  .now-card.is-feature .now-icon {
+    background: rgba(247, 247, 242, 0.12);
+    color: var(--light);
+  }
+  .now-icon svg { width: 32px; height: 32px; display: block; }
+  .now-copy {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  .now-kicker {
+    margin: 0;
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: rgba(25, 24, 24, 0.48);
+  }
+  .now-card.is-feature .now-kicker { color: rgba(247, 247, 242, 0.64); }
+  .now-name {
+    margin: 0;
+    font-family: "IBM Plex Serif", serif;
+    font-size: 24px;
+    line-height: 1.16;
+    letter-spacing: -0.5px;
+    font-weight: 400;
+  }
+  .now-line {
+    margin: 0;
+    font-size: 15px;
+    line-height: 1.5;
+    color: rgba(25, 24, 24, 0.64);
+    max-width: 36ch;
+  }
+  .now-card.is-feature .now-line { color: rgba(247, 247, 242, 0.72); }
+
+  .recent-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+  }
+  .recent-card {
+    position: relative;
+    min-height: 240px;
+    padding: 22px;
+    border-radius: 16px;
+    background: var(--lift);
+    text-decoration: none;
+    color: var(--dark);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  .recent-card:nth-child(even) { background: var(--depth); }
+  .recent-photo {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    transform: scale(1.04);
+    transition: opacity 0.35s ease, transform 0.45s ease;
+  }
+  .recent-meta { position: relative; z-index: 1; }
+  .recent-type {
+    margin: 0 0 10px;
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .recent-title {
+    margin: 0;
+    font-family: "IBM Plex Serif", serif;
+    font-size: 22px;
+    line-height: 1.2;
+    letter-spacing: -0.5px;
+    font-weight: 400;
+  }
+  .recent-when {
+    position: relative;
+    z-index: 1;
+    margin: 0;
+    font-size: 13px;
+    color: var(--dark-88);
+  }
+  .recent-card.is-invert:hover {
+    color: var(--light);
+  }
+  .recent-card.is-invert:hover .recent-photo {
+    opacity: 1;
+    transform: scale(1);
+  }
+  .recent-card.is-invert:hover .recent-when { color: rgba(247, 247, 242, 0.78); }
+
+  @media (max-width: 1100px) and (min-width: 768px) {
+    .recent-grid { grid-template-columns: repeat(2, 1fr); }
+    .cred-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 40px 24px; }
+    .bento-grid {
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: auto;
+    }
+    .bento-podcast { grid-column: 1 / -1; grid-row: auto; min-height: 320px; }
+    .bento-program,
+    .bento-side { grid-column: auto; min-height: 220px; }
+    .bento-wide { grid-column: 1 / -1; min-height: 200px; }
+  }
+
+  @media (max-width: 767px) {
+    .hero-center { flex-direction: column; align-items: flex-start; gap: 32px; }
+    .text-h1 { font-size: 44px; line-height: 48px; letter-spacing: -2px; }
+    .bottom-tile { flex-direction: column; align-items: stretch; }
+    .mission-headline { font-size: 36px; letter-spacing: -1.4px; top: 44%; }
+    .mission-photo,
+    .mission-photo.is-md { width: 160px; height: 160px; }
+    .mission-photo.is-lg { width: 200px; height: 200px; }
+    .persona-pin {
+      grid-template-columns: 1fr;
+      grid-template-rows: auto 3px 1fr auto;
+      row-gap: 16px;
+      padding: 20px;
+    }
+    .persona-nav { height: auto; }
+    .persona-rail { width: 100%; height: 2px; justify-self: stretch; }
+    .persona-rail-fill { height: 100%; width: 0; }
+    .persona-nav button { font-size: 28px; }
+    .persona-aside { display: none; }
+    .persona-media { grid-row: 3; }
+    .persona-copy { grid-row: 4; padding-top: 0; }
+    .persona-media figure { height: 42vh; }
+    .persona-body { margin-top: 16px; }
+    .page-section { padding: 120px 20px; }
+    .page-section.is-after-personas { padding-top: 140px; }
+    .cred-grid { grid-template-columns: 1fr 1fr; gap: 32px 16px; }
+    .cred-num { font-size: 44px; letter-spacing: -1.6px; }
+    .cred-master { gap: 36px; margin-bottom: 48px; }
+    .now-head { margin-bottom: 32px; }
+    .now-grid { grid-template-columns: 1fr; }
+    .now-card,
+    .now-card.is-feature { grid-row: auto; min-height: 240px; }
+    .recent-grid { grid-template-columns: 1fr; }
+    .recent-card.is-invert { color: var(--light); }
+    .recent-card.is-invert .recent-photo { opacity: 0.42; }
+    .recent-card.is-invert .recent-when { color: rgba(247, 247, 242, 0.78); }
+    .section-head { flex-direction: column; align-items: flex-start; }
+  }
+</style>
+</head>
+<body>
+  <section class="hero">
+    <video autoplay loop muted playsinline id="bgVideo">
+      <source src="videos/a-woman-professor-12041545.mp4" type="video/mp4">
+    </video>
+    <div class="hero-scrim"></div>
+    <div class="hero-overlay"></div>
+
+    <div class="main-container">
+      <div class="master">
+        <div class="hero-center">
+          <div class="left-col">
+            <h1 class="text-h1">Immune systems,<br>made <em>fascinating</em></h1>
+            <div class="button-wrap">
+              <a href="#" class="cta-main dark">
+                <span class="bg"></span>
+                <span class="btn-mask"><span class="btn-stack"><div>See her work</div><div>See her work</div></span></span>
+              </a>
+              <a href="#" class="cta-main secondary">
+                <span class="bg"></span>
+                <span class="btn-mask"><span class="btn-stack"><div>Book a speaking talk</div><div>Book a speaking talk</div></span></span>
+              </a>
+            </div>
+          </div>
+          <div class="right-col">Her teaching, writing, and outreach are built so complex science becomes easy to trust.</div>
+        </div>
+
+        <div class="bottom-tile">
+          <a href="#" class="card dark">
+            <div class="card-img"><img src="https://byqsupply-components.netlify.app/HaldenMiller/images/CaseImage.png" alt=""></div>
+            <div class="card-content">
+              <div class="card-text">Think Like a Scientist: hands-on outreach for young scientists</div>
+              <div class="card-bottom">
+                <div class="tag">Outreach</div>
+                <svg class="icon-arrow" viewBox="0 0 12 12" fill="none"><path d="M2.5 6H9M6 2.5L9.5 6L6 9.5" stroke="currentColor" stroke-linecap="square"/></svg>
+              </div>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <button class="play-toggle" id="playToggle" aria-label="Pause video">
+      <svg id="iconPause" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M12 2h-2a.67.67 0 0 0-.67.67v10.66c0 .37.3.67.67.67h2c.37 0 .67-.3.67-.67V2.67A.67.67 0 0 0 12 2Z" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/><path d="M6 2H4a.67.67 0 0 0-.67.67v10.66c0 .37.3.67.67.67h2c.37 0 .67-.3.67-.67V2.67A.67.67 0 0 0 6 2Z" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <svg id="iconPlay" width="16" height="16" viewBox="0 0 16 16" fill="none" hidden><path d="M3.33 3.33c0-.45.24-.87.63-1.1a1.28 1.28 0 0 1 1.28-.02l8 4.67c.38.22.61.63.61 1.07s-.23.85-.61 1.07l-8 4.67a1.28 1.28 0 0 1-1.28-.02 1.27 1.27 0 0 1-.63-1.1V3.33Z" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+  </section>
+
+  <section class="mission-scene" aria-label="Mission">
+    <div class="mission-runway" id="missionRunway">
+      <div class="mission-pin">
+        <h2 class="mission-headline" id="missionHeadline">Science only matters<br>if people can trust it.</h2>
+        <p class="mission-support" id="missionSupport">Teaching, writing, and outreach that make immunology something communities can use.</p>
+        <figure class="mission-photo" data-photo="0">
+          <img src="https://images.unsplash.com/photo-1524178232363-1fb2b075b655?auto=format&fit=crop&w=800&q=80" alt="University classroom during a lecture">
+        </figure>
+        <figure class="mission-photo is-lg" data-photo="1">
+          <img src="https://images.unsplash.com/photo-1475721027785-f74eccf877e2?auto=format&fit=crop&w=900&q=80" alt="Speaker at a science communication event">
+        </figure>
+        <figure class="mission-photo" data-photo="2">
+          <img src="https://images.unsplash.com/photo-1532094349884-543bc11b234d?auto=format&fit=crop&w=800&q=80" alt="Hands-on science work at a laboratory bench">
+        </figure>
+        <figure class="mission-photo is-md is-overlap" data-photo="3">
+          <img src="https://images.unsplash.com/photo-1503676260728-1c00da094a0b?auto=format&fit=crop&w=800&q=80" alt="Young students in a community outreach classroom">
+        </figure>
+        <figure class="mission-photo" data-photo="4">
+          <img src="https://images.unsplash.com/photo-1456513080880-7d93d20d14eb?auto=format&fit=crop&w=800&q=80" alt="Research notes and writing on a desk">
+        </figure>
+        <figure class="mission-photo is-lg" data-photo="5">
+          <img src="https://images.unsplash.com/photo-1540575467063-178a50c2df87?auto=format&fit=crop&w=900&q=80" alt="Audience at a conference talk">
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <section class="persona-scene" aria-label="Personas">
+    <div class="persona-runway" id="personaRunway">
+      <div class="persona-pin">
+        <div class="persona-left">
+          <div class="persona-nav" id="personaNav">
+            <button type="button" data-persona="0" class="is-active">
+              <span class="persona-arrow" aria-hidden="true">→</span>Educator
+            </button>
+            <button type="button" data-persona="1">
+              <span class="persona-arrow" aria-hidden="true">→</span>Immunologist
+            </button>
+            <button type="button" data-persona="2">
+              <span class="persona-arrow" aria-hidden="true">→</span>Communicator
+            </button>
+          </div>
+          <div class="persona-aside">
+            <p class="persona-caption" id="personaCaption">In the classroom <span>↓</span></p>
+            <div class="persona-thumbs">
+              <div class="persona-thumb-stack" id="personaThumbStack">
+                <figure><img src="https://images.unsplash.com/photo-1503676260728-1c00da094a0b?auto=format&fit=crop&w=400&q=80" alt=""></figure>
+                <figure><img src="https://images.unsplash.com/photo-1576086213369-97a306d36557?auto=format&fit=crop&w=400&q=80" alt=""></figure>
+                <figure><img src="https://images.unsplash.com/photo-1475721027785-f74eccf877e2?auto=format&fit=crop&w=400&q=80" alt=""></figure>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="persona-rail" aria-hidden="true">
+          <div class="persona-rail-fill" id="personaFill"></div>
+        </div>
+
+        <div class="persona-copy">
+          <h2 class="persona-kicker" id="personaTitle">Teaching that sticks</h2>
+          <p class="persona-body" id="personaBody">Classrooms and teacher programs built so students leave knowing how to think like a scientist, not just recite a fact.</p>
+        </div>
+
+        <div class="persona-media">
+          <div class="persona-media-stack" id="personaMediaStack">
+            <figure><img src="https://images.unsplash.com/photo-1524178232363-1fb2b075b655?auto=format&fit=crop&w=1400&q=80" alt="Aimee’s educator work: a lecture hall in session"></figure>
+            <figure><img src="https://images.unsplash.com/photo-1532094349884-543bc11b234d?auto=format&fit=crop&w=1400&q=80" alt="Aimee’s immunology work: laboratory research"></figure>
+            <figure><img src="https://images.unsplash.com/photo-1540575467063-178a50c2df87?auto=format&fit=crop&w=1400&q=80" alt="Aimee’s communication work: speaking to an audience"></figure>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="page-section is-after-personas" aria-label="Credibility">
+    <div class="page-inner">
+      <div class="cred-master">
+        <div class="cred-headline reveal">
+          <h2 class="section-title">A record you can count.</h2>
+          <p class="cred-support">Years of the same science, said out loud in rooms that needed it.</p>
+        </div>
+        <div class="cred-grid reveal" data-delay="1">
+          <div class="cred-stat">
+            <p class="cred-num">42</p>
+            <p class="cred-label">Publications</p>
+          </div>
+          <div class="cred-stat">
+            <p class="cred-num">180+</p>
+            <p class="cred-label">Classes taught</p>
+          </div>
+          <div class="cred-stat">
+            <p class="cred-num">65</p>
+            <p class="cred-label">Press appearances</p>
+          </div>
+          <div class="cred-stat">
+            <p class="cred-num">90</p>
+            <p class="cred-label">Talks given</p>
+          </div>
+        </div>
+      </div>
+      <p class="cred-marquee-label reveal">Trusted by / appeared with</p>
+      <div class="cred-marquee reveal" data-delay="1" aria-hidden="true">
+        <div class="cred-track">
+          <span class="cred-logo">CU Anschutz</span>
+          <span class="cred-logo">CU Denver</span>
+          <span class="cred-logo">TEDx</span>
+          <span class="cred-logo">AAI</span>
+          <span class="cred-logo">NPR</span>
+          <span class="cred-logo">Scientific American</span>
+          <span class="cred-logo">CU Boulder</span>
+          <span class="cred-logo">HHMI</span>
+          <span class="cred-logo">CU Anschutz</span>
+          <span class="cred-logo">CU Denver</span>
+          <span class="cred-logo">TEDx</span>
+          <span class="cred-logo">AAI</span>
+          <span class="cred-logo">NPR</span>
+          <span class="cred-logo">Scientific American</span>
+          <span class="cred-logo">CU Boulder</span>
+          <span class="cred-logo">HHMI</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="page-section" aria-label="Active work">
+    <div class="page-inner">
+      <div class="now-head reveal">
+        <h2 class="section-title">What she is building now.</h2>
+        <a href="#" class="cta-main now-cta">
+          <div class="bg"></div>
+          <div class="btn-mask">
+            <div class="btn-stack">
+              <div>See current work</div>
+              <div>See current work</div>
+            </div>
+          </div>
+          <svg class="icon-arrow" viewBox="0 0 13 14" fill="none" aria-hidden="true">
+            <path d="M1.3 7h8.7M6 2.3 10.7 7 6 11.7" stroke="currentColor" stroke-width="2" stroke-linecap="square"/>
+          </svg>
+        </a>
+      </div>
+      <div class="now-grid reveal" data-delay="1">
+        <a href="#" class="now-card">
+          <div class="now-icon" aria-hidden="true">
+            <svg viewBox="0 0 32 32" fill="currentColor"><path fill-opacity="0.32" d="M9.3 0H5.3A5.3 5.3 0 0 0 0 5.3v4a5.3 5.3 0 0 0 5.3 5.3h4A5.3 5.3 0 0 0 14.7 9.3v-4A5.3 5.3 0 0 0 9.3 0Zm17.4 0h-4A5.3 5.3 0 0 0 17.3 5.3v4a5.3 5.3 0 0 0 5.4 5.3h4A5.3 5.3 0 0 0 32 9.3v-4A5.3 5.3 0 0 0 26.7 0ZM9.3 17.3H5.3A5.3 5.3 0 0 0 0 22.7v4A5.3 5.3 0 0 0 5.3 32h4a5.3 5.3 0 0 0 5.4-5.3v-4a5.3 5.3 0 0 0-5.4-5.4Zm17.4 0h-4a5.3 5.3 0 0 0-5.4 5.4v4A5.3 5.3 0 0 0 22.7 32h4A5.3 5.3 0 0 0 32 26.7v-4a5.3 5.3 0 0 0-5.3-5.4Z"/></svg>
+          </div>
+          <div class="now-copy">
+            <p class="now-kicker">Program</p>
+            <h3 class="now-name">Think Like a Scientist</h3>
+            <p class="now-line">Hands-on outreach for young scientists — the same work featured in the hero.</p>
+          </div>
+        </a>
+        <a href="#" class="now-card is-feature">
+          <img src="https://images.unsplash.com/photo-1478737270239-2f02b77fc618?auto=format&fit=crop&w=1400&q=80" alt="">
+          <div class="now-icon" aria-hidden="true">
+            <svg viewBox="0 0 32 32" fill="currentColor"><path fill-opacity="0.85" d="M23.6 4 21.7 1.6A5.3 5.3 0 0 0 18.6 0h-5.2a5.3 5.3 0 0 0-3.2 1.6L8.4 4h15.2ZM16 24a5.3 5.3 0 1 0 0-10.7A5.3 5.3 0 0 0 16 24Zm9.3-17.3H6.7A6.7 6.7 0 0 0 0 13.3v12A6.7 6.7 0 0 0 6.7 32h18.6A6.7 6.7 0 0 0 32 25.3v-12a6.7 6.7 0 0 0-6.7-6.6ZM16 26.7a8 8 0 1 1 0-16 8 8 0 0 1 0 16Z"/></svg>
+          </div>
+          <div class="now-copy">
+            <p class="now-kicker">Podcast · Host</p>
+            <h3 class="now-name">Immune in Color</h3>
+            <p class="now-line">A weekly show that turns immunology into stories people can actually follow.</p>
+          </div>
+        </a>
+        <a href="#" class="now-card">
+          <div class="now-icon" aria-hidden="true">
+            <svg viewBox="0 0 32 30" fill="currentColor"><path fill-opacity="0.32" d="M29.6 1.9A8 8 0 0 0 24 0.5L21.7 1A6.3 6.3 0 0 0 17.3 6.3v20.6a14 14 0 0 1-2.6 0V6.3A6.3 6.3 0 0 0 10.4 1L7.9.4A8 8 0 0 0 0 7v14.4a6.7 6.7 0 0 0 5.5 6.6l8.4 1.5a14 14 0 0 0 4.3 0l8.4-1.5A6.7 6.7 0 0 0 32 21.4V7a8 8 0 0 0-2.4-5.1Z"/></svg>
+          </div>
+          <div class="now-copy">
+            <p class="now-kicker">Program</p>
+            <h3 class="now-name">Teacher Training Program</h3>
+            <p class="now-line">Workshops that give classroom teachers the tools to teach science as inquiry.</p>
+          </div>
+        </a>
+        <a href="#" class="now-card">
+          <div class="now-icon" aria-hidden="true">
+            <svg viewBox="0 0 32 32" fill="currentColor"><path fill-opacity="0.32" d="M25.3 5.3h-1.4A6.7 6.7 0 0 0 17.3 0h-2.6a6.7 6.7 0 0 0-6.6 5.3H6.7A6.7 6.7 0 0 0 0 12v4h32v-4a6.7 6.7 0 0 0-6.7-6.7ZM10.9 5.3A4 4 0 0 1 14.7 2.7h2.6a4 4 0 0 1 3.8 2.6H10.9ZM17.3 20a1.3 1.3 0 1 1-2.6 0v-1.3H0v6.6A6.7 6.7 0 0 0 6.7 32h18.6A6.7 6.7 0 0 0 32 25.3V18.7H17.3V20Z"/></svg>
+          </div>
+          <div class="now-copy">
+            <p class="now-kicker">Podcast</p>
+            <h3 class="now-name">This Week in Immunity</h3>
+            <p class="now-line">Recurring guest chair on current papers.</p>
+          </div>
+        </a>
+        <a href="#" class="now-card">
+          <div class="now-icon" aria-hidden="true">
+            <svg viewBox="0 0 32 32" fill="currentColor"><path fill-opacity="0.32" d="M16 0C7.2 0 0 7.2 0 16s7.2 16 16 16 16-7.2 16-16S24.8 0 16 0Zm0 5.3a4 4 0 1 1 0 8 4 4 0 0 1 0-8Zm0 21.4c-3.6 0-6.8-1.8-8.7-4.6.1-2.9 5.8-4.5 8.7-4.5s8.6 1.6 8.7 4.5c-1.9 2.8-5.1 4.6-8.7 4.6Z"/></svg>
+          </div>
+          <div class="now-copy">
+            <p class="now-kicker">Community</p>
+            <h3 class="now-name">Science for neighbors</h3>
+            <p class="now-line">Public nights that keep the same science available outside the university.</p>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section class="page-section" aria-label="Recent content">
+    <div class="page-inner">
+      <div class="section-head reveal">
+        <div>
+          <h2 class="section-title">Recent appearances and writing.</h2>
+        </div>
+        <a href="#" class="section-link">See all work</a>
+      </div>
+      <div class="recent-grid reveal" data-delay="1">
+        <a href="#" class="recent-card is-invert">
+          <img class="recent-photo" src="https://images.unsplash.com/photo-1475721027785-f74eccf877e2?auto=format&fit=crop&w=900&q=80" alt="">
+          <div class="recent-meta">
+            <p class="recent-type">Talk</p>
+            <h3 class="recent-title">Why vaccines still need translators</h3>
+          </div>
+          <p class="recent-when">TEDxCU · Mar 2026</p>
+        </a>
+        <a href="#" class="recent-card">
+          <div class="recent-meta">
+            <p class="recent-type">Article</p>
+            <h3 class="recent-title">A plain map of the adaptive immune system</h3>
+          </div>
+          <p class="recent-when">Essay · Feb 2026</p>
+        </a>
+        <a href="#" class="recent-card is-invert">
+          <img class="recent-photo" src="https://images.unsplash.com/photo-1540575467063-178a50c2df87?auto=format&fit=crop&w=900&q=80" alt="">
+          <div class="recent-meta">
+            <p class="recent-type">Appearance</p>
+            <h3 class="recent-title">On air: flu season, without the scare</h3>
+          </div>
+          <p class="recent-when">NPR · Jan 2026</p>
+        </a>
+        <a href="#" class="recent-card">
+          <div class="recent-meta">
+            <p class="recent-type">Video</p>
+            <h3 class="recent-title">How T cells decide what to attack</h3>
+          </div>
+          <p class="recent-when">Lecture clip · Jan 2026</p>
+        </a>
+        <a href="#" class="recent-card">
+          <div class="recent-meta">
+            <p class="recent-type">Article</p>
+            <h3 class="recent-title">Teaching uncertainty without losing trust</h3>
+          </div>
+          <p class="recent-when">Op-ed · Dec 2025</p>
+        </a>
+        <a href="#" class="recent-card is-invert">
+          <img class="recent-photo" src="https://images.unsplash.com/photo-1524178232363-1fb2b075b655?auto=format&fit=crop&w=900&q=80" alt="">
+          <div class="recent-meta">
+            <p class="recent-type">Classroom</p>
+            <h3 class="recent-title">A day inside Think Like a Scientist</h3>
+          </div>
+          <p class="recent-when">Field note · Nov 2025</p>
+        </a>
+        <a href="#" class="recent-card">
+          <div class="recent-meta">
+            <p class="recent-type">Podcast</p>
+            <h3 class="recent-title">Guest hour on This Week in Immunity</h3>
+          </div>
+          <p class="recent-when">Episode 214 · Nov 2025</p>
+        </a>
+        <a href="#" class="recent-card">
+          <div class="recent-meta">
+            <p class="recent-type">Award</p>
+            <h3 class="recent-title">CU Anschutz teaching honor</h3>
+          </div>
+          <p class="recent-when">Campus news · Oct 2025</p>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    const video = document.getElementById('bgVideo');
+    const btn = document.getElementById('playToggle');
+    const iconPause = document.getElementById('iconPause');
+    const iconPlay = document.getElementById('iconPlay');
+    btn.addEventListener('click', () => {
+      if (video.paused) {
+        video.play();
+        iconPause.hidden = false;
+        iconPlay.hidden = true;
+        btn.setAttribute('aria-label', 'Pause video');
+      } else {
+        video.pause();
+        iconPause.hidden = true;
+        iconPlay.hidden = false;
+        btn.setAttribute('aria-label', 'Play video');
+      }
+    });
+
+    const runway = document.getElementById('missionRunway');
+    const headline = document.getElementById('missionHeadline');
+    const support = document.getElementById('missionSupport');
+    const photos = [...document.querySelectorAll('.mission-photo')];
+
+    const desktopLanes = [
+      { x: 20, start: 0.08, end: 0.34 },
+      { x: 76, start: 0.20, end: 0.46 },
+      { x: 18, start: 0.32, end: 0.58 },
+      { x: 50, start: 0.44, end: 0.70 },
+      { x: 18, start: 0.56, end: 0.82 },
+      { x: 76, start: 0.68, end: 0.96 },
+    ];
+    const mobileLanes = [
+      { x: 20, start: 0.08, end: 0.34 },
+      { x: 80, start: 0.20, end: 0.46 },
+      { x: 20, start: 0.32, end: 0.58 },
+      { x: 80, start: 0.44, end: 0.70 },
+      { x: 20, start: 0.56, end: 0.82 },
+      { x: 80, start: 0.68, end: 0.96 },
+    ];
+    const yEnter = 118;
+    const yExit = -18;
+
+    function clamp(v, min, max) { return Math.max(min, Math.min(max, v)); }
+    function lerp(a, b, t) { return a + (b - a) * t; }
+    function ease(t) { return t * t * (3 - 2 * t); }
+    function rangeT(progress, a, b) { return clamp((progress - a) / (b - a), 0, 1); }
+
+    function poseAt(progress, lane) {
+      const t = rangeT(progress, lane.start, lane.end);
+      return { x: lane.x, y: lerp(yEnter, yExit, t) };
+    }
+
+    function applyPhoto(el, pose) {
+      el.style.left = pose.x + '%';
+      el.style.top = pose.y + '%';
+      el.style.opacity = '1';
+      el.style.transform = 'translate(-50%, -50%)';
+    }
+
+    function updateMission() {
+      const rect = runway.getBoundingClientRect();
+      const vh = window.innerHeight;
+      const total = rect.height - vh;
+      const progress = total > 0 ? clamp(-rect.top / total, 0, 1) : 0;
+      const narrow = window.innerWidth < 768;
+      const lanes = narrow ? mobileLanes : desktopLanes;
+
+      const headT = ease(rangeT(progress, 0, 0.07));
+      headline.style.opacity = String(0.35 + headT * 0.65);
+      headline.style.filter = `blur(${(1 - headT) * 8}px)`;
+
+      const supportT = ease(rangeT(progress, 0.04, 0.12));
+      support.style.opacity = String(supportT);
+
+      photos.forEach((el, i) => applyPhoto(el, poseAt(progress, lanes[i])));
+    }
+
+    photos.forEach((el, i) => applyPhoto(el, poseAt(0, desktopLanes[i])));
+    support.style.opacity = '0';
+
+    const personaRunway = document.getElementById('personaRunway');
+    const personaFill = document.getElementById('personaFill');
+    const personaTitle = document.getElementById('personaTitle');
+    const personaBody = document.getElementById('personaBody');
+    const personaCaption = document.getElementById('personaCaption');
+    const personaMediaStack = document.getElementById('personaMediaStack');
+    const personaThumbStack = document.getElementById('personaThumbStack');
+    const personaBtns = [...document.querySelectorAll('#personaNav button')];
+    const personaChapters = [
+      {
+        title: 'Teaching that sticks',
+        body: 'Classrooms and teacher programs built so students leave knowing how to think like a scientist, not just recite a fact.',
+        caption: 'In the classroom <span>↓</span>',
+      },
+      {
+        title: 'The science itself',
+        body: 'An immunologist’s map of the immune system — the research, the language, and why the details still matter in public.',
+        caption: 'At the bench <span>↓</span>',
+      },
+      {
+        title: 'Science people can use',
+        body: 'Talks, writing, and outreach that take the same science and make it something a community can actually trust.',
+        caption: 'With the public <span>↓</span>',
+      },
+    ];
+
+    function runwayProgress(el) {
+      const rect = el.getBoundingClientRect();
+      const total = rect.height - window.innerHeight;
+      return total > 0 ? clamp(-rect.top / total, 0, 1) : 0;
+    }
+
+    function updatePersonas() {
+      const p = runwayProgress(personaRunway);
+      const narrow = window.innerWidth < 768;
+      if (narrow) {
+        personaFill.style.width = (p * 100) + '%';
+        personaFill.style.height = '100%';
+      } else {
+        personaFill.style.height = (p * 100) + '%';
+        personaFill.style.width = '100%';
+      }
+
+      const chapterT = p * 3;
+      const index = Math.min(2, Math.floor(Math.min(chapterT, 2.999)));
+      const local = chapterT - index;
+      const travel = index === 2 ? rangeT(local, 0.7, 1) * 0.08 : ease(rangeT(local, 0.58, 1));
+      const shift = (-(index + travel) / 3 * 100) + '%';
+      personaMediaStack.style.transform = 'translateY(' + shift + ')';
+      personaThumbStack.style.transform = 'translateY(' + shift + ')';
+      const chapter = personaChapters[index];
+
+      personaBtns.forEach((btn, i) => {
+        const on = i === index;
+        btn.classList.toggle('is-active', on);
+        if (on) btn.setAttribute('aria-current', 'true');
+        else btn.removeAttribute('aria-current');
+      });
+
+      if (personaTitle.textContent !== chapter.title) {
+        personaTitle.textContent = chapter.title;
+        personaBody.textContent = chapter.body;
+        personaCaption.innerHTML = chapter.caption;
+      }
+
+      let titleO = 1;
+      let bodyO = 0;
+      if (local > 0.88) titleO = (1 - local) / 0.12;
+      if (local >= 0.18 && local <= 0.88) bodyO = Math.min(1, (local - 0.18) / 0.16);
+      else if (local > 0.88) bodyO = Math.max(0, (1 - local) / 0.12);
+
+      personaTitle.style.opacity = String(titleO);
+      personaBody.style.opacity = String(bodyO);
+    }
+
+    function scrollToPersona(index) {
+      const rect = personaRunway.getBoundingClientRect();
+      const top = window.scrollY + rect.top;
+      const total = personaRunway.offsetHeight - window.innerHeight;
+      const target = top + (index / 3) * total + 1;
+      window.scrollTo({ top: target, behavior: 'smooth' });
+    }
+
+    personaBtns.forEach((btn) => {
+      btn.addEventListener('click', () => scrollToPersona(Number(btn.dataset.persona)));
+    });
+
+    function updateScroll() {
+      updateMission();
+      updatePersonas();
+    }
+
+    document.addEventListener('scroll', () => requestAnimationFrame(updateScroll), { passive: true });
+    window.addEventListener('resize', () => requestAnimationFrame(updateScroll));
+    updateScroll();
+
+    const revealEls = [...document.querySelectorAll('.reveal')];
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      revealEls.forEach((el) => el.classList.add('is-in'));
+    } else {
+      const revealIo = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          entry.target.classList.toggle('is-in', entry.isIntersecting);
+        });
+      }, { threshold: 0.16, rootMargin: '0px 0px -10% 0px' });
+      revealEls.forEach((el) => revealIo.observe(el));
+    }
+  </script>
+</body>
+</html>

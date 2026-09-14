@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Homepage Directions · Aimee Pugh Bernard</title>
+<style>
+  :root {
+    --bg: #f4f0ea;
+    --ink: #1a1816;
+    --muted: #6f6a64;
+    --line: #dcd5cb;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    padding: 4rem 1.5rem 5rem;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  }
+  .wrap {
+    max-width: 1280px;
+    margin: 0 auto;
+  }
+  header { margin-bottom: 2.5rem; }
+  h1 {
+    font-size: clamp(1.75rem, 3vw, 2.5rem);
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    margin: 0 0 0.5rem;
+  }
+  header p {
+    color: var(--muted);
+    margin: 0;
+    max-width: 38rem;
+    line-height: 1.5;
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .card {
+    display: block;
+    color: inherit;
+    text-decoration: none;
+  }
+  .shot {
+    aspect-ratio: 16 / 10;
+    overflow: hidden;
+    border-radius: 10px;
+    border: 1px solid var(--line);
+    background: #fff;
+  }
+  .shot img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top center;
+    transition: transform 0.4s ease;
+  }
+  .card:hover .shot img,
+  .card:focus-visible .shot img { transform: scale(1.03); }
+  .card:focus-visible { outline: 2px solid var(--ink); outline-offset: 6px; border-radius: 10px; }
+  .meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 1rem;
+    margin-top: 1rem;
+  }
+  h2 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin: 0;
+  }
+  .tag {
+    color: var(--muted);
+    font-size: 0.9rem;
+    white-space: nowrap;
+  }
+  .pun {
+    color: var(--muted);
+    font-size: 0.875rem;
+    margin: 0.35rem 0 0;
+  }
+  .arrow { transition: transform 0.2s ease; display: inline-block; }
+  .card:hover .arrow { transform: translateX(4px); }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <h1>Homepage directions</h1>
+      <p>Three rough explorations for the homepage. Click any one to open it. The names are just placeholders.</p>
+    </header>
+
+    <ul class="grid">
+      <li>
+        <a class="card" href="antibody.html">
+          <div class="shot"><img src="screenshots/antibody.jpg" alt="Antibody homepage hero" loading="lazy"></div>
+          <div class="meta">
+            <h2>Antibody <span class="arrow">→</span></h2>
+            <span class="tag">Polished &amp; professional</span>
+          </div>
+          <p class="pun">Precise, targeted, dependable.</p>
+        </a>
+      </li>
+      <li>
+        <a class="card" href="dendrite.html">
+          <div class="shot"><img src="screenshots/dendrite.jpg" alt="Dendrite homepage hero" loading="lazy"></div>
+          <div class="meta">
+            <h2>Dendrite <span class="arrow">→</span></h2>
+            <span class="tag">Designer-forward</span>
+          </div>
+          <p class="pun">All about the presentation.</p>
+        </a>
+      </li>
+      <li>
+        <a class="card" href="cytokine.html">
+          <div class="shot"><img src="screenshots/cytokine.jpg" alt="Cytokine homepage hero" loading="lazy"></div>
+          <div class="meta">
+            <h2>Cytokine <span class="arrow">→</span></h2>
+            <span class="tag">Fun &amp; playful</span>
+          </div>
+          <p class="pun">The loud little messenger.</p>
+        </a>
+      </li>
+    </ul>
+  </div>
+</body>
+</html>
