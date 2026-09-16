@@ -8,10 +8,22 @@ const apiVersion =
     ? envApiVersion
     : DEFAULT_API_VERSION;
 
-export const sanityClient = createClient({
+const config = {
   projectId: process.env.SANITY_PROJECT_ID,
   dataset: process.env.SANITY_DATASET,
   apiVersion,
-  token: process.env.SANITY_API_WRITE_TOKEN,
   useCdn: false,
+};
+
+/* Reads stay anonymous so a revoked write token cannot 401 the dashboard
+   shell (Sanity: "Unauthorized - Session not found"). Mutations still use
+   the Editor token. */
+export const sanityReadClient = createClient({
+  ...config,
+  perspective: "published",
+});
+
+export const sanityClient = createClient({
+  ...config,
+  token: process.env.SANITY_API_WRITE_TOKEN,
 });

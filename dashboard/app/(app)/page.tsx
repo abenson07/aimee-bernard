@@ -1,5 +1,6 @@
+import { verifySession } from "@/lib/dal";
 import { categorizationEnabled } from "@/lib/flags";
-import { sanityClient } from "@/lib/sanity";
+import { sanityReadClient } from "@/lib/sanity";
 import type { Category, ContentItem, RefinementQuestion } from "@/lib/types";
 import { Dashboard } from "./dashboard";
 
@@ -27,11 +28,13 @@ const ITEMS_QUERY = `*[_type == "contentItem"] | order(_createdAt desc){
 }`;
 
 export default async function DashboardPage() {
+  await verifySession();
+
   const [categoryRows, items] = await Promise.all([
     categorizationEnabled
-      ? sanityClient.fetch<CategoryRow[]>(CATEGORIES_QUERY)
+      ? sanityReadClient.fetch<CategoryRow[]>(CATEGORIES_QUERY)
       : Promise.resolve([]),
-    sanityClient.fetch<ContentItem[]>(ITEMS_QUERY),
+    sanityReadClient.fetch<ContentItem[]>(ITEMS_QUERY),
   ]);
 
   const categories: Category[] = categoryRows.map((row) => ({
