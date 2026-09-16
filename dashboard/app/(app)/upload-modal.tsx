@@ -20,8 +20,14 @@ export function UploadModal({
 }) {
   const [state, formAction, pending] = useActionState(createContentItem, undefined);
   const [tab, setTab] = useState<SourceKind>("file");
-  const [fileName, setFileName] = useState<string | null>(null);
+  const [file, setFile] = useState<File | null>(null);
   const fileRef = useRef<HTMLInputElement>(null);
+  /* Controlled — useActionState remounts the form after every dispatch and
+     wipes uncontrolled inputs, including the chosen File. The filename would
+     still show from state while the actual file was gone. */
+  const [title, setTitle] = useState("");
+  const [url, setUrl] = useState("");
+  const [description, setDescription] = useState("");
 
   const locked = categories.find((category) => category._id === lockedCategoryId) ?? null;
 
@@ -29,13 +35,34 @@ export function UploadModal({
     if (state?.ok) onClose();
   }, [state, onClose]);
 
+  function chooseFile(next: File | null) {
+    setFile(next);
+    if (fileRef.current) {
+      if (next) {
+        const transfer = new DataTransfer();
+        transfer.items.add(next);
+        fileRef.current.files = transfer.files;
+      } else {
+        fileRef.current.value = "";
+      }
+    }
+  }
+
+  function submit(formData: FormData) {
+    if (tab === "file" && file) formData.set("file", file);
+    if (tab !== "file") formData.delete("file");
+    if (tab !== "url") formData.delete("url");
+    if (tab !== "body") formData.delete("body");
+    formAction(formData);
+  }
+
   return (
     <ModalShell
       title="Upload content"
       subtitle="Add a file, a link, or something you have written."
       onClose={onClose}
     >
-      <form action={formAction}>
+      <form action={submit}>
         <div className="modal-body">
           <label className="field">
             <span className="label">Title</span>
@@ -44,7 +71,8 @@ export function UploadModal({
               name="title"
               className="input"
               placeholder="Give this a name"
-              required
+              value={title}
+              onChange={(event) => setTitle(event.target.value)}
             />
           </label>
 
@@ -70,14 +98,13 @@ export function UploadModal({
               ))}
             </div>
 
-            {/* Kept mounted so switching tabs never drops a chosen file. */}
             <input
               type="file"
               name="file"
               ref={fileRef}
               hidden
               disabled={tab !== "file"}
-              onChange={(event) => setFileName(event.target.files?.[0]?.name ?? null)}
+              onChange={(event) => chooseFile(event.target.files?.[0] ?? null)}
             />
 
             {tab === "file" && (
@@ -85,13 +112,18 @@ export function UploadModal({
                 type="button"
                 className="dropzone"
                 onClick={() => fileRef.current?.click()}
+                onDragOver={(event) => event.preventDefault()}
+                onDrop={(event) => {
+                  event.preventDefault();
+                  chooseFile(event.dataTransfer.files[0] ?? null);
+                }}
               >
                 <DropIcon />
                 <span className="dz-strong">
                   Drop a file here or <u>browse</u>
                 </span>
-                {fileName ? (
-                  <span className="dz-file">{fileName}</span>
+                {file ? (
+                  <span className="dz-file">{file.name}</span>
                 ) : (
                   <span className="dz-hint">PDF, DOC, image, or video — up to 25 MB</span>
                 )}
@@ -99,7 +131,14 @@ export function UploadModal({
             )}
 
             {tab === "url" && (
-              <input type="url" name="url" className="input" placeholder="https://" />
+              <input
+                type="url"
+                name="url"
+                className="input"
+                placeholder="https://"
+                value={url}
+                onChange={(event) => setUrl(event.target.value)}
+              />
             )}
 
             {tab === "body" && <RichText name="body" />}
@@ -118,7 +157,7 @@ export function UploadModal({
               </>
             ) : (
               <div style={{ position: "relative", display: "flex" }}>
-                <select name="category" className="input" required defaultValue="">
+                <select name="category" className="input" defaultValue="">
                   <option value="" disabled>
                     Choose a category
                   </option>
@@ -156,6 +195,8 @@ export function UploadModal({
               className="input"
               rows={2}
               placeholder="What is this, in a line or two?"
+              value={description}
+              onChange={(event) => setDescription(event.target.value)}
             />
           </label>
 

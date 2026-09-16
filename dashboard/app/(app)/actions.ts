@@ -11,6 +11,26 @@ import { SESSION_COOKIE } from "@/lib/session";
 
 export type FormState = { error?: string; ok?: boolean; key?: string } | undefined;
 
+function writeErrorMessage(error: unknown): string {
+  const message =
+    error && typeof error === "object" && "message" in error && typeof error.message === "string"
+      ? error.message
+      : "";
+  const status =
+    error && typeof error === "object" && "statusCode" in error && typeof error.statusCode === "number"
+      ? error.statusCode
+      : undefined;
+
+  if (status === 401 || /unauthorized|session not found/i.test(message)) {
+    return "Sanity refused the write. SANITY_API_WRITE_TOKEN on Vercel must be an Editor token, not Viewer.";
+  }
+  if (status === 402 || /quota|plan_limit/i.test(message)) {
+    return "Sanity hit a plan limit, so this file can't be stored right now.";
+  }
+  if (message) return message;
+  return "That didn't save. Try again.";
+}
+
 type PortableTextBlock = {
   _type: string;
   _key?: string;
@@ -101,6 +121,10 @@ export async function createContentItem(
     doc.description = description.trim();
   }
 
+  if (!process.env.SANITY_API_WRITE_TOKEN) {
+    return { error: "Missing SANITY_API_WRITE_TOKEN. Add an Editor token on the Vercel project." };
+  }
+
   try {
     if (hasFile && file instanceof File) {
       const asset = await sanityClient.assets.upload("file", file, { filename: file.name });
@@ -112,8 +136,9 @@ export async function createContentItem(
     }
 
     await sanityClient.create(doc);
-  } catch {
-    return { error: "That didn't save. Try again." };
+  } catch (error) {
+    console.error("createContentItem failed", error);
+    return { error: writeErrorMessage(error) };
   }
 
   revalidatePath("/");
