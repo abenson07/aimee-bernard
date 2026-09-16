@@ -1,8 +1,9 @@
 import { verifySession } from "@/lib/dal";
 import { categorizationEnabled } from "@/lib/flags";
-import { sanityReadClient } from "@/lib/sanity";
+import { sanityClient } from "@/lib/sanity";
 import type { Category, ContentItem, RefinementQuestion } from "@/lib/types";
 import { Dashboard } from "./dashboard";
+import { connection } from "next/server";
 
 type CategoryRow = Omit<Category, "pending"> & { refinementQA?: RefinementQuestion[] };
 
@@ -27,14 +28,17 @@ const ITEMS_QUERY = `*[_type == "contentItem"] | order(_createdAt desc){
   "categoryName": category->name
 }`;
 
+export const dynamic = "force-dynamic";
+
 export default async function DashboardPage() {
+  await connection();
   await verifySession();
 
   const [categoryRows, items] = await Promise.all([
     categorizationEnabled
-      ? sanityReadClient.fetch<CategoryRow[]>(CATEGORIES_QUERY)
+      ? sanityClient.fetch<CategoryRow[]>(CATEGORIES_QUERY)
       : Promise.resolve([]),
-    sanityReadClient.fetch<ContentItem[]>(ITEMS_QUERY),
+    sanityClient.fetch<ContentItem[]>(ITEMS_QUERY),
   ]);
 
   const categories: Category[] = categoryRows.map((row) => ({

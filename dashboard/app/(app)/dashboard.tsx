@@ -1,6 +1,7 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { useRouter } from "next/navigation";
 import type { Category, ContentItem } from "@/lib/types";
 import { logout } from "./actions";
 import {
@@ -15,6 +16,7 @@ import {
 import { UploadModal } from "./upload-modal";
 import { QuizModal } from "./quiz-modal";
 import { ItemModal } from "./item-modal";
+import { ToastStack, useToasts } from "./toasts";
 
 type Modal =
   | { kind: "upload"; categoryId: string | null }
@@ -51,16 +53,45 @@ export function Dashboard({
 }) {
   const [modal, setModal] = useState<Modal>(null);
   const [query, setQuery] = useState("");
+  const [added, setAdded] = useState<ContentItem[]>([]);
+  const [removed, setRemoved] = useState<ContentItem[]>([]);
+  const toasts = useToasts();
+  const router = useRouter();
+
+  useEffect(() => {
+    setAdded((current) => current.filter((item) => !items.some((row) => row._id === item._id)));
+    setRemoved((current) => current.filter((item) => items.some((row) => row._id === item._id)));
+  }, [items]);
+
+  const liveItems = useMemo(() => {
+    const removedIds = new Set(removed.map((item) => item._id));
+    const extras = added.filter(
+      (item) => !items.some((row) => row._id === item._id) && !removedIds.has(item._id),
+    );
+    return [...extras, ...items.filter((item) => !removedIds.has(item._id))];
+  }, [items, added, removed]);
+
+  const liveCategories = useMemo(
+    () =>
+      categories.map((category) => ({
+        ...category,
+        count:
+          category.count +
+          added.filter((item) => item.categoryId === category._id).length -
+          removed.filter((item) => item.categoryId === category._id).length,
+      })),
+    [categories, added, removed],
+  );
 
   const visible = useMemo(() => {
     const q = query.trim().toLowerCase();
-    if (!q) return items;
-    return items.filter(
+    if (!q) return liveItems;
+    return liveItems.filter(
       (item) =>
         item.title.toLowerCase().includes(q) ||
         (item.categoryName ?? "").toLowerCase().includes(q),
     );
-  }, [items, query]);
+  }, [liveItems, query]);
 
   const close = () => setModal(null);
 
@@ -88,7 +119,7 @@ export function Dashboard({
       <main className="page">
         {categorizationEnabled && (
         <div className="cat-grid">
-          {categories.map((category) => (
+          {liveCategories.map((category) => (
             <div key={category._id} className="cat-card">
               <button
                 type="button"
@@ -136,7 +167,7 @@ export function Dashboard({
             <div className="log-title">
               <h2>Content log</h2>
               <span className="log-count">
-                {items.length} {items.length === 1 ? "item" : "items"}
+                {liveItems.length} {liveItems.length === 1 ? "item" : "items"}
               </span>
             </div>
             <label className="search">
@@ -163,15 +194,20 @@ export function Dashboard({
               </thead>
               <tbody>
                 {visible.map((item) => (
-                  <tr key={item._id}>
+                  <tr
+                    key={item._id}
+                    className="row-clickable"
+                    tabIndex={0}
+                    onClick={() => setModal({ kind: "item", item })}
+                    onKeyDown={(event) => {
+                      if (event.key === "Enter" || event.key === " ") {
+                        event.preventDefault();
+                        setModal({ kind: "item", item });
+                      }
+                    }}
+                  >
                     <td>
-                      <button
-                        type="button"
-                        className="cell row-title"
-                        onClick={() => setModal({ kind: "item", item })}
-                      >
-                        {item.title}
-                      </button>
+                      <span className="cell row-title">{item.title}</span>
                     </td>
                     {categorizationEnabled && (
                       <td>
@@ -197,7 +233,7 @@ export function Dashboard({
             </table>
           ) : (
             <p className="log-empty">
-              {items.length > 0
+              {liveItems.length > 0
                 ? `Nothing matches “${query}”.`
                 : categorizationEnabled
                   ? "Nothing uploaded yet. Use Upload, or pick a category above."
@@ -213,6 +249,15 @@ export function Dashboard({
           lockedCategoryId={modal.categoryId}
           categorizationEnabled={categorizationEnabled}
           onClose={close}
+          onCreated={(item) => {
+            const categoryName = categories.find((category) => category._id === item.categoryId)?.name;
+            setAdded((current) => [
+              { ...item, categoryName },
+              ...current.filter((row) => row._id !== item._id),
+            ]);
+            toasts.push(`Uploaded “${item.title}”.`);
+            router.refresh();
+          }}
         />
       )}
 
@@ -226,8 +271,18 @@ export function Dashboard({
           categories={categories}
           categorizationEnabled={categorizationEnabled}
           onClose={close}
+          onDeleted={(item) => {
+            setRemoved((current) =>
+              current.some((row) => row._id === item._id) ? current : [item, ...current],
+            );
+            setAdded((current) => current.filter((row) => row._id !== item._id));
+            toasts.push(`Deleted “${item.title}”.`);
+            router.refresh();
+          }}
         />
       )}
+
+      <ToastStack toasts={toasts.toasts} onDismiss={toasts.dismiss} />
     </>
   );
 }

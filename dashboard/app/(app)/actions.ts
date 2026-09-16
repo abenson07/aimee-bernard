@@ -8,8 +8,15 @@ import { verifySession } from "@/lib/dal";
 import { categorizationEnabled } from "@/lib/flags";
 import { sanityClient } from "@/lib/sanity";
 import { SESSION_COOKIE } from "@/lib/session";
+import { withHttps } from "@/lib/url";
+import type { ContentItem } from "@/lib/types";
 
-export type FormState = { error?: string; ok?: boolean; key?: string } | undefined;
+export type FormState = {
+  error?: string;
+  ok?: boolean;
+  key?: string;
+  item?: ContentItem;
+} | undefined;
 
 function writeErrorMessage(error: unknown): string {
   const message =
@@ -130,19 +137,44 @@ export async function createContentItem(
       const asset = await sanityClient.assets.upload("file", file, { filename: file.name });
       doc.file = { _type: "file", asset: { _type: "reference", _ref: asset._id } };
     } else if (hasUrl && typeof url === "string") {
-      doc.url = url.trim();
+      doc.url = withHttps(url);
     } else if (blocks) {
       doc.body = blocks;
     }
 
-    await sanityClient.create(doc);
+    const created = await sanityClient.create(doc);
+    revalidatePath("/");
+    return {
+      ok: true,
+      item: {
+        _id: created._id,
+        _createdAt: created._createdAt,
+        title: title.trim(),
+        url: typeof created.url === "string" ? created.url : undefined,
+        description: typeof created.description === "string" ? created.description : undefined,
+        fileName: hasFile && file instanceof File ? file.name : undefined,
+        hasBody: Boolean(blocks),
+        categoryId:
+          typeof categoryId === "string" && categoryId ? categoryId : undefined,
+      },
+    };
   } catch (error) {
     console.error("createContentItem failed", error);
     return { error: writeErrorMessage(error) };
   }
+}
+
+export async function deleteContentItem(id: string): Promise<{ error?: string } | undefined> {
+  await verifySession();
+
+  try {
+    await sanityClient.delete(id);
+  } catch (error) {
+    console.error("deleteContentItem failed", error);
+    return { error: writeErrorMessage(error) };
+  }
 
   revalidatePath("/");
-  return { ok: true };
 }
 
 export async function answerQuestion(

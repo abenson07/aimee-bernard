@@ -1,7 +1,8 @@
 "use client";
 
 import { useActionState, useEffect, useRef, useState } from "react";
-import type { Category, SourceKind } from "@/lib/types";
+import type { Category, ContentItem, SourceKind } from "@/lib/types";
+import { withHttps } from "@/lib/url";
 import { createContentItem } from "./actions";
 import { ChevronDownIcon, DropIcon, LockIcon } from "./icons";
 import { ModalShell } from "./modal-shell";
@@ -12,11 +13,13 @@ export function UploadModal({
   lockedCategoryId,
   categorizationEnabled,
   onClose,
+  onCreated,
 }: {
   categories: Category[];
   lockedCategoryId: string | null;
   categorizationEnabled: boolean;
   onClose: () => void;
+  onCreated?: (item: ContentItem) => void;
 }) {
   const [state, formAction, pending] = useActionState(createContentItem, undefined);
   const [tab, setTab] = useState<SourceKind>("file");
@@ -32,8 +35,11 @@ export function UploadModal({
   const locked = categories.find((category) => category._id === lockedCategoryId) ?? null;
 
   useEffect(() => {
-    if (state?.ok) onClose();
-  }, [state, onClose]);
+    if (state?.ok && state.item) {
+      onCreated?.(state.item);
+      onClose();
+    }
+  }, [state, onClose, onCreated]);
 
   function chooseFile(next: File | null) {
     setFile(next);
@@ -132,12 +138,13 @@ export function UploadModal({
 
             {tab === "url" && (
               <input
-                type="url"
+                type="text"
                 name="url"
                 className="input"
-                placeholder="https://"
+                placeholder="example.com"
                 value={url}
                 onChange={(event) => setUrl(event.target.value)}
+                onBlur={(event) => setUrl(withHttps(event.target.value))}
               />
             )}
 
