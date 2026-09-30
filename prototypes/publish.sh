@@ -5,7 +5,7 @@ set -e
 out=.vercel/output/static/prototypes
 mkdir -p "$out"
 cp prototypes/*.html prototypes/*.css "$out"/
-cp -R prototypes/set-a prototypes/set-b prototypes/set-c prototypes/round-3 prototypes/set-d prototypes/set-e "$out"/
+cp -R prototypes/neutrophil prototypes/macrophage prototypes/set-c prototypes/round-3 prototypes/t-cell prototypes/b-cell "$out"/
 mkdir -p "$out/data"
 cp prototypes/data/*.json "$out/data"/
 cp -R prototypes/src prototypes/videos prototypes/screenshots "$out"/
