@@ -1,0 +1,149 @@
+<!--
+TEMPLATE REFERENCE — NOT A PAGE. Do not link or publish.
+Source: user paste "structured-data-1" from the Nextwell Webflow kit (byqsupply-components.netlify.app/Nextwell) — a "timeline" section.
+Used for: the inside of the Educator course panel (see `course-panel.md`) -> plan class `.course-timeline`.
+User: "I want the left section to be sticky as the right scrolls. I want this to be a section for the different 'classes' in the courses"
+ -> one `.course-timeline` block per YEAR / course group. LEFT column = title (e.g. "YEAR 1. The 'Plains'"), a short paragraph, and a button — `position: sticky` while the RIGHT column (the courses and their session topics) scrolls past.
+Figma (source of visual truth): node 80:12308 "Structured Data 1" (1507 x 1732), padding 120px 27px 80px, flex, space-between:
+  LEFT "Text Container" (width 587, gap 24): title 40px / 48px / -2px, `#27241f` ("YEAR 1. The 'Plains'"); paragraph 16px / 24px, rgba(39,36,31,.88); glass button (blur 8px, bg rgba(0,0,0,.08), radius 32, padding 12x16, 16px medium, with a 16px arrow icon): Figma label "See in action" (template copy).
+  RIGHT "Timeline Container" (width 701, padding 10, gap 48): TWO columns:
+    Column A (203 wide): decorative timeline — repeating groups, each group = one SOLID 2px dark line (203 wide) with a 10px dot 25px to its left, then four FAINT lines (122 wide, 32px apart, `#00000029`/borders-subtle). Group heights 160 / 128 / 128 / 160, gap 32. (The last group has a second dot at the bottom.) Purely decorative: repeat down the full height of the right content.
+    Column B (312 wide, gap 57 between events) = "Event Containers" (gap 12 inside): mono label 12px / 16px, uppercase, letter-spacing .75px, #27241f (Figma text: the COURSE, e.g. "IDPT5016 FOUNDATIONAL PRINCIPLES"); description block 14px / 20px (the session topics, one per paragraph, 16px spacing); then "Event Details" = pill chips (radius 40, padding 4x8, mono 10px / 12px uppercase, letter-spacing .75px; colors: default `#e1e0de`, cyan `#d0edfc`, green `#ddfcd0`, purple `#d5d0fc`).
+  In Figma the first event holds all 11 topics of IDPT5016 (904px tall); the other four events are the template's placeholder timestamps ("09:13 Ops Agent picked up...") — replace with the real courses/topics from `teaching-page-content.md`, formatted like the first event.
+Template layout (CSS below): `.timeline_halves` grid `5fr 1fr 6fr` (left headline in col 1, right `.timeline` in col 3); `.timeline_item` = flex, gap 48: `.left_timeline` (dot + 12.69rem lines column) + `.right_timeline` (label, text max-width 11.25rem, tags); items stacked with gap 32; <=991px: single column (flex-flow column, gap 64).
+  The template has NO sticky behavior — add `position: sticky; top: <header offset>` to the left column (`align-self: start`) on desktop; static on <=991px.
+Saved trimmed: removed Webflow reset, `w-*` CSS, `:root` token lists and per-breakpoint token re-declarations, and scripts (no interactions in this template).
+Resolved tokens: page bg #f5f4f1 (ours: the page bg); ink/dark #000 (Figma: #27241f); tone-subtle rgba(0,0,0,.64); tone-medium rgba(0,0,0,.88); borders-subtle rgba(0,0,0,.16); lifts-two #e1e0de; radius tag 16px; spacing tokens: nano 1rem, tiny 1.5rem, small 3rem, extra-small 2rem, pico .75rem, hairline .25rem, minimal .5rem; section padding medium 7.5rem (5rem <=767px);
+  h2 2.5rem/3rem/-.125rem (2.2rem/2.8rem <=991px; 2rem/2.5rem <=767px); label-1 .75rem/1rem/.047rem; label-2 .625rem/.75rem; b3 .875rem/1.25rem; b2 1rem/1.5rem. Font in the template: Geist (ours: Instrument Sans / IBM Plex Sans / IBM Plex Mono).
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>structured-data-1 (Nextwell) — reference</title>
+<style>
+.label-large { font-size: .75rem; line-height: 1rem; letter-spacing: .047rem; text-transform: uppercase; font-weight: 500 }
+.label-small { font-size: .625rem; line-height: .75rem; letter-spacing: .047rem; text-transform: uppercase; font-weight: 500 }
+.container-large { z-index: 2; width: 100%; max-width: 112.5rem; margin-left: auto; margin-right: auto }
+.heading-style-h2 { margin: 0; font-size: 2.5rem; line-height: 3rem; font-weight: 400; letter-spacing: -.125rem }
+.text-size-regular { font-size: 1rem; line-height: 1.5rem; margin: 0 }
+.text-size-regular.tone-medium { color: #000000e0 }
+.text-size-small { font-size: .875rem; line-height: 1.25rem; margin: 0 }
+.tone-subtle { color: #000000a3 }
+.cta_primary.secondary { grid-column-gap: .5rem; border-radius: 2rem; color: #000; font-size: 1rem; line-height: 1.25rem; font-weight: 500; cursor: pointer; flex: none; justify-content: center; align-items: center; text-decoration: none; transition: color .3s; display: flex; position: relative }
+.cta_primary.secondary:hover { color: #f5f4f1 }
+.button_text-mask { height: 1.25rem; pointer-events: none; flex: none; overflow: hidden }
+.text-button { z-index: 1; position: relative; text-shadow: 0 1.5em 0 #f5f4f1 }
+.icon_button { z-index: 2; width: 1rem; height: 1rem; flex: none; justify-content: center; align-items: center; display: flex; position: relative }
+.btn-bg.secondary { border: 1px solid #0000; border-radius: 2rem; background-color: #00000014; -webkit-backdrop-filter: blur(5px); backdrop-filter: blur(5px); transition: background-color .3s; position: absolute; inset: 0% }
+.btn-bg.secondary:hover { background-color: #000 }
+.button-inner { padding: .75rem 1rem; pointer-events: none; flex: none; justify-content: center; align-items: center; display: flex; overflow: hidden }
+.padding-global { width: 100%; padding-right: 2rem; padding-left: 2rem }
+.section_timeline { padding-top: 7.5rem; padding-bottom: 7.5rem }
+.timeline_halves { grid-column-gap: 1rem; grid-row-gap: 1rem; grid-template-rows: auto; grid-template-columns: 5fr 1fr 6fr; display: grid }
+.left_timeline { grid-column-gap: 1rem; justify-content: space-between; align-items: flex-start; display: flex }
+.timeline_item { grid-column-gap: 3rem; grid-row-gap: 3rem; display: flex }
+.circle_timeline { border-radius: 100vw; background-color: #000; width: .63rem; height: .63rem; margin-top: -4px }
+.timeline_lines { grid-row-gap: 2rem; flex-flow: column; width: 12.69rem; display: flex }
+.timeline { grid-row-gap: 2rem; flex-flow: column; width: 100%; display: flex }
+.line_timeline-long { background-color: #000; width: 100%; height: 2px }
+.line_timeline-long.short { background-color: #00000029; max-width: 65% }
+.right_timeline { grid-row-gap: .75rem; flex-flow: column; justify-content: flex-start; align-items: flex-start; display: flex }
+.headline_timeline { grid-row-gap: 1.5rem; flex-flow: column; justify-content: flex-start; align-items: flex-start; display: flex }   /* <- make this sticky (desktop) */
+.wrap_tags-timeline { grid-column-gap: .25rem; grid-row-gap: .25rem; flex-flow: wrap; justify-content: flex-start; align-items: center; display: flex }
+.tag-timeline { padding: .25rem .5rem; border-radius: 1rem; background-color: #e1e0de }
+.tag-timeline.cyan { background-color: #d0edfc }
+.tag-timeline.green { background-color: #ddfcd0 }
+.tag-timeline.pruple { background-color: #d5d0fc }
+.wrap_text-timeline { max-width: 11.25rem }
+@media screen and (max-width:991px) { .heading-style-h2 { font-size: 2.2rem; line-height: 2.8rem } .timeline_halves { grid-row-gap: 4rem; flex-flow: column; display: flex } }
+@media screen and (max-width:767px) {
+  .heading-style-h2 { letter-spacing: -.062rem; font-size: 2rem; line-height: 2.5rem }
+  .padding-global { padding-left: 1rem; padding-right: 1rem }
+  .section_timeline { padding-top: 5rem; padding-bottom: 5rem }
+  .timeline_halves { grid-row-gap: 2.5rem }
+  .timeline_item { grid-column-gap: 2rem }
+}
+@media screen and (max-width:479px) { .left_timeline { justify-content: flex-start } .timeline_item { flex-flow: column } .timeline { grid-row-gap: 3rem } }
+</style>
+</head>
+<body>
+<section class="section_timeline">
+  <div class="padding-global">
+    <div class="container-large">
+      <div class="timeline_halves">
+        <div class="headline_timeline">
+          <h2 class="heading-style-h2">A task in motion — <span class="tone-subtle"><br>from request to completion</span></h2>
+          <p class="text-size-regular tone-medium">Execution in next:well follows a clear operational flow. Tasks are created, picked up by agents, processed, verified, and logged — with visibility at every stage. Below is a real-world example of how a task moves through the system.</p>
+          <a href="#" class="cta_primary secondary">
+            <div class="button-inner">
+              <div class="icon_button"><svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 12 12" fill="none"><path d="M2.5 6H9.5M9.5 6L6 2.5M9.5 6L6 9.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg></div>
+              <div class="button_text-mask"><div class="text-button">See in action</div></div>
+              <div class="icon_button"><svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 12 12" fill="none"><path d="M2.5 6H9.5M9.5 6L6 2.5M9.5 6L6 9.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg></div>
+            </div>
+            <div class="btn-bg secondary"></div>
+          </a>
+        </div>
+        <div class="timeline" style="grid-area: 1/3/2/4">
+          <div class="timeline_item">
+            <div class="left_timeline">
+              <div class="circle_timeline"></div>
+              <div class="timeline_lines"><div class="line_timeline-long"></div><div class="line_timeline-long short"></div><div class="line_timeline-long short"></div><div class="line_timeline-long short"></div><div class="line_timeline-long short"></div></div>
+            </div>
+            <div class="right_timeline">
+              <div class="label-large">09:12</div>
+              <div class="wrap_text-timeline"><div class="text-size-small">Deployment request submitted to the system</div></div>
+              <div class="wrap_tags-timeline"><div class="tag-timeline"><div class="label-small">Priority set</div></div><div class="tag-timeline cyan"><div class="label-small">Scope defined</div></div></div>
+            </div>
+          </div>
+          <div class="timeline_item">
+            <div class="left_timeline">
+              <div class="circle_timeline"></div>
+              <div class="timeline_lines"><div class="line_timeline-long"></div><div class="line_timeline-long short"></div><div class="line_timeline-long short"></div><div class="line_timeline-long short"></div><div class="line_timeline-long short"></div></div>
+            </div>
+            <div class="right_timeline">
+              <div class="label-large">09:13</div>
+              <div class="wrap_text-timeline"><div class="text-size-small">Ops Agent picked up the task automatically</div></div>
+              <div class="wrap_tags-timeline"><div class="tag-timeline"><div class="label-small">Capacity available</div></div><div class="tag-timeline green"><div class="label-small">No conflicts detected</div></div></div>
+            </div>
+          </div>
+          <div class="timeline_item">
+            <div class="left_timeline">
+              <div class="circle_timeline"></div>
+              <div class="timeline_lines"><div class="line_timeline-long"></div><div class="line_timeline-long short"></div><div class="line_timeline-long short"></div><div class="line_timeline-long short"></div><div class="line_timeline-long short"></div></div>
+            </div>
+            <div class="right_timeline">
+              <div class="label-large">09:14</div>
+              <div class="wrap_text-timeline"><div class="text-size-small">Deployment process initiated</div></div>
+              <div class="wrap_tags-timeline"><div class="tag-timeline"><div class="label-small">Environment prepared</div></div><div class="tag-timeline pruple"><div class="label-small">Dependencies verified</div></div></div>
+            </div>
+          </div>
+          <div class="timeline_item">
+            <div class="left_timeline">
+              <div class="circle_timeline"></div>
+              <div class="timeline_lines"><div class="line_timeline-long"></div><div class="line_timeline-long short"></div><div class="line_timeline-long short"></div><div class="line_timeline-long short"></div><div class="line_timeline-long short"></div></div>
+            </div>
+            <div class="right_timeline">
+              <div class="label-large">09:21</div>
+              <div class="wrap_text-timeline"><div class="text-size-small">Deployment finished successfully</div></div>
+              <div class="wrap_tags-timeline"><div class="tag-timeline"><div class="label-small">Execution time: 9 minutes</div></div></div>
+            </div>
+          </div>
+          <div class="timeline_item">
+            <div class="left_timeline">
+              <div class="circle_timeline"></div>
+              <div class="timeline_lines"><div class="line_timeline-long"></div><div class="line_timeline-long short"></div><div class="line_timeline-long short"></div><div class="line_timeline-long short"></div><div class="line_timeline-long short"></div></div>
+            </div>
+            <div class="right_timeline">
+              <div class="label-large">09:21</div>
+              <div class="wrap_text-timeline"><div class="text-size-small">Execution recorded in system history</div></div>
+              <div class="wrap_tags-timeline"><div class="tag-timeline green"><div class="label-small">Available for review and audit</div></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+</body>
+</html>

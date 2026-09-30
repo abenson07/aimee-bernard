@@ -1,0 +1,100 @@
+<!--
+TEMPLATE REFERENCE — NOT A PAGE. Do not link or publish.
+Source: user paste "value-features-1" from the Stringer Webflow kit (byqsupply-components.netlify.app/Stringer).
+Used for: "What she's working on" on About A (Figma 80:20660) and Home B (Figma 80:21129) -> plan class `.pillars`.
+USER NOTE: the header is LEFT-ALIGNED. In this template the intro sits in grid columns 7-13 (`.pillars-intro { grid-column: 7/13 }`); use columns 1-7 (Figma: container x=32, width 680).
+Figma differences: no I/II/III/IV numerals; title (24px) then description above the image; image 332x442 (3:4); cards gap 16; 4 columns.
+Saved trimmed: removed Webflow reset, `w-*` CSS, and the `[data-reveal]` GSAP/SplitText reveal script (rebuild with a small IntersectionObserver: label fades, heading words slide up, paragraph rises, pillars stagger).
+Template colors (NOT used; the page uses --bg #bccadb and ink #121212): section bg #ece8e2, text #121212, subtle #121212a3, line #1212121f, media bg #e2ddd4.
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>value-features-1 (Stringer) — reference</title>
+<style>
+.section { color: #121212; background-color: #ece8e2; padding-top: 120px; padding-bottom: 120px; font-family: General Sans, sans-serif; position: relative }
+.text-body-lg { letter-spacing: -.015em; margin-top: 0; margin-bottom: 0; font-size: 20px; font-weight: 400; line-height: 1.4 }
+.text-body-lg.text-subtle { color: #121212a3 }
+.text-body-lg.text-subtle.measure { max-width: 60ch }
+.text-body-lg.no-margins { margin: 0 }
+.media { background-color: #e2ddd4; width: 100%; padding-top: 125%; position: relative; overflow: hidden }
+.media.is-3x4 { padding-top: 133.333% }
+.media-img { object-fit: cover; object-position: center; width: 100%; height: 100%; transition: transform .5s; position: absolute; top: 0; left: 0 }
+.text-label { color: #121212a3; letter-spacing: .08em; text-transform: uppercase; font-size: 11px; font-weight: 500; line-height: 1.2 }
+.main-container { width: 100%; max-width: 1800px; margin-left: auto; margin-right: auto; padding-left: 32px; padding-right: 32px; position: relative }
+.text-body { letter-spacing: 0; margin-top: 0; margin-bottom: 0; font-size: 16px; font-weight: 400; line-height: 1.5 }
+.text-body.text-subtle { color: #121212a3 }
+.text-body.no-margins { margin: 0 }
+.text-display-sm { letter-spacing: -.03em; margin-top: 0; margin-bottom: 0; font-size: 72px; font-weight: 500; line-height: 1 }
+.text-display-sm.no-margins { margin: 0 }
+.text-h-sm { letter-spacing: -.02em; margin-top: 0; margin-bottom: 0; font-size: 24px; font-weight: 500; line-height: 1.1 }
+.text-h-sm.no-margins { margin: 0 }
+.stack-tight { grid-column-gap: 12px; grid-row-gap: 12px; flex-direction: column; align-items: flex-start; display: flex }
+.pillars-head { grid-template-rows: auto; grid-template-columns: repeat(12, minmax(0,1fr)); column-gap: 16px; padding-bottom: 160px; display: grid }
+.pillars-intro { grid-column-gap: 24px; grid-row-gap: 24px; flex-direction: column; grid-column: 7/13; align-items: flex-start; display: flex } /* USER: make this LEFT-aligned, columns 1/7 */
+.pillars { border-top: 1px solid #1212121f; grid-template-rows: auto; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 48px 16px; display: grid }
+.pillar { grid-column-gap: 24px; grid-row-gap: 24px; flex-direction: column; padding-top: 24px; display: flex }
+.pillar-num { color: #121212a3; letter-spacing: .08em; font-size: 11px; font-weight: 500; line-height: 1.2 }
+.pillar-copy { grid-column-gap: 12px; grid-row-gap: 12px; flex-direction: column; min-height: 132px; display: flex }
+@media screen and (max-width:991px) {
+  .text-display-sm { font-size: 56px }
+  .pillars-head { padding-bottom: 120px }
+  .pillars-intro { grid-column: 1/11 }
+  .pillars { grid-template-columns: 1fr 1fr; row-gap: 48px }
+  .pillar-copy { min-height: 0 }
+}
+@media screen and (max-width:767px) { .section { padding-top: 96px; padding-bottom: 96px } .main-container { padding-left: 24px; padding-right: 24px } .text-display-sm { font-size: 44px } .pillars-head { padding-bottom: 64px } .pillars-intro { grid-column: 1/13 } }
+@media screen and (max-width:479px) { .section { padding-top: 80px; padding-bottom: 80px } .text-body-lg { font-size: 18px } .main-container { padding-left: 20px; padding-right: 20px } .text-display-sm { font-size: 36px } .text-h-sm { font-size: 20px } .pillars { grid-template-columns: 1fr } }
+</style>
+</head>
+<body>
+<section data-motion="" class="section stringer-pillars">
+  <div class="main-container">
+    <div class="pillars-head">
+      <div class="pillars-intro">
+        <div class="stack-tight">
+          <div data-reveal="fade" data-reveal-at="0" class="text-label">Why we make these</div>
+          <h2 data-reveal="words" data-reveal-at="0.1" class="text-display-sm no-margins">Made to be kept.</h2>
+        </div>
+        <p data-reveal="up" data-reveal-at="0.5" class="text-body-lg text-subtle measure no-margins">People treat the board as sacred and everything else as disposable. Fins snapped and replaced. Wax from a bin by the till. The boards got better every year and the parts got worse. So we started making the parts.</p>
+      </div>
+    </div>
+    <div data-reveal="stagger" class="pillars">
+      <div class="pillar">
+        <div class="pillar-num">I</div>
+        <div class="pillar-copy">
+          <h3 class="text-h-sm no-margins">Made to be kept</h3>
+          <p class="text-body text-subtle no-margins">Fibreglass layup, hand-foiled, sanded matte. A fin you replace because you lost it, not because it broke.</p>
+        </div>
+        <div class="media is-3x4"><img src="https://byqsupply-components.netlify.app/Stringer/images/d08-fin-macro.webp" loading="lazy" alt="Macro of an amber resin fin edge in a clamp, weave visible" class="media-img"></div>
+      </div>
+      <div class="pillar">
+        <div class="pillar-num">II</div>
+        <div class="pillar-copy">
+          <h3 class="text-h-sm no-margins">The parts you touch on land</h3>
+          <p class="text-body text-subtle no-margins">The wax lives on the dashboard. The key is in the glovebox. None of it happens in the water.</p>
+        </div>
+        <div class="media is-3x4"><img src="https://byqsupply-components.netlify.app/Stringer/images/e03-category-wax.webp" loading="lazy" alt="Two bars of wax and a cloth on a dusty dashboard" class="media-img"></div>
+      </div>
+      <div class="pillar">
+        <div class="pillar-num">III</div>
+        <div class="pillar-copy">
+          <h3 class="text-h-sm no-margins">Tested where we live</h3>
+          <p class="text-body text-subtle no-margins">One coast, not a global team. Cold water, long drives, dirt pullouts. Everybody here has a job.</p>
+        </div>
+        <div class="media is-3x4"><img src="https://byqsupply-components.netlify.app/Stringer/images/d04-track-walk.webp" loading="lazy" alt="Surfer walking a dirt track through cypress with a board under one arm" class="media-img"></div>
+      </div>
+      <div class="pillar">
+        <div class="pillar-num">IV</div>
+        <div class="pillar-copy">
+          <h3 class="text-h-sm no-margins">Made in small runs</h3>
+          <p class="text-body text-subtle no-margins">The same shape since the beginning, out of the same shop. Scarcity is a consequence of care, not a tactic.</p>
+        </div>
+        <div class="media is-3x4"><img src="https://byqsupply-components.netlify.app/Stringer/images/e05-story-shop.webp" loading="lazy" alt="Shop bench in low sun, tools on the wall, a fin blank waiting" class="media-img"></div>
+      </div>
+    </div>
+  </div>
+</section>
+</body>
+</html>

@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Home A &middot; Round 3 &middot; Aimee Pugh-Bernard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="round-3-tokens.css">
+<link rel="stylesheet" href="media-card.css">
+<style>
+  @font-face {
+    font-family: "Neue Montreal Mono";
+    src: url("../fonts/Neue Montreal Mono/web/PPNeueMontrealMono-Regular.woff2") format("woff2"),
+         url("../fonts/Neue Montreal Mono/web/PPNeueMontrealMono-Regular.woff") format("woff");
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+  }
+
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0;
+    height: 100%;
+    overflow: hidden;
+    background: var(--r3-field);
+    color: var(--r3-ink);
+    font-family: var(--r3-sans);
+  }
+  img { max-width: 100%; display: block; }
+  a { color: inherit; }
+
+  .home-a {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    min-height: 520px;
+    overflow: hidden;
+  }
+
+  .home-a__name {
+    position: absolute;
+    z-index: 2;
+    left: var(--r3-gutter);
+    top: 50%;
+    transform: translateY(calc(-50% - 0.5rem));
+    margin: 0;
+    font-family: var(--r3-serif);
+    font-weight: 400;
+    font-size: clamp(3.25rem, 7.2vw, 5.5rem);
+    line-height: 1.05;
+    letter-spacing: -0.04em;
+    white-space: nowrap;
+  }
+
+  .home-a__name .surname {
+    color: var(--r3-ink-muted);
+  }
+
+  .home-a__roles {
+    position: absolute;
+    z-index: 2;
+    left: var(--r3-gutter);
+    top: calc(50% + clamp(2.5rem, 5vw, 3.75rem));
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 16px;
+    margin: 0;
+    padding: 8px 0 0;
+    list-style: none;
+    font-family: var(--r3-serif);
+    font-size: clamp(1.35rem, 2.4vw, 2rem);
+    line-height: 0.85;
+    letter-spacing: -0.03em;
+  }
+
+  .home-a__roles a {
+    text-decoration: none;
+    color: var(--r3-ink);
+    opacity: 0.5;
+    transition: opacity 0.3s var(--r3-ease);
+  }
+
+  .home-a__roles a:hover,
+  .home-a__roles a:focus-visible {
+    opacity: 1;
+  }
+
+  .home-a__figure {
+    position: absolute;
+    z-index: 1;
+    right: clamp(8%, 12vw, 18%);
+    bottom: 0;
+    height: min(88vh, 760px);
+    width: auto;
+    max-width: min(42vw, 480px);
+    pointer-events: none;
+    user-select: none;
+  }
+
+  .home-a__figure img {
+    height: 100%;
+    width: auto;
+    max-width: 100%;
+    object-fit: contain;
+    object-position: bottom center;
+  }
+
+  .home-a__card {
+    position: absolute;
+    z-index: 3;
+    right: var(--r3-gutter);
+    bottom: clamp(24px, 4vh, 48px);
+    max-width: min(361px, calc(100% - var(--r3-gutter) * 2));
+  }
+
+
+  @media (max-width: 900px) {
+    .home-a__name {
+      white-space: normal;
+      top: auto;
+      bottom: 42%;
+      transform: none;
+      max-width: 12ch;
+    }
+    .home-a__roles {
+      top: auto;
+      bottom: 28%;
+      max-width: 16rem;
+    }
+    .home-a__figure {
+      right: 50%;
+      transform: translateX(50%);
+      height: 52vh;
+      max-width: 85vw;
+    }
+    .home-a__card {
+      left: var(--r3-gutter);
+      right: var(--r3-gutter);
+      max-width: none;
+    }
+  }
+</style>
+</head>
+<body>
+<main class="home-a" aria-label="Home A hero">
+  <h1 class="home-a__name">Aimee <span class="surname">Pugh-Bernard</span></h1>
+  <ul class="home-a__roles">
+    <li><a href="educator.html">Educator</a></li>
+    <li><a href="immunologist.html">Immunologist</a></li>
+    <li><a href="communicator.html">Communicator</a></li>
+  </ul>
+
+  <figure class="home-a__figure" aria-hidden="true">
+    <img src="/prototypes/src/aimee-hero.png" alt="">
+  </figure>
+
+  <a class="media-card home-a__card" href="work.html">
+    <div class="media-card__thumb" aria-hidden="true"></div>
+    <div class="media-card__body">
+      <p class="media-card__title">A Small Change in the Air &mdash; Updated Schedule Starting September</p>
+      <div class="media-card__foot">
+        <span class="media-card__tag">
+          <span class="media-card__tag-dot"></span>
+          <span class="media-card__tag-label">Case study</span>
+        </span>
+        <svg class="media-card__arrow" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+    </div>
+  </a>
+</main>
+
+</body>
+</html>

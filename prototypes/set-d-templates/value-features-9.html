@@ -1,0 +1,112 @@
+<!--
+TEMPLATE REFERENCE — NOT A PAGE. Do not link or publish.
+Source: user paste "value-features-9" from the Stringer Webflow kit. The user calls it the "Persona's stack section".
+Used for: Home B persona stack (Figma Value & Features 9, 80:20824) -> plan class `.stack`.
+Figma: NO section header (the paste's "Care / Made to be kept. Kept how." header is dropped); 4 stacked cards, each 1376x775.5:
+  padding 32; head row: label ("I.") + h3 (~40px) on the left, 400px paragraph on the right; image 1312x607.5 below.
+We use THREE cards (Educator, Immunologist, Communicator) — see the plan's open question 4.
+Saved trimmed: removed Webflow reset, `w-*` CSS. Kept BOTH original scripts as reference: (1) the reveal script is shortened to a comment (GSAP+SplitText not used in our build);
+(2) the sticky-stack scale/fade script is kept verbatim — rewrite it without GSAP (plan: rAF scroll handler; per card p = clamp((vh - nextTop)/(vh - 96), 0, 1); scale 1-.08p, y -24p, opacity 1-p, origin top; off under 768px / reduced motion).
+Template colors (NOT used): section bg #e2ddd4, card bg #d5d1c8, text #121212, subtle #121212a3. Our card bg: #d4c8ba on page bg #bccadb.
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>value-features-9 (Stringer) — reference</title>
+<style>
+.section { color: #121212; background-color: #ece8e2; padding-top: 120px; padding-bottom: 120px; font-family: General Sans, sans-serif; position: relative }
+.section.is-tile { background-color: #e2ddd4 }
+.media { background-color: #e2ddd4; width: 100%; padding-top: 125%; position: relative; overflow: hidden }
+.media.is-16x9 { padding-top: 56.25% }
+.media-img { object-fit: cover; object-position: center; width: 100%; height: 100%; transition: transform .5s; position: absolute; top: 0; left: 0 }
+.text-label { color: #121212a3; letter-spacing: .08em; text-transform: uppercase; font-size: 11px; font-weight: 500; line-height: 1.2 }
+.text-label.is-center { text-align: center; justify-self: center }
+.main-container { width: 100%; max-width: 1800px; margin-left: auto; margin-right: auto; padding-left: 32px; padding-right: 32px; position: relative }
+.text-h-lg { letter-spacing: -.03em; margin-top: 0; margin-bottom: 0; font-size: 40px; font-weight: 500; line-height: 1.02 }
+.text-h-lg.no-margins { margin: 0 }
+.text-body { letter-spacing: 0; margin-top: 0; margin-bottom: 0; font-size: 16px; font-weight: 400; line-height: 1.5 }
+.text-body.text-subtle { color: #121212a3 }
+.text-body.text-subtle.no-margins.stack-card-copy { justify-self: end; max-width: 44ch }
+.text-body.no-margins { margin: 0 }
+.grid-12 { grid-template-rows: auto; grid-template-columns: repeat(12, minmax(0,1fr)); gap: 16px; display: grid }
+.text-display-sm { letter-spacing: -.03em; margin-top: 0; margin-bottom: 0; font-size: 72px; font-weight: 500; line-height: 1 }
+.text-display-sm.no-margins { margin: 0 }
+.stack-tight { grid-column-gap: 12px; grid-row-gap: 12px; flex-direction: column; align-items: flex-start; display: flex }
+.stack-tight.is-center { text-align: center; justify-self: center; align-items: center }
+.stack-head { text-align: center; justify-content: center; padding-bottom: 64px; display: flex } /* header: dropped in our build */
+.stack-cards { grid-column-gap: 40px; grid-row-gap: 40px; flex-direction: column; grid-column: 2/12; padding-bottom: 40px; display: flex } /* Figma: cards span the full 1376 width, so use grid-column 1/13 or no grid */
+.stack-card { grid-column-gap: 32px; grid-row-gap: 32px; will-change: transform; background-color: #d5d1c8; flex-direction: column; padding: 32px; display: flex; position: sticky; top: 96px }
+.stack-card-head { grid-template-rows: auto; grid-template-columns: 1fr 1fr; align-items: end; column-gap: 64px; display: grid }
+.stack-card-title { grid-column-gap: 12px; grid-row-gap: 12px; flex-direction: column; align-items: flex-start; display: flex }
+@media screen and (max-width:991px) {
+  .text-h-lg { font-size: 36px }
+  .text-body.text-subtle.no-margins.stack-card-copy { justify-self: start }
+  .stack-cards { grid-column: 1/13 }
+  .stack-card-head { grid-template-columns: 1fr; row-gap: 16px }
+}
+@media screen and (max-width:767px) { .section { padding-top: 96px; padding-bottom: 96px } .main-container { padding-left: 24px; padding-right: 24px } .text-h-lg { font-size: 32px } .grid-12 { row-gap: 32px } .stack-card { position: static } }
+@media screen and (max-width:479px) { .section { padding-top: 80px; padding-bottom: 80px } .main-container { padding-left: 20px; padding-right: 20px } .text-h-lg { font-size: 28px } }
+</style>
+</head>
+<body>
+<section data-motion="" class="section is-tile stringer-stack">
+  <div class="main-container">
+    <div class="stack-head">
+      <div class="stack-tight is-center">
+        <div data-reveal="fade" class="text-label">Care</div>
+        <h2 data-reveal="words" class="text-display-sm no-margins">Made to be kept. Kept how.</h2>
+      </div>
+    </div>
+    <div class="grid-12">
+      <div data-stack="cards" class="stack-cards">
+        <div data-stack="card" class="stack-card is-1">
+          <div class="stack-card-head">
+            <div class="stack-card-title"><div class="text-label">I.</div><h3 class="text-h-lg no-margins">Rinse the leash</h3></div>
+            <p class="text-body text-subtle no-margins stack-card-copy">Salt eats urethane slowly. A rinse in the car park tap and a loose coil in the boot, never a knot, and it lasts as long as the board.</p>
+          </div>
+          <div class="media is-16x9"><img src="https://byqsupply-components.netlify.app/Stringer/images/d01-leash-in-boot.webp" loading="lazy" alt="A coiled leash on the boot floor" class="media-img"></div>
+        </div>
+        <div data-stack="card" class="stack-card is-2">
+          <div class="stack-card-head">
+            <div class="stack-card-title"><div class="text-label">II.</div><h3 class="text-h-lg no-margins">Keep the fins in the sock</h3></div>
+            <p class="text-body text-subtle no-margins stack-card-copy">The tint is in the resin, not on it, but the edge is hand-foiled and the edge is the fin. Off the board and into the sock between sessions.</p>
+          </div>
+          <div class="media is-16x9"><img src="https://byqsupply-components.netlify.app/Stringer/images/p08-sock-b-context.webp" loading="lazy" alt="A board sock on a tailgate" class="media-img"></div>
+        </div>
+        <div data-stack="card" class="stack-card is-3">
+          <div class="stack-card-head">
+            <div class="stack-card-title"><div class="text-label">III.</div><h3 class="text-h-lg no-margins">Wax by water</h3></div>
+            <p class="text-body text-subtle no-margins stack-card-copy">Cold at home, cool by late summer, the warm blocks for trips. The wrong block in the wrong water is the only time wax fails.</p>
+          </div>
+          <div class="media is-16x9"><img src="https://byqsupply-components.netlify.app/Stringer/images/p05-wax-b-context.webp" loading="lazy" alt="Blocks of wax on a dashboard" class="media-img"></div>
+        </div>
+        <div data-stack="card" class="stack-card is-4">
+          <div class="stack-card-head">
+            <div class="stack-card-title"><div class="text-label">IV.</div><h3 class="text-h-lg no-margins">Send it back</h3></div>
+            <p class="text-body text-subtle no-margins stack-card-copy">If a fin breaks in normal use we replace it and pay the post. If it hit a rock, we repair it at cost and tell you what it hit.</p>
+          </div>
+          <div class="media is-16x9"><img src="https://byqsupply-components.netlify.app/Stringer/images/p06-kit-b-context.webp" loading="lazy" alt="A fin key and repair kit on wood" class="media-img"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- ORIGINAL REVEAL SCRIPT (GSAP + ScrollTrigger + SplitText, `data-reveal` = fade | words | up | stagger, staggered 0.12s per item within `data-motion` sections). Not reproduced; rebuild with IntersectionObserver. -->
+  <script>
+  /* ORIGINAL STICKY-STACK SCRIPT (verbatim; needs GSAP + ScrollTrigger; skipped under 768px and prefers-reduced-motion) */
+  (function () {
+    var sec = document.querySelector('.stringer-stack'); if (!sec) { return; }
+    var cards = Array.prototype.slice.call(sec.querySelectorAll('[data-stack="card"]')); if (cards.length < 2) { return; }
+    var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduce || window.innerWidth <= 767) { return; }
+    /* ...loads gsap + ScrollTrigger 3.12.5 from cdnjs, then: */
+    cards.forEach(function (card, i) {
+      var nextCard = cards[i + 1]; if (!nextCard) { return; }
+      gsap.set(card, { transformOrigin: '50% 0%' });
+      gsap.to(card, { scale: 0.92, y: -24, opacity: 0, ease: 'none', scrollTrigger: { trigger: nextCard, start: 'top bottom', end: 'top 96px', scrub: true } });
+    });
+  })();
+  </script>
+</section>
+</body>
+</html>

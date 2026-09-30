@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="robots" content="noindex, nofollow">
-<title>Homepage Directions · Aimee Pugh-Bernard</title>
+<title>Design Directions · Aimee Pugh-Bernard</title>
 <script>
   // Card links are relative, so /prototypes (no trailing slash) would send
   // them to the site root. Add the slash before anything renders.
@@ -99,46 +99,138 @@
   }
   .arrow { transition: transform 0.2s ease; display: inline-block; }
   .card:hover .arrow { transform: translateX(4px); }
+  section + section { margin-top: 4rem; }
+  .section-head { margin-bottom: 1.5rem; }
+  .section-head h1 {
+    font-size: clamp(1.4rem, 2.4vw, 1.9rem);
+    margin: 0 0 0.35rem;
+  }
+  .section-head p { color: var(--muted); margin: 0; max-width: 38rem; line-height: 1.5; }
+  .plain-card {
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    background: #fff;
+    padding: 1.5rem;
+  }
+  .plain-card h2 { margin-bottom: 0.35rem; }
+  .plain-card ul {
+    list-style: none;
+    margin: 0.75rem 0 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 1rem;
+  }
+  .plain-card ul a { color: inherit; }
 </style>
 </head>
 <body>
   <div class="wrap">
-    <header>
-      <h1>Homepage directions</h1>
-    </header>
+    <section>
+      <div class="section-head">
+        <h1>Full-page sets · in prep</h1>
+        <p>Home, About, Educator, and Work, built out with real content. Set A and Set B have a first-pass homepage style applied. Set D and Set E are round 3 &mdash; Home A and Home B, split into their own sets, each with its own About, Educator, and Communicator pages.</p>
+      </div>
+      <ul class="grid">
+        <li>
+          <a class="card" href="set-a/index.html">
+            <div class="plain-card">
+              <div class="meta">
+                <h2>Set A <span class="arrow">→</span></h2>
+                <span class="tag">Direction 1</span>
+              </div>
+              <ul>
+                <li><a href="set-a/index.html">Home</a></li>
+              </ul>
+            </div>
+          </a>
+        </li>
+        <li>
+          <a class="card" href="set-b/index.html">
+            <div class="plain-card">
+              <div class="meta">
+                <h2>Set B <span class="arrow">→</span></h2>
+                <span class="tag">Direction 2</span>
+              </div>
+              <ul>
+                <li><a href="set-b/index.html">Home</a></li>
+                <li><a href="set-b/work.html">Work</a></li>
+              </ul>
+            </div>
+          </a>
+        </li>
+        <li>
+          <a class="card" href="set-d/index.html">
+            <div class="plain-card">
+              <div class="meta">
+                <h2>Set D <span class="arrow">→</span></h2>
+                <span class="tag">Round 3 &middot; Home A</span>
+              </div>
+              <ul>
+                <li><a href="set-d/index.html">Home</a></li>
+                <li><a href="set-d/about.html">About</a></li>
+                <li><a href="set-d/educator.html">Educator</a></li>
+                <li><a href="set-d/public-speaking.html">Communicator</a></li>
+              </ul>
+            </div>
+          </a>
+        </li>
+        <li>
+          <a class="card" href="set-e/index.html">
+            <div class="plain-card">
+              <div class="meta">
+                <h2>Set E <span class="arrow">→</span></h2>
+                <span class="tag">Round 3 &middot; Home B</span>
+              </div>
+              <ul>
+                <li><a href="set-e/index.html">Home</a></li>
+                <li><a href="set-e/educator.html">Educator</a></li>
+                <li><a href="set-e/public-speaking-alt.html">Communicator</a></li>
+              </ul>
+            </div>
+          </a>
+        </li>
+      </ul>
+    </section>
 
-    <ul class="grid">
-      <li>
-        <a class="card" href="antibody.html">
-          <div class="shot"><img src="screenshots/antibody.jpg" alt="Antibody homepage hero" loading="lazy"></div>
-          <div class="meta">
-            <h2>Antibody <span class="arrow">→</span></h2>
-            <span class="tag">Polished &amp; professional</span>
-          </div>
-          <p class="pun">Precise, targeted, dependable.</p>
-        </a>
-      </li>
-      <li>
-        <a class="card" href="dendrite.html">
-          <div class="shot"><img src="screenshots/dendrite.jpg" alt="Dendrite homepage hero" loading="lazy"></div>
-          <div class="meta">
-            <h2>Dendrite <span class="arrow">→</span></h2>
-            <span class="tag">Designer-forward</span>
-          </div>
-          <p class="pun">All about the presentation.</p>
-        </a>
-      </li>
-      <li>
-        <a class="card" href="cytokine.html">
-          <div class="shot"><img src="screenshots/cytokine.jpg" alt="Cytokine homepage hero" loading="lazy"></div>
-          <div class="meta">
-            <h2>Cytokine <span class="arrow">→</span></h2>
-            <span class="tag">Fun &amp; playful</span>
-          </div>
-          <p class="pun">The loud little messenger.</p>
-        </a>
-      </li>
-    </ul>
+    <section>
+      <div class="section-head">
+        <h1>Homepage round (archived)</h1>
+        <p>Three earlier homepage-only directions.</p>
+      </div>
+      <ul class="grid">
+        <li>
+          <a class="card" href="antibody.html">
+            <div class="shot"><img src="screenshots/antibody.jpg" alt="Antibody homepage hero" loading="lazy"></div>
+            <div class="meta">
+              <h2>Antibody <span class="arrow">→</span></h2>
+              <span class="tag">Polished &amp; professional</span>
+            </div>
+            <p class="pun">Precise, targeted, dependable.</p>
+          </a>
+        </li>
+        <li>
+          <a class="card" href="dendrite.html">
+            <div class="shot"><img src="screenshots/dendrite.jpg" alt="Dendrite homepage hero" loading="lazy"></div>
+            <div class="meta">
+              <h2>Dendrite <span class="arrow">→</span></h2>
+              <span class="tag">Designer-forward</span>
+            </div>
+            <p class="pun">All about the presentation.</p>
+          </a>
+        </li>
+        <li>
+          <a class="card" href="cytokine.html">
+            <div class="shot"><img src="screenshots/cytokine.jpg" alt="Cytokine homepage hero" loading="lazy"></div>
+            <div class="meta">
+              <h2>Cytokine <span class="arrow">→</span></h2>
+              <span class="tag">Fun &amp; playful</span>
+            </div>
+            <p class="pun">The loud little messenger.</p>
+          </a>
+        </li>
+      </ul>
+    </section>
   </div>
 </body>
 </html>

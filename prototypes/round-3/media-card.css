@@ -1,0 +1,93 @@
+/* Reusable BYQ-style small media / case-study card (round 3).
+   Markup: see home-a.html — reuse this file whenever the same card appears. */
+
+.media-card {
+  display: flex;
+  align-items: stretch;
+  gap: 16px;
+  max-width: 361px;
+  padding: 12px;
+  border-radius: var(--r3-radius);
+  background: color-mix(in srgb, var(--r3-card) 88%, transparent);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  color: var(--r3-ink);
+  text-decoration: none;
+  transition: transform 0.35s var(--r3-ease), box-shadow 0.35s var(--r3-ease);
+}
+
+.media-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 40px rgba(18, 18, 18, 0.12);
+}
+
+.media-card__thumb {
+  flex: none;
+  width: 96px;
+  height: 96px;
+  border-radius: var(--r3-radius);
+  overflow: hidden;
+  background: var(--r3-accent);
+}
+
+.media-card__thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.media-card__body {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.media-card__title {
+  margin: 0;
+  font-family: var(--r3-sans);
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+}
+
+.media-card__foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.media-card__tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.media-card__tag-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 2px;
+  background: var(--r3-accent);
+  flex: none;
+}
+
+.media-card__tag-label {
+  font-family: var(--r3-mono);
+  font-size: 10px;
+  line-height: 12px;
+  font-weight: 400;
+  letter-spacing: 0.075em;
+  text-transform: uppercase;
+}
+
+.media-card__arrow {
+  flex: none;
+  width: 12px;
+  height: 12px;
+  color: var(--r3-accent);
+}

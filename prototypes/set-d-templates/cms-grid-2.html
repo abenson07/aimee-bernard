@@ -1,0 +1,94 @@
+<!--
+TEMPLATE REFERENCE — NOT A PAGE. Do not link or publish.
+Source: user paste "cms-grid-2" from the Stringer Webflow kit (the "Journal" list). The user calls it the RESUME.
+Used for: About A resume (Figma 80:20937 "Desktop") -> plan class `.resume`.
+Figma: header row = label "Journal" + h2 "Notes from the shop." (64px) left, "All notes" text link right; 6 rows
+(number "01", title, caption e.g. "Davenport", read time "4 min"); a full-bleed photo background (blurred, layered) sits behind the section.
+Plan content mapping: label "Resume", h2 "Where she's worked", link "Full resume"; rows = position entries from prototypes/data/work-timeline.json (kind "position").
+Saved trimmed: removed Webflow reset, `w-*` CSS. The hover script is kept verbatim as reference but must be rewritten WITHOUT GSAP
+(plan: CSS transition on a `mousemove`-driven transform for the 240x320 preview; dark takeover with blurred bg image + 72% #121212 scrim; only on (hover: hover) and (pointer: fine) and width > 991px).
+Template colors (NOT used): section bg #ece8e2, text #121212, subtle #121212a3, line #1212121f, media bg #e2ddd4, blue focus/hover #1a4cff.
+Dark takeover colors used by the script: LIGHT #ECE8E2, DIM rgba(236,232,226,.64), HAIR rgba(236,232,226,.12).
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>cms-grid-2 (Stringer journal) — reference</title>
+<style>
+.section { color: #121212; background-color: #ece8e2; padding-top: 120px; padding-bottom: 120px; font-family: General Sans, sans-serif; position: relative }
+.section.stringer-journal { overflow: hidden }
+.caption { color: #121212a3; letter-spacing: .01em; margin-top: 0; margin-bottom: 0; font-size: 12px; font-weight: 400; line-height: 1.2 }
+.caption.journal-text { transition: color .5s }
+.media { background-color: #e2ddd4; width: 100%; padding-top: 125%; position: relative; overflow: hidden }
+.media.is-3x2 { padding-top: 66.6667% }
+.media.is-3x2.journal-thumb { width: 240px; height: 160px; padding-top: 0; display: none }
+.media-img { object-fit: cover; object-position: center; width: 100%; height: 100%; transition: transform .5s; position: absolute; top: 0; left: 0 }
+.media-img.layer { opacity: 0; transition: opacity .5s }
+.media-img.layer.is-active { opacity: 1 }
+.media-img.layer.journal-blur { filter: blur(28px); transform: scale(1.12) }
+.cta-text { grid-column-gap: 8px; grid-row-gap: 8px; color: #121212; letter-spacing: .08em; text-transform: uppercase; background-color: #0000; border-bottom: 1px solid #121212; align-items: center; padding: 0 0 4px; font-size: 11px; font-weight: 500; line-height: 1.2; text-decoration: none; display: inline-flex }
+.cta-text.journal-text { transition: color .5s }
+.text-label { color: #121212a3; letter-spacing: .08em; text-transform: uppercase; font-size: 11px; font-weight: 500; line-height: 1.2 }
+.text-label.is-end { text-align: right; justify-self: end }
+.text-label.is-end.journal-time, .text-label.journal-text { transition: color .5s }
+.main-container { width: 100%; max-width: 1800px; margin-left: auto; margin-right: auto; padding-left: 32px; padding-right: 32px; position: relative }
+.main-container.journal-inner { z-index: 1 }
+.text-display-sm { letter-spacing: -.03em; margin-top: 0; margin-bottom: 0; font-size: 72px; font-weight: 500; line-height: 1 }
+.text-display-sm.no-margins { margin: 0 }
+.text-display-sm.no-margins.journal-text { transition: color .5s }
+.text-h-sm { letter-spacing: -.02em; margin-top: 0; margin-bottom: 0; font-size: 24px; font-weight: 500; line-height: 1.1 }
+.text-h-sm.no-margins { margin: 0 }
+.text-h-sm.no-margins.journal-text { transition: color .5s }
+.stack-tight { grid-column-gap: 12px; grid-row-gap: 12px; flex-direction: column; align-items: flex-start; display: flex }
+.shop-head { grid-column-gap: 32px; grid-row-gap: 32px; border-bottom: 1px solid #1212121f; flex-direction: row; justify-content: space-between; align-items: flex-end; padding-bottom: 32px; display: flex }
+.shop-head.journal-head { border-bottom-style: none; border-bottom-width: 0; padding-bottom: 40px }
+.draw-line { transform-origin: 0; background-color: #121212; width: 100%; height: 1px; transition: transform .4s; position: absolute; top: -1px; left: 0; transform: scaleX(0) }
+.draw-line.is-on { transform: scaleX(1) }
+.journal-list { flex-direction: column; padding-top: 16px; display: flex; position: relative }
+.journal-row { color: #121212; border-top: 1px solid #1212121f; grid-template-rows: auto; grid-template-columns: 1fr 7fr 2fr 2fr; align-items: baseline; column-gap: 16px; padding-top: 24px; padding-bottom: 24px; text-decoration: none; transition: border-color .5s; display: grid; position: relative }
+.journal-row.is-last { border-bottom: 1px solid #1212121f }
+.journal-bg { z-index: 0; opacity: 0; pointer-events: none; width: 100%; height: 100%; transition: opacity .5s; position: absolute; top: 0; left: 0 }
+.journal-scrim { opacity: .72; background-color: #121212; width: 100%; height: 100%; position: absolute; top: 0; left: 0 }
+.journal-title { grid-column-gap: 16px; grid-row-gap: 16px; flex-direction: column; align-items: flex-start; display: flex }
+.journal-preview { z-index: 3; opacity: 0; pointer-events: none; background-color: #e2ddd4; width: 240px; height: 320px; transition: opacity .25s; display: none; position: absolute; top: 0; left: 0; overflow: hidden }
+@media screen and (max-width:991px) { .media.is-3x2.journal-thumb { display: block } .text-display-sm { font-size: 56px } .journal-row { grid-template-columns: 1fr 6fr 3fr 2fr } }
+@media screen and (max-width:767px) { .section { padding-top: 96px; padding-bottom: 96px } .main-container { padding-left: 24px; padding-right: 24px } .text-display-sm { font-size: 44px } .shop-head { flex-direction: column; align-items: flex-start } .journal-row { grid-template-columns: 1fr 8fr 3fr } .text-label.is-end.journal-time { display: none } }
+@media screen and (max-width:479px) { .section { padding-top: 80px; padding-bottom: 80px } .media.is-3x2.journal-thumb { width: 100%; height: auto; padding-top: 66.6667% } .main-container { padding-left: 20px; padding-right: 20px } .text-display-sm { font-size: 36px } .text-h-sm { font-size: 20px } .journal-row { grid-template-columns: 1fr; row-gap: 8px } }
+</style>
+</head>
+<body>
+<section data-journal="section" class="section stringer-journal">
+  <div data-journal="bg" class="journal-bg">
+    <!-- 6 blurred full-bleed layers, one per row (class "media-img layer journal-blur", first has is-active): e05-story-shop, d07-three-cars, e07-dawn-club, c01-tailgate-mug, d08-fin-macro, e02-category-fins (all https://byqsupply-components.netlify.app/Stringer/images/<name>.webp) -->
+    <div class="journal-scrim"></div>
+  </div>
+  <div class="main-container journal-inner">
+    <div data-journal="head" class="shop-head journal-head">
+      <div class="stack-tight"><div class="text-label journal-text">Journal</div><h2 class="text-display-sm no-margins journal-text">Notes from the shop.</h2></div>
+      <a href="#" class="cta-text journal-text">All notes</a>
+    </div>
+    <div data-journal="list" class="journal-list">
+      <a href="#" data-journal="row" class="journal-row"><div class="draw-line"></div><div class="text-label journal-text">01</div><div class="journal-title"><h3 class="text-h-sm no-margins journal-text">The original template</h3><div class="media is-3x2 journal-thumb"><img src="https://byqsupply-components.netlify.app/Stringer/images/e05-story-shop.webp" alt="" class="media-img"></div></div><div class="caption journal-text">Davenport</div><div class="text-label is-end journal-time">4 min</div></a>
+      <a href="#" data-journal="row" class="journal-row"><div class="draw-line"></div><div class="text-label journal-text">02</div><div class="journal-title"><h3 class="text-h-sm no-margins journal-text">Three cars, one pullout</h3><div class="media is-3x2 journal-thumb"><img src="https://byqsupply-components.netlify.app/Stringer/images/d07-three-cars.webp" alt="" class="media-img"></div></div><div class="caption journal-text">Waddell</div><div class="text-label is-end journal-time">3 min</div></a>
+      <a href="#" data-journal="row" class="journal-row"><div class="draw-line"></div><div class="text-label journal-text">03</div><div class="journal-title"><h3 class="text-h-sm no-margins journal-text">What the Dawn Club is</h3><div class="media is-3x2 journal-thumb"><img src="https://byqsupply-components.netlify.app/Stringer/images/e07-dawn-club.webp" alt="" class="media-img"></div></div><div class="caption journal-text">Scott Creek</div><div class="text-label is-end journal-time">5 min</div></a>
+      <a href="#" data-journal="row" class="journal-row"><div class="draw-line"></div><div class="text-label journal-text">04</div><div class="journal-title"><h3 class="text-h-sm no-margins journal-text">Wax, by water</h3><div class="media is-3x2 journal-thumb"><img src="https://byqsupply-components.netlify.app/Stringer/images/c01-tailgate-mug.webp" alt="" class="media-img"></div></div><div class="caption journal-text">Pigeon Point</div><div class="text-label is-end journal-time">2 min</div></a>
+      <a href="#" data-journal="row" class="journal-row"><div class="draw-line"></div><div class="text-label journal-text">05</div><div class="journal-title"><h3 class="text-h-sm no-margins journal-text">Foiling by hand</h3><div class="media is-3x2 journal-thumb"><img src="https://byqsupply-components.netlify.app/Stringer/images/d08-fin-macro.webp" alt="" class="media-img"></div></div><div class="caption journal-text">The shop</div><div class="text-label is-end journal-time">6 min</div></a>
+      <a href="#" data-journal="row" class="journal-row is-last"><div class="draw-line"></div><div class="text-label journal-text">06</div><div class="journal-title"><h3 class="text-h-sm no-margins journal-text">Five fins on a wall</h3><div class="media is-3x2 journal-thumb"><img src="https://byqsupply-components.netlify.app/Stringer/images/e02-category-fins.webp" alt="" class="media-img"></div></div><div class="caption journal-text">Año Nuevo</div><div class="text-label is-end journal-time">2 min</div></a>
+    </div>
+    <div data-journal="preview" class="journal-preview">
+      <!-- 6 stacked preview images, class "media-img layer", first has is-active (same six images as above) -->
+    </div>
+  </div>
+  <script>
+  /* ORIGINAL HOVER SCRIPT — behavior summary (verbatim logic, GSAP quickTo removed from the summary):
+     - only runs if (hover: hover) and (pointer: fine) and window.innerWidth > 991
+     - preview follows the cursor inside the list: x = clientX - containerLeft + 32; y = clientY - containerTop - preview.offsetHeight/2 (gsap.quickTo, 0.5s power3)
+     - list mouseenter: preview opacity 1 and dark(true); mouseleave: preview opacity '' and dark(false)
+     - row mouseenter (index i): preview layer i and bg layer i get opacity 1, others 0; that row's .draw-line scaleX(1); mouseleave: line back to 0
+     - dark(on): bg opacity 1; heading/labels/caption/time color -> on ? (label/caption/time ? DIM : LIGHT) : ''; cta border -> LIGHT; row borders -> HAIR; draw-line bg -> LIGHT
+       LIGHT = #ECE8E2, DIM = rgba(236,232,226,.64), HAIR = rgba(236,232,226,.12) */
+  </script>
+</section>
+</body>
+</html>

@@ -64,6 +64,14 @@ export const contentItem = defineType({
       type: "string",
     }),
     defineField({
+      name: "publication",
+      title: "Publication",
+      description:
+        "Only for press mentions and other outside media — links this item to a publication record so its logo can display. Leave blank for talks, courses, and other non-press items.",
+      type: "reference",
+      to: [{ type: "publication" }],
+    }),
+    defineField({
       name: "date",
       title: "Date",
       description:

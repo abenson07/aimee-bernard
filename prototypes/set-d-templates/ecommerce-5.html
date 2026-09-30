@@ -1,0 +1,82 @@
+<!--
+TEMPLATE REFERENCE — NOT A PAGE. Do not link or publish.
+Source: user paste "ecommerce-5" from the Stringer Webflow kit (product panels). User: "(just three)" — use only THREE panels.
+Used for: Public Speaking "Aimee regularly contributes to..." (Figma Desktop 80:110, 1041 tall) -> plan class `.contrib`.
+Figma (source of visual truth): centered h2 "Aimee regularly contributes to..." 56px / line-height 72px / -2.16px, with a 1px bottom border rgba(18,18,18,.12), padding-bottom 32; NO "Shop" label, NO "View all" link (the template has both; Figma has neither).
+Below (padding-top 32): three equal columns, gap 16, each a link: image 448x620 radius 16 (cover, crop left -75% / width 250%); title 24px / 26.4px / -.48px; mono role line 14px / 20.3px, rgba(18,18,18,.64):
+  1. "Podcast Name" — "Co-Host"
+  2. "Podcast Name" — "Regular Guest Speaker"
+  3. "Publication Name" — "Columnist"
+Figma copy is placeholder: real names to be supplied (FLAG in README). Section padding 108px 0; container max 1800, side padding 32.
+Hover in Figma: each image has a second layer at opacity 0 (the template's hover image swap). Template hover behavior (rewrite without GSAP if kept): hovered panel flex-grow 1 -> 2.5 (0.7s power3), second image layer fades in; all panels return to 1 on mouseleave; off under 768px / reduced motion. (Open question: keep hover or none.)
+Saved trimmed: removed Webflow reset, `w-*` CSS, the GSAP/SplitText reveal script, and the 4th panel (template shows four; we use three). Template colors NOT used.
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>ecommerce-5 (Stringer) — reference</title>
+<style>
+.section.stringer-panels { color: #121212; padding-top: 120px; padding-bottom: 120px; position: relative }
+.media-img { object-fit: cover; object-position: center; width: 100%; height: 100%; transition: transform .5s; position: absolute; top: 0; left: 0 }
+.media-img.layer { opacity: 0; transition: opacity .5s }
+.media-img.layer.is-active { opacity: 1 }
+.text-label { letter-spacing: .08em; text-transform: uppercase; font-size: 11px; font-weight: 500; line-height: 1.2 }
+.main-container { width: 100%; max-width: 1800px; margin: 0 auto; padding: 0 32px; position: relative }
+.text-display-sm { letter-spacing: -.03em; margin: 0; font-size: 72px; font-weight: 500; line-height: 1 }
+.text-h-sm { letter-spacing: -.02em; margin: 0; font-size: 24px; font-weight: 500; line-height: 1.1 }
+.stack-tight { grid-row-gap: 12px; flex-direction: column; align-items: flex-start; display: flex }
+.shop-head { grid-column-gap: 32px; border-bottom: 1px solid #1212121f; flex-direction: row; justify-content: space-between; align-items: flex-end; padding-bottom: 32px; display: flex }
+.text-body-sm { letter-spacing: -.005em; margin: 0; font-size: 14px; font-weight: 400; line-height: 1.45; color: #121212a3 }
+.panels { grid-column-gap: 16px; flex-direction: row; padding-top: 32px; display: flex }
+.panel { grid-row-gap: 16px; color: #121212; flex-direction: column; flex: 1 1 0; min-width: 0; text-decoration: none; display: flex }
+.panel-media { background-color: #e2ddd4; width: 100%; height: 620px; position: relative; overflow: hidden }
+.panel-info { grid-row-gap: 4px; white-space: nowrap; flex-direction: column; align-items: flex-start; display: flex; overflow: hidden }
+@media screen and (max-width:991px) { .text-display-sm { font-size: 56px } .panel-media { height: 480px } }
+@media screen and (max-width:767px) { .main-container { padding: 0 24px } .text-display-sm { font-size: 44px } .shop-head { flex-direction: column; align-items: flex-start } .panels { flex-direction: column } .panel-media { height: 280px } }
+@media screen and (max-width:479px) { .main-container { padding: 0 20px } .text-display-sm { font-size: 36px } .text-h-sm { font-size: 20px } .panel-media { height: 220px } }
+</style>
+</head>
+<body>
+<section data-motion="" class="section stringer-panels">
+  <div class="main-container">
+    <div class="shop-head">
+      <div class="stack-tight">
+        <div class="text-label">Shop</div>  <!-- NOT in Figma -->
+        <h2 class="text-display-sm">Four things to get right.</h2>
+      </div>
+      <a href="#" class="cta-text">View all</a>  <!-- NOT in Figma -->
+    </div>
+    <div data-reveal="stagger" class="panels">
+      <a href="#" class="panel">
+        <div class="panel-media">
+          <img src="https://byqsupply-components.netlify.app/Stringer/images/p01-davenport-a-front.webp" alt="Two amber keel fins standing on tile" class="media-img">
+          <img src="https://byqsupply-components.netlify.app/Stringer/images/p01-davenport-b-context.webp" alt="The same fins standing on a rusted tailgate" class="media-img layer">
+        </div>
+        <div class="panel-info"><h3 class="text-h-sm">Twin Keel / Davenport</h3><div class="text-body-sm">$145 · The keel we started with</div></div>
+      </a>
+      <a href="#" class="panel">
+        <div class="panel-media">
+          <img src="https://byqsupply-components.netlify.app/Stringer/images/p05-wax-a-front.webp" alt="Four bars of cold-water wax stacked on tile" class="media-img">
+          <img src="https://byqsupply-components.netlify.app/Stringer/images/p05-wax-b-context.webp" alt="The wax on the workshop bench with a comb and cloth" class="media-img layer">
+        </div>
+        <div class="panel-info"><h3 class="text-h-sm">Wax / Cold</h3><div class="text-body-sm">$6 · For water under 58°</div></div>
+      </a>
+      <a href="#" class="panel">
+        <div class="panel-media">
+          <img src="https://byqsupply-components.netlify.app/Stringer/images/p07-leash-a-front.webp" alt="A coiled leash and cuff on tile" class="media-img">
+          <img src="https://byqsupply-components.netlify.app/Stringer/images/p07-leash-b-context.webp" alt="The leash hung on a nail beside a wooden fin" class="media-img layer">
+        </div>
+        <div class="panel-info"><h3 class="text-h-sm">Leash</h3><div class="text-body-sm">$38 · Six foot, swivel both ends</div></div>
+      </a>
+      <!-- 4th panel (Board Sock, p08-sock-a-front / p08-sock-b-context) removed: user wants just three -->
+    </div>
+  </div>
+  <script>
+  /* ORIGINAL HOVER SCRIPT (verbatim logic; GSAP): only if width > 767 and no reduced-motion.
+     grow(i): every panel gsap.to flexGrow (k === i ? 2.5 : 1, 0.7s power3.out); use(panel, on) toggles `.layer` is-active/opacity 1.
+     level(): all panels flexGrow 1, layers off. panel mouseenter/focus -> grow(i); row mouseleave / focusout leaving the row -> level(). */
+  </script>
+</section>
+</body>
+</html>

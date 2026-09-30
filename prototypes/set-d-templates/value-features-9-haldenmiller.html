@@ -1,0 +1,86 @@
+<!--
+TEMPLATE REFERENCE — NOT A PAGE. Do not link or publish.
+Source: user paste "value-features-9" from the HaldenMiller Webflow kit (site 696522643959b08678050cc8) — NOT the Stringer value-features-9 (that one is `value-features-9.html`, the Home B persona stack).
+Used for: the ALT version of the Public Speaking TEDx section (Figma "Value & Features 9", 80:12215, 1300 tall) -> plan class `.video-stack`.
+User: "an alt for the tedx section ... instead showcasing multiple video and stack them." and "I'd like to just have an Alt page where we just swap this out."
+=> Build `set-d/public-speaking-alt.html` = the Public Speaking page with section 5 (TEDx `.tedx`) REPLACED by this `.video-stack`. Everything else identical (share the other section markup / partials, don't fork logic).
+Figma (source of visual truth), padding 200px 32px 120px, section-content gap 120:
+  Intro: centered h2 (width 680) 48px / line-height 52px / -2px, color #191818: "Beyond single projects, here's the impact our clients see when communication holds" (template placeholder text -> real title needed, FLAG).
+  Statistics stack (box 1144 x 704, centered): THREE cards stacked, each radius 12, padding 32, content pinned bottom-left:
+    back card  : x=84,  y=0,     976 x 564.7  (image, dark bottom-up gradient overlay #191818 -> transparent, light text tile #f7f7f2)
+    middle card: x=33,  y=28,    1078 x 602.4 (image, same overlay, light text tile)
+    front card : x=0,   y=64.3,  1144 x 640   (image, bottom gradient rgba(25,24,24,0) -> rgba(25,24,24,.64) over the bottom 255px, glass text tile: bg rgba(30,28,27,.32), blur 8px, light text)
+  Text tile (bottom-left): padding 24, radius 12, gap 8: big value 32px / 36px / -1px ("20+", "200+", "12B+") + caption 14px / 20px ("Major transitions guided in the last 5 years." ...).
+  For our version each card is a VIDEO (thumbnail + title + caption; plain link/stub — see README open questions); the big value line becomes the video title.
+Template behavior (sticky stack, no GSAP in ours): `.stacking-list` is a tall column (height 240vh desktop / 1800px <=991px / 1500px <=767px / 1100px <=479px, max-width 1144px, centered);
+  each `.stacking-card` is `position: sticky` (top 120px, card 2 top 180px, card 3 top 240px), height 70vh (500px <=991px, 400px <=767px), radius 12, padding 32, background-size cover;
+  negative bottom margins (_2: -40px, _3: -80px; _1: +24px) create the overlap. As the next card scrolls in, the previous one scales down and darkens — the original interaction (Webflow ix2 "Stacking Cards", scroll progress on the list, smoothing 95):
+    card 1: scale 1 -> .7 and brightness 100% -> 50% between 20% -> 30% of the list's scroll progress
+    card 2: scale 1 -> .8, brightness 100% -> 50% between 50% -> 60%
+    card 3: scale 1 -> .85 between 70% -> 80%
+  Rebuild in plain JS (rAF on scroll, progress = how far the list has scrolled through the viewport) + CSS `filter: brightness()` and `transform: scale()`; off under 768px (static column) and with prefers-reduced-motion.
+  The heading blurs in (blur 12px + opacity 0 -> 0 blur, opacity 1) — replace with our fade.
+Saved trimmed: removed Webflow reset, `w-*` CSS, the huge `@font-face` blocks, `:root` token lists (values summarised below), per-breakpoint token re-declarations, the `window.__ix` JSON (summarised above) and scripts.
+Resolved tokens: dark #191818; light #f7f7f2; lift-low-opacity dark rgba(30,28,27,.32); radius general--default 12px; spacing-32 = 32px (24px <=767px); spacing-24 = 24px (16px <=767px); h2 48px/52px/-2px (<=767px: 36/40/-1.5); h4 32px/36px/-1px (<=767px: 24/28); body-3 14px/20px (<=767px: 12/16);
+  section padding extra-large 200px (<=767px: 120px); page padding 32px (<=767px: 16px); headline max-width 680px, margin-bottom 120px (<=767px: 80px).
+Template colors NOT used: page bg #f7f7f2 (ours: the Public Speaking page background).
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>value-features-9 (HaldenMiller) — reference</title>
+<style>
+.main-container { z-index: 2; max-width: 1800px; padding-right: 32px; padding-left: 32px; width: 100%; margin-left: auto; margin-right: auto; position: relative }
+.text-h2 { font-size: 48px; line-height: 52px; letter-spacing: -2px; font-weight: 400 }
+.text-h4 { font-size: 32px; line-height: 36px; letter-spacing: -1px }
+.text-small { font-size: 14px; line-height: 20px; margin: 0 }
+.no-margins { margin-top: 0; margin-bottom: 0 }
+.section.home-c-stackable-section { padding-top: 200px; padding-bottom: 200px; position: relative }   /* Figma: 200px top, 120px bottom */
+.stacking-list { max-width: 1144px; flex-flow: column; justify-content: space-between; align-items: flex-start; height: 240vh; margin-left: auto; margin-right: auto; display: flex; position: relative }
+.stacking-card { padding: 32px; border-radius: 12px; background-position: 50%; background-size: cover; flex-flow: column; justify-content: flex-end; align-items: flex-start; width: 100%; height: 70vh; display: flex; position: sticky; top: 120px; overflow: hidden }
+.stacking-card._1 { margin-bottom: 24px; background-image: url("https://byqsupply-components.netlify.app/HaldenMiller/images/StatisticImage.webp") }
+.stacking-card._2 { background-image: url("https://byqsupply-components.netlify.app/HaldenMiller/images/ArticleImage-3.webp"); margin-bottom: -40px; top: 180px }
+.stacking-card._3 { margin-bottom: -80px; top: 240px }   /* background image set in the paste's base `.stacking-card` rule: CaseThumbnail-1.webp */
+.stacking-card-text-tile { z-index: 2; padding: 24px; grid-column-gap: 8px; grid-row-gap: 8px; box-shadow: 0 -1px 0 0 rgba(247,247,242,.16), 0 1px 0 0 rgba(247,247,242,.08); -webkit-backdrop-filter: blur(20px); backdrop-filter: blur(20px); background-color: #1e1c1b52; border-radius: 8px; flex-flow: column; display: flex; position: relative }
+/* NOTE: in the paste this tile sets light-theme tokens on itself (dark text on light) — it renders as a light tile; Figma back/middle cards use a light tile (#f7f7f2, dark text), the front card uses the glass tile with light text. */
+.overlay-stacking-card { background-image: linear-gradient(0deg, rgba(25,24,24,.64), rgba(247,247,242,0)); width: 100%; height: 40%; position: absolute; inset: auto 0% 0% }
+.headline-stacking-cards { max-width: 680px; margin: 0 auto 120px; text-align: center; flex-flow: column; justify-content: flex-start; align-items: center; display: flex }
+@media screen and (max-width:991px) { .stacking-list { height: 1800px } .stacking-card { height: 500px } }
+@media screen and (max-width:767px) {
+  .main-container { padding-left: 16px; padding-right: 16px }
+  .text-h2 { letter-spacing: -1.5px; font-size: 36px; line-height: 40px }
+  .text-h4 { letter-spacing: -1px; font-size: 24px; line-height: 28px }
+  .text-small { font-size: 12px; line-height: 16px }
+  .section.home-c-stackable-section { padding-top: 120px; padding-bottom: 120px }
+  .stacking-list { max-width: 1144px; height: 1500px }
+  .stacking-card { border-radius: 12px; height: 400px; padding: 24px }
+  .stacking-card._1 { margin-bottom: 16px }
+  .stacking-card-text-tile { padding: 16px }
+  .headline-stacking-cards { margin-bottom: 80px }
+}
+@media screen and (max-width:479px) { .stacking-list { height: 1100px } .stacking-card._1 { margin-bottom: 0 } }
+</style>
+</head>
+<body>
+<section class="section home-c-stackable-section">
+  <div class="main-container">
+    <div class="headline-stacking-cards">
+      <h2 class="text-h2 no-margins">Beyond single projects, here’s the impact our clients see when communication holds</h2>
+    </div>
+    <div class="stacking-list">
+      <div class="stacking-card _1">
+        <div class="stacking-card-text-tile"><div class="text-h4">20+</div><div class="text-small">Major transitions guided in the last 5 years.</div></div>
+        <div class="overlay-stacking-card"></div>
+      </div>
+      <div class="stacking-card _2">
+        <div class="stacking-card-text-tile"><div class="text-h4">200+</div><div class="text-small">Executives coached for critical communication.</div></div>
+      </div>
+      <div class="stacking-card _3">
+        <div class="stacking-card-text-tile"><div class="text-h4">12B+</div><div class="text-small">Deal value supported through M&amp;A communication.</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+</body>
+</html>

@@ -1,0 +1,73 @@
+<!--
+TEMPLATE REFERENCE — NOT A PAGE. Do not link or publish.
+Source: user paste "hero-5" from the Hummingbird Webflow kit (the About-B hero). The user calls it the PREFOOTER and will use it on many pages.
+Used for: Prefooter (Figma "Hero 5": About A 80:20994, Home B 80:21255, identical) -> plan class `.prefooter`. One shared block in shared.css / shared.js.
+Figma: text "Sharing new ideas with new audiences" 200px / 184px / -8px, centered, width 994; five decorative SVG stickers in a 1312x487 box above the text
+(overlapping the text top by 187px); a huge pale circle behind (2190px, rotated -10.82deg, top -791px). Section padding 0 64px 120px.
+Sticker positions from Figma (in the 1312x487 box): Component 19 (0,26, 187px, -30deg), Component 16 (350,22, 240px, 15deg), Component 18 (719,0, 175px, 30deg),
+Component 21 (867,74, 303px, 30deg), Component 20 (27,305, 97px, -30deg). Asset URLs from Figma expire in 7 days: re-fetch with get_design_context on 80:20994 and save SVGs to prototypes/src/set-d/.
+Saved trimmed: removed Webflow reset, `w-*` CSS, `window.__ix` JSON (kept as summary below), scripts, `data-w-id`, and inline start-state transforms.
+Interactions in the original (summary):
+  - headline lines slide up from translateY(200%) with overflow hidden masks (`.hide`, `.big-hide`), on scroll into view (second line delayed 0.1s)
+  - MOUSE_MOVE over the section moves each sticker: image-1 x -30..30px, y -20..20 ; image-2 x 40..-40, y 20..-20 ; image-3 x -50..50, y -30..30 ;
+    image-4 x -20..20, y 30..-30 ; image-5 x 40..-40, y -20..20 (smoothing 95 on X, 50 on Y)
+Tokens: --black #0e0e0e ; --bg #efefea ; font serif "Instrument Serif" (our build: Instrument Sans) ; --letter-spacing--4 -.04em.
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>hero-5 (Hummingbird) — reference</title>
+<style>
+.main-container { width: 100%; max-width: 1800px; margin-left: auto; margin-right: auto; padding-left: 32px; padding-right: 32px }
+.section { background-color: var(--white); padding-top: 80px; padding-bottom: 80px; position: relative }
+.section.about-b-hero { background-image: url("https://byqsupply-components.netlify.app/Hummingbird/images/Vector4.svg"); background-position: 50% 0; background-repeat: no-repeat; background-size: contain; height: 100vh; overflow: clip }
+.hide { margin-bottom: -15px; padding-bottom: 15px; overflow: hidden }
+.hide.big-hide { margin-bottom: -30px; padding-bottom: 30px }
+.headline-about-b { text-align: center; flex-flow: column; justify-content: flex-start; align-items: center; display: flex }
+.text-extra-large { font-family: var(--font--serif); letter-spacing: var(--letter-spacing--4); font-size: 200px; font-weight: 400; line-height: 86.5% }
+.about-b-image-1 { width: 80px } .about-b-image-2 { width: 90px } .about-b-image-3 { width: 150px } .about-b-image-4 { width: 80px } .about-b-image-5 { width: 210px }
+.about-image-wrap-1 { position: absolute; top: 55%; left: 10%; transform: rotate(-30deg) }
+.about-image-wrap-5 { position: absolute; top: 30%; right: 10%; transform: rotate(30deg) }
+.about-image-wrap-2 { position: absolute; top: 25%; left: 10%; transform: rotate(-30deg) }
+.about-image-wrap-3 { position: absolute; top: 23%; left: 35%; transform: rotate(15deg) }
+.about-image-wrap-4 { position: absolute; top: 20%; right: 25%; transform: rotate(30deg) }
+.about-b-hero-master { flex-flow: column; justify-content: flex-end; align-items: center; width: 100%; height: 750px; display: flex }
+@media screen and (max-width:991px) {
+  .section { padding-top: 64px; padding-bottom: 64px }
+  .section.about-b-hero { flex-flow: column; justify-content: flex-end; align-items: center; height: 600px; display: flex }
+  .text-extra-large { font-size: 100px }
+  .about-b-image-1 { width: 60px } .about-b-image-2 { width: 70px } .about-b-image-3 { width: 80px } .about-b-image-4 { width: 50px } .about-b-image-5 { width: 120px }
+  .about-b-hero-master { height: auto }
+}
+@media screen and (max-width:767px) { .text-extra-large { font-size: 80px } .about-b-image-2 { width: 50px } .about-b-image-5 { width: 100px } }
+@media screen and (max-width:479px) {
+  .main-container { padding-left: 16px; padding-right: 16px }
+  .section { padding-top: 48px; padding-bottom: 48px }
+  .section.about-b-hero { height: 400px }
+  .text-extra-large { font-size: 14vw }
+  .about-b-image-1 { width: 50px } .about-b-image-2 { width: 40px } .about-b-image-3 { width: 50px } .about-b-image-5 { width: 60px }
+  .about-image-wrap-3 { top: 35% }
+}
+</style>
+</head>
+<body>
+<section class="section about-b-hero">
+  <div class="about-b-hero-master">
+    <div class="main-container">
+      <div class="headline-about-b">
+        <div class="hide"><div class="text-extra-large">Born from a</div></div>
+        <div class="hide big-hide"><div class="text-extra-large">big dream</div></div>
+      </div>
+    </div>
+    <div class="about-b-hero-images">
+      <div class="about-image-wrap-1"><img src="https://byqsupply-components.netlify.app/Hummingbird/images/Emoji2.svg" alt="" class="about-b-image-1"></div>
+      <div class="about-image-wrap-2"><img src="https://byqsupply-components.netlify.app/Hummingbird/images/Emoji5.svg" alt="" class="about-b-image-2"></div>
+      <div class="about-image-wrap-3"><img src="https://byqsupply-components.netlify.app/Hummingbird/images/Emoji1.svg" alt="" class="about-b-image-3"></div>
+      <div class="about-image-wrap-4"><img src="https://byqsupply-components.netlify.app/Hummingbird/images/Emoji4.svg" alt="" class="about-b-image-4"></div>
+      <div class="about-image-wrap-5"><img src="https://byqsupply-components.netlify.app/Hummingbird/images/Emoji3.svg" alt="" class="about-b-image-5"></div>
+    </div>
+  </div>
+</section>
+</body>
+</html>

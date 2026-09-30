@@ -1,0 +1,117 @@
+<!--
+TEMPLATE REFERENCE — NOT A PAGE. Do not link or publish.
+Source: user paste "cms-grid-6" from the HaldenMiller Webflow kit. The user calls it "Recent press".
+Used for: Home B Recent press (Figma CMS Grid 6, 80:21185) -> plan class `.press`.
+Figma: NO "Blog & Insights" / "Recent articles" headings. Featured card (445px tall, dark #1e1c1b, radius 16, 16px padding; left column: 32px title, 14px subtitle, 1px line, mono meta + glass "Read now" button; right: image);
+then a 3x2 grid of 360px-tall cards (radius 16, padding 32, gap 16): title 24px, 1px line, mono meta ("Insights", date). Card 1 is shown in HOVER state (photo + 32% overlay, light text); others have bg #efede7.
+Saved trimmed: removed Webflow reset, `w-*` CSS, the CMS `hide-cms` template duplicates, `window.__ix` JSON (hover summary below), scripts, `data-w-id`, and the inline blur/opacity start states.
+Interactions in the original: header blur-in; featured/grid slide up 100px + fade; CTA hover = text slides up (mask, text-shadow trick) + bg scale .95; CARD HOVER (desktop) = `.image-wrap-blog-c` (photo + overlay) fades opacity 0 -> 1 (200ms in, 150ms out) and the card's tokens flip to light text (color #f7f7f2);
+featured card hover = image scale 1 -> 1.1 (500ms easeInOut).
+Template tokens (NOT used as is): base light #f7f7f2, dark #191818, lift light #efede7, lift dark #1e1c1b, border subtle dark-16 rgba(25,24,24,.16), light-16 rgba(247,247,242,.16).
+Type in the template: h4 32px/36px/-1px, h6 24px/28px/-.5px, label-1 12px/16px/.75px uppercase, body 14px/20px. Our build: Instrument Sans headings, IBM Plex Sans body, IBM Plex Mono labels.
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>cms-grid-6 (HaldenMiller) — reference</title>
+<style>
+.label-large { font-family: var(--_🔠-typography---font-family--label-1); font-size: 12px; line-height: 16px; letter-spacing: .75px; text-transform: uppercase; justify-content: flex-start; align-items: flex-end }
+.main-container { z-index: 2; max-width: 1800px; padding-right: 32px; padding-left: 32px; width: 100%; margin-left: auto; margin-right: auto; position: relative }
+.section { z-index: 2; padding-top: 80px; padding-bottom: 80px; position: relative }
+.text-h4 { font-size: 32px; line-height: 36px; letter-spacing: -1px }
+.text-h6 { font-size: 24px; line-height: 28px; letter-spacing: -.5px }
+.text-h3 { font-size: 40px; line-height: 44px; letter-spacing: -1px; justify-content: flex-start; align-items: center }
+.cta-main { padding: 12px 16px; grid-column-gap: 8px; grid-row-gap: 8px; border-radius: 16px; font-size: 16px; line-height: 24px; font-weight: 500; cursor: pointer; flex: none; justify-content: center; align-items: center; text-decoration: none; transition: color .3s; display: flex; position: relative }
+.button-text-mask { height: 24px; pointer-events: none; flex: none; overflow: hidden }
+.button-text { z-index: 1; position: relative } /* text-shadow: 0 1.5em 0 <hover color> creates the second copy that slides up on hover */
+.button-bg { border: 1px solid; border-radius: 16px; box-shadow: 0 -1px 0 0 rgba(247,247,242,.16), 0 1px 0 0 rgba(247,247,242,.08); -webkit-backdrop-filter: blur(20px); backdrop-filter: blur(20px); transition: background-color .3s; position: absolute; inset: 0% }
+.button-bg.secondary.is-secondary-dark { border-color: rgba(247,247,242,.08); background-color: #f7f7f20a }   /* glass "Read now" button on the dark featured card */
+.button-bg.secondary.is-secondary-dark:hover { background-color: #f7f7f2e0 }
+.image-cover { z-index: 1; object-fit: cover; width: 100%; height: 100% }
+.label-master { padding: 4px 8px; border-radius: 16px; -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); text-align: center; justify-content: center; align-items: center; display: flex }
+.headline-blog-hero { margin-bottom: 64px; grid-column-gap: 24px; grid-row-gap: 24px; flex-flow: column; justify-content: flex-start; align-items: flex-start; display: flex }
+.card-featured-blog-c { padding: 16px; grid-column-gap: 16px; grid-row-gap: 16px; border-radius: 16px; color: #f7f7f2; background-color: #1e1c1b; grid-template-columns: 1fr 1fr; width: 100%; text-decoration: none; display: grid }
+.image-wrap-featured-c { border-radius: 16px; width: 100%; height: 412px; position: relative; overflow: hidden }
+.content-featured-c { padding: 16px; grid-column-gap: 64px; grid-row-gap: 64px; flex-flow: column; justify-content: space-between; align-items: flex-start; display: flex }
+.featured-article-c-top-tile { grid-column-gap: 20px; grid-row-gap: 20px; flex-flow: column; justify-content: flex-start; align-items: flex-start; display: flex }
+.featured-article-c-bottom-tile { padding-top: 24px; grid-column-gap: 24px; grid-row-gap: 24px; border-top: 1px solid rgba(247,247,242,.16); justify-content: space-between; align-items: center; width: 100%; display: flex }
+.featured-article-c-info-tile { grid-column-gap: 24px; grid-row-gap: 16px; flex-flow: wrap; justify-content: flex-start; align-items: center; display: flex }
+.blog-c-grid { grid-column-gap: 16px; grid-row-gap: 16px; grid-template-columns: 1fr 1fr 1fr; display: grid }
+.card-blog-c { padding: 32px; grid-column-gap: 32px; grid-row-gap: 32px; border-radius: 16px; background-color: #efede7; color: #191818; flex-flow: column; justify-content: space-between; align-items: stretch; width: 100%; height: 360px; text-decoration: none; transition: color 50ms; display: flex; position: relative; overflow: hidden }
+.card-blog-c:hover { color: #f7f7f2 } /* + all text/lines inside flip to light tokens */
+.blog-c-bottom-tile { padding-top: 24px; grid-column-gap: 24px; grid-row-gap: 24px; border-top: 1px solid rgba(25,24,24,.16); justify-content: flex-start; align-items: center; width: 100%; display: flex }
+.blog-c-inner-card { z-index: 2; grid-column-gap: 64px; grid-row-gap: 64px; flex-flow: column; justify-content: space-between; align-items: flex-start; width: 100%; height: 100%; display: flex; position: relative }
+.image-wrap-blog-c { color: #f7f7f2; width: 100%; height: 100%; position: absolute; inset: 0%; opacity: 0 } /* fades to 1 on card hover (desktop) */
+.overlay-lift-opacity { background-color: rgba(25,24,24,.32); width: 100%; height: 100%; position: absolute; inset: 0% }
+.headline-blog-c { margin-bottom: 64px }
+@media screen and (max-width:991px) { .image-wrap-blog-c { display: none } }
+@media screen and (max-width:767px) {
+  .main-container { padding-left: 16px; padding-right: 16px }
+  .section { padding-top: 48px; padding-bottom: 48px }
+  .card-featured-blog-c { grid-column-gap: 12px; grid-row-gap: 12px; border-radius: 16px; grid-template-columns: 1fr; padding: 12px }
+  .image-wrap-featured-c { border-radius: 16px; height: 264px }
+  .content-featured-c { grid-column-gap: 48px; grid-row-gap: 48px; padding: 12px }
+  .blog-c-grid { grid-column-gap: 12px; grid-row-gap: 12px; grid-template-columns: 1fr 1fr }
+  .card-blog-c { grid-column-gap: 24px; grid-row-gap: 24px; border-radius: 16px; height: 300px; padding: 24px }
+}
+@media screen and (max-width:479px) { .blog-c-grid { grid-template-columns: 1fr } }
+</style>
+</head>
+<body>
+<div class="cms-grid-6-wrapper">
+  <section class="section">
+    <div class="main-container">
+      <div class="headline-blog-hero">
+        <div class="label-master"><div class="label-small">BLOG</div></div>
+        <h1 class="text-h1">Blog &amp; Insights</h1>  <!-- not in Figma; our build: small "Recent press" label instead -->
+      </div>
+      <div class="featured-blog-c">
+        <a href="#" class="card-featured-blog-c">
+          <div class="content-featured-c">
+            <div class="featured-article-c-top-tile">
+              <div class="text-h4">When pricing and messaging align seamlessly, success follows</div>
+              <div>When pricing and content all finally speak the same language.</div>
+            </div>
+            <div class="featured-article-c-bottom-tile">
+              <div class="featured-article-c-info-tile"><div class="label-large">insights</div><div class="label-large">September 20, 2025</div></div>
+              <div class="cta-main secondary is-secondary-dark"><div class="button-text-mask"><div class="button-text">Read now</div></div><div class="button-bg secondary is-secondary-dark"></div></div>
+            </div>
+          </div>
+          <div class="image-wrap-featured-c"><img src="https://byqsupply-components.netlify.app/HaldenMiller/images/BlogImage.png" alt="" class="image-cover"></div>
+        </a>
+      </div>
+    </div>
+  </section>
+  <section class="section">
+    <div class="main-container">
+      <div class="headline-blog-c"><h2 class="text-h3 no-margins">Recent articles</h2></div>  <!-- not in Figma -->
+      <div class="blog-c">
+        <div class="blog-c-grid">
+          <a href="#" class="card-blog-c">
+            <div class="blog-c-inner-card"><div class="text-h6">The Language of Leadership in Times of Change</div><div class="blog-c-bottom-tile"><div class="label-large">insights</div><div class="label-large">September 20, 2025</div></div></div>
+            <div class="image-wrap-blog-c"><img src="https://byqsupply-components.netlify.app/HaldenMiller/images/BlogImage2.png" alt="" class="image-cover"><div class="overlay-lift-opacity"></div></div>
+          </a>
+          <a href="#" class="card-blog-c">
+            <div class="blog-c-inner-card"><div class="text-h6">Structure Before Style: A Consultant's View on Communication</div><div class="blog-c-bottom-tile"><div class="label-large">insights</div><div class="label-large">September 20, 2025</div></div></div>
+            <div class="image-wrap-blog-c"><img src="https://byqsupply-components.netlify.app/HaldenMiller/images/BlogImage.png" alt="" class="image-cover"><div class="overlay-lift-opacity"></div></div>
+          </a>
+          <a href="#" class="card-blog-c">
+            <div class="blog-c-inner-card"><div class="text-h6">Restructuring Without Losing the Story</div><div class="blog-c-bottom-tile"><div class="label-large">insights</div><div class="label-large">September 20, 2025</div></div></div>
+            <div class="image-wrap-blog-c"><img src="https://byqsupply-components.netlify.app/HaldenMiller/images/BlogImage1_1.png" alt="" class="image-cover"><div class="overlay-lift-opacity"></div></div>
+          </a>
+          <a href="#" class="card-blog-c">
+            <div class="blog-c-inner-card"><div class="text-h6">From Crisis to Credibility: Supporting a Tech Company Under Scrutiny</div><div class="blog-c-bottom-tile"><div class="label-large">insights</div><div class="label-large">September 20, 2025</div></div></div>
+            <div class="image-wrap-blog-c"><img src="https://byqsupply-components.netlify.app/HaldenMiller/images/BlogImage.png" alt="" class="image-cover"><div class="overlay-lift-opacity"></div></div>
+          </a>
+          <a href="#" class="card-blog-c">
+            <div class="blog-c-inner-card"><div class="text-h6">Reputation is Built in the Small Moments</div><div class="blog-c-bottom-tile"><div class="label-large">insights</div><div class="label-large">September 20, 2025</div></div></div>
+            <div class="image-wrap-blog-c"><img src="https://byqsupply-components.netlify.app/HaldenMiller/images/BlogImage_1.png" alt="" class="image-cover"><div class="overlay-lift-opacity"></div></div>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+</body>
+</html>

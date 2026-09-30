@@ -1,0 +1,67 @@
+<!--
+TEMPLATE REFERENCE — NOT A PAGE. Do not link or publish.
+Source: user paste "intro-text-1" from the Hummingbird Webflow kit. The user said: use ONLY THE UPPER PORTION (the `.about-message` block).
+Used for: Home B Mission (Figma Intro & Text 2, 80:16559) -> plan class `.mission-text`.
+NOT USED: the services marquee (`.services-marquee`, service cards, `.home-a-arrow`) — the lower portion of the paste is omitted here.
+Figma: text 64px / line-height 64px / letter-spacing -1.28px, centered, width 1078; three inline elements: a small photo pill (~112x56, pink arch), a sun icon, an eye icon.
+Saved trimmed: removed Webflow reset, `w-*` CSS, `window.__ix` JSON, scripts, `data-w-id`, and inline start-state transforms.
+Behavior of the original: each word is wrapped in `.hide` (overflow hidden) and slides up from translateY(200%) as it scrolls into view (heading animation, staggered);
+inline images "grow big in" (scale 0 -> 1, 1s outQuart). Rebuild in CSS with a `.is-in` class (see plan).
+Tokens: --black #0e0e0e ; --font--serif "Instrument Serif" (our build: Instrument Sans) ; --heading--h2 64px (tablet 56px, mobile 48px, <=479px 40px) ; --letter-spacing--2 -.02em.
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>intro-text-1 (Hummingbird) — reference (top part)</title>
+<style>
+.main-container { width: 100%; max-width: 1800px; margin-left: auto; margin-right: auto; padding-left: 32px; padding-right: 32px }
+.section { background-color: var(--white); padding-top: 80px; padding-bottom: 80px; position: relative }
+.text-h2 { font-family: var(--font--serif); font-size: var(--heading--h2); letter-spacing: var(--letter-spacing--2); font-weight: 400; line-height: 100% }
+.hide { margin-bottom: -15px; padding-bottom: 15px; overflow: hidden }
+.about-message { z-index: 1; grid-column-gap: 10px; grid-row-gap: 10px; flex-flow: wrap; justify-content: center; align-items: center; max-width: 945px; margin-left: auto; margin-right: auto; display: flex; position: relative }
+.about-small-image { object-fit: cover; width: 112px; height: 56px }
+.about-small-image.image-2, .about-small-image.image-3 { width: 64px; height: 64px }
+@media screen and (max-width:991px) { .section { padding-top: 64px; padding-bottom: 64px } .text-h2 { font-size: 56px } }
+@media screen and (max-width:767px) { .text-h2 { font-size: 48px } }
+@media screen and (max-width:479px) {
+  .main-container { padding-left: 16px; padding-right: 16px }
+  .section { padding-top: 48px; padding-bottom: 48px }
+  .text-h2 { font-size: 40px }
+  .about-message { grid-column-gap: 5px; grid-row-gap: 5px }
+  .about-small-image { width: 80px; height: 40px }
+  .about-small-image.image-2, .about-small-image.image-3 { width: 40px; height: 40px }
+}
+</style>
+</head>
+<body>
+<section class="section">
+  <div class="main-container">
+    <div class="about-message">
+      <div class="hide"><div class="text-h2">Experience</div></div>
+      <div class="hide"><div class="text-h2">coworking</div></div>
+      <img src="https://byqsupply-components.netlify.app/Hummingbird/images/HomeIcon2.webp" alt="" class="about-small-image">
+      <div class="hide"><div class="text-h2">like</div></div>
+      <div class="hide"><div class="text-h2">never</div></div>
+      <div class="hide"><div class="text-h2">before,</div></div>
+      <div class="hide"><div class="text-h2">in</div></div>
+      <div class="hide"><div class="text-h2">an</div></div>
+      <div class="hide"><div class="text-h2">environment</div></div>
+      <div class="hide"><div class="text-h2">that's</div></div>
+      <div class="hide"><div class="text-h2">as</div></div>
+      <div class="hide"><div class="text-h2">organic</div></div>
+      <div class="hide"><div class="text-h2">and</div></div>
+      <img src="https://byqsupply-components.netlify.app/Hummingbird/images/HomeIcon1.webp" alt="" class="about-small-image image-2">
+      <div class="hide"><div class="text-h2">lively</div></div>
+      <div class="hide"><div class="text-h2">as</div></div>
+      <div class="hide"><div class="text-h2">your</div></div>
+      <img src="https://byqsupply-components.netlify.app/Hummingbird/images/HomeIcon.webp" alt="" class="about-small-image image-3">
+      <div class="hide"><div class="text-h2">wildest</div></div>
+      <div class="hide"><div class="text-h2">dreams.</div></div>
+      <!-- <img src=".../Vector5.svg" class="home-a-arrow"> omitted (decorative arrow, not used) -->
+    </div>
+  </div>
+  <!-- services marquee (lower portion of the paste) intentionally NOT included -->
+</section>
+</body>
+</html>

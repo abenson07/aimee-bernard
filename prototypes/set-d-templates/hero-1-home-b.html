@@ -1,0 +1,126 @@
+<!--
+TEMPLATE REFERENCE — NOT A PAGE. Do not link or publish.
+Source: user paste "hero-1" from the Baseframe Webflow kit (byqsupply-components.netlify.app/Baseframe).
+Used for: Home B hero (Figma Hero 1, 80:20418) -> plan class `.hero-card`; and the glass `.video_small-widget` -> plan class `.video-widget`.
+USED: rounded image card (`.content_home-a`), dark side gradient (`.overlay_home-a-first`), bottom progressive blur, big name headline, bottom row, and the small glass video widget.
+NOT USED: the swapping-word headline animation, "See services" CTA, "rated best consultancy" tile, play button, video, lightbox.
+The user said the hero also has the identity-word BACKGROUND SWAP (like Set B) — that is not in this paste; take it from set-b/index.html.
+Saved trimmed: removed Webflow reset, `w-*` CSS, webflow-icons font, `window.__ix` JSON, jQuery/GSAP scripts, `data-w-id` and inline start-state transforms.
+The duplicated mobile-only copy of the headline (`.home_mobile-content`) is omitted from the markup. `:root` tokens omitted; resolved values that matter:
+  --_🎨-color--base---base--light-100: #eee9e1 ; base--dark-100: #27241f ; dark-64: #27241fa3 ; dark-48: #27241f7a ; light-64: #eee9e1a3
+  --_🎨-color--tokens---ink--accent: #fed007 ; radius general--default: 16px, general--small: 8px, general--full: 100vw
+  --spacing--space-lg: 64px ; space-md: 48px ; space-xxs: 20px ; space-xxxs: 16px ; page-padding: 32px ; section-padding--extra-small: 32px
+  h2 size 56px / line-height 64px / letter-spacing -2px ; label-2 10px / 12px / .75px ; b1 20px / 28px
+Mobile (<=991px) hero: `.master_hero-home-a` becomes auto height with padding 80px; `.inner-content_home-a` padding 48px; `.home-a_bottom-tile` hidden.
+Figma values (Home B hero): card radius 24; padding 64; name 96px / 103px / -4.48px, color #eee9e1, width 448px; words 32px / -1.48px, 16px gaps,
+first word full opacity, others 50%; widget 243px wide, bg rgba(39,36,31,.44), blur 6px, radius 16, padding 16, image 209x117 radius 8, label 10px mono.
+Fonts in our build: Instrument Sans / IBM Plex Sans / IBM Plex Mono (user's rule).
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>hero-1 (Baseframe) — reference</title>
+<style>
+.container-large { z-index: 2; width: 100%; max-width: var(--container--large); margin-left: auto; margin-right: auto }
+.heading-style-h2 { font-family: var(--_🔠-typography---font-family--h2); font-size: var(--_🔠-typography---size--h2); line-height: var(--_🔠-typography---line-height--h2); font-weight: var(--_🔠-typography---font-weight--h2); letter-spacing: var(--_🔠-typography---letter-spacing--h2) }
+.margin-0 { margin: 0 }
+.text-size-large { font-family: var(--_🔠-typography---font-family--b1); font-size: var(--_🔠-typography---size--b1); line-height: var(--_🔠-typography---line-height--b1); font-weight: var(--_🔠-typography---font-weight--b1); letter-spacing: var(--_🔠-typography---letter-spacing--b1); margin-top: 0; margin-bottom: 0 }
+.label-small { font-family: var(--_🔠-typography---font-family--label-2); font-size: var(--_🔠-typography---size--label-2); line-height: var(--_🔠-typography---line-height--label-2); font-weight: var(--_🔠-typography---font-weight--label-2); letter-spacing: var(--_🔠-typography---letter-spacing--label-2); text-transform: uppercase }
+.cta_primary { grid-column-gap: var(--spacing--space-nano); grid-row-gap: var(--spacing--space-nano); border-radius: var(--_🔘-radius---ui--button-base); font-family: var(--_🔠-typography---font-family--button-1); color: var(--_🎨-color--tokens---button--primary--default--text); font-size: var(--_🔠-typography---size--button-1); line-height: var(--_🔠-typography---line-height--button-1); font-weight: var(--_🔠-typography---font-weight--button-1); cursor: pointer; flex: none; justify-content: center; align-items: center; text-decoration: none; transition: color .3s; display: flex; position: relative }
+.cta_primary.accent { color: var(--_🎨-color--tokens---button--accent--default--text) }
+.button_text-mask { height: var(--_🔠-typography---line-height--button-1); pointer-events: none; flex: none; overflow: hidden }
+.text-button { z-index: 1; text-shadow: 0 1.5em 0 var(--_🎨-color--tokens---button--primary--hover--text); position: relative }
+.btn-bg { border: 1px solid var(--_🎨-color--tokens---button--primary--default--border); border-radius: var(--_🔘-radius---ui--button-base); background-color: var(--_🎨-color--tokens---button--primary--default--background); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); transition: background-color .3s; position: absolute; inset: 0% }
+.image_cover { z-index: 1; object-fit: cover; width: 100%; height: 100% }
+.image_cover.is-parallax { height: 120% }
+.video_cover { z-index: 1; width: 100%; height: 100% }
+.text_body-bold { font-weight: var(--_🔠-typography---weight--body-bold) }
+.padding-global { padding-right: var(--layout-grid--page-padding); padding-left: var(--layout-grid--page-padding) }
+/* progressive blur (bottom of the image) — stacked panels, each a blur + mask; ratio 1.9, --blur 6rem */
+.progressive-blur { z-index: 990; pointer-events: none; width: 100%; height: 100%; overflow: clip; transform: rotate(180deg) }
+.progressive-blur-panel { width: 100%; height: 100%; -webkit-backdrop-filter: blur(calc(var(--blur) / (var(--ratio) * var(--ratio) * var(--ratio) * var(--ratio) * var(--ratio) * var(--ratio)))); backdrop-filter: blur(calc(var(--blur) / (var(--ratio) * var(--ratio) * var(--ratio) * var(--ratio) * var(--ratio) * var(--ratio)))); padding: 0; position: absolute; -webkit-mask: linear-gradient(#0000 10%, #000 20% 40%, #0000 50%); mask: linear-gradient(#0000 10%, #000 20% 40%, #0000 50%) }
+/* panels is-1..is-10 differ only by blur divisor (ratio^n) and mask stops; see Figma for the simplified result: a 247px-tall bottom strip, backdrop-filter blur(16px), gradient rgba(39,36,31,0) -> rgba(39,36,31,.32). Use that simplification. */
+.progressive_blur { z-index: 99; pointer-events: none; width: 100%; height: 100%; max-height: 8rem; position: absolute; inset: auto 0% 0%; overflow: clip }
+.progressive_blur.blur-growth { z-index: 1; min-height: 10rem; max-height: 10rem }
+.wrap_icon-play { border-radius: var(--_🔘-radius---general--full); background-color: var(--_🎨-color--base---base--light-100); width: 3rem; height: 3rem; color: var(--_🎨-color--base---base--dark-100); flex: none; justify-content: center; align-items: center; display: flex }
+.icon-play { flex: none; justify-content: center; align-items: center; width: 1.25rem; height: 1.25rem; display: flex }
+.section_hero-home-a { background-color: var(--_🎨-color--tokens---ink--base) }
+.master_hero-home-a { width: 100%; height: 85vh; min-height: 780px; max-height: 1040px; padding-top: var(--section-padding--extra-small); padding-bottom: var(--section-padding--extra-small); display: flex }
+.content_home-a { width: 100%; height: 100%; color: var(--_🎨-color--base---base--light-100); border-radius: 24px; position: relative; overflow: hidden }
+.inner-content_home-a { z-index: 5; width: 100%; height: 100%; padding: var(--spacing--space-lg); grid-column-gap: var(--spacing--space-md); grid-row-gap: var(--spacing--space-md); flex-flow: column; justify-content: space-between; align-items: flex-start; display: flex; position: relative }
+.image_hero-a { z-index: 1; width: 100%; height: 100%; position: absolute; inset: 0%; overflow: hidden }
+.overlay_home-a-first { z-index: 1; background-image: linear-gradient(90deg, var(--_🎨-color--base---base--dark-64), var(--_🎨-color--base---base--dark-0)); width: 100%; height: 100%; position: absolute; inset: 0% }
+.headline_home-a { grid-column-gap: var(--spacing--space-xxs); grid-row-gap: var(--spacing--space-xxs); flex-flow: column; justify-content: flex-start; align-items: flex-start; max-width: 35rem; margin-top: auto; margin-bottom: auto; display: flex }
+.home-a_p { max-width: 27.94rem }
+.heading_hero-home { grid-column-gap: var(--spacing--space-nano); grid-row-gap: 0px; font-family: var(--_🔠-typography---font-family--h2); font-size: var(--_🔠-typography---size--h2); line-height: var(--_🔠-typography---line-height--h2); font-weight: var(--_🔠-typography---font-weight--h2); letter-spacing: var(--_🔠-typography---letter-spacing--h2); flex-flow: wrap; display: flex }
+.wrap_swap-text { flex-flow: column; height: 4.25rem; display: flex; overflow: clip }
+.text-swap { padding-bottom: 1.5rem }
+.home-a_bottom-tile { grid-column-gap: var(--spacing--space-sm); grid-row-gap: var(--spacing--space-sm); justify-content: space-between; align-items: flex-end; width: 100%; display: flex }
+.rated_tile { padding: .13rem var(--spacing--space-nano) .13rem .13rem; grid-column-gap: .38rem; grid-row-gap: .38rem; border-radius: var(--_🔘-radius---general--full); background-color: var(--_🎨-color--base---base--dark-48); -webkit-backdrop-filter: blur(5px); backdrop-filter: blur(5px); justify-content: flex-start; align-items: center; display: flex }
+.wrap_icon-rated { border-radius: var(--_🔘-radius---general--full); background-color: var(--_🎨-color--tokens---ink--accent); width: 1.38rem; height: 1.38rem; color: var(--_🎨-color--tokens---ink--light); flex: none; justify-content: center; align-items: center; display: flex }
+/* ===== THE PART WE USE: glass widget (bottom right) ===== */
+.video_small-widget { width: 100%; max-width: 16rem; padding: var(--spacing--space-xxxs); grid-column-gap: var(--spacing--space-xxxs); grid-row-gap: var(--spacing--space-xxxs); border-radius: var(--_🔘-radius---general--default); background-color: var(--_🎨-color--base---base--dark-48); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); color: var(--_🎨-color--base---base--light-100); flex-flow: column; text-decoration: none; display: flex }
+.wrap_small-video { border-radius: var(--_🔘-radius---general--small); width: 100%; height: 8.75rem; overflow: hidden }
+.wrap_text-small-video { grid-column-gap: var(--spacing--space-xxxs); grid-row-gap: var(--spacing--space-xxxs); justify-content: space-between; align-items: center; display: flex }
+.play-button_centered { justify-content: center; align-items: center; width: 100%; height: 100%; display: flex }
+.tone-subtle-inverted { color: var(--_🎨-color--base---base--light-64) }
+@media screen and (min-width:1920px) { .master_hero-home-a { min-height: auto } .inner-content_home-a { min-height: 53rem; padding-top: var(--spacing--space-xxl) } }
+@media screen and (max-width:991px) {
+  .image_cover.is-parallax.is-hero-homea { object-position: 100% 50% }
+  .master_hero-home-a { height: auto; min-height: 0; max-height: none; padding-top: var(--section-padding--small); padding-bottom: var(--section-padding--small); flex-flow: column }
+  .content_home-a { border-radius: 24px; min-height: 460px }
+  .inner-content_home-a { padding: var(--spacing--space-md); grid-column-gap: var(--spacing--space-xxl); grid-row-gap: var(--spacing--space-xxl) }
+  .home-a_bottom-tile { display: none }
+}
+@media screen and (max-width:767px) {
+  .padding-global { padding-left: 16px; padding-right: 16px }
+  .content_home-a { border-radius: 16px; min-height: 370px }
+  .inner-content_home-a { padding: 12.25rem var(--spacing--space-xxs) var(--spacing--space-xxs) }
+  .video_small-widget { max-width: 13.88rem }
+}
+</style>
+</head>
+<body>
+<section class="section_hero-home-a">
+  <div class="padding-global">
+    <div class="container-large">
+      <div class="master_hero-home-a">
+        <div class="content_home-a">
+          <div class="inner-content_home-a">
+            <div class="headline_home-a">
+              <h1 class="heading_hero-home"><!-- "We help with making sense of [structures|data|users]" — template text; our hero shows "Aimee Pugh-Bernard" instead --></h1>
+              <div class="home-a_p"><p class="text-size-large margin-0">We help serious businesses sharpen their offer and structure their communication</p></div>
+              <!-- CTA button "See services" omitted -->
+            </div>
+            <div class="home-a_bottom-tile">
+              <!-- rated tile (star icon + "rated best consultancy of 2026") — not used -->
+              <!-- THE GLASS WIDGET (used on Home B) -->
+              <a href="#" class="video_small-widget">
+                <div class="wrap_small-video">
+                  <!-- background video + centered play button — replaced by a plain image in our build -->
+                </div>
+                <div class="wrap_text-small-video">
+                  <div class="label-small">Watch video</div>
+                  <div class="label-small tone-subtle-inverted">3 minutes</div>
+                </div>
+              </a>
+            </div>
+          </div>
+          <div class="image_hero-a">
+            <img src="https://byqsupply-components.netlify.app/Baseframe/images/home-a_1home-a.avif" alt="" class="image_cover is-parallax is-hero-homea">
+            <div class="overlay_home-a-first"></div>
+            <div class="progressive_blur blur-growth hide-mobile">
+              <div style="--blur: 6rem; --ratio: 1.9;" class="progressive-blur">
+                <div style="--i: 6;" class="progressive-blur-panel is-1"></div>
+                <!-- panels is-2 .. is-10 follow the same pattern -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+</body>
+</html>

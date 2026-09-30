@@ -1,0 +1,871 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Home &middot; Aimee Pugh-Bernard (Set A &middot; Direction 1)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500&family=IBM+Plex+Mono:wght@300;400&family=Instrument+Serif&display=swap" rel="stylesheet">
+<style>
+  /* Direction 1, first pass — hero/menu/mission-scrub from Cytokine, persona
+     section restructured from Antibody, awards from Dendrite. Palette is a
+     softened middle ground: less stark than Cytokine's white/black, less
+     cream than Dendrite. */
+  :root {
+    --paper: #f2f1ee;
+    --ink: #1c1b1a;
+    --muted: rgba(28, 27, 26, 0.62);
+    --line: rgba(28, 27, 26, 0.14);
+    --radius: 24px;
+    --serif: "Instrument Serif", Georgia, serif;
+    --sans: "DM Sans", sans-serif;
+    --ease-out: cubic-bezier(0.215, 0.61, 0.355, 1);
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0;
+    background: var(--paper);
+    font-family: var(--sans);
+    color: var(--ink);
+    letter-spacing: -0.02em;
+    font-weight: 500;
+  }
+  img, video { max-width: 100%; display: block; }
+  a { color: inherit; text-decoration: none; }
+  p { margin: 0; }
+  h2, h3 { margin: 0; font-weight: 400; }
+
+  .main-container { width: 100%; max-width: 1800px; margin: 0 auto; padding: 0 32px; }
+  :root { --space: clamp(140px, 12vw, 220px); }
+  .section { padding-block: var(--space); }
+  .section-end { padding-bottom: var(--space); }
+
+  .label { letter-spacing: 0.7px; text-transform: uppercase; font-size: 14px; font-weight: 500; line-height: 16px; }
+  .label.muted { color: var(--muted); }
+  .display { font-family: var(--serif); font-weight: 400; letter-spacing: -0.04em; line-height: 0.9; }
+  .display-xl { font-size: 12vw; line-height: 86.5%; white-space: nowrap; }
+  .display-lg { font-size: clamp(56px, 7.5vw, 136px); }
+  .display-md { font-size: clamp(44px, 4.4vw, 80px); line-height: 0.95; }
+
+  .mask { overflow: hidden; padding: 0.15em 0 0.3em; margin: -0.15em 0 -0.3em; }
+  .mask > .slide { display: block; transform: translateY(150%); transition: transform 0.9s var(--ease-out); }
+  .is-in > .slide { transform: none; }
+  .fade { opacity: 0; transform: translateY(16px); transition: opacity 1s var(--ease-out), transform 1s var(--ease-out); }
+  .fade.is-in { opacity: 1; transform: none; }
+  .stagger > * { opacity: 0; transform: translateY(16px); transition: opacity 1s var(--ease-out), transform 1s var(--ease-out); transition-delay: calc(var(--i, 0) * 130ms); }
+  .stagger.is-in > * { opacity: 1; transform: none; }
+  .stagger > :nth-child(2) { --i: 1; } .stagger > :nth-child(3) { --i: 2; } .stagger > :nth-child(4) { --i: 3; } .stagger > :nth-child(5) { --i: 4; } .stagger > :nth-child(6) { --i: 5; }
+
+  /* ---------- Nav / menu (from Cytokine) ---------- */
+  .navbar { position: fixed; inset: 0 0 auto 0; z-index: 80; display: flex; align-items: center; justify-content: space-between; padding: 28px 32px; transition: transform 0.4s var(--ease-out); }
+  .navbar::before { content: ""; position: absolute; inset: 0; z-index: -1; background: var(--paper); border-bottom: 1px solid var(--line); opacity: 0; transition: opacity 0.35s var(--ease-out); pointer-events: none; }
+  .navbar.has-bg::before { opacity: 1; }
+  .navbar.is-hidden { transform: translateY(-100%); }
+  .menu-overlay { position: fixed; inset: 0; z-index: 70; height: 0; overflow: hidden; background: var(--paper); transition: height 0.5s var(--ease-out); }
+  .menu-overlay.is-open { height: 100vh; }
+  .menu-links { height: 100%; display: flex; flex-direction: column; justify-content: center; gap: 8px; padding: 0 32px; }
+  .menu-links a { display: block; overflow: hidden; font-size: clamp(72px, 5.85vw, 99px); }
+  .menu-links a:hover { color: var(--muted); }
+  .menu-links .is-soon { cursor: pointer; }
+
+  /* ---------- Hero (from Cytokine) ---------- */
+  .about-hero { padding-top: 152px; padding-bottom: 40px; }
+  .hero-label { text-align: center; margin-bottom: 32px; }
+  .name-wrap { padding-bottom: 30px; text-align: center; overflow: clip; }
+
+  /* ---------- Video + mission statement (from Cytokine) ---------- */
+  .parallax-master { height: 400vh; position: relative; overflow: clip; }
+  .video-parallax { position: sticky; top: 0; height: 100vh; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+  .video-inner { position: relative; width: 70%; height: 100%; border-radius: var(--radius); overflow: hidden; background: var(--ink); }
+  .video-inner video { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .video-overlay-dark { position: absolute; inset: 0; background: rgba(0, 0, 0, 0.35); }
+  .parallax-text { position: absolute; top: 0; left: 0; z-index: 2; width: 100%; height: 80%; padding: 100vh 40px 40vh; display: flex; flex-direction: column; justify-content: space-between; align-items: center; text-align: center; color: #fff; pointer-events: none; }
+  .parallax-video-text { max-width: 1100px; }
+  .parallax-video-text .display { text-shadow: 0 2px 30px rgba(0, 0, 0, 0.2); }
+
+  /* ---------- Persona scroll section (structure from Antibody, restyled) ---------- */
+  .persona-scene { background: var(--paper); }
+  .persona-runway { height: 360vh; position: relative; }
+  .persona-pin {
+    position: sticky; top: 0; height: 100vh; overflow: hidden; background: var(--paper);
+    display: grid; grid-template-columns: minmax(240px, 0.9fr) 12px minmax(220px, 0.85fr) minmax(340px, 1.35fr);
+    column-gap: 28px; padding: 36px 32px 32px;
+  }
+  .persona-left { display: flex; flex-direction: column; min-width: 0; min-height: 0; height: 100%; }
+  .persona-nav { display: flex; flex-direction: column; justify-content: flex-start; gap: 4px; min-width: 0; }
+  .persona-nav button {
+    appearance: none; border: 0; background: none; padding: 0; margin: 0; display: flex; align-items: baseline; gap: 10px;
+    text-align: left; cursor: pointer; font-family: var(--serif); font-size: clamp(32px, 3.4vw, 48px); line-height: 1.15;
+    letter-spacing: -1.4px; color: rgba(28, 27, 26, 0.28); transition: color 0.25s ease;
+  }
+  .persona-nav button.is-active { color: var(--ink); }
+  .persona-arrow { width: 28px; flex: none; opacity: 0; transform: translateX(-4px); transition: opacity 0.2s ease, transform 0.2s ease; font-family: var(--sans); font-size: 0.7em; }
+  .persona-nav button.is-active .persona-arrow { opacity: 1; transform: none; }
+  .persona-aside { display: flex; flex-direction: column; justify-content: flex-end; margin-top: auto; padding-bottom: 8px; }
+  .persona-caption { margin: 0 0 14px; max-width: 180px; font-size: 14px; line-height: 20px; color: var(--muted); }
+  .persona-caption span { margin-left: 6px; }
+  .persona-thumbs { width: 361px; max-width: 100%; height: 120px; overflow: hidden; border-radius: 8px; }
+  .persona-thumbs figure { margin: 0; width: 100%; height: 120px; flex: none; }
+  /* Media card, same look as the Set D / Round 3 card */
+  .mc { display: flex; gap: 16px; height: 120px; padding: 12px; border-radius: 8px; background: #d4c8ba; color: #121212; }
+  .mc-thumb { flex: none; width: 96px; height: 96px; border-radius: 8px; overflow: hidden; background: rgba(18, 18, 18, 0.08); }
+  .mc-thumb img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 20%; }
+  .mc-icon { display: flex; width: 100%; height: 100%; align-items: center; justify-content: center; background: #e2d6df; }
+  .mc-icon svg { width: 34px; height: 34px; }
+  .mc-body { flex: 1; min-width: 0; display: flex; flex-direction: column; justify-content: space-between; }
+  .mc-title { font-size: 14px; line-height: 20px; font-weight: 400; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+  .mc-foot { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+  .mc-tag { display: flex; align-items: center; gap: 12px; font-family: "IBM Plex Mono", ui-monospace, Menlo, monospace; font-weight: 300; font-size: 10px; line-height: 12px; letter-spacing: 0.75px; text-transform: uppercase; }
+  .mc-dot { width: 8px; height: 8px; border-radius: 2px; background: #121212; flex: none; }
+  .mc-arrow { width: 12px; height: 12px; flex: none; }
+  .persona-thumb-stack, .persona-media-stack { display: flex; flex-direction: column; will-change: transform; }
+  .persona-thumbs figure { margin: 0; width: 100%; height: 132px; flex: none; overflow: hidden; }
+  .persona-media img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .persona-rail { position: relative; width: 2px; justify-self: center; background: var(--line); align-self: stretch; }
+  .persona-rail-fill { position: absolute; top: 0; left: 0; width: 100%; height: 0; background: var(--ink); }
+  .persona-copy { display: flex; flex-direction: column; min-width: 0; padding-top: 6px; }
+  .persona-kicker { margin: 0; font-size: clamp(28px, 2.6vw, 40px); line-height: 1.15; letter-spacing: -1px; font-weight: 400; color: rgba(28, 27, 26, 0.38); font-family: var(--serif); }
+  .persona-body { margin-top: auto; margin-bottom: 12px; max-width: 34ch; font-size: 15px; line-height: 24px; color: var(--muted); }
+  .persona-media { min-width: 0; min-height: 0; overflow: hidden; background: var(--line); }
+  .persona-media figure { margin: 0; width: 100%; height: calc(100vh - 68px); flex: none; overflow: hidden; }
+
+  /* ---------- Stats "By the numbers" (from Cytokine, kept as-is) ---------- */
+  .stats-statement { text-align: center; max-width: 1200px; margin: 0 auto 120px; }
+  .stats-thirds { display: grid; grid-template-columns: repeat(3, 1fr); border-top: 1px solid var(--line); }
+  .stat { display: flex; flex-direction: column; align-items: center; gap: 28px; padding-top: 64px; text-align: center; }
+  .stat + .stat { border-left: 1px solid var(--line); }
+  .stat-num { font-size: clamp(88px, 10vw, 180px); line-height: 0.85; }
+
+  /* ---------- Logo marquee (from Antibody, restyled) ---------- */
+  #stats-section { padding-bottom: 0; }
+  #credibility-section { padding-top: 72px; }
+  .cred-marquee-label { margin: 0 0 16px; text-align: center; font-size: 13px; color: var(--muted); }
+  .cred-marquee { overflow: hidden; mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent); }
+  .cred-track { display: flex; gap: 48px; width: max-content; animation: cred-scroll 32s linear infinite; }
+  .cred-logo { flex: none; min-width: 160px; height: 56px; display: flex; align-items: center; justify-content: center; font-family: var(--serif); font-size: 22px; letter-spacing: -0.6px; color: var(--ink); opacity: 0.72; white-space: nowrap; }
+  .cred-logo img { height: 60%; width: auto; filter: grayscale(1); }
+  @keyframes cred-scroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+  /* ---------- Outreach pillars ("What she's working on now") ---------- */
+  .pillars-head { max-width: 640px; margin: 0 0 64px; }
+  .pillars-head p.display { margin-top: 20px; }
+  .pillars-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem; border-top: 1px solid var(--line); }
+  .pillar { display: flex; flex-direction: column; gap: 20px; padding-top: 24px; text-decoration: none; color: inherit; }
+  .pillar-media { position: relative; overflow: hidden; border-radius: 16px; aspect-ratio: 3 / 4; background: var(--line); }
+  .pillar-media img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s var(--ease-out); }
+  .pillar:hover .pillar-media img { transform: scale(1.04); }
+  .pillar h3 { font-family: var(--serif); font-weight: 400; font-size: 22px; letter-spacing: -0.02em; }
+  .pillar p { font-size: 14px; line-height: 22px; color: var(--muted); }
+  @media (max-width: 991px) { .pillars-grid { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 767px) { .pillars-grid { grid-template-columns: 1fr; } .pillars-head { margin-bottom: 40px; } }
+
+  .cta-buttons { display: flex; justify-content: center; flex-wrap: wrap; gap: 8px; margin-top: 40px; }
+  .cta-btn { display: inline-flex; align-items: center; padding: 10px 20px; border: 1px solid var(--line); border-radius: 999px; font-size: 15px; transition: background 0.3s var(--ease-out), color 0.3s var(--ease-out); }
+  .cta-btn:hover { background: var(--ink); color: var(--paper); }
+  .cta-btn.is-solid { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+  .cta-btn.is-solid:hover { background: transparent; color: var(--ink); }
+  .site-footer { padding: 0 32px 32px; background: linear-gradient(var(--paper), #bccadb); }
+  .footer-card { max-width: 1800px; margin: 0 auto; padding: 48px 32px 32px; background: #fff; border-radius: 16px; }
+  .footer-top { display: flex; justify-content: space-between; gap: 48px; flex-wrap: wrap; padding-bottom: 48px; border-bottom: 1px solid var(--line); }
+  .footer-brand p { margin-top: 12px; color: var(--muted); font-size: 15px; }
+  .footer-cols { display: flex; gap: clamp(32px, 6vw, 107px); flex-wrap: wrap; }
+  .footer-col { display: flex; flex-direction: column; gap: 8px; }
+  .footer-col .label { margin-bottom: 8px; }
+  .footer-col a { font-size: 15px; transition: opacity 0.2s; }
+  .footer-col:hover a { opacity: 0.5; }
+  .footer-col a:hover { opacity: 1; }
+  .footer-bottom { padding-top: 32px; font-size: 12px; color: var(--muted); }
+  @media (max-width: 767px) { .site-footer { padding: 0 16px 16px; } .footer-card { padding: 32px 20px 24px; } }
+
+  /* ---------- Press ---------- */
+  .press-head { display: flex; justify-content: space-between; align-items: flex-end; gap: 24px; margin-bottom: 48px; }
+  .press-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+  .press-card { display: flex; flex-direction: column; gap: 20px; padding: 1.75rem; border: 1px solid var(--line); border-radius: var(--radius); background: color-mix(in srgb, var(--paper) 55%, var(--line)); text-decoration: none; color: inherit; transition: transform 0.25s var(--ease-out), box-shadow 0.25s var(--ease-out); }
+  .press-card:hover { transform: translateY(-3px); box-shadow: 0 16px 34px rgba(0, 0, 0, 0.08); }
+  .press-card h3 { font-family: var(--serif); font-weight: 400; font-size: 1.3rem; line-height: 1.25; letter-spacing: -0.01em; margin: 0; flex: 1; }
+  .press-card .press-meta { display: flex; justify-content: space-between; gap: 0.75rem; padding-top: 1rem; border-top: 1px solid var(--line); font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.04em; color: var(--muted); }
+  @media (max-width: 991px) { .press-grid { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 767px) { .press-grid { grid-template-columns: 1fr; } .press-head { flex-direction: column; align-items: flex-start; } }
+
+  /* ---------- Prefooter closing statement ---------- */
+  .prefooter { text-align: center; }
+  .prefooter .display { max-width: 1000px; margin: 0 auto; }
+
+  /* ---------- Awards (structure from Dendrite, restyled) ---------- */
+  .awards h2 { font-size: clamp(2.25rem, 4vw, 3rem); font-weight: 400; margin: 0; max-width: 34rem; letter-spacing: -0.01em; font-family: var(--serif); }
+  .awards-layout { display: grid; grid-template-columns: 1fr 1.5fr; gap: 3rem; align-items: start; }
+  .awards-head { display: flex; flex-direction: column; align-items: flex-start; gap: 24px; max-width: 500px; }
+  .awards-head h2 { margin: 0; }
+  .awards-head > p { font-size: 16px; line-height: 24px; font-weight: 400; color: var(--muted); max-width: 40ch; }
+  .awards-pill { padding: 8px 14px; border: 1px solid var(--muted); border-radius: 999px; }
+  .award-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .award { display: flex; flex-direction: column; align-items: flex-start; text-align: left; gap: 0.6rem; padding: 1.5rem; border: 1px solid var(--line); border-radius: 12px; }
+  .award-wreath { width: 64px; height: auto; color: var(--ink); margin-bottom: 0.9rem; }
+  @media (max-width: 991px) { .awards-layout { grid-template-columns: 1fr; } }
+  @media (max-width: 560px) { .award-grid { grid-template-columns: 1fr; } }
+  .award-title { font-weight: 700; font-size: 1rem; line-height: 1.3; margin: 0; font-family: var(--sans); }
+  .award-meta { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.04em; opacity: 0.6; margin: 0; font-family: var(--sans); }
+
+  /* ---------- Mascot placeholder (shared shape, D1: scroll-gutter cameo) ---------- */
+
+  /* ---------- Prototype badge ---------- */
+
+  /* ---------- Responsive ---------- */
+  @media (max-width: 991px) {
+    :root { --space: 104px; }
+    .persona-pin {
+      grid-template-columns: 1fr; grid-template-rows: auto 3px 1fr auto; row-gap: 16px; padding: 20px;
+    }
+    .persona-nav { height: auto; }
+    .persona-rail { width: 100%; height: 2px; justify-self: stretch; }
+    .persona-rail-fill { height: 100%; width: 0; }
+    .persona-nav button { font-size: 28px; }
+    .persona-aside { display: none; }
+    .persona-media { grid-row: 3; }
+    .persona-copy { grid-row: 4; padding-top: 0; }
+    .persona-media figure { height: 42vh; }
+    .persona-body { margin-top: 16px; }
+  }
+  @media (max-width: 767px) {
+    .main-container { padding: 0 20px; }
+    .display-xl { font-size: 18vw; }
+    .about-hero { padding-top: 100px; }
+    .video-inner { border-radius: 16px; }
+    .parallax-text { padding-left: 24px; padding-right: 24px; }
+    .stats-thirds { grid-template-columns: 1fr; }
+    .stat { padding-block: 48px; }
+    .stat + .stat { border-left: 0; border-top: 1px solid var(--line); }
+    .navbar { padding: 20px 16px; }
+    .menu-links { padding: 0 16px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .mask > .slide, .fade, .stagger > * { transform: none !important; opacity: 1 !important; transition: none !important; }
+    .navbar, .navbar::before { transition: none; }
+  }
+</style>
+</head>
+<body>
+<!-- structure + style: Direction 1 (first pass) -->
+<header class="navbar">
+  <a href="index.html" class="label">Aimee Pugh-Bernard</a>
+  <button type="button" class="label" id="menuToggle" aria-expanded="false" style="border:0;background:none;cursor:pointer;padding:0;font:inherit;color:inherit;">Menu</button>
+</header>
+
+<div class="menu-overlay" id="menuOverlay">
+  <nav class="menu-links">
+    <a class="display display-md" href="about.html">About</a>
+    <a class="display display-md" href="educator.html">Educator</a>
+    <span class="display display-md is-soon">Communicator</span>
+    <span class="display display-md is-soon">Immunologist</span>
+    <span class="display display-md is-soon">Outreach</span>
+    <a class="display display-md" href="work.html">Work</a>
+  </nav>
+</div>
+
+<section class="about-hero">
+  <div class="main-container">
+    <div class="hero-label label">Immunologist. Educator. Communicator.</div>
+  </div>
+  <div class="name-wrap">
+    <h1 class="display display-xl" style="margin:0">Aimee Pugh-Bernard</h1>
+  </div>
+</section>
+
+<section aria-label="Mission" class="section-end" id="mission-section">
+  <div class="parallax-master" id="parallaxMaster">
+    <div class="parallax-text">
+      <div class="parallax-video-text mask" data-reveal><h2 class="display display-lg slide">The immune system is endlessly fascinating,</h2></div>
+      <div class="parallax-video-text mask" data-reveal><p class="display display-lg slide">and my job &mdash; across teaching, communication, and&nbsp;outreach&nbsp;&mdash;</p></div>
+      <div class="parallax-video-text mask" data-reveal><p class="display display-lg slide">is to inspire you to think so too!</p></div>
+    </div>
+    <div class="video-parallax">
+      <div class="video-inner" id="videoInner">
+        <video autoplay loop muted playsinline>
+          <source src="../videos/a-woman-professor-12041545.mp4" type="video/mp4">
+        </video>
+        <div class="video-overlay-dark"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="persona-scene" id="persona-section" aria-label="Personas">
+  <div class="persona-runway" id="personaRunway">
+    <div class="persona-pin">
+      <div class="persona-left">
+        <div class="persona-nav" id="personaNav">
+          <button type="button" data-persona="0" class="is-active"><span class="persona-arrow" aria-hidden="true">&rarr;</span>Educator</button>
+          <button type="button" data-persona="1"><span class="persona-arrow" aria-hidden="true">&rarr;</span>Immunologist</button>
+          <button type="button" data-persona="2"><span class="persona-arrow" aria-hidden="true">&rarr;</span>Communicator</button>
+        </div>
+        <div class="persona-aside">
+          <p class="persona-caption" id="personaCaption">Teaching <span>&darr;</span></p>
+          <div class="persona-thumbs">
+            <div class="persona-thumb-stack" id="personaThumbStack">
+              <figure class="persona-item"><div class="mc"><div class="mc-thumb"><span class="mc-icon" style="background:#dfe7d6"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21.42 10.922a1 1 0 0 0-.019-1.838L12.83 5.18a2 2 0 0 0-1.66 0L2.6 9.08a1 1 0 0 0 0 1.832l8.57 3.908a2 2 0 0 0 1.66 0z"/><path d="M22 10v6"/><path d="M6 12.5V16a6 3 0 0 0 12 0v-3.5"/></svg></span></div><div class="mc-body"><p class="mc-title">Introduction to Immunology</p><div class="mc-foot"><div class="mc-tag"><span class="mc-dot"></span>Course &middot; MIMS7530</div><svg class="mc-arrow" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div></div></figure>
+              <figure class="persona-item"><div class="mc"><div class="mc-thumb"><span class="mc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg></span></div><div class="mc-body"><p class="mc-title">Germinal center exclusion of autoreactive B cells is defective in human lupus</p><div class="mc-foot"><div class="mc-tag"><span class="mc-dot"></span>Publication &middot; JCI 2005</div><svg class="mc-arrow" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div></div></figure>
+              <figure class="persona-item"><div class="mc"><div class="mc-thumb"><img src="../src/set-d/tedx-talk.jpg" alt=""></div><div class="mc-body"><p class="mc-title">Confessions of a Scientist: Science education needs communication training</p><div class="mc-foot"><div class="mc-tag"><span class="mc-dot"></span>Talk &middot; TEDxCU</div><svg class="mc-arrow" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div></div></figure>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="persona-rail" aria-hidden="true">
+        <div class="persona-rail-fill" id="personaFill"></div>
+      </div>
+
+      <div class="persona-copy">
+        <h2 class="persona-kicker" id="personaTitle">Teaching that sticks</h2>
+        <p class="persona-body" id="personaBody">She's been teaching immunology at the University of Colorado Anschutz Medical Campus since 2019, training the next generation of scientists and clinicians.</p>
+      </div>
+
+      <div class="persona-media">
+        <div class="persona-media-stack" id="personaMediaStack">
+          <figure><img src="../src/educator.webp" alt="Aimee's educator work"></figure>
+          <figure><img src="../src/immunologist.webp" alt="Aimee's immunology work"></figure>
+          <figure><img src="../src/communicator.webp" alt="Aimee's communication work"></figure>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="stats-section" aria-label="By the numbers">
+  <div class="main-container">
+    <div class="stats-statement">
+      <div class="label" style="margin-bottom:28px">By the numbers</div>
+      <p class="display display-md fade" data-reveal>Teaching, writing, and outreach built so complex science becomes easy to trust.</p>
+    </div>
+    <div class="stats-thirds">
+      <div class="stat">
+        <div class="mask" data-reveal><div class="display stat-num slide">25+</div></div>
+        <div class="label muted">Years as an educator,<br>scientist &amp; communicator</div>
+      </div>
+      <div class="stat">
+        <div class="mask" data-reveal><div class="display stat-num slide">18</div></div>
+        <div class="label muted">Courses taught</div>
+      </div>
+      <div class="stat">
+        <div class="mask" data-reveal><div class="display stat-num slide">21</div></div>
+        <div class="label muted">Talks given</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="credibility-section" aria-label="Credibility">
+  <div class="main-container">
+    <p class="cred-marquee-label fade" data-reveal>Appeared with</p>
+    <div class="cred-marquee fade" data-reveal aria-hidden="true">
+      <div class="cred-track">
+        <span class="cred-logo"><img src="../src/logos/cu-anschutz.png" alt="CU Anschutz" loading="lazy"></span>
+        <span class="cred-logo"><img src="../src/logos/cu-denver.png" alt="CU Denver" loading="lazy"></span>
+        <span class="cred-logo"><img src="../src/logos/tedx.svg" alt="TEDx" loading="lazy"></span>
+        <span class="cred-logo"><img src="../src/logos/aai.png" alt="AAI" loading="lazy"></span>
+        <span class="cred-logo"><img src="../src/logos/the-conversation.svg" alt="The Conversation" loading="lazy"></span>
+        <span class="cred-logo"><img src="../src/logos/medpagetoday.svg" alt="MedPage Today" loading="lazy"></span>
+        <span class="cred-logo"><img src="../src/logos/self.svg" alt="SELF" loading="lazy"></span>
+        <span class="cred-logo"><img src="../src/logos/huffpost.svg" alt="HuffPost" loading="lazy"></span>
+        <span class="cred-logo"><img src="../src/logos/cu-anschutz.png" alt="CU Anschutz" loading="lazy"></span>
+        <span class="cred-logo"><img src="../src/logos/cu-denver.png" alt="CU Denver" loading="lazy"></span>
+        <span class="cred-logo"><img src="../src/logos/tedx.svg" alt="TEDx" loading="lazy"></span>
+        <span class="cred-logo"><img src="../src/logos/aai.png" alt="AAI" loading="lazy"></span>
+        <span class="cred-logo"><img src="../src/logos/the-conversation.svg" alt="The Conversation" loading="lazy"></span>
+        <span class="cred-logo"><img src="../src/logos/medpagetoday.svg" alt="MedPage Today" loading="lazy"></span>
+        <span class="cred-logo"><img src="../src/logos/self.svg" alt="SELF" loading="lazy"></span>
+        <span class="cred-logo"><img src="../src/logos/huffpost.svg" alt="HuffPost" loading="lazy"></span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="pillars-section" aria-label="What she's working on">
+  <div class="main-container">
+    <div class="pillars-head stagger" data-reveal>
+      <div class="label muted" style="margin-bottom:16px">Outreach</div>
+      <h2 class="display display-md">What she&rsquo;s working on now</h2>
+      <p class="display" style="font-family:var(--sans);font-size:16px;line-height:24px;letter-spacing:-0.01em;font-weight:400;color:var(--muted);max-width:44ch">Outreach, teaching, and public conversation, all aimed at making the immune system easier to understand.</p>
+    </div>
+    <div class="pillars-grid stagger" data-reveal>
+      <a class="pillar" href="https://tlasprogram.wordpress.com/" target="_blank" rel="noopener">
+        <div class="pillar-media"><img src="../src/communicator.webp" alt="Think Like a Scientist outreach" loading="lazy"></div>
+        <h3>Think Like a Scientist</h3>
+        <p>Hands-on science outreach for elementary and middle-school kids, alongside volunteer scientists at CU Anschutz.</p>
+      </a>
+      <a class="pillar" href="https://www.instagram.com/funsizeimmuninja/?hl=en" target="_blank" rel="noopener">
+        <div class="pillar-media"><img src="../src/immunologist.webp" alt="Fun Size Immuninja" loading="lazy"></div>
+        <h3>Fun Size Immuninja</h3>
+        <p>Uses her expertise as an immunologist to break down the science of the immune system for anyone who comes across her page.</p>
+      </a>
+      <a class="pillar" href="https://medschool.cuanschutz.edu/immunology-and-microbiology/dept-resources/teaching-resources/teacher-training-program/overview" target="_blank" rel="noopener">
+        <div class="pillar-media"><img src="../src/educator.webp" alt="Teacher Training Program" loading="lazy"></div>
+        <h3>Teacher Training Program</h3>
+        <p>Mentors PhD students and postdocs on curriculum, teaching, and assessment to ensure lasting training benefits.</p>
+      </a>
+      <a class="pillar" href="https://www.youtube.com/watch?v=zV58abJ_nTQ" target="_blank" rel="noopener">
+        <div class="pillar-media"><img src="../src/aimee-bw.png" alt="The World of Autoimmunity podcast" loading="lazy"></div>
+        <h3>The World of Autoimmunity</h3>
+        <p>Unbiased Science Podcast &middot; April 2025. A recent conversation on autoimmune disease, unpacked for a general audience.</p>
+      </a>
+    </div>
+  </div>
+</section>
+
+<section class="section awards" id="awards-section">
+  <div class="main-container">
+    <svg width="0" height="0" style="position: absolute" aria-hidden="true">
+      <defs>
+        <symbol id="wreath" viewBox="0 0 1280 1222">
+          <g transform="translate(0,1222) scale(0.1,-0.1)" fill="currentColor" stroke="none">
+            <path d="M5265 12204 c-22 -9 -148 -46 -280 -84 -268 -77 -344 -103 -459 -161
+-189 -94 -296 -214 -353 -396 l-25 -83 -117 -73 c-64 -41 -183 -118 -265 -171
+-105 -69 -142 -89 -127 -69 87 112 170 265 221 408 35 101 142 505 133 505
+-26 0 -336 -198 -468 -299 -258 -197 -443 -441 -506 -667 -30 -105 -30 -242
+-1 -334 17 -51 19 -67 9 -76 -7 -6 -73 -66 -148 -133 -76 -66 -198 -185 -273
+-263 l-136 -142 49 95 c138 262 185 575 146 985 -10 104 -20 197 -24 206 -5
+13 -43 -28 -152 -165 -395 -491 -480 -657 -511 -992 -10 -110 -9 -149 4 -255
+22 -173 57 -270 96 -270 10 0 50 27 89 59 l70 59 -91 -122 c-147 -197 -340
+-496 -412 -638 -14 -28 -27 -48 -30 -46 -2 3 1 29 6 59 20 103 28 270 20 402
+-12 193 -30 265 -177 727 -31 96 -59 179 -63 183 -8 9 -22 -34 -140 -403 -187
+-587 -222 -821 -159 -1077 28 -114 59 -187 142 -336 l72 -128 27 33 c16 18 28
+30 28 27 0 -2 -15 -40 -34 -84 -41 -100 -144 -399 -180 -525 -15 -52 -30 -102
+-33 -110 -3 -8 -16 30 -28 85 -56 242 -161 486 -298 693 -57 87 -130 200 -161
+254 -57 96 -91 137 -103 125 -3 -4 -8 -39 -9 -79 -2 -40 -11 -199 -20 -353
+-23 -384 -16 -694 19 -856 59 -271 159 -433 339 -550 34 -22 72 -42 85 -45 27
+-7 27 -3 8 -169 -18 -162 -35 -429 -35 -555 l0 -95 -56 104 c-107 202 -288
+471 -408 606 -63 71 -398 345 -423 345 -11 0 -14 -7 -10 -22 13 -61 70 -352
+98 -503 65 -353 138 -579 251 -779 99 -172 212 -293 378 -402 72 -47 191 -112
+217 -119 1 -1 11 -61 23 -134 25 -162 81 -435 115 -555 13 -49 20 -85 16 -80
+-4 5 -28 36 -53 69 -112 148 -198 215 -783 607 -150 100 -370 229 -373 219 -4
+-12 368 -764 453 -916 104 -184 160 -260 280 -380 120 -121 260 -221 387 -279
+122 -55 280 -106 331 -106 32 0 47 -4 47 -13 0 -37 289 -585 385 -732 16 -24
+7 -19 -50 27 -107 85 -233 161 -420 253 -202 99 -312 138 -554 200 -99 25
+-229 63 -288 84 -168 60 -171 49 -30 -121 56 -67 155 -191 220 -274 224 -288
+586 -607 800 -704 89 -40 271 -94 391 -115 77 -14 126 -16 222 -11 68 3 134
+10 148 16 22 8 30 2 92 -73 38 -45 152 -165 254 -267 160 -161 221 -217 395
+-363 17 -14 -62 21 -175 77 -192 97 -212 104 -320 124 -409 76 -1320 161
+-1320 124 0 -15 54 -58 275 -217 372 -269 536 -368 745 -448 293 -113 445
+-147 665 -147 199 0 338 27 503 97 82 35 82 36 65 56 -10 11 11 1 47 -23 190
+-128 624 -361 822 -440 32 -13 56 -25 55 -27 -2 -2 -51 5 -108 14 -128 21
+-524 23 -674 4 -100 -12 -245 -38 -625 -110 -113 -21 -278 -52 -367 -68 -90
+-15 -162 -32 -160 -37 5 -14 778 -243 912 -270 194 -39 323 -49 552 -43 384
+10 612 85 822 271 l94 83 81 -24 c136 -40 343 -89 503 -119 l152 -28 -72 -19
+c-192 -49 -274 -85 -862 -377 -427 -213 -585 -297 -585 -312 0 -21 584 2 840
+32 288 35 600 126 845 245 147 72 260 163 374 299 l64 76 196 0 197 0 139
+-131 c261 -245 301 -267 735 -397 275 -83 328 -91 884 -128 425 -28 440 -27
+377 26 -38 32 -267 148 -366 185 -90 34 -152 66 -270 140 -221 138 -516 260
+-816 338 -92 24 -93 25 -54 32 225 37 563 119 745 179 51 17 68 20 53 9 -34
+-23 -29 -56 15 -95 138 -125 399 -241 614 -274 164 -25 521 -23 669 4 178 33
+822 222 912 268 36 19 34 40 -5 53 -50 15 -409 86 -633 125 -445 77 -690 102
+-852 86 -177 -18 -372 -52 -481 -86 -91 -27 -65 -13 88 49 781 317 1535 868
+2077 1519 69 84 73 87 71 56 -5 -51 30 -63 187 -63 145 0 280 24 440 77 137
+46 216 89 375 202 299 215 422 335 590 581 87 127 202 258 298 339 35 29 38
+49 6 54 -11 1 -89 -17 -174 -42 -85 -25 -219 -61 -296 -80 -172 -43 -269 -79
+-431 -156 -235 -112 -454 -254 -606 -391 -78 -71 -80 -72 -51 -29 131 191 354
+599 439 803 15 37 30 67 33 67 3 0 14 -7 24 -16 23 -22 86 -10 225 41 283 106
+540 293 681 499 93 135 377 677 501 957 50 113 60 149 42 149 -21 0 -464 -280
+-712 -451 -231 -158 -365 -284 -474 -444 -26 -38 -48 -71 -50 -73 -1 -1 10 42
+25 96 60 213 109 447 155 748 6 37 8 40 33 36 19 -2 54 10 105 36 258 134 421
+300 550 557 98 198 152 383 217 744 23 124 55 283 72 354 52 208 42 204 -258
+-97 -393 -394 -534 -584 -634 -854 l-29 -77 -1 130 c-1 220 -33 666 -56 780
+l-6 30 23 -22 c22 -19 27 -20 61 -9 93 33 242 180 306 304 122 236 167 543
+144 975 -13 234 -41 602 -48 626 -9 30 -349 -540 -454 -761 -88 -187 -99 -243
+-101 -508 l-1 -185 -29 114 c-93 373 -248 821 -355 1033 -45 89 -24 63 36 -44
+67 -119 88 -138 125 -114 98 64 255 474 255 664 0 146 -107 573 -242 967 -81
+236 -83 236 -161 59 -49 -112 -116 -303 -133 -383 -36 -161 -36 -771 0 -870
+26 -71 19 -62 -45 59 -189 355 -452 737 -723 1050 -119 138 -404 423 -535 535
+-94 81 -102 90 -80 95 41 10 53 52 57 195 4 158 -11 237 -69 344 -100 186
+-343 443 -569 603 -97 69 -292 188 -307 188 -23 0 -15 -67 26 -225 99 -378
+159 -502 345 -719 54 -63 53 -64 -34 -6 -30 20 -107 64 -170 97 -63 34 -167
+90 -230 126 l-115 64 -8 62 c-29 233 -246 463 -540 571 -116 42 -620 190 -649
+190 -27 0 -22 -25 15 -83 84 -131 327 -427 434 -529 70 -66 173 -135 276 -183
+66 -32 246 -85 287 -85 9 0 122 -72 251 -161 147 -101 223 -159 204 -155 -149
+30 -314 33 -467 6 -262 -44 -676 -174 -718 -225 -25 -30 44 -46 310 -75 107
+-11 272 -31 365 -43 292 -38 877 -29 958 15 23 12 48 -5 203 -134 151 -127
+233 -202 209 -193 -197 74 -539 113 -851 95 -171 -9 -224 -21 -224 -50 0 -22
+23 -37 125 -80 44 -18 204 -91 355 -161 482 -223 654 -274 978 -295 l103 -7
+58 -71 c105 -129 301 -398 301 -411 0 -3 -21 10 -47 29 -76 54 -249 142 -374
+189 -313 119 -669 200 -669 153 0 -17 115 -118 475 -416 308 -255 373 -304
+540 -411 163 -104 303 -178 389 -204 l71 -22 47 -107 c61 -137 107 -253 156
+-391 l39 -110 -161 161 c-107 106 -190 179 -246 216 -224 148 -623 349 -646
+326 -10 -11 24 -63 102 -153 148 -172 272 -351 392 -565 35 -63 94 -153 130
+-199 135 -173 396 -412 553 -506 35 -21 65 -39 66 -40 5 -3 32 -161 48 -275
+20 -148 45 -429 44 -500 l0 -55 -23 80 c-53 184 -122 326 -213 439 -80 98
+-630 652 -639 644 -16 -17 215 -751 316 -1003 124 -310 297 -594 485 -794 71
+-76 67 -41 34 -301 -21 -169 -50 -343 -76 -460 l-17 -75 -12 104 c-28 232 -87
+383 -278 715 -177 309 -298 490 -320 483 -18 -6 -18 -96 -1 -382 25 -429 54
+-781 76 -930 29 -191 159 -504 271 -653 l48 -63 -67 -162 c-66 -159 -273 -582
+-295 -602 -8 -7 -9 -5 -5 7 35 100 34 544 -3 738 -81 436 -188 736 -243 681
+-6 -6 -16 -62 -23 -126 -13 -111 -33 -208 -138 -668 -73 -319 -88 -422 -93
+-617 -6 -204 9 -297 77 -495 l41 -117 -115 -142 c-102 -127 -303 -356 -311
+-356 -2 0 3 24 11 53 17 65 39 184 56 307 17 124 15 627 -4 810 l-13 135 -64
+-125 c-113 -220 -280 -521 -347 -623 -193 -295 -242 -459 -266 -901 l-12 -226
+-144 -101 c-145 -102 -414 -271 -420 -264 -2 2 12 25 31 52 112 157 231 430
+292 673 27 105 78 405 73 422 -5 15 -529 -493 -685 -663 -312 -342 -408 -504
+-447 -758 l-12 -75 -145 -48 c-126 -41 -449 -131 -449 -124 0 1 32 29 72 61
+166 139 385 424 482 630 29 61 72 202 64 210 -2 2 -64 -26 -138 -62 -145 -69
+-244 -110 -465 -193 -190 -71 -335 -147 -418 -218 -183 -160 -365 -418 -354
+-503 l5 -36 -61 -7 c-33 -3 -180 -6 -327 -6 -202 0 -270 3 -277 13 -5 6 -29
+58 -52 115 -74 176 -156 293 -272 388 -135 110 -252 169 -599 300 -96 36 -246
+101 -332 144 -87 43 -158 75 -158 70 0 -24 47 -154 77 -215 106 -210 369 -536
+535 -663 27 -20 45 -38 40 -40 -20 -6 -444 109 -587 161 l-40 14 -7 73 c-23
+226 -114 397 -344 650 -117 128 -776 801 -781 797 -9 -10 39 -273 76 -420 87
+-339 173 -542 314 -736 l39 -53 -48 28 c-191 109 -544 340 -559 364 -3 4 3 45
+12 91 53 281 -80 746 -327 1138 -71 112 -222 386 -306 554 -24 48 -48 87 -53
+87 -20 0 -29 -752 -11 -973 12 -147 37 -251 80 -339 l31 -63 -42 40 c-74 71
+-259 277 -360 402 l-99 122 20 33 c53 87 107 339 117 548 9 192 -17 359 -139
+895 -74 328 -108 504 -108 564 0 44 -14 71 -30 55 -6 -6 -29 -52 -50 -102
+-103 -240 -230 -862 -217 -1067 6 -82 48 -356 63 -401 12 -40 -101 159 -180
+316 -128 253 -256 550 -237 550 5 0 28 19 51 43 129 127 263 432 294 667 49
+369 108 1262 86 1284 -27 27 -166 -167 -334 -467 -209 -375 -260 -532 -273
+-837 -6 -142 -7 -144 -20 -100 -28 93 -102 491 -122 655 -32 259 -32 248 -15
+234 21 -17 45 8 179 186 147 196 275 387 315 471 30 64 135 347 158 424 6 19
+40 130 76 245 72 227 156 511 156 527 0 19 -86 -58 -288 -257 -220 -216 -309
+-316 -392 -439 -93 -139 -168 -324 -216 -528 -10 -43 -19 -76 -21 -74 -7 6 17
+416 32 551 26 244 57 425 72 425 25 0 89 38 189 113 246 184 419 383 729 842
+81 121 199 288 262 371 62 84 113 159 113 167 0 22 -32 11 -157 -52 -231 -116
+-572 -328 -688 -427 -73 -63 -182 -187 -253 -288 -23 -33 -42 -57 -42 -54 0 3
+22 70 49 149 54 160 110 303 177 455 l45 100 58 12 c106 22 348 151 581 309
+164 112 267 192 425 333 72 64 189 163 260 222 156 127 187 157 183 177 -5 25
+-102 18 -253 -18 -323 -77 -588 -192 -809 -350 -43 -31 -88 -63 -99 -71 -43
+-31 271 412 377 530 26 29 28 30 122 30 260 0 552 77 879 232 94 44 244 114
+335 154 240 107 275 125 278 150 2 17 -5 24 -30 34 -90 32 -583 29 -778 -5
+-93 -16 -236 -55 -296 -80 -19 -8 -34 -12 -34 -10 0 7 283 247 361 307 l74 56
+80 -23 c197 -56 484 -58 910 -5 333 41 515 60 584 61 63 0 122 17 129 37 9 27
+-291 145 -499 196 -191 46 -315 59 -514 53 -108 -3 -204 -11 -240 -21 -33 -8
+-61 -14 -62 -12 -7 6 439 336 448 331 19 -12 218 16 290 40 156 53 294 149
+474 330 248 249 411 476 364 506 -17 11 -15 11 -64 -7z" />
+            <path d="M10175 11360 c2 -74 7 -234 10 -355 7 -269 21 -424 46 -524 26 -104
+124 -298 203 -403 93 -121 294 -308 333 -308 22 0 49 56 69 143 15 67 19 121
+19 292 0 198 -2 216 -28 310 -47 170 -143 348 -295 545 -64 82 -278 341 -335
+404 l-28 31 6 -135z" />
+            <path d="M11300 2203 c-621 -44 -808 -67 -1031 -123 -270 -68 -466 -163 -702
+-338 -244 -182 -241 -246 19 -312 178 -46 389 -49 589 -9 123 25 338 95 451
+148 223 105 910 553 931 608 3 8 0 19 -8 24 -13 8 -149 9 -249 2z" />
+          </g>
+        </symbol>
+      </defs>
+    </svg>
+    <div class="awards-layout">
+    <div class="awards-head stagger" data-reveal>
+      <div class="label muted awards-pill">Recognition</div>
+      <h2>Award-Winning Educator</h2>
+      <p>Since 2011, students and colleagues at CU Denver and the CU School of Medicine have honored Aimee with six teaching awards, recognizing classrooms where complex immunology becomes something learners can understand and use.</p>
+    </div>
+    <div class="award-grid stagger" data-reveal>
+      <div class="award">
+        <svg class="award-wreath" viewBox="0 0 1280 1222"><use href="#wreath"></use></svg>
+        <p class="award-title">CHA/PA "Guest Lecture" Teaching Award</p>
+        <p class="award-meta">CU School of Medicine &middot; 2026</p>
+      </div>
+      <div class="award">
+        <svg class="award-wreath" viewBox="0 0 1280 1222"><use href="#wreath"></use></svg>
+        <p class="award-title">Chancellor's Teaching Recognition Award</p>
+        <p class="award-meta">CU School of Medicine &middot; 2024</p>
+      </div>
+      <div class="award">
+        <svg class="award-wreath" viewBox="0 0 1280 1222"><use href="#wreath"></use></svg>
+        <p class="award-title">S.T.A.R.ling Outstanding Faculty Teaching Award</p>
+        <p class="award-meta">CU School of Medicine &middot; 2023</p>
+      </div>
+      <div class="award">
+        <svg class="award-wreath" viewBox="0 0 1280 1222"><use href="#wreath"></use></svg>
+        <p class="award-title">S.T.A.R. Outstanding Faculty Teaching Award</p>
+        <p class="award-meta">CU School of Medicine &middot; 2023</p>
+      </div>
+      <div class="award">
+        <svg class="award-wreath" viewBox="0 0 1280 1222"><use href="#wreath"></use></svg>
+        <p class="award-title">Non-Tenure Faculty Teaching Award</p>
+        <p class="award-meta">CU Denver College of Liberal Arts &amp; Sciences &middot; 2014</p>
+      </div>
+      <div class="award">
+        <svg class="award-wreath" viewBox="0 0 1280 1222"><use href="#wreath"></use></svg>
+        <p class="award-title">Non-Tenure Faculty Teaching Award</p>
+        <p class="award-meta">CU Denver College of Liberal Arts &amp; Sciences &middot; 2011</p>
+      </div>
+    </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="press-section" aria-label="Press">
+  <div class="main-container">
+    <div class="press-head fade" data-reveal>
+      <h2 class="display display-md">In the press</h2>
+    </div>
+    <div class="press-grid fade" data-reveal>
+      <a class="press-card" href="#">
+        <h3>How an Immunity Gap May Be Fueling the Recent Spike in Respiratory Viruses</h3>
+        <div class="press-meta"><span>SELF</span></div>
+      </a>
+      <a class="press-card" href="#">
+        <h3>5 Sneaky Signs You&rsquo;re Getting Sick</h3>
+        <div class="press-meta"><span>HuffPost</span></div>
+      </a>
+      <a class="press-card" href="#">
+        <h3>CU Immunology Prof discusses mRNA research funding</h3>
+        <div class="press-meta"><span>KOA Morning News</span></div>
+      </a>
+      <a class="press-card" href="#">
+        <h3>Science Communicators Strategize How to Demystify Science</h3>
+        <div class="press-meta"><span>CU Anschutz Today</span></div>
+      </a>
+      <a class="press-card" href="#">
+        <h3>TLaS is Increasing Elementary Schoolers&rsquo; Access to Science</h3>
+        <div class="press-meta"><span>CU Anschutz Today</span><span>Feb 2021</span></div>
+      </a>
+      <a class="press-card" href="#">
+        <h3>Fake News: Medical Quackery Enters a New Dimension</h3>
+        <div class="press-meta"><span>CU Anschutz Today</span></div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<section class="section-end prefooter" aria-label="Closing statement">
+  <div class="main-container">
+    <h2 class="display display-lg fade" data-reveal>Sharing new ideas with new audiences</h2>
+    <div class="cta-buttons fade" data-reveal>
+      <a class="cta-btn is-solid" href="mailto:hello@aimeepughbernard.com">Get in touch</a>
+      <a class="cta-btn" href="work.html">See her work</a>
+    </div>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="footer-card">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <div class="display display-md">Aimee Pugh-Bernard</div>
+        <p>Immunologist. Educator. Communicator.</p>
+      </div>
+      <div class="footer-cols">
+        <div class="footer-col">
+          <div class="label muted">Pages</div>
+          <a href="index.html">Home</a>
+          <a href="about.html">About</a>
+          <a href="educator.html">Educator</a>
+          <a href="work.html">Work</a>
+        </div>
+        <div class="footer-col">
+          <div class="label muted">Programs</div>
+          <a href="https://tlasprogram.wordpress.com/" target="_blank" rel="noopener">Think Like a Scientist</a>
+          <a href="https://www.instagram.com/funsizeimmuninja/?hl=en" target="_blank" rel="noopener">Fun Size Immuninja</a>
+          <a href="https://www.youtube.com/watch?v=zV58abJ_nTQ" target="_blank" rel="noopener">The World of Autoimmunity</a>
+        </div>
+        <div class="footer-col">
+          <div class="label muted">Follow</div>
+          <a href="https://www.instagram.com/funsizeimmuninja/?hl=en" target="_blank" rel="noopener">Instagram</a>
+          <a href="https://www.tiktok.com/@funsizeimmuninja" target="_blank" rel="noopener">TikTok</a>
+          <a href="https://aimeepughbernard.substack.com/" target="_blank" rel="noopener">Substack</a>
+          <a href="https://bsky.app/profile/funsizeimmuninja.bsky.social" target="_blank" rel="noopener">Bluesky</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; 2026 Aimee Pugh-Bernard. All rights reserved.</span>
+    </div>
+  </div>
+</footer>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/ScrollTrigger.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/SplitText.min.js"></script>
+<script>
+  gsap.registerPlugin(ScrollTrigger, SplitText);
+
+  const menuToggle = document.getElementById('menuToggle');
+  const menuOverlay = document.getElementById('menuOverlay');
+  const menuLinkEls = [...document.querySelectorAll('.menu-links a')];
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  let menuChars = [];
+  let menuOpen = false;
+  let menuTl;
+
+  function splitMenuType() {
+    menuLinkEls.forEach((link) => {
+      if (link._split) link._split.revert();
+      link._split = new SplitText(link, { type: 'chars, lines', mask: 'lines' });
+    });
+    menuChars = menuLinkEls.flatMap((link) => link._split.chars);
+    gsap.set(menuChars, { yPercent: 110 });
+  }
+
+  function setMenuChrome(open) {
+    menuOpen = open;
+    menuToggle.textContent = open ? 'Close' : 'Menu';
+    menuToggle.setAttribute('aria-expanded', String(open));
+  }
+
+  function openMenu() {
+    setMenuChrome(true);
+    menuOverlay.classList.add('is-open');
+    menuTl?.kill();
+    if (reduceMotion || !menuChars.length) { gsap.set(menuChars, { yPercent: 0 }); return; }
+    menuTl = gsap.timeline();
+    menuTl.fromTo(menuChars, { yPercent: 110 }, { yPercent: 0, duration: 0.72, ease: 'power3.out', stagger: 0.018, delay: 0.12 });
+  }
+
+  function closeMenu() {
+    setMenuChrome(false);
+    menuTl?.kill();
+    const collapse = () => menuOverlay.classList.remove('is-open');
+    if (reduceMotion || !menuChars.length) { gsap.set(menuChars, { yPercent: 110 }); collapse(); return; }
+    menuTl = gsap.timeline({ onComplete: collapse });
+    menuTl.to(menuChars, { yPercent: 110, duration: 0.42, ease: 'power2.in', stagger: { each: 0.012, from: 'end' } });
+  }
+
+  menuToggle.addEventListener('click', () => { if (menuOpen) closeMenu(); else openMenu(); });
+  const afterFonts = document.fonts?.ready || Promise.resolve();
+  afterFonts.then(splitMenuType);
+
+  const clamp = (v, min, max) => Math.max(min, Math.min(max, v));
+
+  // Video widens as you scroll through the pinned section
+  const master = document.getElementById('parallaxMaster');
+  const videoInner = document.getElementById('videoInner');
+  function updateScrub() {
+    const rect = master.getBoundingClientRect();
+    const total = rect.height - window.innerHeight;
+    const progress = clamp(-rect.top / total, 0, 1);
+    videoInner.style.width = `${70 + clamp(progress / 0.3, 0, 1) * 30}%`;
+  }
+
+  // Header hides on scroll down, returns with a background on scroll up
+  const navbar = document.querySelector('.navbar');
+  let lastY = window.scrollY;
+  function updateNavbar() {
+    const y = Math.max(0, window.scrollY);
+    const dy = y - lastY;
+    if (menuOpen || y < 10) {
+      navbar.classList.remove('is-hidden');
+      if (y < 10) navbar.classList.remove('has-bg');
+    } else if (dy > 0 && y > 80) {
+      navbar.classList.add('is-hidden');
+    } else if (dy < -6) {
+      navbar.classList.remove('is-hidden');
+      navbar.classList.add('has-bg');
+    }
+    if (Math.abs(dy) > 6 || y < 10) lastY = y;
+  }
+
+  let ticking = false;
+  function onScroll() {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(() => { updateScrub(); updateNavbar(); ticking = false; });
+  }
+  document.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', onScroll);
+  onScroll();
+
+  // Reveal on scroll
+  const io = new IntersectionObserver((entries) => {
+    for (const e of entries) {
+      if (e.isIntersecting) { e.target.classList.add('is-in'); io.unobserve(e.target); }
+    }
+  }, { rootMargin: '0px 0px -12% 0px' });
+  document.querySelectorAll('[data-reveal]').forEach((el) => io.observe(el));
+
+  // Persona scroll-pinned section (vanilla JS scroll math, ported from Antibody)
+  function ease(t) { return t * t * (3 - 2 * t); }
+  function rangeT(progress, a, b) { return clamp((progress - a) / (b - a), 0, 1); }
+
+  const personaRunway = document.getElementById('personaRunway');
+  const personaFill = document.getElementById('personaFill');
+  const personaTitle = document.getElementById('personaTitle');
+  const personaBody = document.getElementById('personaBody');
+  const personaCaption = document.getElementById('personaCaption');
+  const personaMediaStack = document.getElementById('personaMediaStack');
+  const personaThumbStack = document.getElementById('personaThumbStack');
+  const personaBtns = [...document.querySelectorAll('#personaNav button')];
+  const personaChapters = [
+    {
+      title: 'Teaching that sticks',
+      body: "She's been teaching immunology at the University of Colorado Anschutz Medical Campus since 2019, training the next generation of scientists and clinicians.",
+      caption: 'Teaching <span>&darr;</span>',
+    },
+    {
+      title: 'The science itself',
+      body: "Her research spans 12 peer-reviewed publications — from bench to bedside, she's spent her career asking how the immune system actually works.",
+      caption: 'Research <span>&darr;</span>',
+    },
+    {
+      title: 'Science people can use',
+      body: "Through Think Like a Scientist, a hands-on outreach program she leads, she's turning curious kids into future scientists.",
+      caption: 'Outreach <span>&darr;</span>',
+    },
+  ];
+
+  function runwayProgress(el) {
+    const rect = el.getBoundingClientRect();
+    const total = rect.height - window.innerHeight;
+    return total > 0 ? clamp(-rect.top / total, 0, 1) : 0;
+  }
+
+  function updatePersonas() {
+    const p = runwayProgress(personaRunway);
+    const narrow = window.innerWidth < 768;
+    if (narrow) {
+      personaFill.style.width = (p * 100) + '%';
+      personaFill.style.height = '100%';
+    } else {
+      personaFill.style.height = (p * 100) + '%';
+      personaFill.style.width = '100%';
+    }
+
+    const chapterT = p * 3;
+    const index = Math.min(2, Math.floor(Math.min(chapterT, 2.999)));
+    const local = chapterT - index;
+    const travel = index === 2 ? 0 : ease(rangeT(local, 0.58, 1));
+    const shift = (-(index + travel) / 3 * 100) + '%';
+    personaMediaStack.style.transform = 'translateY(' + shift + ')';
+    personaThumbStack.style.transform = 'translateY(' + shift + ')';
+    const chapter = personaChapters[index];
+
+    personaBtns.forEach((btn, i) => {
+      const on = i === index;
+      btn.classList.toggle('is-active', on);
+      if (on) btn.setAttribute('aria-current', 'true');
+      else btn.removeAttribute('aria-current');
+    });
+
+    if (personaTitle.textContent !== chapter.title) {
+      personaTitle.textContent = chapter.title;
+      personaBody.textContent = chapter.body;
+      personaCaption.innerHTML = chapter.caption;
+    }
+
+    let titleO = 1;
+    let bodyO = 0;
+    if (local > 0.88) titleO = (1 - local) / 0.12;
+    if (local >= 0.18 && local <= 0.88) bodyO = Math.min(1, (local - 0.18) / 0.16);
+    else if (local > 0.88) bodyO = Math.max(0, (1 - local) / 0.12);
+
+    personaTitle.style.opacity = String(titleO);
+    personaBody.style.opacity = String(bodyO);
+  }
+
+  function scrollToPersona(index) {
+    const rect = personaRunway.getBoundingClientRect();
+    const top = window.scrollY + rect.top;
+    const total = personaRunway.offsetHeight - window.innerHeight;
+    const target = top + (index / 3) * total + 1;
+    window.scrollTo({ top: target, behavior: 'smooth' });
+  }
+
+  personaBtns.forEach((btn) => {
+    btn.addEventListener('click', () => scrollToPersona(Number(btn.dataset.persona)));
+  });
+
+  document.addEventListener('scroll', () => requestAnimationFrame(updatePersonas), { passive: true });
+  window.addEventListener('resize', () => requestAnimationFrame(updatePersonas));
+  updatePersonas();
+
+</script>
+</body>
+</html>

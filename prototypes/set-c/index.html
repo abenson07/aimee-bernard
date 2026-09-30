@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Home &middot; Aimee Pugh-Bernard (Set C &middot; Direction 3)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  /* Direction 3, first pass — hero built from a clean product-portfolio
+     reference (status pill, floating headshot, big bold headline, short
+     bio + CTA); persona section adapted from a full-bleed dark "CTA lines"
+     template (hover-swapped background photo behind large stacked lines). */
+  :root {
+    --paper: #ffffff;
+    --ink: #121212;
+    --muted: rgba(18, 18, 18, 0.55);
+    --line: rgba(18, 18, 18, 0.12);
+    --dark-bg: #121212;
+    --dark-fg: #ece8e2;
+    --accent: #22c55e;
+    --radius: 20px;
+    --sans: "Inter", -apple-system, "Segoe UI", sans-serif;
+    --ease-out: cubic-bezier(0.215, 0.61, 0.355, 1);
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; background: var(--paper); color: var(--ink); font-family: var(--sans); }
+  img, video { max-width: 100%; display: block; }
+  a { color: inherit; text-decoration: none; }
+  p { margin: 0; }
+  h1, h2, h3 { margin: 0; font-weight: 700; }
+
+  .main-container { width: 100%; max-width: 1800px; margin: 0 auto; padding: 0 32px; }
+  .section { padding-block: 120px; }
+
+  .fade { opacity: 0; transform: translateY(16px); transition: opacity 0.9s var(--ease-out), transform 0.9s var(--ease-out); }
+  .fade.is-in { opacity: 1; transform: none; }
+
+  .text-label { color: var(--muted); letter-spacing: 0.08em; text-transform: uppercase; font-size: 11px; font-weight: 600; }
+
+  /* ---------- Nav ---------- */
+  .navbar { position: fixed; inset: 0 0 auto 0; z-index: 80; padding: 28px 32px; }
+  .nav-container { max-width: 1800px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; }
+  .nav-wordmark { font-weight: 700; font-size: 15px; letter-spacing: -0.01em; }
+  .nav-links { display: flex; gap: 2rem; }
+  .nav-links a { font-size: 14px; font-weight: 500; color: var(--muted); transition: color 0.25s ease; }
+  .nav-links a:hover { color: var(--ink); }
+  .nav-static { font-size: 14px; font-weight: 500; color: var(--muted); cursor: pointer; transition: color 0.25s ease; }
+  .nav-static:hover { color: var(--ink); }
+
+  /* ---------- Hero ---------- */
+  .hero { position: relative; min-height: 100vh; padding: 140px 32px 0; overflow: hidden; }
+  .hero-badge {
+    position: absolute; top: 152px; left: 32px; z-index: 3; display: inline-flex; align-items: center; gap: 10px;
+    padding: 10px 16px; border: 1px solid var(--line); border-radius: 999px; background: var(--paper);
+    font-size: 13px; color: var(--muted);
+  }
+  .hero-badge .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); flex: none; }
+  .hero-figure {
+    position: relative; max-width: 640px; margin: 0 auto; height: min(78vh, 820px);
+    -webkit-mask-image: linear-gradient(to bottom, #000 82%, transparent 100%);
+    mask-image: linear-gradient(to bottom, #000 82%, transparent 100%);
+  }
+  .hero-figure img { width: 100%; height: 100%; object-fit: contain; object-position: bottom center; }
+  .hero-bottom-row {
+    position: relative; z-index: 3; max-width: 1800px; margin: -8rem auto 0; padding: 0 32px;
+    display: grid; grid-template-columns: 1.3fr 1fr; gap: 3rem; align-items: end;
+  }
+  .hero-headline {
+    font-size: clamp(1.6rem, 3.1vw, 2.75rem); line-height: 1.18; letter-spacing: -0.02em; max-width: 22ch;
+  }
+  .hero-side { display: flex; flex-direction: column; gap: 1.5rem; padding-bottom: 0.4rem; }
+  .hero-side p { font-size: 1rem; line-height: 1.55; color: var(--muted); max-width: 36ch; }
+  .hero-cta {
+    display: inline-flex; align-self: flex-start; align-items: center; gap: 8px;
+    background: var(--ink); color: var(--paper); font-size: 14px; font-weight: 600;
+    padding: 14px 22px; border-radius: 999px; transition: opacity 0.3s ease;
+  }
+  .hero-cta:hover { opacity: 0.8; }
+
+  /* ---------- Persona "CTA lines" section (adapted from Stringer template) ---------- */
+  .persona-section { position: relative; background: var(--dark-bg); color: var(--dark-fg); overflow: hidden; padding: 160px 0; }
+  .persona-bg { position: absolute; inset: 0; z-index: 0; }
+  .persona-bg img {
+    position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center;
+    opacity: 0; transition: opacity 0.6s ease;
+  }
+  .persona-bg img.is-active { opacity: 1; }
+  .persona-scrim { position: absolute; inset: 0; z-index: 0; background: var(--dark-bg); opacity: 0.74; }
+  .persona-inner { position: relative; z-index: 1; }
+  .persona-head { display: flex; justify-content: space-between; align-items: flex-end; gap: 2rem; flex-wrap: wrap; padding-bottom: 64px; }
+  .persona-head .text-label { color: rgba(236, 232, 226, 0.64); }
+  .persona-head-links { display: flex; gap: 2rem; align-items: center; }
+  .persona-head-links a {
+    font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase;
+    border-bottom: 1px solid rgba(236, 232, 226, 0.5); padding-bottom: 4px; transition: opacity 0.25s ease;
+  }
+  .persona-head-links a:hover { opacity: 0.7; }
+  .persona-lines { display: flex; flex-direction: column; }
+  .persona-line {
+    display: grid; grid-template-columns: 1fr auto; align-items: baseline; column-gap: 2rem;
+    padding: 24px 0; border-top: 1px solid rgba(236, 232, 226, 0.12); text-decoration: none;
+  }
+  .persona-line:last-child { border-bottom: 1px solid rgba(236, 232, 226, 0.12); }
+  .persona-line-text {
+    font-size: clamp(2.2rem, 6vw, 5.5rem); font-weight: 700; letter-spacing: -0.03em; line-height: 1.05;
+    color: var(--dark-fg); transition: color 0.5s ease;
+  }
+  .persona-line-meta { color: rgba(236, 232, 226, 0.64); font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; text-align: right; white-space: nowrap; }
+  .persona-lines:hover .persona-line-text { color: rgba(236, 232, 226, 0.32); }
+  .persona-line:hover .persona-line-text { color: var(--dark-fg); }
+  .persona-foot { border-top: 1px solid rgba(236, 232, 226, 0.12); margin-top: 8px; padding-top: 24px; display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+  .persona-foot .text-label:nth-child(1) { text-align: left; color: rgba(236, 232, 226, 0.64); }
+  .persona-foot .text-label:nth-child(2) { text-align: center; color: rgba(236, 232, 226, 0.64); }
+  .persona-foot .text-label:nth-child(3) { text-align: right; color: rgba(236, 232, 226, 0.64); }
+
+
+  @media (max-width: 900px) {
+    .hero-bottom-row { grid-template-columns: 1fr; gap: 1.5rem; margin-top: -4rem; }
+    .hero-side { padding-bottom: 0; }
+    .nav-links { display: none; }
+    .persona-line-meta { display: none; }
+    .persona-line { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 600px) {
+    .persona-foot { grid-template-columns: 1fr; gap: 6px; }
+    .persona-foot .text-label { text-align: left !important; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .fade { opacity: 1 !important; transform: none !important; transition: none !important; }
+  }
+</style>
+</head>
+<body>
+<!-- structure + style: Direction 3 (first pass) -->
+<header class="navbar">
+  <div class="nav-container">
+    <a href="index.html" class="nav-wordmark">Aimee Pugh-Bernard</a>
+    <nav class="nav-links">
+      <a href="about.html">About</a>
+      <a href="educator.html">Educator</a>
+      <span class="nav-static">Communicator</span>
+      <a href="work.html">Work</a>
+      <span class="nav-static">Immunologist</span>
+      <span class="nav-static">Outreach</span>
+    </nav>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="hero-badge"><span class="dot"></span>Teaching at CU Anschutz since 2019</div>
+  <div class="hero-figure">
+    <img src="/prototypes/src/placeholder-hero-headshot.avif" alt="Aimee Pugh-Bernard">
+  </div>
+  <div class="hero-bottom-row">
+    <h1 class="hero-headline">The immune system is endlessly fascinating, and my job &mdash; across teaching, communication, and outreach &mdash; is to inspire you to think so too.</h1>
+    <div class="hero-side">
+      <p>As an immunologist, educator, and science communicator, Aimee partners with universities, programs, and audiences to turn complex science into something anyone can understand and trust.</p>
+      <a href="mailto:hello@aimeepughbernard.com" class="hero-cta">Email Me</a>
+    </div>
+  </div>
+</section>
+
+<section class="persona-section" id="persona-section" aria-label="Personas">
+  <div class="persona-bg" id="personaBg">
+    <img src="/prototypes/src/educator.webp" alt="" class="is-active">
+    <img src="/prototypes/src/immunologist.webp" alt="">
+    <img src="/prototypes/src/communicator.webp" alt="">
+  </div>
+  <div class="persona-scrim"></div>
+  <div class="main-container persona-inner">
+    <div class="persona-head">
+      <div class="text-label fade" data-reveal>Three sides of one scientist</div>
+      <div class="persona-head-links fade" data-reveal>
+        <a href="work.html">See her work</a>
+        <a href="mailto:hello@aimeepughbernard.com">Get in touch</a>
+      </div>
+    </div>
+    <div class="persona-lines fade" data-reveal id="personaLines">
+      <a href="educator.html" class="persona-line" data-index="0">
+        <div class="persona-line-text">Teaching the next generation.</div>
+        <div class="persona-line-meta">18 courses at CU Anschutz</div>
+      </a>
+      <a href="work.html#research-publication" class="persona-line" data-index="1">
+        <div class="persona-line-text">Publishing the research.</div>
+        <div class="persona-line-meta">12 peer-reviewed papers</div>
+      </a>
+      <a href="work.html#talk" class="persona-line" data-index="2">
+        <div class="persona-line-text">Communicating the science.</div>
+        <div class="persona-line-meta">Talks, podcasts &amp; press</div>
+      </a>
+    </div>
+    <div class="persona-foot fade" data-reveal>
+      <div class="text-label">CU Anschutz School of Medicine</div>
+      <div class="text-label">25+ years in immunology &amp; education</div>
+      <div class="text-label">Available for talks &amp; collaboration</div>
+    </div>
+  </div>
+</section>
+
+
+<script>
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // Reveal on scroll
+  const io = new IntersectionObserver((entries) => {
+    for (const e of entries) {
+      if (e.isIntersecting) { e.target.classList.add('is-in'); io.unobserve(e.target); }
+    }
+  }, { rootMargin: '0px 0px -12% 0px' });
+  document.querySelectorAll('[data-reveal]').forEach((el) => io.observe(el));
+
+  // Persona lines: hovering a line crossfades the background photo behind
+  // the whole section and dims the other lines (adapted from the Stringer
+  // CTA template's focus() pattern).
+  const personaLines = document.querySelectorAll('.persona-line');
+  const personaBgImgs = document.querySelectorAll('#personaBg img');
+  const personaLinesWrap = document.getElementById('personaLines');
+
+  function focusPersona(i) {
+    personaBgImgs.forEach((img, j) => img.classList.toggle('is-active', j === i));
+  }
+  if (!reduceMotion) {
+    personaLines.forEach((line) => {
+      line.addEventListener('mouseenter', () => focusPersona(Number(line.dataset.index)));
+    });
+  }
+</script>
+</body>
+</html>

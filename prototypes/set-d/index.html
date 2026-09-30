@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Home A · Aimee Pugh-Bernard (Set D · Round 3)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Instrument+Sans:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="shared.css?v=2">
+<style>
+  /* Home A — Figma 80:12688 (1440 x 850, single screen). */
+  body { overflow-x: hidden; background: #bccadb; }
+  .home-hero { --name: clamp(3rem, 5.4vw, 5.5rem); position: relative; height: 100vh; min-height: 640px; overflow: hidden; }
+  .role-bg::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0.55)); }
+  .home-copy { position: absolute; z-index: 60; left: 24px; top: 55%; font-size: var(--name); transform: translateY(-0.585em); transition: color 0.4s ease; }
+  .home-name { font-size: 1em; line-height: 1.17; letter-spacing: -0.05em; white-space: nowrap; margin-left: 8px; }
+  .home-name span { color: var(--dim); transition: color 0.4s ease, opacity 0.4s ease; }
+  .home-hero.role-hover .home-name span { opacity: 0; }
+  .home-copy .identity-words { font-size: initial; margin-top: 4px; }
+  .home-portrait { position: absolute; right: 10.3%; bottom: 0; z-index: 2; height: 89.5vh; width: auto; max-width: 52vw; object-fit: contain; object-position: bottom right; transform: scaleX(-1); transition: opacity 0.4s ease; }
+  .home-hero.role-hover .home-name, .home-hero.role-hover .home-name span, .home-hero.role-hover .identity-word { color: #fff; }
+  .home-hero.role-hover .home-portrait { opacity: 0; }
+  @media (max-width: 900px) {
+    .home-portrait { right: -6%; opacity: 0.9; height: 62vh; }
+    .home-copy { top: 46%; }
+    .home-hero { --name: clamp(2.4rem, 11vw, 3.5rem); }
+    .home-copy { right: 16px; }
+    .home-name { white-space: normal; }
+    .home-name span { display: block; }
+    .media-card { right: 16px; left: 16px; width: auto; max-width: none; bottom: 88px; }
+  }
+</style>
+</head>
+<body>
+<!-- Nav modeled on humaan.com: the banner, brand and mascot scroll away with
+     the page; only the pill nav stays fixed (top on desktop, bottom on phones).
+     A dark pill marks the current page; a faint pill glides to whatever is
+     hovered. Behavior lives in shared.js ("pill nav" + "nav mascot"). -->
+<div class="site-header">
+  <div class="banner">
+    <span>Available for speaking engagements &amp; science communication consulting</span>
+    <a href="#">Get in touch</a>
+  </div>
+  <div class="site-header__inner">
+    <a href="index.html" class="nav-brand">APB</a>
+    <button type="button" class="nav-mascot" id="navMascot" aria-label="Say hi to the T cell">
+      <span class="nav-mascot__body"><img src="../src/cells/t-cell.svg" alt="" draggable="false"></span>
+      <span class="nav-mascot__bubble" aria-hidden="true"></span>
+    </button>
+  </div>
+</div>
+<nav class="pill-nav" id="pillNav" aria-label="Main">
+  <span class="pill-nav__pill pill-nav__pill--hover" aria-hidden="true"></span>
+  <span class="pill-nav__pill pill-nav__pill--active" aria-hidden="true"></span>
+  <ul class="pill-nav__list">
+        <li><a href="index.html" class="pill-nav__link is-current" aria-current="page">Home</a></li>
+        <li><a href="about.html" class="pill-nav__link">About</a></li>
+        <li><a href="educator.html" class="pill-nav__link">Educator</a></li>
+        <li><a href="public-speaking.html" class="pill-nav__link">Communicator</a></li>
+        <li><span class="pill-nav__link is-soon" tabindex="0" title="Coming soon">Immunologist</span></li>
+        <li><span class="pill-nav__link is-soon" tabindex="0" title="Coming soon">Outreach</span></li>
+        <li><a href="#" class="pill-nav__link">Contact</a></li>
+  </ul>
+</nav>
+
+<section class="home-hero" data-role-swap>
+  <div class="role-bg" aria-hidden="true"></div>
+  <div class="role-bg" aria-hidden="true"></div>
+
+  <div class="home-copy">
+    <h1 class="display home-name">Aimee <span>Pugh-Bernard</span></h1>
+    <ul class="identity-words">
+      <li><a href="#" class="identity-word" data-buddy="educator" data-buddy-say="" data-bg="../src/educator.webp">Educator</a></li>
+      <li><a href="#" class="identity-word" data-buddy="immunologist" data-buddy-say="" data-bg="../src/immunologist.webp">Immunologist</a></li>
+      <li><a href="#" class="identity-word" data-buddy="communicator" data-buddy-say="" data-bg="../src/communicator.webp">Communicator</a></li>
+    </ul>
+  </div>
+
+  <img class="home-portrait" src="../src/aimee-hero.png" alt="Aimee Pugh-Bernard">
+
+  <a class="media-card" href="https://www.youtube.com/watch?v=zpqRMWWnDZI" target="_blank" rel="noopener">
+    <div class="media-card__img"><img src="../src/set-d/tedx-talk.jpg" alt=""></div>
+    <div class="media-card__body">
+      <p class="media-card__title">Confessions of a Scientist: Science education needs communication training</p>
+      <div class="media-card__foot">
+        <div class="media-card__tag"><span class="media-card__dot"></span>Talk &middot; TEDxCU</div>
+        <svg class="media-card__arrow" viewBox="0 0 24 24" fill="none"><path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+    </div>
+  </a>
+</section>
+
+
+<script src="shared.js" defer></script>
+<script src="buddy.js" defer></script>
+</body>
+</html>

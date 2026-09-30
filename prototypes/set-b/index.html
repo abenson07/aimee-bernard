@@ -1,0 +1,1153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Home &middot; Aimee Pugh-Bernard (Set B &middot; Direction 2)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<style>
+  /* Direction 2, first pass — hero is a hybrid of Dendrite's About-state
+     layout (big name, portrait, bio, socials) and its Home-state identity-word
+     hover interaction (kept, plus a new mascot). Mission statement uses the
+     BYQ inline-media-text component with real copy/photos. Same palette and
+     fonts as Direction 1, so the two directions stay easy to compare. */
+  :root {
+    --paper: #f2f1ee;
+    --ink: #1c1b1a;
+    --muted: rgba(28, 27, 26, 0.62);
+    --line: rgba(28, 27, 26, 0.14);
+    --radius: 24px;
+    --gutter: 3rem;
+    --serif: "Instrument Serif", Georgia, serif;
+    --sans: "DM Sans", sans-serif;
+    --ease-out: cubic-bezier(0.215, 0.61, 0.355, 1);
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0;
+    font-family: var(--sans);
+    color: var(--ink);
+    letter-spacing: -0.02em;
+    font-weight: 500;
+  }
+  /* One continuous gradient behind the whole page — sections have no
+     background of their own, so the colors fade seamlessly across section
+     boundaries instead of cutting at hard edges. */
+  body {
+    background-image: linear-gradient(180deg, #b7c6d9 0%, var(--paper) 32%, var(--paper) 100%);
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+  }
+  img, video { max-width: 100%; display: block; }
+  a { color: inherit; text-decoration: none; }
+  p { margin: 0; }
+  h2, h3 { margin: 0; font-weight: 400; }
+
+  .main-container { width: 100%; max-width: 1800px; margin: 0 auto; padding: 0 32px; }
+  :root { --space: clamp(140px, 12vw, 220px); }
+  .section { padding-block: var(--space); }
+
+  .label { letter-spacing: 0.7px; text-transform: uppercase; font-size: 14px; font-weight: 500; line-height: 16px; }
+  .label.muted { color: var(--muted); }
+  .display { font-family: var(--serif); font-weight: 400; letter-spacing: -0.04em; line-height: 0.9; }
+  .display-md { font-size: clamp(44px, 4.4vw, 80px); line-height: 0.95; }
+
+  .mask { overflow: hidden; padding: 0.15em 0 0.3em; margin: -0.15em 0 -0.3em; }
+  .mask > .slide { display: block; transform: translateY(150%); transition: transform 0.9s var(--ease-out); }
+  .is-in > .slide { transform: none; }
+  .fade { opacity: 0; transform: translateY(16px); transition: opacity 1s var(--ease-out), transform 1s var(--ease-out); }
+  .fade.is-in { opacity: 1; transform: none; }
+
+  /* ---------- Nav: structural port of the supplied Webflow nav-bar —
+     banner strip, then an INSET rounded navbar card (not edge-to-edge),
+     grid layout (brand | links | CTA+toggle) so the link row stays truly
+     centered regardless of brand/CTA width, double-text sliding-mask hover
+     on every link and the CTA, hamburger + dark backdrop overlay on
+     mobile. Decorative specifics (colors, the skew on the text slide,
+     the multi-column mega-menu) are left out — the mechanics are the same. ---------- */
+  .nav-wrap { position: fixed; inset: 0 0 auto 0; z-index: 90; }
+  .banner {
+    background: var(--ink); color: var(--paper); text-align: center;
+    display: flex; justify-content: center; gap: 0.5rem; align-items: center;
+    padding: 0.55rem 1rem; font-size: 12px; letter-spacing: 0.04em; text-transform: uppercase;
+  }
+  .banner a { text-decoration: underline; }
+  .nav-outer { padding: 12px 24px; }
+  .navbar {
+    max-width: 1800px; margin: 0 auto; border-radius: 16px;
+    background: color-mix(in srgb, var(--paper) 92%, transparent);
+    -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px);
+    border: 1px solid var(--line); box-shadow: 0 12px 30px rgba(0, 0, 0, 0.06);
+  }
+  .nav-container { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 1.5rem; padding: 10px 18px; }
+  .nav-brand { justify-self: start; font-family: var(--serif); font-size: 1.1rem; }
+  .nav-menu-inner { display: flex; align-items: center; gap: 0.25rem; }
+  /* Every link (and the CTA) uses the same double-text mask: two copies of
+     the label stacked, the visible one at rest and a duplicate parked
+     directly below it — hover slides both up one full step so the
+     duplicate takes over, giving a clean crossfade-by-motion instead of
+     a plain color change. */
+  .nav-link { position: relative; padding: 8px 16px; border-radius: 999px; overflow: hidden; }
+  .nav-link:hover { background: var(--line); }
+  .nav-link.is-soon { display: inline-block; cursor: pointer; }
+  .link-text-mask, .button-text-mask { position: relative; display: block; height: 1.3em; overflow: hidden; }
+  .link-text, .button-text {
+    display: block; transition: transform 0.5s cubic-bezier(0.65, 0, 0.35, 1);
+  }
+  .link-text.t2, .button-text.t2 { position: absolute; top: 100%; left: 0; }
+  .nav-link:hover .link-text, .cta-main:hover .button-text { transform: translateY(-100%); }
+  .nav-right { justify-self: end; display: flex; align-items: center; gap: 1rem; }
+  .cta-main {
+    position: relative; display: inline-flex; padding: 10px 20px; border-radius: 999px; overflow: hidden;
+  }
+  .cta-main .button-bg { position: absolute; inset: 0; background: var(--ink); border-radius: 999px; transition: transform 0.4s var(--ease-out); z-index: 0; }
+  .cta-main:hover .button-bg { transform: scale(0.95); }
+  .cta-main .button-text-mask { position: relative; z-index: 1; display: flex; align-items: center; }
+  .cta-main .button-text { color: var(--paper); font-size: 13px; font-weight: 700; }
+  .menu-button {
+    display: none; width: 40px; height: 36px; border: 1px solid var(--line); border-radius: 999px;
+    background: none; align-items: center; justify-content: center; cursor: pointer; color: var(--ink); position: relative;
+  }
+  .menu-button .menu-open, .menu-button .menu-close { display: flex; align-items: center; justify-content: center; }
+  .menu-button .menu-close { display: none; }
+  .menu-button.is-open .menu-open { display: none; }
+  .menu-button.is-open .menu-close { display: flex; }
+  /* Dark backdrop behind the open mobile menu, same as the reference's nav-bg. */
+  .nav-bg {
+    position: fixed; inset: 0; z-index: 88; background: rgba(0, 0, 0, 0.32);
+    opacity: 0; pointer-events: none; transition: opacity 0.3s ease;
+  }
+  .nav-bg.is-open { opacity: 1; pointer-events: auto; }
+
+  /* ---------- Hero: hybrid of Dendrite's About layout + Home hover system ---------- */
+  .hero { position: relative; min-height: 100vh; overflow: hidden; padding: 152px var(--gutter) 4rem; display: flex; flex-direction: column; justify-content: center; }
+  .hero-role-bg { position: absolute; inset: 0; z-index: 1; background-size: cover; background-position: center; opacity: 0; transition: opacity 0.5s ease; pointer-events: none; }
+  .hero-name { position: relative; z-index: 60; font-size: clamp(3rem, 9vw, 8rem); text-align: left; margin: 0 0 1.5rem; transition: color 0.4s ease; }
+  .hero.role-hover .hero-name { color: #fff; }
+  .hero-name .surname { opacity: 0.38; transition: opacity 0.4s ease; }
+  .identity-words { position: relative; z-index: 60; list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 0.5rem 1.75rem; }
+  .identity-word {
+    display: inline-block; color: var(--ink); text-decoration: none; font-family: var(--serif); font-size: clamp(1.6rem, 2.6vw, 2.4rem);
+    letter-spacing: -0.01em; line-height: 1.1; opacity: 0.32; transition: opacity 0.4s ease, color 0.4s ease;
+  }
+  .identity-word:hover { opacity: 1; }
+  .hero.role-hover .identity-word { color: #fff; }
+  .hero-bottom { position: absolute; z-index: 60; left: var(--gutter); bottom: var(--gutter); display: flex; align-items: flex-end; }
+  .hero-portrait { position: absolute; right: var(--gutter); bottom: 0; height: 95vh; width: auto; max-width: 50vw; object-fit: contain; object-position: bottom right; z-index: 2; transition: opacity 0.4s ease; transform: scaleX(-1); }
+  .hero.role-hover .hero-portrait { opacity: 0; }
+  .hero-socials { list-style: none; margin: 0; padding: 0; display: flex; gap: 0.6rem; }
+  .hero-socials a {
+    display: flex; align-items: center; justify-content: center; width: 44px; height: 44px;
+    border-radius: 50%; border: 1px solid var(--line); font-size: 0.7rem; font-weight: 700;
+    letter-spacing: 0.02em; transition: background-color 0.3s ease, color 0.4s ease, border-color 0.4s ease;
+  }
+  .hero-socials a:hover { background: var(--ink); color: var(--paper); }
+  .hero.role-hover .hero-socials a { border-color: rgba(255, 255, 255, 0.4); color: #fff; }
+  .hero.role-hover .hero-socials a:hover { background: #fff; color: var(--ink); }
+
+  /* ---------- Mission statement: BYQ inline-media-text (reskinned) ---------- */
+  .byq-gem--inline-media-text-01 {
+    --imt-w: 2.5em; --imt-h: 0.84em; --imt-tint: 28 27 26;
+    position: relative; width: min(100%, 90rem); margin: 0 auto; color: var(--ink); font-family: var(--sans);
+    text-align: center; container-type: inline-size;
+  }
+  /* Fixed rows: four lines on wide screens, eight short lines on narrow ones.
+     Nothing reflows, so a word is never split and the "!" never wraps alone.
+     Font size is tied to the container width so the longest row always fits. */
+  .byq-gem--inline-media-text-01__line {
+    margin: 0 auto; font-family: var(--serif); font-weight: 400; letter-spacing: -0.02em; color: var(--ink);
+    font-size: clamp(1.4rem, calc(100cqw / 23), 5.6rem); line-height: 1.22; text-align: center;
+  }
+  .byq-gem--inline-media-text-01__row { display: block; white-space: nowrap; }
+  .byq-gem--inline-media-text-01__seg {
+    display: inline-block; white-space: nowrap;
+    opacity: 0; transform: translateY(0.3em);
+    transition: opacity 0.9s var(--ease-out) calc(var(--d, 0) * 160ms), transform 0.9s var(--ease-out) calc(var(--d, 0) * 160ms);
+  }
+  .byq-gem--inline-media-text-01__row + .byq-gem--inline-media-text-01__row { margin-top: 0.04em; }
+  .byq-gem--inline-media-text-01.is-in .byq-gem--inline-media-text-01__seg { opacity: 1; transform: none; }
+  .byq-gem--inline-media-text-01__nb { margin-left: -0.02em; }
+  .byq-gem--inline-media-text-01__w {
+    display: inline-block; color: var(--ink);
+    color: color-mix(in oklab, rgb(var(--imt-tint)) calc(var(--imt-k, 0) * 100%), var(--ink));
+    transition: color 0.7s cubic-bezier(0.2, 0.7, 0.2, 1);
+  }
+  .byq-gem--inline-media-text-01__w + .byq-gem--inline-media-text-01__w { margin-left: 0.24em; }
+  /* Every photo pill is the same size, always. Only the picture inside changes. */
+  .byq-gem--inline-media-text-01__pill {
+    position: relative; display: inline-block; width: var(--imt-w); height: var(--imt-h);
+    margin: 0 0 0 0.16em; padding: 0; border: 0; background: none; color: inherit; font: inherit;
+    vertical-align: -0.03em; cursor: pointer; -webkit-tap-highlight-color: transparent; user-select: none; outline: none;
+  }
+  .byq-gem--inline-media-text-01__shell {
+    position: absolute; inset: 0; overflow: hidden; border-radius: 0.42em; background: var(--line); isolation: isolate;
+    transition: border-radius 0.7s cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+  .byq-gem--inline-media-text-01__shell img {
+    position: absolute; inset: 0; display: block; width: 100%; height: 100%; max-width: none;
+    object-fit: cover; object-position: var(--pos, 50% 50%); scale: 1.14; translate: calc(var(--imt-mx, 0) * -4%) 0;
+    filter: saturate(0) brightness(0.62);
+    transition: scale 0.76s cubic-bezier(0.22, 0.8, 0.18, 1), translate 0.9s cubic-bezier(0.2, 0.8, 0.2, 1), filter 0.6s ease;
+    pointer-events: none;
+  }
+  .byq-gem--inline-media-text-01__pill.is-active { cursor: default; }
+  .byq-gem--inline-media-text-01__pill.is-active .byq-gem--inline-media-text-01__shell { border-radius: 0.24em; }
+  .byq-gem--inline-media-text-01__pill.is-active img { scale: 1.02; filter: saturate(1) brightness(1); }
+  .byq-gem--inline-media-text-01__pill.is-dim:hover img { filter: saturate(0.5) brightness(0.8); }
+  .byq-gem--inline-media-text-01__pill:focus-visible .byq-gem--inline-media-text-01__shell { outline: 2px solid var(--ink); outline-offset: 0.06em; }
+  @media (max-width: 700px) {
+    .byq-gem--inline-media-text-01__line { font-size: clamp(1.5rem, calc(100cqw / 13), 3.2rem); }
+    .byq-gem--inline-media-text-01__seg { display: block; margin: 0 !important; }
+    .byq-gem--inline-media-text-01__row + .byq-gem--inline-media-text-01__row { margin-top: 0; }
+  }
+  @media (prefers-reduced-motion: reduce) { .byq-gem--inline-media-text-01__seg { opacity: 1; transform: none; transition: none; } }
+
+  /* ---------- Stats / marquee / awards, pinned scroll-swap (same content
+     as Direction 1, restructured into one pinned section: the "by the
+     numbers" header stays put while the panel beneath it swaps between
+     the three stats, the logo marquee, and the awards grid) ---------- */
+  /* Fill the screen and center the panel block vertically, so while pinned
+     it sits in the middle of the viewport (top padding clears the navbar). */
+  .stats-pin__pin-target { min-height: 100vh; min-height: 100svh; display: flex; flex-direction: column; justify-content: center; padding-block: 96px 32px; }
+  .stats-pin__viewport { position: relative; width: 100%; flex: 1; min-height: clamp(540px, 50vw, 680px); }
+  .panel-label { margin: 0 0 20px; text-align: center; }
+  .panel-title { margin: 0 auto 48px; max-width: 1200px; text-align: center; }
+  .stats-pin__panel {
+    position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: center;
+    opacity: 0; visibility: hidden; transform: translateY(16px);
+    transition: opacity 0.5s var(--ease-out), transform 0.5s var(--ease-out), visibility 0s linear 0.5s;
+  }
+  .stats-pin__panel.is-active { opacity: 1; visibility: visible; transform: none; transition: opacity 0.5s var(--ease-out), transform 0.5s var(--ease-out); }
+
+  .stats-thirds { display: grid; grid-template-columns: repeat(3, 1fr); border-top: 1px solid var(--line); }
+  .stat { display: flex; flex-direction: column; align-items: center; gap: 24px; padding-top: 40px; text-align: center; }
+  .stat + .stat { border-left: 1px solid var(--line); }
+  .stat-num { font-size: clamp(88px, 10vw, 180px); line-height: 0.85; }
+
+  .cred-marquee-label { margin: 0 0 16px; text-align: center; font-size: 13px; color: var(--muted); }
+  .cred-marquee { overflow: hidden; mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent); }
+  .cred-track { display: flex; gap: 48px; width: max-content; animation: cred-scroll 32s linear infinite; }
+  .cred-logo { flex: none; min-width: 160px; height: 56px; display: flex; align-items: center; justify-content: center; font-family: var(--serif); font-size: 22px; letter-spacing: -0.6px; color: var(--ink); opacity: 0.72; white-space: nowrap; }
+  @keyframes cred-scroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+  .awards-panel { text-align: center; }
+    .award-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 2.5rem 1.5rem; max-width: 1100px; margin: 0 auto; }
+  .award { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 0.85rem; }
+  .award-wreath { width: 100%; max-width: 110px; height: auto; color: var(--ink); }
+  .award-title { font-weight: 700; font-size: 1rem; line-height: 1.3; margin: 0; font-family: var(--sans); }
+  .award-meta { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.04em; opacity: 0.6; margin: 0; font-family: var(--sans); }
+
+  /* Below the breakpoint where the pin CSS-media check (in JS) disables
+     the ScrollTrigger pin, fall back to a normal stacked layout: every
+     panel visible, no absolute overlay. */
+  @media (max-width: 767px) {
+    .stats-pin__pin-target { min-height: 0; padding-block: 96px 64px; }
+    .stats-pin__viewport { min-height: 0; }
+    .stats-pin__panel {
+      position: static; opacity: 1; visibility: visible; transform: none; transition: none;
+      margin-bottom: 96px;
+    }
+    .stats-pin__panel:last-child { margin-bottom: 0; }
+  }
+
+  /* ---------- "What she's working on"
+     Layout lock: People Work services section (framer-1s4tegi) at 1920.
+     1144 content column, 80px stack, 16px card gutters, titles above photos. ---------- */
+  #outreach-section { padding: 160px 32px; }
+  .outreach-inner {
+    width: min(1144px, 100%);
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 80px;
+  }
+  .outreach-head { width: 100%; display: flex; justify-content: flex-start; margin: 0; text-align: left; }
+  .outreach-head h2 {
+    font-family: var(--serif);
+    font-weight: 400;
+    font-style: normal;
+    font-size: 40px;
+    line-height: 44px;
+    letter-spacing: -1px;
+    max-width: 448px;
+    margin: 0;
+    text-align: left;
+    color: var(--ink);
+  }
+  .outreach-head h2 em { font-style: italic; font-weight: 400; }
+  .outreach-grid {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 16px;
+    align-items: start;
+  }
+  @media (max-width: 1100px) {
+    .outreach-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+  .outreach-tile { display: flex; flex-direction: column; gap: 24px; min-width: 0; }
+  .outreach-tile h3 {
+    font-family: var(--sans);
+    font-weight: 600;
+    font-size: 20px;
+    line-height: 24px;
+    letter-spacing: -0.25px;
+    color: var(--ink);
+  }
+  .outreach-media {
+    aspect-ratio: 371 / 421;
+    border-radius: 16px;
+    overflow: hidden;
+    background: var(--line);
+  }
+  .outreach-media img { width: 100%; height: 100%; object-fit: cover; }
+  .outreach-copy { display: flex; flex-direction: column; gap: 24px; }
+  .outreach-tile p {
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 24px;
+    letter-spacing: 0;
+    color: rgba(28, 27, 26, 0.64);
+  }
+  .outreach-link {
+    align-self: flex-start;
+    display: inline-flex;
+    flex-direction: column;
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 24px;
+    letter-spacing: 0;
+    color: var(--ink);
+  }
+  .outreach-link::after { content: ""; height: 1px; width: 100%; background: currentColor; }
+  .outreach-all {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    height: 56px;
+    padding: 0 8px 0 20px;
+    border-radius: 20px;
+    background: #f3f5ee;
+    color: var(--ink);
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 24px;
+    letter-spacing: 0;
+  }
+  .outreach-all__icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 16px;
+    background: #e3f21a;
+    color: var(--ink);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: none;
+  }
+  .outreach-all__icon svg { width: 16px; height: 16px; display: block; }
+  @media (max-width: 800px) {
+    #outreach-section { padding: 96px 24px; }
+    .outreach-inner { gap: 48px; }
+    .outreach-grid { grid-template-columns: 1fr; gap: 48px; }
+    .outreach-head h2 { font-size: 36px; line-height: 40px; }
+  }
+
+  /* ---------- Press ---------- */
+  #press-section { padding: 96px 32px 160px; }
+  .press-inner { width: min(1144px, 100%); margin: 0 auto; display: flex; flex-direction: column; gap: 48px; }
+  .press-head h2 { font-family: var(--serif); font-weight: 400; font-size: 40px; line-height: 44px; letter-spacing: -1px; color: var(--ink); }
+  .press-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+  .press-card {
+    display: flex; flex-direction: column; justify-content: space-between; gap: 32px; min-height: 200px;
+    padding: 28px; border-radius: 16px; background: color-mix(in srgb, var(--paper) 55%, var(--line));
+    border: 1px solid var(--line); color: inherit; transition: transform 0.3s var(--ease-out), box-shadow 0.3s var(--ease-out);
+  }
+  .press-card:hover { transform: translateY(-3px); box-shadow: 0 16px 34px rgba(0, 0, 0, 0.08); }
+  .press-card h3 { font-size: 18px; line-height: 24px; font-weight: 600; letter-spacing: -0.2px; color: var(--ink); }
+  .press-card .press-meta { display: flex; gap: 12px; padding-top: 16px; border-top: 1px solid var(--line); font-size: 12px; text-transform: uppercase; letter-spacing: 0.04em; color: var(--muted); }
+  @media (max-width: 1100px) { .press-grid { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 700px) { #press-section { padding: 64px 24px 96px; } .press-grid { grid-template-columns: 1fr; } }
+
+  /* ---------- Prefooter closing statement ---------- */
+  .prefooter { padding: 0 32px 160px; text-align: center; }
+  .prefooter h2 { font-family: var(--serif); font-weight: 400; font-size: clamp(2.6rem, 6.4vw, 6rem); line-height: 0.98; letter-spacing: -0.03em; max-width: 1000px; margin: 0 auto; }
+
+
+  /* ---------- Floating cell field — cartoon germs and healthy cells drift
+     behind the prefooter statement and through the band below it. Sweep the
+     cursor fast to slice germs (see immune-game.js). The canvas never takes
+     pointer events, so scrolling, text selection and links behave as normal. ---------- */
+  .cell-field { position: relative; isolation: isolate; }
+  .cell-field .prefooter { padding: 120px 32px 0; }
+  .cell-field > canvas { position: absolute; inset: 0; z-index: -1; pointer-events: none; display: block; }
+  .cell-field-band { height: clamp(320px, 48vh, 560px); display: flex; align-items: flex-end; justify-content: center; padding: 0 32px 28px; }
+  .cell-field-hint { font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); text-align: center; }
+  .cell-field-hint [data-cleared] { font-variant-numeric: tabular-nums; color: var(--ink); }
+
+  /* ---------- Footer: port of the supplied Koda "footer-1" — big statement
+     left, link row right, a full-width wordmark, then a small bottom line.
+     Restyled to this page's type/palette; the Webflow underline hover is
+     redone in CSS (fill grows left→right on hover, shrinks on leave). ---------- */
+  .footer { padding: 96px 0 24px; }
+  .flex-top-footer { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 32px; margin-bottom: 140px; }
+  .left-top-footer { max-width: 640px; }
+  .text-big-footer { font-family: var(--serif); font-weight: 400; font-size: clamp(40px, 3.6vw, 60px); line-height: 1; letter-spacing: -0.03em; }
+  .flex-footer-links { display: flex; flex-wrap: wrap; justify-content: flex-end; align-items: flex-end; gap: 24px; }
+  .line-link-block { display: inline-block; padding-top: 2px; font-size: 16px; line-height: 24px; }
+  .underline-link-master { height: 1px; margin-top: 2px; }
+  .underline-link-fill { width: 0%; height: 100%; background: var(--ink); transition: width .3s ease-in; }
+  .line-link-block:hover .underline-link-fill, .line-link-block:focus-visible .underline-link-fill { width: 100%; transition: width .4s var(--ease-out); }
+  .line-link-block.is-soon { color: var(--muted); cursor: default; }
+  .brand-footer-big {
+    font-family: var(--serif); font-weight: 400; line-height: .8; letter-spacing: -0.05em; white-space: nowrap;
+    font-size: 17.4vw; margin: 0 -0.04em; padding-bottom: .06em;
+  }
+  @media (min-width: 1864px) { .brand-footer-big { font-size: 324px; } }
+  .wrap-bottom-footer { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin-top: 32px; }
+  .text-bottom-footer { font-size: 14px; line-height: 1.05; }
+  .text-bottom-footer a { text-decoration: underline; text-underline-offset: 2px; }
+  .circle-bottom-footer { flex: none; width: 6px; height: 6px; margin: 0 4px; border-radius: 50%; background: var(--ink); }
+  @media (max-width: 991px) {
+    .flex-top-footer { flex-direction: column; align-items: flex-start; }
+    .flex-footer-links { justify-content: flex-start; }
+  }
+  @media (max-width: 479px) {
+    .footer { padding-top: 100px; }
+    .flex-top-footer { margin-bottom: 100px; }
+    .flex-footer-links { flex-direction: column; align-items: flex-start; }
+    .line-link-block { font-size: 24px; }
+  }
+
+  /* ---------- Mascot placeholder (shared shape, D2: persona-follow guide) ---------- */
+  /* Outer element: GSAP drives its x/y translate continuously (cursor-follow).
+     Inner element: plain CSS handles the centering/scale/opacity toggle, so
+     the two transforms never fight each other. */
+  .mascot { position: fixed; left: 0; top: 0; z-index: 95; pointer-events: none; }
+  .mascot-inner { position: relative; opacity: 0; transform: translate(-50%, -50%) scale(0.85); transition: opacity 0.3s ease, transform 0.3s var(--ease-out); }
+  .mascot-inner.is-visible { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+  .mascot-shape { width: 40px; height: 40px; border-radius: 50%; background: var(--ink); position: relative; }
+  .mascot-shape::before, .mascot-shape::after { content: ""; position: absolute; top: 14px; width: 6px; height: 6px; border-radius: 50%; background: var(--paper); }
+  .mascot-shape::before { left: 10px; }
+  .mascot-shape::after { left: 24px; }
+  /* Absolute and offset from the shape's own box, so the bubble never
+     changes the shape's size/position or the hit area under the cursor. */
+  .mascot-bubble {
+    position: absolute; top: 50%; left: calc(100% + 14px); transform: translateY(-50%);
+    max-width: 220px; width: max-content; background: var(--paper); border: 1px solid var(--line);
+    border-radius: 14px; padding: 10px 14px; font-size: 13px; line-height: 1.4;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
+  }
+
+
+  @media (max-width: 900px) {
+    .hero-portrait { display: none; }
+    .mascot { display: none; }
+    .nav-container { grid-template-columns: 1fr auto; }
+    .cta-main { display: none; }
+    .menu-button { display: flex; }
+    /* The link row becomes a full menu panel, pinned below the navbar
+       card, that grows open/shut instead of sitting inline. */
+    .nav-menu-inner {
+      position: fixed; left: 24px; right: 24px; top: 82px; z-index: 91;
+      flex-direction: column; align-items: stretch; gap: 0;
+      background: var(--paper); border: 1px solid var(--line); border-radius: 16px;
+      max-height: 0; overflow: hidden; opacity: 0;
+      transition: max-height 0.4s var(--ease-out), opacity 0.3s ease;
+    }
+    .nav-menu-inner.is-open { max-height: 320px; opacity: 1; padding: 8px; }
+    .nav-link { border-radius: 10px; padding: 14px 12px; }
+    .link-text-mask { height: auto; overflow: visible; }
+    .link-text.t2 { display: none; }
+    .nav-link:hover .link-text { transform: none; }
+  }
+  @media (max-width: 767px) {
+    .nav-outer { padding: 10px 16px; }
+    .banner { font-size: 11px; padding: 0.5rem 0.75rem; }
+    .stats-thirds { grid-template-columns: 1fr; }
+    .stat { padding-block: 48px; }
+    .stat + .stat { border-left: 0; border-top: 1px solid var(--line); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .mask > .slide, .fade { transform: none !important; opacity: 1 !important; transition: none !important; }
+  }
+</style>
+</head>
+<body>
+<!-- structure + style: Direction 2 (first pass) -->
+<div class="nav-wrap">
+  <div class="banner">
+    <span>Available for speaking engagements &amp; science communication consulting</span>
+    <a href="#">Get in touch</a>
+  </div>
+  <div class="nav-outer">
+    <header class="navbar">
+      <div class="nav-container">
+        <a href="index.html" class="nav-brand">APB</a>
+        <nav class="nav-menu-inner" id="navMenu">
+          <a href="educator.html" class="nav-link"><span class="link-text-mask"><span class="link-text t1">Educator</span><span class="link-text t2">Educator</span></span></a>
+          <span class="nav-link is-soon"><span class="link-text-mask"><span class="link-text t1">Communicator</span><span class="link-text t2">Communicator</span></span></span>
+          <a href="work.html" class="nav-link"><span class="link-text-mask"><span class="link-text t1">Work</span><span class="link-text t2">Work</span></span></a>
+          <span class="nav-link is-soon"><span class="link-text-mask"><span class="link-text t1">Immunologist</span><span class="link-text t2">Immunologist</span></span></span>
+          <span class="nav-link is-soon"><span class="link-text-mask"><span class="link-text t1">Outreach</span><span class="link-text t2">Outreach</span></span></span>
+        </nav>
+        <div class="nav-right">
+          <a href="#" class="cta-main">
+            <span class="button-text-mask"><span class="button-text t1">Get in touch</span><span class="button-text t2">Get in touch</span></span>
+            <span class="button-bg"></span>
+          </a>
+          <button type="button" class="menu-button" id="navMobileToggle" aria-label="Menu" aria-expanded="false">
+            <span class="menu-open"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 4.5h12M2 8h12M2 11.5h12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span>
+            <span class="menu-close"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M1 1l12 12M13 1L1 13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span>
+          </button>
+        </div>
+      </div>
+    </header>
+  </div>
+</div>
+<div class="nav-bg" id="navBg"></div>
+
+<section class="hero" id="hero-section">
+  <div class="hero-role-bg" aria-hidden="true"></div>
+  <div class="hero-role-bg" aria-hidden="true"></div>
+
+  <div>
+    <h1 class="display hero-name">Aimee <span class="surname">Pugh-Bernard</span></h1>
+    <ul class="identity-words" id="identityWords">
+      <li><a href="#" class="identity-word" data-bg="../src/educator.webp" data-text="Aimee has been teaching at CU Anschutz since 2019.">Educator</a></li>
+      <li><a href="#" class="identity-word" data-bg="../src/immunologist.webp" data-text="Aimee is a published immunologist with 12 peer-reviewed papers to her name.">Immunologist</a></li>
+      <li><a href="#" class="identity-word" data-bg="../src/communicator.webp" data-text="Aimee is passionate about making immunology accessible to all.">Communicator</a></li>
+    </ul>
+  </div>
+
+  <div class="hero-bottom">
+    <ul class="hero-socials">
+      <li><a href="https://www.instagram.com/funsizeimmuninja/?hl=en" target="_blank" rel="noopener" aria-label="Instagram"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.3" cy="6.7" r="1" fill="currentColor" stroke="none"/></svg></a></li>
+      <li><a href="https://www.tiktok.com/@funsizeimmuninja" target="_blank" rel="noopener" aria-label="TikTok"><svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor" aria-hidden="true"><path d="M16.6 2h-3.2v13.3a2.9 2.9 0 1 1-2.9-2.9c.3 0 .6 0 .9.1V9.2a6.1 6.1 0 1 0 5.2 6.1V8.6a7.5 7.5 0 0 0 4.4 1.4V6.8a4.4 4.4 0 0 1-4.4-4.8z"/></svg></a></li>
+      <li><a href="https://aimeepughbernard.substack.com/" target="_blank" rel="noopener" aria-label="Substack"><svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor" aria-hidden="true"><path d="M4 4h16v2.6H4zM4 8.9h16v2.6H4zM4 13.2h16V22l-8-4.5L4 22z"/></svg></a></li>
+      <li><a href="https://bsky.app/profile/funsizeimmuninja.bsky.social" target="_blank" rel="noopener" aria-label="Bluesky"><svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor" aria-hidden="true"><path d="M12 10.8c-1.087-2.114-4.046-6.053-6.798-7.995C2.566.944 1.561 1.266.902 1.565.139 1.908 0 3.08 0 3.768c0 .69.378 5.65.624 6.479.815 2.736 3.713 3.66 6.383 3.364.136-.02.275-.039.415-.056-.138.022-.276.04-.415.056-3.912.58-7.387 2.005-2.83 7.078 5.013 5.19 6.87-1.113 7.823-4.308.953 3.195 2.05 9.271 7.733 4.308 4.267-4.308 1.172-6.498-2.74-7.078a8.741 8.741 0 0 1-.415-.056c.14.017.279.036.415.056 2.67.297 5.568-.628 6.383-3.364.246-.828.624-5.79.624-6.478 0-.69-.139-1.861-.902-2.206-.659-.298-1.664-.62-4.3 1.24C16.046 4.748 13.087 8.687 12 10.8Z"/></svg></a></li>
+    </ul>
+  </div>
+
+  <img class="hero-portrait" src="../src/aimee-hero.png" alt="Aimee Pugh-Bernard">
+</section>
+
+<section class="section" id="mission-section" aria-label="Mission">
+  <div class="main-container">
+    <section class="byq-gem--inline-media-text-01" aria-label="Mission statement with inline photos">
+      <h2 class="byq-gem--inline-media-text-01__line">
+        <span class="byq-gem--inline-media-text-01__row">
+          <span class="byq-gem--inline-media-text-01__seg">The immune system is</span>
+          <span class="byq-gem--inline-media-text-01__seg">endlessly fascinating<button class="byq-gem--inline-media-text-01__pill" type="button" data-tint="90 74 58" style="--pos: 50% 40%" aria-label="Aimee teaching a course" aria-pressed="false"><span class="byq-gem--inline-media-text-01__shell"><img src="../src/educator.webp" alt="" draggable="false" /></span></button><span class="byq-gem--inline-media-text-01__nb">,</span></span>
+        </span>
+        <span class="byq-gem--inline-media-text-01__row">
+          <span class="byq-gem--inline-media-text-01__seg">and my job &mdash;</span>
+          <span class="byq-gem--inline-media-text-01__seg">across teaching<button class="byq-gem--inline-media-text-01__pill" type="button" data-tint="120 96 70" style="--pos: 50% 35%" aria-label="Aimee in the lab" aria-pressed="false"><span class="byq-gem--inline-media-text-01__shell"><img src="../src/immunologist.webp" alt="" draggable="false" /></span></button><span class="byq-gem--inline-media-text-01__nb">,</span></span>
+        </span>
+        <span class="byq-gem--inline-media-text-01__row">
+          <span class="byq-gem--inline-media-text-01__seg">communication<button class="byq-gem--inline-media-text-01__pill" type="button" data-tint="150 110 90" style="--pos: 50% 30%" aria-label="Aimee speaking to an audience" aria-pressed="false"><span class="byq-gem--inline-media-text-01__shell"><img src="../src/communicator.webp" alt="" draggable="false" /></span></button><span class="byq-gem--inline-media-text-01__nb">,</span></span>
+          <span class="byq-gem--inline-media-text-01__seg">and outreach &mdash;</span>
+        </span>
+        <span class="byq-gem--inline-media-text-01__row">
+          <span class="byq-gem--inline-media-text-01__seg">is to inspire you</span>
+          <span class="byq-gem--inline-media-text-01__seg">to think so too!</span>
+        </span>
+      </h2>
+    </section>
+  </div>
+</section>
+
+<section class="section" id="outreach-section" aria-label="What she's working on">
+  <div class="outreach-inner">
+    <div class="outreach-head">
+      <h2>What she's <em>working</em> on</h2>
+    </div>
+    <div class="outreach-grid">
+      <article class="outreach-tile">
+        <h3>Think Like a Scientist</h3>
+        <div class="outreach-media"><img src="../src/communicator.webp" alt="Think Like a Scientist outreach"></div>
+        <div class="outreach-copy">
+          <p>Hands-on science outreach for elementary and middle-school kids, alongside volunteer scientists at CU Anschutz.</p>
+          <a class="outreach-link" href="https://tlasprogram.wordpress.com/" target="_blank" rel="noopener">View work</a>
+        </div>
+      </article>
+      <article class="outreach-tile">
+        <h3>Fun Size Immuninja</h3>
+        <div class="outreach-media"><img src="../src/immunologist.webp" alt="Fun Size Immuninja"></div>
+        <div class="outreach-copy">
+          <p>Uses her expertise as an immunologist to break down the science of the immune system for anyone who comes across her page.</p>
+          <a class="outreach-link" href="https://www.instagram.com/funsizeimmuninja/?hl=en" target="_blank" rel="noopener">View work</a>
+        </div>
+      </article>
+      <article class="outreach-tile">
+        <h3>Teacher Training Program</h3>
+        <div class="outreach-media"><img src="../src/educator.webp" alt="Teacher Training Program"></div>
+        <div class="outreach-copy">
+          <p>Mentors PhD students and postdocs on curriculum design, teaching practice, and assessment.</p>
+          <a class="outreach-link" href="https://medschool.cuanschutz.edu/immunology-and-microbiology/dept-resources/teaching-resources/teacher-training-program/overview" target="_blank" rel="noopener">View work</a>
+        </div>
+      </article>
+      <article class="outreach-tile">
+        <h3>The World of Autoimmunity</h3>
+        <div class="outreach-media"><img src="../src/immunologist.webp" alt="The World of Autoimmunity podcast"></div>
+        <div class="outreach-copy">
+          <p>Unbiased Science Podcast &middot; April 2025. A recent conversation on autoimmune disease, unpacked for a general audience.</p>
+          <a class="outreach-link" href="https://www.youtube.com/watch?v=zV58abJ_nTQ" target="_blank" rel="noopener">View work</a>
+        </div>
+      </article>
+    </div>
+    <a class="outreach-all" href="work.html">
+      All work
+      <span class="outreach-all__icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </span>
+    </a>
+  </div>
+</section>
+
+<section class="section stats-pin" id="stats-section" aria-label="By the numbers">
+  <div class="main-container">
+    <div class="stats-pin__pin-target">
+      <div class="stats-pin__viewport">
+        <div class="stats-pin__panel is-active" data-panel-index="0" aria-label="By the numbers">
+          <div class="panel-label label">By the numbers</div>
+          <p class="panel-title display display-md">Twenty-five years in, my goal hasn&rsquo;t changed: make immunology make sense to the people in front of me.</p>
+          <div class="stats-thirds">
+            <div class="stat">
+              <div class="mask" data-reveal><div class="display stat-num slide">25+</div></div>
+              <div class="label muted">Years as an educator,<br>scientist &amp; communicator</div>
+            </div>
+            <div class="stat">
+              <div class="mask" data-reveal><div class="display stat-num slide">18</div></div>
+              <div class="label muted">Courses taught</div>
+            </div>
+            <div class="stat">
+              <div class="mask" data-reveal><div class="display stat-num slide">21</div></div>
+              <div class="label muted">Talks given</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="stats-pin__panel" data-panel-index="1" aria-label="Trusted by / appeared with">
+          <div class="panel-label label">Trusted by / appeared with</div>
+          <p class="panel-title display display-md">I&rsquo;ve shared this science in classrooms, at conferences, and in newsrooms, from TEDx to The Conversation.</p>
+          <div class="cred-marquee" aria-hidden="true">
+            <div class="cred-track">
+              <span class="cred-logo">CU Anschutz</span>
+              <span class="cred-logo">CU Denver</span>
+              <span class="cred-logo">TEDx</span>
+              <span class="cred-logo">AAI</span>
+              <span class="cred-logo">The Conversation</span>
+              <span class="cred-logo">MedPage Today</span>
+              <span class="cred-logo">SELF</span>
+              <span class="cred-logo">HuffPost</span>
+              <span class="cred-logo">CU Anschutz</span>
+              <span class="cred-logo">CU Denver</span>
+              <span class="cred-logo">TEDx</span>
+              <span class="cred-logo">AAI</span>
+              <span class="cred-logo">The Conversation</span>
+              <span class="cred-logo">MedPage Today</span>
+              <span class="cred-logo">SELF</span>
+              <span class="cred-logo">HuffPost</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="stats-pin__panel" data-panel-index="2" aria-label="Award-winning educator">
+          <div class="awards-panel">
+            <div class="panel-label label">Award-winning educator</div>
+          <p class="panel-title display display-md">Six teaching awards since 2011 tell me the explaining is working.</p>
+            <svg width="0" height="0" style="position: absolute" aria-hidden="true">
+              <defs>
+                <symbol id="wreath" viewBox="0 0 1280 1222">
+                  <g transform="translate(0,1222) scale(0.1,-0.1)" fill="currentColor" stroke="none">
+                    <path d="M5265 12204 c-22 -9 -148 -46 -280 -84 -268 -77 -344 -103 -459 -161
+-189 -94 -296 -214 -353 -396 l-25 -83 -117 -73 c-64 -41 -183 -118 -265 -171
+-105 -69 -142 -89 -127 -69 87 112 170 265 221 408 35 101 142 505 133 505
+-26 0 -336 -198 -468 -299 -258 -197 -443 -441 -506 -667 -30 -105 -30 -242
+-1 -334 17 -51 19 -67 9 -76 -7 -6 -73 -66 -148 -133 -76 -66 -198 -185 -273
+-263 l-136 -142 49 95 c138 262 185 575 146 985 -10 104 -20 197 -24 206 -5
+13 -43 -28 -152 -165 -395 -491 -480 -657 -511 -992 -10 -110 -9 -149 4 -255
+22 -173 57 -270 96 -270 10 0 50 27 89 59 l70 59 -91 -122 c-147 -197 -340
+-496 -412 -638 -14 -28 -27 -48 -30 -46 -2 3 1 29 6 59 20 103 28 270 20 402
+-12 193 -30 265 -177 727 -31 96 -59 179 -63 183 -8 9 -22 -34 -140 -403 -187
+-587 -222 -821 -159 -1077 28 -114 59 -187 142 -336 l72 -128 27 33 c16 18 28
+30 28 27 0 -2 -15 -40 -34 -84 -41 -100 -144 -399 -180 -525 -15 -52 -30 -102
+-33 -110 -3 -8 -16 30 -28 85 -56 242 -161 486 -298 693 -57 87 -130 200 -161
+254 -57 96 -91 137 -103 125 -3 -4 -8 -39 -9 -79 -2 -40 -11 -199 -20 -353
+-23 -384 -16 -694 19 -856 59 -271 159 -433 339 -550 34 -22 72 -42 85 -45 27
+-7 27 -3 8 -169 -18 -162 -35 -429 -35 -555 l0 -95 -56 104 c-107 202 -288
+471 -408 606 -63 71 -398 345 -423 345 -11 0 -14 -7 -10 -22 13 -61 70 -352
+98 -503 65 -353 138 -579 251 -779 99 -172 212 -293 378 -402 72 -47 191 -112
+217 -119 1 -1 11 -61 23 -134 25 -162 81 -435 115 -555 13 -49 20 -85 16 -80
+-4 5 -28 36 -53 69 -112 148 -198 215 -783 607 -150 100 -370 229 -373 219 -4
+-12 368 -764 453 -916 104 -184 160 -260 280 -380 120 -121 260 -221 387 -279
+122 -55 280 -106 331 -106 32 0 47 -4 47 -13 0 -37 289 -585 385 -732 16 -24
+7 -19 -50 27 -107 85 -233 161 -420 253 -202 99 -312 138 -554 200 -99 25
+-229 63 -288 84 -168 60 -171 49 -30 -121 56 -67 155 -191 220 -274 224 -288
+586 -607 800 -704 89 -40 271 -94 391 -115 77 -14 126 -16 222 -11 68 3 134
+10 148 16 22 8 30 2 92 -73 38 -45 152 -165 254 -267 160 -161 221 -217 395
+-363 17 -14 -62 21 -175 77 -192 97 -212 104 -320 124 -409 76 -1320 161
+-1320 124 0 -15 54 -58 275 -217 372 -269 536 -368 745 -448 293 -113 445
+-147 665 -147 199 0 338 27 503 97 82 35 82 36 65 56 -10 11 11 1 47 -23 190
+-128 624 -361 822 -440 32 -13 56 -25 55 -27 -2 -2 -51 5 -108 14 -128 21
+-524 23 -674 4 -100 -12 -245 -38 -625 -110 -113 -21 -278 -52 -367 -68 -90
+-15 -162 -32 -160 -37 5 -14 778 -243 912 -270 194 -39 323 -49 552 -43 384
+10 612 85 822 271 l94 83 81 -24 c136 -40 343 -89 503 -119 l152 -28 -72 -19
+c-192 -49 -274 -85 -862 -377 -427 -213 -585 -297 -585 -312 0 -21 584 2 840
+32 288 35 600 126 845 245 147 72 260 163 374 299 l64 76 196 0 197 0 139
+-131 c261 -245 301 -267 735 -397 275 -83 328 -91 884 -128 425 -28 440 -27
+377 26 -38 32 -267 148 -366 185 -90 34 -152 66 -270 140 -221 138 -516 260
+-816 338 -92 24 -93 25 -54 32 225 37 563 119 745 179 51 17 68 20 53 9 -34
+-23 -29 -56 15 -95 138 -125 399 -241 614 -274 164 -25 521 -23 669 4 178 33
+822 222 912 268 36 19 34 40 -5 53 -50 15 -409 86 -633 125 -445 77 -690 102
+-852 86 -177 -18 -372 -52 -481 -86 -91 -27 -65 -13 88 49 781 317 1535 868
+2077 1519 69 84 73 87 71 56 -5 -51 30 -63 187 -63 145 0 280 24 440 77 137
+46 216 89 375 202 299 215 422 335 590 581 87 127 202 258 298 339 35 29 38
+49 6 54 -11 1 -89 -17 -174 -42 -85 -25 -219 -61 -296 -80 -172 -43 -269 -79
+-431 -156 -235 -112 -454 -254 -606 -391 -78 -71 -80 -72 -51 -29 131 191 354
+599 439 803 15 37 30 67 33 67 3 0 14 -7 24 -16 23 -22 86 -10 225 41 283 106
+540 293 681 499 93 135 377 677 501 957 50 113 60 149 42 149 -21 0 -464 -280
+-712 -451 -231 -158 -365 -284 -474 -444 -26 -38 -48 -71 -50 -73 -1 -1 10 42
+25 96 60 213 109 447 155 748 6 37 8 40 33 36 19 -2 54 10 105 36 258 134 421
+300 550 557 98 198 152 383 217 744 23 124 55 283 72 354 52 208 42 204 -258
+-97 -393 -394 -534 -584 -634 -854 l-29 -77 -1 130 c-1 220 -33 666 -56 780
+l-6 30 23 -22 c22 -19 27 -20 61 -9 93 33 242 180 306 304 122 236 167 543
+144 975 -13 234 -41 602 -48 626 -9 30 -349 -540 -454 -761 -88 -187 -99 -243
+-101 -508 l-1 -185 -29 114 c-93 373 -248 821 -355 1033 -45 89 -24 63 36 -44
+67 -119 88 -138 125 -114 98 64 255 474 255 664 0 146 -107 573 -242 967 -81
+236 -83 236 -161 59 -49 -112 -116 -303 -133 -383 -36 -161 -36 -771 0 -870
+26 -71 19 -62 -45 59 -189 355 -452 737 -723 1050 -119 138 -404 423 -535 535
+-94 81 -102 90 -80 95 41 10 53 52 57 195 4 158 -11 237 -69 344 -100 186
+-343 443 -569 603 -97 69 -292 188 -307 188 -23 0 -15 -67 26 -225 99 -378
+159 -502 345 -719 54 -63 53 -64 -34 -6 -30 20 -107 64 -170 97 -63 34 -167
+90 -230 126 l-115 64 -8 62 c-29 233 -246 463 -540 571 -116 42 -620 190 -649
+190 -27 0 -22 -25 15 -83 84 -131 327 -427 434 -529 70 -66 173 -135 276 -183
+66 -32 246 -85 287 -85 9 0 122 -72 251 -161 147 -101 223 -159 204 -155 -149
+30 -314 33 -467 6 -262 -44 -676 -174 -718 -225 -25 -30 44 -46 310 -75 107
+-11 272 -31 365 -43 292 -38 877 -29 958 15 23 12 48 -5 203 -134 151 -127
+233 -202 209 -193 -197 74 -539 113 -851 95 -171 -9 -224 -21 -224 -50 0 -22
+23 -37 125 -80 44 -18 204 -91 355 -161 482 -223 654 -274 978 -295 l103 -7
+58 -71 c105 -129 301 -398 301 -411 0 -3 -21 10 -47 29 -76 54 -249 142 -374
+189 -313 119 -669 200 -669 153 0 -17 115 -118 475 -416 308 -255 373 -304
+540 -411 163 -104 303 -178 389 -204 l71 -22 47 -107 c61 -137 107 -253 156
+-391 l39 -110 -161 161 c-107 106 -190 179 -246 216 -224 148 -623 349 -646
+326 -10 -11 24 -63 102 -153 148 -172 272 -351 392 -565 35 -63 94 -153 130
+-199 135 -173 396 -412 553 -506 35 -21 65 -39 66 -40 5 -3 32 -161 48 -275
+20 -148 45 -429 44 -500 l0 -55 -23 80 c-53 184 -122 326 -213 439 -80 98
+-630 652 -639 644 -16 -17 215 -751 316 -1003 124 -310 297 -594 485 -794 71
+-76 67 -41 34 -301 -21 -169 -50 -343 -76 -460 l-17 -75 -12 104 c-28 232 -87
+383 -278 715 -177 309 -298 490 -320 483 -18 -6 -18 -96 -1 -382 25 -429 54
+-781 76 -930 29 -191 159 -504 271 -653 l48 -63 -67 -162 c-66 -159 -273 -582
+-295 -602 -8 -7 -9 -5 -5 7 35 100 34 544 -3 738 -81 436 -188 736 -243 681
+-6 -6 -16 -62 -23 -126 -13 -111 -33 -208 -138 -668 -73 -319 -88 -422 -93
+-617 -6 -204 9 -297 77 -495 l41 -117 -115 -142 c-102 -127 -303 -356 -311
+-356 -2 0 3 24 11 53 17 65 39 184 56 307 17 124 15 627 -4 810 l-13 135 -64
+-125 c-113 -220 -280 -521 -347 -623 -193 -295 -242 -459 -266 -901 l-12 -226
+-144 -101 c-145 -102 -414 -271 -420 -264 -2 2 12 25 31 52 112 157 231 430
+292 673 27 105 78 405 73 422 -5 15 -529 -493 -685 -663 -312 -342 -408 -504
+-447 -758 l-12 -75 -145 -48 c-126 -41 -449 -131 -449 -124 0 1 32 29 72 61
+166 139 385 424 482 630 29 61 72 202 64 210 -2 2 -64 -26 -138 -62 -145 -69
+-244 -110 -465 -193 -190 -71 -335 -147 -418 -218 -183 -160 -365 -418 -354
+-503 l5 -36 -61 -7 c-33 -3 -180 -6 -327 -6 -202 0 -270 3 -277 13 -5 6 -29
+58 -52 115 -74 176 -156 293 -272 388 -135 110 -252 169 -599 300 -96 36 -246
+101 -332 144 -87 43 -158 75 -158 70 0 -24 47 -154 77 -215 106 -210 369 -536
+535 -663 27 -20 45 -38 40 -40 -20 -6 -444 109 -587 161 l-40 14 -7 73 c-23
+226 -114 397 -344 650 -117 128 -776 801 -781 797 -9 -10 39 -273 76 -420 87
+-339 173 -542 314 -736 l39 -53 -48 28 c-191 109 -544 340 -559 364 -3 4 3 45
+12 91 53 281 -80 746 -327 1138 -71 112 -222 386 -306 554 -24 48 -48 87 -53
+87 -20 0 -29 -752 -11 -973 12 -147 37 -251 80 -339 l31 -63 -42 40 c-74 71
+-259 277 -360 402 l-99 122 20 33 c53 87 107 339 117 548 9 192 -17 359 -139
+895 -74 328 -108 504 -108 564 0 44 -14 71 -30 55 -6 -6 -29 -52 -50 -102
+-103 -240 -230 -862 -217 -1067 6 -82 48 -356 63 -401 12 -40 -101 159 -180
+316 -128 253 -256 550 -237 550 5 0 28 19 51 43 129 127 263 432 294 667 49
+369 108 1262 86 1284 -27 27 -166 -167 -334 -467 -209 -375 -260 -532 -273
+-837 -6 -142 -7 -144 -20 -100 -28 93 -102 491 -122 655 -32 259 -32 248 -15
+234 21 -17 45 8 179 186 147 196 275 387 315 471 30 64 135 347 158 424 6 19
+40 130 76 245 72 227 156 511 156 527 0 19 -86 -58 -288 -257 -220 -216 -309
+-316 -392 -439 -93 -139 -168 -324 -216 -528 -10 -43 -19 -76 -21 -74 -7 6 17
+416 32 551 26 244 57 425 72 425 25 0 89 38 189 113 246 184 419 383 729 842
+81 121 199 288 262 371 62 84 113 159 113 167 0 22 -32 11 -157 -52 -231 -116
+-572 -328 -688 -427 -73 -63 -182 -187 -253 -288 -23 -33 -42 -57 -42 -54 0 3
+22 70 49 149 54 160 110 303 177 455 l45 100 58 12 c106 22 348 151 581 309
+164 112 267 192 425 333 72 64 189 163 260 222 156 127 187 157 183 177 -5 25
+-102 18 -253 -18 -323 -77 -588 -192 -809 -350 -43 -31 -88 -63 -99 -71 -43
+-31 271 412 377 530 26 29 28 30 122 30 260 0 552 77 879 232 94 44 244 114
+335 154 240 107 275 125 278 150 2 17 -5 24 -30 34 -90 32 -583 29 -778 -5
+-93 -16 -236 -55 -296 -80 -19 -8 -34 -12 -34 -10 0 7 283 247 361 307 l74 56
+80 -23 c197 -56 484 -58 910 -5 333 41 515 60 584 61 63 0 122 17 129 37 9 27
+-291 145 -499 196 -191 46 -315 59 -514 53 -108 -3 -204 -11 -240 -21 -33 -8
+-61 -14 -62 -12 -7 6 439 336 448 331 19 -12 218 16 290 40 156 53 294 149
+474 330 248 249 411 476 364 506 -17 11 -15 11 -64 -7z" />
+                    <path d="M10175 11360 c2 -74 7 -234 10 -355 7 -269 21 -424 46 -524 26 -104
+124 -298 203 -403 93 -121 294 -308 333 -308 22 0 49 56 69 143 15 67 19 121
+19 292 0 198 -2 216 -28 310 -47 170 -143 348 -295 545 -64 82 -278 341 -335
+404 l-28 31 6 -135z" />
+                    <path d="M11300 2203 c-621 -44 -808 -67 -1031 -123 -270 -68 -466 -163 -702
+-338 -244 -182 -241 -246 19 -312 178 -46 389 -49 589 -9 123 25 338 95 451
+148 223 105 910 553 931 608 3 8 0 19 -8 24 -13 8 -149 9 -249 2z" />
+                  </g>
+                </symbol>
+              </defs>
+            </svg>
+            <div class="award-grid">
+              <div class="award">
+                <svg class="award-wreath" viewBox="0 0 1280 1222"><use href="#wreath"></use></svg>
+                <p class="award-title">CHA/PA "Guest Lecture" Teaching Award</p>
+                <p class="award-meta">CU School of Medicine &middot; 2026</p>
+              </div>
+              <div class="award">
+                <svg class="award-wreath" viewBox="0 0 1280 1222"><use href="#wreath"></use></svg>
+                <p class="award-title">Chancellor's Teaching Recognition Award</p>
+                <p class="award-meta">CU School of Medicine &middot; 2024</p>
+              </div>
+              <div class="award">
+                <svg class="award-wreath" viewBox="0 0 1280 1222"><use href="#wreath"></use></svg>
+                <p class="award-title">S.T.A.R.ling Outstanding Faculty Teaching Award</p>
+                <p class="award-meta">CU School of Medicine &middot; 2023</p>
+              </div>
+              <div class="award">
+                <svg class="award-wreath" viewBox="0 0 1280 1222"><use href="#wreath"></use></svg>
+                <p class="award-title">S.T.A.R. Outstanding Faculty Teaching Award</p>
+                <p class="award-meta">CU School of Medicine &middot; 2023</p>
+              </div>
+              <div class="award">
+                <svg class="award-wreath" viewBox="0 0 1280 1222"><use href="#wreath"></use></svg>
+                <p class="award-title">Non-Tenure Faculty Teaching Award</p>
+                <p class="award-meta">CU Denver College of Liberal Arts &amp; Sciences &middot; 2014</p>
+              </div>
+              <div class="award">
+                <svg class="award-wreath" viewBox="0 0 1280 1222"><use href="#wreath"></use></svg>
+                <p class="award-title">Non-Tenure Faculty Teaching Award</p>
+                <p class="award-meta">CU Denver College of Liberal Arts &amp; Sciences &middot; 2011</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="press-section" aria-label="Press">
+  <div class="press-inner">
+    <div class="press-head fade" data-reveal>
+      <h2>In the press</h2>
+    </div>
+    <div class="press-grid fade" data-reveal>
+      <a class="press-card" href="#">
+        <h3>How an Immunity Gap May Be Fueling the Recent Spike in Respiratory Viruses</h3>
+        <div class="press-meta"><span>SELF</span></div>
+      </a>
+      <a class="press-card" href="#">
+        <h3>5 Sneaky Signs You&rsquo;re Getting Sick</h3>
+        <div class="press-meta"><span>HuffPost</span></div>
+      </a>
+      <a class="press-card" href="#">
+        <h3>CU Immunology Prof discusses mRNA research funding</h3>
+        <div class="press-meta"><span>KOA Morning News</span></div>
+      </a>
+      <a class="press-card" href="#">
+        <h3>Science Communicators Strategize How to Demystify Science</h3>
+        <div class="press-meta"><span>CU Anschutz Today</span></div>
+      </a>
+      <a class="press-card" href="#">
+        <h3>TLaS is Increasing Elementary Schoolers&rsquo; Access to Science</h3>
+        <div class="press-meta"><span>CU Anschutz Today</span><span>Feb 2021</span></div>
+      </a>
+      <a class="press-card" href="#">
+        <h3>Fake News: Medical Quackery Enters a New Dimension</h3>
+        <div class="press-meta"><span>CU Anschutz Today</span></div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<div class="cell-field" id="cellField">
+  <canvas aria-hidden="true"></canvas>
+<section class="prefooter" aria-label="Closing statement">
+  <h2 class="fade" data-reveal>Sharing new ideas with new audiences</h2>
+</section>
+
+  <div class="cell-field-band">
+    <p class="cell-field-hint">Swipe fast to clear the germs &middot; spare your own cells &middot; <span data-cleared>0</span> cleared</p>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="main-container">
+    <div class="flex-top-footer">
+      <div class="left-top-footer">
+        <div class="text-big-footer">Let&rsquo;s connect and make science make sense, together.</div>
+      </div>
+      <nav class="flex-footer-links" aria-label="Footer">
+        <a href="index.html" class="line-link-block"><div>Home</div><div class="underline-link-master"><div class="underline-link-fill"></div></div></a>
+        <a href="educator.html" class="line-link-block"><div>Educator</div><div class="underline-link-master"><div class="underline-link-fill"></div></div></a>
+        <span class="line-link-block is-soon">Communicator</span>
+        <a href="work.html" class="line-link-block"><div>Work</div><div class="underline-link-master"><div class="underline-link-fill"></div></div></a>
+        <span class="line-link-block is-soon">Immunologist</span>
+        <span class="line-link-block is-soon">Outreach</span>
+        <a href="about.html" class="line-link-block"><div>About</div><div class="underline-link-master"><div class="underline-link-fill"></div></div></a>
+        <a href="#" class="line-link-block"><div>Get in touch</div><div class="underline-link-master"><div class="underline-link-fill"></div></div></a>
+      </nav>
+    </div>
+    <div class="brand-footer-big" aria-hidden="true">Aimee<br>Pugh-Bernard</div>
+    <div class="wrap-bottom-footer">
+      <div class="text-bottom-footer">&copy; 2026 Aimee Pugh-Bernard</div>
+      <div class="circle-bottom-footer"></div>
+      <div class="text-bottom-footer"><a href="https://www.instagram.com/funsizeimmuninja/?hl=en" target="_blank" rel="noopener">Instagram</a></div>
+      <div class="text-bottom-footer"><a href="https://www.tiktok.com/@funsizeimmuninja" target="_blank" rel="noopener">TikTok</a></div>
+      <div class="text-bottom-footer"><a href="https://aimeepughbernard.substack.com/" target="_blank" rel="noopener">Substack</a></div>
+      <div class="text-bottom-footer"><a href="https://bsky.app/profile/funsizeimmuninja.bsky.social" target="_blank" rel="noopener">Bluesky</a></div>
+    </div>
+  </div>
+</footer>
+
+<div class="mascot" id="mascot" aria-hidden="true">
+  <div class="mascot-inner" id="mascotInner">
+    <div class="mascot-shape"></div>
+    <div class="mascot-bubble" id="mascotBubble"></div>
+  </div>
+</div>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/ScrollTrigger.min.js"></script>
+<script>
+  gsap.registerPlugin(ScrollTrigger);
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // ---- Mobile nav toggle: menu panel + dark backdrop, mirroring the
+  // reference's NAVBAR_OPEN/CLOSE + nav-bg behavior ----
+  const navMobileToggle = document.getElementById('navMobileToggle');
+  const navMenu = document.getElementById('navMenu');
+  const navBg = document.getElementById('navBg');
+  navMobileToggle.addEventListener('click', () => {
+    const open = navMenu.classList.toggle('is-open');
+    navMobileToggle.classList.toggle('is-open', open);
+    navBg.classList.toggle('is-open', open);
+    navMobileToggle.setAttribute('aria-expanded', String(open));
+  });
+  navBg.addEventListener('click', () => {
+    navMenu.classList.remove('is-open');
+    navMobileToggle.classList.remove('is-open');
+    navBg.classList.remove('is-open');
+    navMobileToggle.setAttribute('aria-expanded', 'false');
+  });
+
+  // ---- Reveal on scroll (stats/marquee/awards heading) ----
+  const io = new IntersectionObserver((entries) => {
+    for (const e of entries) {
+      if (e.isIntersecting) { e.target.classList.add('is-in'); io.unobserve(e.target); }
+    }
+  }, { rootMargin: '0px 0px -12% 0px' });
+  document.querySelectorAll('[data-reveal]').forEach((el) => io.observe(el));
+
+  // ---- "By the numbers" pinned panel-swap: the header (label + statement)
+  // stays put while the panel underneath cross-fades between the stats,
+  // the logo marquee, and the awards grid as the visitor scrolls. Only
+  // pins above the mobile stack breakpoint — below it, CSS shows every
+  // panel stacked normally and this matchMedia branch never runs. ----
+  ScrollTrigger.matchMedia({
+    '(min-width: 768px)': function () {
+      const panels = gsap.utils.toArray('.stats-pin__panel');
+      let activeIndex = 0;
+
+      const trigger = ScrollTrigger.create({
+        trigger: '.stats-pin__pin-target',
+        start: 'top top',
+        end: () => '+=' + Math.round(window.innerHeight * 1.1 * panels.length),
+        pin: true,
+        anticipatePin: 1,
+        invalidateOnRefresh: true,
+        onUpdate(self) {
+          const idx = Math.min(panels.length - 1, Math.floor(self.progress * panels.length));
+          if (idx === activeIndex) return;
+          activeIndex = idx;
+          panels.forEach((p, i) => p.classList.toggle('is-active', i === idx));
+        },
+      });
+
+      return () => trigger.kill();
+    },
+  });
+
+  // ---- Hero identity-word hover: background swap (from Dendrite) ----
+  const heroEl = document.getElementById('hero-section');
+  const roleBgLayers = document.querySelectorAll('.hero-role-bg');
+  const identityList = document.getElementById('identityWords');
+  const identityWords = document.querySelectorAll('.identity-word');
+
+  identityWords.forEach((word) => { const img = new Image(); img.src = word.dataset.bg; });
+
+  let activeLayer = 0;
+  function showRoleBg(url) {
+    const incoming = roleBgLayers[1 - activeLayer];
+    const outgoing = roleBgLayers[activeLayer];
+    incoming.style.backgroundImage = `linear-gradient(180deg, rgba(0,0,0,.15), rgba(0,0,0,.55)), url('${url}')`;
+    incoming.style.opacity = '1';
+    outgoing.style.opacity = '0';
+    activeLayer = 1 - activeLayer;
+  }
+
+  // ---- Mascot placeholder: rides directly on the cursor, but only while
+  // hovering one of the highlighted persona words — hidden the rest of the
+  // time, per the "only appear on something we're highlighting" note. ----
+  const mascot = document.getElementById('mascot');
+  const mascotInner = document.getElementById('mascotInner');
+  const mascotBubble = document.getElementById('mascotBubble');
+
+  function showMascot(text) {
+    mascotBubble.textContent = text;
+    mascotInner.classList.add('is-visible');
+  }
+  function hideMascot() { mascotInner.classList.remove('is-visible'); }
+
+  // GSAP quickTo chases the pointer with a short lag instead of teleporting —
+  // set/setY animate the OUTER element's translate; the inner element's own
+  // transform (centering + is-visible scale) is left alone so the two never
+  // fight. No offset: the shape sits right on top of the cursor.
+  const setMascotX = reduceMotion ? (v) => gsap.set(mascot, { x: v }) : gsap.quickTo(mascot, 'x', { duration: 0.4, ease: 'power3.out' });
+  const setMascotY = reduceMotion ? (v) => gsap.set(mascot, { y: v }) : gsap.quickTo(mascot, 'y', { duration: 0.4, ease: 'power3.out' });
+
+  let followingCursor = false;
+  function trackCursor(e) { setMascotX(e.clientX); setMascotY(e.clientY); }
+
+  identityWords.forEach((word) => {
+    word.addEventListener('click', (e) => e.preventDefault());
+    word.addEventListener('mouseenter', (e) => {
+      heroEl.classList.add('role-hover');
+      showRoleBg(word.dataset.bg);
+      gsap.set(mascot, { x: e.clientX, y: e.clientY });
+      showMascot(word.dataset.text);
+      followingCursor = true;
+      document.addEventListener('mousemove', trackCursor);
+    });
+  });
+  identityList.addEventListener('mouseleave', () => {
+    heroEl.classList.remove('role-hover');
+    roleBgLayers.forEach((layer) => { layer.style.opacity = '0'; });
+    hideMascot();
+    if (followingCursor) { document.removeEventListener('mousemove', trackCursor); followingCursor = false; }
+  });
+
+  // ---- Mission statement (inline-media-text). Rows are fixed in the markup,
+  // pills never change size, and each row fades in one at a time. ----
+  (() => {
+    const P = 'byq-gem--inline-media-text-01';
+    const root = document.querySelector(`.${P}`);
+    if (!root) return;
+    const line = root.querySelector(`.${P}__line`);
+    if (!line) return;
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const narrowMQ = window.matchMedia('(max-width: 700px)');
+    const pills = [...line.querySelectorAll(`.${P}__pill`)];
+    const rows = [...line.querySelectorAll(`.${P}__row`)];
+    const segs = [...line.querySelectorAll(`.${P}__seg`)];
+
+    // Split the plain text into word spans (for the colour tint near the open pill).
+    const words = [];
+    segs.forEach((seg) => {
+      [...seg.childNodes].forEach((node) => {
+        if (node.nodeType !== 3) return;
+        const frag = document.createDocumentFragment();
+        node.textContent.trim().split(/\s+/).filter(Boolean).forEach((part) => {
+          const w = document.createElement('span');
+          w.className = `${P}__w`;
+          w.textContent = part;
+          words.push(w);
+          frag.appendChild(w);
+        });
+        node.replaceWith(frag);
+      });
+    });
+
+    // Stagger index: one step per row on wide screens, per segment on narrow.
+    const setStagger = () => {
+      if (narrowMQ.matches) segs.forEach((seg, i) => seg.style.setProperty('--d', i));
+      else rows.forEach((row, i) => row.querySelectorAll(`.${P}__seg`).forEach((seg) => seg.style.setProperty('--d', i)));
+    };
+    setStagger();
+    narrowMQ.addEventListener('change', setStagger);
+
+    if (reduce.matches) root.classList.add('is-in');
+    else {
+      const io = new IntersectionObserver((entries) => {
+        if (entries.some((e) => e.isIntersecting)) { root.classList.add('is-in'); io.disconnect(); }
+      }, { rootMargin: '0px 0px -15% 0px' });
+      io.observe(root);
+    }
+
+    pills.forEach((p) => { if (!p.dataset.tint) p.dataset.tint = '28 27 26'; });
+    let active = -1;
+    const fsz = () => parseFloat(getComputedStyle(line).fontSize) || 16;
+    const paintTint = () => {
+      if (active < 0) { words.forEach((w) => w.style.setProperty('--imt-k', '0')); return; }
+      root.style.setProperty('--imt-tint', pills[active].dataset.tint);
+      const fs = fsz();
+      const pr = pills[active].getBoundingClientRect();
+      const pcy = pr.top + pr.height / 2;
+      words.forEach((w) => {
+        const r = w.getBoundingClientRect();
+        const dx = Math.max(0, pr.left - r.right, r.left - pr.right);
+        const dy = Math.abs(r.top + r.height / 2 - pcy);
+        const d = Math.hypot(dx, dy * 1.25) / fs;
+        w.style.setProperty('--imt-k', Math.pow(Math.max(0, 1 - d / 3.6), 1.7).toFixed(3));
+      });
+    };
+    const activate = (i) => {
+      if (i === active) return;
+      active = i;
+      pills.forEach((p, n) => {
+        const on = n === i;
+        p.classList.toggle('is-active', on);
+        p.classList.toggle('is-dim', !on);
+        p.setAttribute('aria-pressed', on ? 'true' : 'false');
+        if (!on) p.style.removeProperty('--imt-mx');
+      });
+      paintTint();
+    };
+
+    let intent = 0;
+    pills.forEach((p, i) => {
+      p.addEventListener('pointerenter', (e) => {
+        if (e.pointerType !== 'mouse' && e.pointerType !== 'pen') return;
+        clearTimeout(intent);
+        intent = setTimeout(() => activate(i), 70);
+      });
+      p.addEventListener('pointerleave', () => { clearTimeout(intent); p.style.removeProperty('--imt-mx'); });
+      p.addEventListener('click', () => activate(i));
+      p.addEventListener('focus', () => activate(i));
+      p.addEventListener('pointermove', (e) => {
+        if (i !== active || reduce.matches) return;
+        const r = p.getBoundingClientRect();
+        const mx = ((e.clientX - r.left) / r.width) * 2 - 1;
+        p.style.setProperty('--imt-mx', Math.max(-1, Math.min(1, mx)).toFixed(3));
+      });
+    });
+
+    let rq = 0;
+    const relayout = () => { cancelAnimationFrame(rq); rq = requestAnimationFrame(paintTint); };
+    if ('ResizeObserver' in window) new ResizeObserver(relayout).observe(line);
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(relayout);
+
+    // Photos take turns being the "lit" one on a slow cycle; hover overrides it.
+    activate(0);
+    let cycleTimer = null;
+    function scheduleCycle() {
+      clearTimeout(cycleTimer);
+      if (reduce.matches) return;
+      cycleTimer = setTimeout(() => { activate((active + 1) % pills.length); scheduleCycle(); }, 2600);
+    }
+    scheduleCycle();
+    root.addEventListener('pointerenter', () => clearTimeout(cycleTimer));
+    root.addEventListener('pointerleave', scheduleCycle);
+  })();
+</script>
+<script src="immune-game.js"></script>
+</body>
+</html>

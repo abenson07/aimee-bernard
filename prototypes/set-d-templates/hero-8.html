@@ -1,0 +1,71 @@
+<!--
+TEMPLATE REFERENCE — NOT A PAGE. Do not link or publish.
+Source: user paste "hero-8" from the Stringer Webflow kit (scroll-shrinking cover image).
+Used for: Public Speaking "TEDx talk" (Figma Hero 8, 80:179, 900 tall) -> plan class `.tedx`.
+User note: "Starts as a big image and then scales down to this" — a full-bleed cover photo that shrinks (on scroll) into the framed image below the title.
+Figma END STATE (source of visual truth; sticky 900px-tall stage, background #f5f4f1 -> our page bg): content column = grid cols 3-10 (width 1144, centered), stack gap 32:
+  label "TEDX LOCATION" (mono 11px, uppercase, letter-spacing .88px, rgba(18,18,18,.64)) + title "Title of TedX talk" (72px / 72px / -2.16px, #121212), gap 16;
+  image frame 1144x522, radius 16, object-fit cover (a #e2ddd4 box behind it).
+NOT in Figma (do not build): the foot row ("Fins · Wax · Pads · Leashes" / "For those full of ocean." / "Shop"). Template line `hero-8-foot` and its fade-in are dropped.
+Real content available: data/work-timeline.json talk "Confessions of a Scientist: Science education needs communication training" — TEDxCU — April 2026. (Figma copy is placeholder; FLAG in README.)
+Template behavior to rebuild WITHOUT GSAP (plan): the section is a "track" 260vh tall with a `position: sticky; top: 0; height: 100vh` stage. A `.cover` layer (the same photo, `object-fit: cover`, full stage) sits on top and is progressively
+  (a) clipped with `clip-path: inset(top right bottom left)` from 0 to the frame's rect, and (b) its image scaled/translated (transform-origin 0 0) from full-bleed to the frame image's size/position,
+  over scroll progress 0 -> 0.7; the title block (label + h1) fades/rises in at progress .55 -> .85. Scrub = direct mapping of scroll progress (rAF on scroll), no easing lib; recompute rects on resize.
+  End-state numbers in the template: photo shows SHOW=.85 of its height, ANCHOR=.35 vertical anchor; aspect from natural image size. Disabled under 768px and with prefers-reduced-motion (static: title + framed image).
+Saved trimmed: removed Webflow reset, `w-*` CSS; the GSAP script is summarised (above) rather than reproduced. Template colors NOT used.
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>hero-8 (Stringer) — reference</title>
+<style>
+.section.is-flush { padding-top: 0; padding-bottom: 0; position: relative }
+.media { background-color: #e2ddd4; width: 100%; padding-top: 125%; position: relative; overflow: hidden }
+.media.is-16x9 { padding-top: 56.25% }
+.media-img { object-fit: cover; object-position: center; width: 100%; height: 100%; position: absolute; top: 0; left: 0 }
+.media-img.hero-8-cover-img { will-change: transform; max-width: none; transition: none }
+.media-img.hero-8-frame-img { max-width: none; transition: none }
+.text-label { letter-spacing: .08em; text-transform: uppercase; font-size: 11px; font-weight: 500; line-height: 1.2 }
+.main-container { width: 100%; max-width: 1800px; margin: 0 auto; padding: 0 32px; position: relative }
+.grid-12 { grid-template-columns: repeat(12, minmax(0,1fr)); gap: 16px; display: grid }
+.grid-12.hero-8-grid { row-gap: 32px }
+.text-display-sm { letter-spacing: -.03em; margin: 0; font-size: 72px; font-weight: 500; line-height: 1 }
+.hero-8-track { height: 260vh; position: relative }
+.hero-8-stage { flex-direction: column; justify-content: center; height: 100vh; display: flex; position: sticky; top: 0; overflow: hidden }
+.hero-8-plate { grid-row-gap: 32px; flex-direction: column; grid-column: 3/11; justify-self: center; width: 90vh; max-width: 100%; display: flex }  /* Figma: width 1144 */
+.hero-8-head { grid-row-gap: 16px; flex-direction: column; align-items: flex-start; display: flex }
+.hero-8-frame { width: 100% }
+.hero-8-cover { z-index: 2; background-color: #e2ddd4; width: 100%; height: 100%; display: none; position: absolute; top: 0; left: 0; overflow: hidden }
+.hero-8-cover.is-live { display: block }
+@media screen and (max-width:991px) { .text-display-sm { font-size: 56px } .hero-8-plate { grid-column: 2/12 } }
+@media screen and (max-width:767px) {
+  .main-container { padding: 0 24px } .text-display-sm { font-size: 44px }
+  .hero-8-track { height: auto }
+  .hero-8-stage { height: auto; padding-top: 80px; padding-bottom: 64px; position: static; overflow: visible }
+  .hero-8-plate { grid-column: 1/13; width: 100% }
+}
+</style>
+</head>
+<body>
+<section class="section is-flush stringer-hero-8">
+  <div class="hero-8-track">
+    <div class="hero-8-stage">
+      <div class="hero-8-cover"><img src="https://byqsupply-components.netlify.app/Stringer/images/h04-bluff-friends.webp" alt="" class="media-img hero-8-cover-img"></div>
+      <div class="main-container">
+        <div class="grid-12 hero-8-grid">
+          <div class="hero-8-plate">
+            <div class="hero-8-head">
+              <div class="text-label">The Dawn Club</div>
+              <h1 class="text-display-sm">Full of ocean.</h1>
+            </div>
+            <div class="hero-8-frame"><div class="media is-16x9"><img src="https://byqsupply-components.netlify.app/Stringer/images/h04-bluff-friends.webp" alt="Three friends in wetsuits leaning on an old estate car on the bluff" class="media-img hero-8-frame-img"></div></div>
+            <!-- foot row (Fins · Wax · Pads · Leashes / For those full of ocean. / Shop) — NOT in Figma, do not build -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+</body>
+</html>

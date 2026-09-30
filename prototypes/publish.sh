@@ -4,7 +4,10 @@
 set -e
 out=.vercel/output/static/prototypes
 mkdir -p "$out"
-cp prototypes/*.html "$out"/
+cp prototypes/*.html prototypes/*.css "$out"/
+cp -R prototypes/set-a prototypes/set-b prototypes/set-c prototypes/round-3 prototypes/set-d "$out"/
+mkdir -p "$out/data"
+cp prototypes/data/*.json "$out/data"/
 cp -R prototypes/src prototypes/videos prototypes/screenshots "$out"/
 # Only the web font files the pages load, not the desktop otf/ttf set.
 mkdir -p "$out/fonts/Neue Montreal Mono/web"

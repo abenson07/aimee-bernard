@@ -1,0 +1,105 @@
+<!--
+TEMPLATE REFERENCE — NOT A PAGE. Do not link or publish.
+Source: user paste "hero-1" from the Modulabs Webflow kit (byqsupply-components.netlify.app/Modulabs).
+Used for: Home A (Figma 80:12688) — ONLY the media card (`.card-case-small`, inside `.case-small`).
+Everything else in this paste (video background, headline, buttons) is NOT used.
+Saved trimmed: removed the Webflow reset CSS, webflow-icons font, `w-*` widget CSS, the `window.__ix` interaction JSON,
+and the jQuery/GSAP/Webflow script tags; removed `data-w-id` and inline Webflow start-state transforms.
+Component CSS and markup are kept as pasted. `:root` design tokens omitted; resolved values that matter:
+  --_🎨-color--base---accent--primary: #e45a47   (coral accent)
+  --_🎨-color--base---neutral--light-8 = rgba(246,243,236,.08)
+  --_🔘-radius---general--default: 8px ; --spacing--12: 12px ; --spacing--16: 16px ; --spacing--24: 24px
+  --_🔠-typography---size--body-3: 14px / line-height 20px ; label-2: 10px / 12px, letter-spacing .75px
+  --_❇️-icon---icon-size--small: 12px ; --_❇️-icon---icon-stroke: 1.5px
+Mobile (<=767px) token overrides: spacing--12 -> 10px, spacing--16 -> 12px, spacing--24 -> 16px, body-3 -> 12px/16px, label-2 -> 8px/10px.
+In our prototypes fonts are Instrument Sans / IBM Plex Sans / IBM Plex Mono (the user's rule), and the card colors are
+Figma's: bg #d4c8ba, text #121212 (see plan: Home A).
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>hero-1 (Modulabs) — reference</title>
+<style>
+.main-container { z-index: 3; max-width: var(--container--main); padding-right: var(--grid--page-padding); padding-left: var(--grid--page-padding); width: 100%; margin-left: auto; margin-right: auto; position: relative }
+.text-small { font-family: var(--_🔠-typography---font-family--body-3); font-size: var(--_🔠-typography---size--body-3); line-height: var(--_🔠-typography---line-height--body-3); font-weight: var(--_🔠-typography---font-weight--body-3); letter-spacing: var(--_🔠-typography---letter-spacing--body-3); margin-top: 0; margin-bottom: 0 }
+.section { z-index: 2; padding-top: var(--section-padding--small); padding-bottom: var(--section-padding--small); background-color: var(--_🎨-color--tokens---background--base); color: var(--_🎨-color--tokens---text-body--strong); position: relative }
+.section.hero-home-b-section { padding-top: var(--spacing--0); padding-bottom: var(--spacing--0) }
+.text-h1 { z-index: 1; font-family: var(--_🔠-typography---font-family--h1); font-size: var(--_🔠-typography---size--h1); line-height: var(--_🔠-typography---line-height--h1); font-weight: var(--_🔠-typography---font-weight--h1); letter-spacing: var(--_🔠-typography---letter-spacing--h1); margin-top: 0; margin-bottom: 0 }
+.label-small { font-family: var(--_🔠-typography---font-family--label-2); font-size: var(--_🔠-typography---size--label-2); line-height: var(--_🔠-typography---line-height--label-2); font-weight: var(--_🔠-typography---font-weight--label-2); letter-spacing: var(--_🔠-typography---letter-spacing--label-2); text-transform: uppercase }
+.cta-main { padding: var(--spacing--8) var(--spacing--16); grid-column-gap: var(--spacing--8); grid-row-gap: var(--spacing--8); border-radius: var(--_🔘-radius---ui-elements--button-base); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); font-family: var(--_🔠-typography---font-family--button-1); color: var(--_🎨-color--tokens---button-primary-default--text); font-size: var(--_🔠-typography---size--button-1); line-height: var(--_🔠-typography---line-height--button-1); font-weight: var(--_🔠-typography---font-weight--button-1); letter-spacing: var(--_🔠-typography---letter-spacing--button-1); cursor: pointer; flex: none; justify-content: center; align-items: center; text-decoration: none; transition: color .15s; display: flex; position: relative }
+.cta-main:hover { color: var(--_🎨-color--tokens---button-primary-hover--text) }
+.button-text-mask { height: var(--_🔠-typography---line-height--button-1); pointer-events: none; flex: none; overflow: hidden }
+.button-text { z-index: 1; text-shadow: 0 1.5em 0 var(--_🎨-color--tokens---button-primary-hover--text); position: relative }
+.button-bg { border: 1px solid var(--_🎨-color--tokens---button-primary-default--border); border-radius: var(--_🔘-radius---ui-elements--button-base); background-color: var(--_🎨-color--tokens---button-primary-default--background); transition: background-color .65s; position: absolute; inset: 0% }
+.button-bg:hover { border-color: var(--_🎨-color--tokens---button-primary-hover--border); background-color: var(--_🎨-color--tokens---button-primary-hover--background) }
+.image-cover { z-index: 1; object-fit: cover; width: 100%; height: 100% }
+.heading-medium { color: var(--_🎨-color--tokens---text-heading--medium) }
+.button-circle { z-index: 1; width: var(--spacing--8); height: var(--spacing--8); background-color: var(--_🎨-color--base---accent--primary); pointer-events: none; border-radius: 2px; flex: none; position: relative }
+.button-book { padding: var(--spacing--8) var(--spacing--16) var(--spacing--8) var(--spacing--8); grid-column-gap: var(--spacing--8); grid-row-gap: var(--spacing--8); border: 1px solid var(--_🎨-color--tokens---button-secondary-default--border); border-radius: var(--_🔘-radius---ui-elements--button-base); background-color: var(--_🎨-color--tokens---button-secondary-default--background); box-shadow: 0 -1px 0 0 var(--_🎨-color--base---neutral--light-16), 0 1px 0 0 var(--_🎨-color--base---neutral--light-8); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); font-family: var(--_🔠-typography---font-family--button-1); color: var(--_🎨-color--tokens---button-secondary-default--text); font-size: var(--_🔠-typography---size--button-1); line-height: var(--_🔠-typography---line-height--button-1); font-weight: var(--_🔠-typography---font-weight--button-1); letter-spacing: var(--_🔠-typography---letter-spacing--button-1); justify-content: center; align-items: center; text-decoration: none; transition: color .3s, background-color .3s, border-color .3s; display: flex }
+.button-book:hover { border-color: var(--_🎨-color--tokens---button-secondary-hover--border); background-color: var(--_🎨-color--tokens---button-secondary-hover--background); color: var(--_🎨-color--tokens---button-secondary-hover--text) }
+.book-button-avatar { height: var(--_❇️-icon---icon-size--large); box-shadow: inset 0 0 0 1px var(--_🎨-color--tokens---border--subtle); border-radius: 32px; flex: none; width: 32px; position: relative; overflow: hidden }
+.image-wrap-book-button { pointer-events: none; position: relative }
+.button-book-circle-outer { background-image: linear-gradient(180deg, var(--_🎨-color--tokens---background-gradient-purposes--gradient-100), var(--_🎨-color--tokens---background-gradient-purposes--gradient-0)); border-radius: 2px; padding: 2px; position: absolute; inset: auto 0% 0% auto }
+.button-book-circle { background-color: var(--_🎨-color--base---ui--success); border-radius: 2px; width: 8px; height: 8px }
+.master-label { grid-column-gap: var(--spacing--12); grid-row-gap: var(--spacing--12); color: var(--_🎨-color--tokens---text-label--strong); justify-content: center; align-items: center; display: flex }
+.circle-label { background-color: var(--_🎨-color--base---accent--primary); border-radius: 2px; width: 8px; height: 8px }
+.video-home-b { padding-top: var(--section-padding--extra-large); padding-bottom: var(--spacing--64); justify-content: flex-start; align-items: flex-end; width: 100%; height: auto; min-height: 100vh; display: flex }
+.overlay-hero-home-b { background-image: linear-gradient(0deg, var(--_🎨-color--tokens---background-gradient-purposes--gradient-100), var(--_🎨-color--tokens---background-gradient-purposes--gradient-0)); width: 100%; height: 45%; position: absolute; inset: auto 0% 0% }
+.content-home-b { grid-column-gap: var(--spacing--48); grid-row-gap: var(--spacing--48); justify-content: space-between; align-items: flex-end; width: 100%; display: flex }
+.headline-home-b { max-width: var(--max-width--6-columns); grid-column-gap: var(--spacing--32); grid-row-gap: var(--spacing--32); flex-flow: column; justify-content: flex-start; align-items: flex-start; display: flex }
+.button-wrap-hero { grid-column-gap: var(--spacing--8); grid-row-gap: var(--spacing--8); flex-flow: wrap; justify-content: center; align-items: center; display: flex }
+.case-small.hide-cms { display: none }
+/* ===== THE PART WE USE: the media card ===== */
+.card-case-small { padding: var(--spacing--12); grid-column-gap: var(--spacing--16); grid-row-gap: var(--spacing--16); border-radius: var(--_🔘-radius---general--default); background-color: var(--_🎨-color--base---neutral--light-8); -webkit-backdrop-filter: blur(16px); backdrop-filter: blur(16px); color: var(--_🎨-color--tokens---text-body--strong); justify-content: flex-start; align-items: stretch; max-width: 361px; text-decoration: none; display: flex; overflow: hidden }
+.image-wrap-case-small { border-radius: var(--_🔘-radius---general--default); flex: none; width: 96px; height: 96px; min-height: 100%; display: flex; overflow: hidden }
+.content-case-small { grid-column-gap: var(--spacing--24); grid-row-gap: var(--spacing--24); flex-flow: column; justify-content: space-between; align-items: flex-start; display: flex }
+.case-small-bottom-tile { grid-column-gap: var(--spacing--24); grid-row-gap: var(--spacing--24); justify-content: space-between; align-items: flex-end; width: 100%; display: flex }
+.icon-case-small { width: var(--_❇️-icon---icon-size--small); height: var(--_❇️-icon---icon-size--small); color: var(--_🎨-color--base---accent--primary); flex: none; justify-content: center; align-items: center; display: flex }
+.hide-cms { display: none }
+@media screen and (max-width:991px) { .overlay-hero-home-b { height: 65% } .content-home-b { flex-flow: wrap } }
+@media screen and (max-width:767px) {
+  .main-container { padding-left: 16px; padding-right: 16px }
+  .card-case-small { grid-column-gap: 12px; grid-row-gap: 12px; border-radius: 8px; padding: 10px }
+  .image-wrap-case-small { border-radius: 8px }
+  .case-small-bottom-tile, .content-case-small { grid-column-gap: 16px; grid-row-gap: 16px }
+  .icon-case-small { width: 12px; height: 12px }
+}
+</style>
+</head>
+<body>
+<section class="section hero-home-b-section">
+  <div class="video-home-b w-background-video">
+    <!-- background video omitted: video src https://byqsupply-components.netlify.app/Modulabs/videos/outputcompress-video-onlinecom-transcode.mp4 -->
+    <div class="main-container">
+      <div class="content-home-b">
+        <div class="headline-home-b">
+          <h1 class="text-h1">Systems that deliver <span class="heading-medium">measurable outcomes</span></h1>
+          <div class="button-wrap-hero">
+            <a href="#" class="cta-main"><div class="button-circle"></div><div class="button-text-mask"><div class="button-text">Get Template</div></div><div class="button-bg"></div></a>
+            <a href="#" class="button-book">
+              <div class="image-wrap-book-button"><div class="book-button-avatar"><img src="https://byqsupply-components.netlify.app/Modulabs/images/ButtonIcon.webp" alt="" class="image-cover"></div><div class="button-book-circle-outer"><div class="button-book-circle"></div></div></div>
+              <div class="button-text-mask"><div class="button-text">Book a call</div></div>
+            </a>
+          </div>
+        </div>
+        <!-- THE MEDIA CARD (used on Home A) -->
+        <div class="case-small">
+          <a href="#" class="card-case-small">
+            <div class="image-wrap-case-small"><img class="image-cover" src="https://byqsupply-components.netlify.app/Modulabs/images/GraphImage.webp" alt="" loading="lazy"></div>
+            <div class="content-case-small">
+              <div class="text-small">Engineering trust through transparency</div>
+              <div class="case-small-bottom-tile">
+                <div class="master-label"><div class="circle-label"></div><div class="label-small">CASE STUDY</div></div>
+                <div class="icon-case-small"><svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 24 24" fill="none"><path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg></div>
+              </div>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="overlay-hero-home-b"></div>
+  </div>
+</section>
+</body>
+</html>

@@ -1,0 +1,2061 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Work &middot; Aimee Pugh-Bernard (Set B &middot; Direction 2)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500&family=Instrument+Serif&display=swap" rel="stylesheet">
+<style>
+  /* Direction 2 — Work page, first pass. Masonry grid inspired by
+     floema.com/en/products (top filter chips, "Showing X of Y", cards of
+     varying height); card face borrowed from Antibody's recent-appearances
+     cards (category up top, some cards reveal a photo on hover, others
+     stay plain) but with title moved to the bottom per this round's brief.
+     Same nav/palette/fonts as the rest of Direction 2. */
+  :root {
+    --paper: #f2f1ee;
+    --ink: #1c1b1a;
+    --muted: rgba(28, 27, 26, 0.62);
+    --line: rgba(28, 27, 26, 0.14);
+    --radius: 24px;
+    --gutter: 3rem;
+    --serif: "Instrument Serif", Georgia, serif;
+    --sans: "DM Sans", sans-serif;
+    --ease-out: cubic-bezier(0.215, 0.61, 0.355, 1);
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0;
+    font-family: var(--sans);
+    color: var(--ink);
+    letter-spacing: -0.02em;
+    font-weight: 500;
+  }
+  html, body { background: var(--paper); }
+  img, video { max-width: 100%; display: block; }
+  a { color: inherit; text-decoration: none; }
+  p { margin: 0; }
+  h2, h3 { margin: 0; font-weight: 400; }
+
+  /* No cap at all, on purpose — a data grid should fill whatever screen
+     it's on, not be capped to a comfortable reading width like the
+     editorial pages. Side gutters only. */
+  .main-container { width: 100%; margin: 0 auto; padding: 0 40px; }
+
+  .label { letter-spacing: 0.7px; text-transform: uppercase; font-size: 14px; font-weight: 500; line-height: 16px; }
+  .label.muted { color: var(--muted); }
+  .display { font-family: var(--serif); font-weight: 400; letter-spacing: -0.04em; line-height: 0.9; }
+
+  /* ---------- Nav (shared with index.html) ---------- */
+  .nav-wrap { position: fixed; inset: 0 0 auto 0; z-index: 90; }
+  .banner {
+    background: var(--ink); color: var(--paper); text-align: center;
+    display: flex; justify-content: center; gap: 0.5rem; align-items: center;
+    padding: 0.55rem 1rem; font-size: 12px; letter-spacing: 0.04em; text-transform: uppercase;
+  }
+  .banner a { text-decoration: underline; }
+  .nav-outer { padding: 12px 24px; }
+  .navbar {
+    max-width: 1800px; margin: 0 auto; border-radius: 16px;
+    background: color-mix(in srgb, var(--paper) 92%, transparent);
+    -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px);
+    border: 1px solid var(--line); box-shadow: 0 12px 30px rgba(0, 0, 0, 0.06);
+  }
+  .nav-container { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 1.5rem; padding: 10px 18px; }
+  .nav-brand { justify-self: start; font-family: var(--serif); font-size: 1.1rem; }
+  .nav-menu-inner { display: flex; align-items: center; gap: 0.25rem; }
+  .nav-link { position: relative; padding: 8px 16px; border-radius: 999px; overflow: hidden; }
+  .nav-link:hover { background: var(--line); }
+  .nav-link.is-soon { display: inline-block; cursor: pointer; }
+  .link-text-mask, .button-text-mask { position: relative; display: block; height: 1.3em; overflow: hidden; }
+  .link-text, .button-text { display: block; transition: transform 0.5s cubic-bezier(0.65, 0, 0.35, 1); }
+  .link-text.t2, .button-text.t2 { position: absolute; top: 100%; left: 0; }
+  .nav-link:hover .link-text, .cta-main:hover .button-text { transform: translateY(-100%); }
+  .nav-right { justify-self: end; display: flex; align-items: center; gap: 1rem; }
+  .cta-main { position: relative; display: inline-flex; padding: 10px 20px; border-radius: 999px; overflow: hidden; }
+  .cta-main .button-bg { position: absolute; inset: 0; background: var(--ink); border-radius: 999px; transition: transform 0.4s var(--ease-out); z-index: 0; }
+  .cta-main:hover .button-bg { transform: scale(0.95); }
+  .cta-main .button-text-mask { position: relative; z-index: 1; }
+  .cta-main .button-text { color: var(--paper); font-size: 13px; font-weight: 700; }
+  .menu-button {
+    display: none; width: 40px; height: 36px; border: 1px solid var(--line); border-radius: 999px;
+    background: none; align-items: center; justify-content: center; cursor: pointer; color: var(--ink); position: relative;
+  }
+  .menu-button .menu-open, .menu-button .menu-close { display: flex; align-items: center; justify-content: center; }
+  .menu-button .menu-close { display: none; }
+  .menu-button.is-open .menu-open { display: none; }
+  .menu-button.is-open .menu-close { display: flex; }
+  .nav-bg { position: fixed; inset: 0; z-index: 88; background: rgba(0, 0, 0, 0.32); opacity: 0; pointer-events: none; transition: opacity 0.3s ease; }
+  .nav-bg.is-open { opacity: 1; pointer-events: auto; }
+
+  /* ---------- Page header ---------- */
+  .work-header { padding: 168px 0 2.5rem; text-align: center; }
+  .work-header h1 { font-size: clamp(2.75rem, 6vw, 4.75rem); }
+  .work-header p { color: var(--muted); max-width: 38rem; margin: 0.85rem auto 0; font-size: 1rem; line-height: 1.5; }
+
+  /* ---------- Filters (floema-style chip rows + result count) ---------- */
+  .work-filters { padding-bottom: 1.75rem; }
+  .filter-row .filter-label { display: block; font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); margin-bottom: 0.75rem; }
+  /* Square tiles, floema-style: a colored square per kind, selection shown
+     by a dark border + checkmark badge rather than a filled/inverted state. */
+  .kind-grid { display: flex; flex-wrap: nowrap; gap: 0.7rem; width: 100%; }
+  .kind-tile {
+    position: relative; flex: 1 1 0; min-width: 0; aspect-ratio: 1; border-radius: 14px; border: 2px solid transparent;
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.3rem;
+    cursor: pointer; font-family: var(--sans); transition: border-color 0.25s ease, transform 0.25s ease;
+  }
+  .kind-tile:hover { transform: translateY(-2px); }
+  .kind-tile.is-active { border-color: var(--ink); }
+  .kind-tile.is-all { background: var(--ink); color: var(--paper); }
+  .tile-label { font-size: clamp(11px, 1vw, 13px); font-weight: 700; text-align: center; padding: 0 0.35rem; overflow-wrap: anywhere; }
+  .tile-count { font-size: 11px; opacity: 0.6; }
+  .tile-icon { width: clamp(22px, 2.6vw, 34px); height: auto; aspect-ratio: 1; margin-bottom: 0.35rem; opacity: 0.85; transition: transform 0.3s ease; }
+  .kind-tile:hover .tile-icon { transform: scale(1.12) rotate(-4deg); }
+  .tile-check {
+    position: absolute; top: 8px; right: 8px; width: 20px; height: 20px; border-radius: 50%;
+    background: var(--ink); color: var(--paper); font-size: 11px; display: flex; align-items: center; justify-content: center;
+  }
+  .kind-tile.is-all .tile-check { background: var(--paper); color: var(--ink); }
+  .work-count { padding-bottom: 1.25rem; font-size: 13px; color: var(--muted); border-top: 1px solid var(--line); padding-top: 1.25rem; }
+
+  /* ---------- Masonry grid (CSS columns — organic varied heights) ---------- */
+  /* CSS multi-column (column-width) balances columns to fit the CONTENT,
+     not the container — with few cards (e.g. filtered down to 6) it
+     collapses to 2-3 columns and leaves the rest of a wide screen empty,
+     no matter how wide the grid itself is. Grid with auto-fill always
+     lays out a full row of tracks across the container's actual width,
+     so it never leaves a wide screen half-empty. */
+  /* Floema-style block layout: the visible cards are chunked into fixed
+     4-column blocks (see layoutGrid() below). Each block is a named-area grid
+     whose cells are exact squares, and a card's shape (square, wide = 2x1,
+     tall = 1x2) comes from the slot it lands in, not from its content. */
+  .work-grid { --wg: 1.1rem; container-type: inline-size; display: flex; flex-direction: column; gap: var(--wg); padding-bottom: 6rem; transition: opacity 0.25s ease; }
+  .work-block {
+    display: grid; grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-auto-rows: calc((100cqw - 3 * var(--wg)) / 4); gap: var(--wg);
+  }
+  .work-block.l1 { grid-template-areas: "s1 v s2 s3" "s4 v h h"; }
+  .work-block.l2 { grid-template-areas: "h h s1 s2"; }
+  .work-block.l3 { grid-template-areas: "h h v s1" "s2 s3 v s4"; }
+  .work-block.l4 { grid-template-areas: "s1 s2 h h"; }
+  .work-block.sq { grid-template-areas: none; }
+  .work-card.slot-s1 { grid-area: s1; } .work-card.slot-s2 { grid-area: s2; } .work-card.slot-s3 { grid-area: s3; }
+  .work-card.slot-s4 { grid-area: s4; } .work-card.slot-v { grid-area: v; } .work-card.slot-h { grid-area: h; }
+  @media (max-width: 1023px) {
+    .work-block { grid-template-columns: repeat(2, minmax(0, 1fr)); grid-auto-rows: calc((100cqw - var(--wg)) / 2); }
+    .work-block.l1 { grid-template-areas: "s1 s2" "h h" "s3 s4" "v v"; }
+    .work-block.l2 { grid-template-areas: "h h" "s1 s2"; }
+    .work-block.l3 { grid-template-areas: "h h" "s1 s2" "s3 s4" "v v"; }
+    .work-block.l4 { grid-template-areas: "s1 s2" "h h"; }
+  }
+  .work-grid.is-filtering { opacity: 0; }
+  .work-card {
+    display: flex; flex-direction: column; justify-content: space-between; position: relative;
+    border-radius: var(--radius); background: color-mix(in srgb, var(--paper) 55%, var(--line));
+    border: 1px solid var(--line); overflow: hidden; padding: 1.15rem; min-width: 0; min-height: 0;
+    transition: transform 0.3s var(--ease-out), box-shadow 0.3s var(--ease-out);
+  }
+  .work-card { --kind: #e6e3de; transition: transform 0.3s var(--ease-out), box-shadow 0.3s var(--ease-out), background-color 0.45s ease, border-color 0.45s ease; }
+  .work-card[data-kind="talk"] { --kind: #dce3ee; } .work-card[data-kind="course"] { --kind: #dfe7d6; }
+  .work-card[data-kind="position"] { --kind: #e8d9cf; } .work-card[data-kind="award"] { --kind: #f0e2b8; }
+  .work-card[data-kind="research-publication"] { --kind: #e2d6df; } .work-card[data-kind="article"] { --kind: #d7e0e6; }
+  .work-card[data-kind="podcast"] { --kind: #f1dbd7; } .work-card[data-kind="press-mentions"] { --kind: #dfe0d0; }
+  .work-card[data-kind="educational-content"] { --kind: #efe6d3; } .work-card[data-kind="feature"] { --kind: #e6e3de; }
+  .work-card:hover { transform: translateY(-3px); box-shadow: 0 16px 34px rgba(0, 0, 0, 0.1); }
+  /* No photo to reveal? Wash the card in its kind's tile colour instead. */
+  .work-card:not(.has-photo):hover { background: var(--kind); border-color: color-mix(in srgb, var(--kind) 55%, var(--ink)); }
+  .work-card[hidden] { display: none; }
+  .work-card.has-photo { color: var(--ink); }
+  .work-photo {
+    position: absolute; inset: 0; z-index: 0; opacity: 0; transform: scale(1.06);
+    transition: opacity 0.4s ease, transform 0.5s var(--ease-out);
+  }
+  .work-photo img { width: 100%; height: 100%; object-fit: cover; }
+  .work-photo::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(0, 0, 0, 0.18) 0%, rgba(0, 0, 0, 0.05) 40%, rgba(0, 0, 0, 0.72) 100%); }
+  .work-card.has-photo:hover { color: #fff; }
+  .work-card.has-photo:hover .work-photo { opacity: 1; transform: scale(1); }
+  .work-top, .work-bottom { position: relative; z-index: 1; }
+  .work-top { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 0.5rem 0.75rem; }
+  .work-kind { font-size: 10.5px; text-transform: uppercase; letter-spacing: 0.06em; font-weight: 700; opacity: 0.72; }
+  .work-cat { font-size: 10.5px; text-transform: uppercase; letter-spacing: 0.06em; opacity: 0.5; }
+  .work-title { font-family: var(--serif); font-size: 1.18rem; line-height: 1.25; margin-top: 0.75rem; display: -webkit-box; -webkit-line-clamp: 6; -webkit-box-orient: vertical; overflow: hidden; }
+  .work-meta { font-size: 11.5px; opacity: 0.62; margin-top: 0.4rem; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+
+
+  @media (max-width: 900px) {
+    .nav-container { grid-template-columns: 1fr auto; }
+    .cta-main { display: none; }
+    .menu-button { display: flex; }
+    .nav-menu-inner {
+      position: fixed; left: 24px; right: 24px; top: 82px; z-index: 91;
+      flex-direction: column; align-items: stretch; gap: 0;
+      background: var(--paper); border: 1px solid var(--line); border-radius: 16px;
+      max-height: 0; overflow: hidden; opacity: 0;
+      transition: max-height 0.4s var(--ease-out), opacity 0.3s ease;
+    }
+    .nav-menu-inner.is-open { max-height: 320px; opacity: 1; padding: 8px; }
+    .nav-link { border-radius: 10px; padding: 14px 12px; }
+    .link-text-mask { height: auto; overflow: visible; }
+    .link-text.t2 { display: none; }
+    .nav-link:hover .link-text { transform: none; }
+  }
+  @media (max-width: 560px) {
+    .kind-grid { flex-wrap: wrap; }
+    .kind-tile { flex: 1 1 88px; }
+  }
+  @media (max-width: 767px) {
+    .nav-outer { padding: 10px 16px; }
+    .banner { font-size: 11px; padding: 0.5rem 0.75rem; }
+  }
+</style>
+</head>
+<body>
+<!-- structure + style: Direction 2 (first pass) -->
+<div class="nav-wrap">
+  <div class="banner">
+    <span>Available for speaking engagements &amp; science communication consulting</span>
+    <a href="#">Get in touch</a>
+  </div>
+  <div class="nav-outer">
+    <header class="navbar">
+      <div class="nav-container">
+        <a href="index.html" class="nav-brand">APB</a>
+        <nav class="nav-menu-inner" id="navMenu">
+          <a href="educator.html" class="nav-link"><span class="link-text-mask"><span class="link-text t1">Educator</span><span class="link-text t2">Educator</span></span></a>
+          <span class="nav-link is-soon"><span class="link-text-mask"><span class="link-text t1">Communicator</span><span class="link-text t2">Communicator</span></span></span>
+          <a href="work.html" class="nav-link"><span class="link-text-mask"><span class="link-text t1">Work</span><span class="link-text t2">Work</span></span></a>
+          <span class="nav-link is-soon"><span class="link-text-mask"><span class="link-text t1">Immunologist</span><span class="link-text t2">Immunologist</span></span></span>
+          <span class="nav-link is-soon"><span class="link-text-mask"><span class="link-text t1">Outreach</span><span class="link-text t2">Outreach</span></span></span>
+        </nav>
+        <div class="nav-right">
+          <a href="#" class="cta-main">
+            <span class="button-text-mask"><span class="button-text t1">Get in touch</span><span class="button-text t2">Get in touch</span></span>
+            <span class="button-bg"></span>
+          </a>
+          <button type="button" class="menu-button" id="navMobileToggle" aria-label="Menu" aria-expanded="false">
+            <span class="menu-open"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 4.5h12M2 8h12M2 11.5h12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span>
+            <span class="menu-close"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M1 1l12 12M13 1L1 13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span>
+          </button>
+        </div>
+      </div>
+    </header>
+  </div>
+</div>
+<div class="nav-bg" id="navBg"></div>
+
+<main class="main-container">
+  <div class="work-header">
+    <h1 class="display">Work</h1>
+    <p>Talks, courses, publications, positions, press, and everything else &mdash; pulled straight from the same dataset behind the dashboard. Filter by kind.</p>
+  </div>
+
+  <div class="work-filters">
+    <div class="filter-row">
+      <span class="filter-label">Kind</span>
+      <div class="kind-grid" id="kindGrid">
+        <button type="button" class="kind-tile is-active is-all" data-filter-value="all">
+          <span class="tile-check">&#10003;</span>
+          <svg class="tile-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="7" height="7" x="3" y="3" rx="1"/><rect width="7" height="7" x="14" y="3" rx="1"/><rect width="7" height="7" x="14" y="14" rx="1"/><rect width="7" height="7" x="3" y="14" rx="1"/></svg>
+          <span class="tile-label">All</span>
+          <span class="tile-count">146</span>
+        </button>
+        <button type="button" class="kind-tile" data-filter-value="talk" style="background:#dce3ee">
+          
+          <svg class="tile-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><path d="M12 19v3"/></svg>
+          <span class="tile-label">Talk</span>
+          <span class="tile-count">21</span>
+        </button>
+        <button type="button" class="kind-tile" data-filter-value="course" style="background:#dfe7d6">
+          
+          <svg class="tile-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21.42 10.922a1 1 0 0 0-.019-1.838L12.83 5.18a2 2 0 0 0-1.66 0L2.6 9.08a1 1 0 0 0 0 1.832l8.57 3.908a2 2 0 0 0 1.66 0z"/><path d="M22 10v6"/><path d="M6 12.5V16a6 3 0 0 0 12 0v-3.5"/></svg>
+          <span class="tile-label">Course</span>
+          <span class="tile-count">18</span>
+        </button>
+        <button type="button" class="kind-tile" data-filter-value="position" style="background:#e8d9cf">
+          
+          <svg class="tile-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 20V4a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/><rect width="20" height="14" x="2" y="6" rx="2"/></svg>
+          <span class="tile-label">Position</span>
+          <span class="tile-count">14</span>
+        </button>
+        <button type="button" class="kind-tile" data-filter-value="award" style="background:#f0e2b8">
+          
+          <svg class="tile-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/></svg>
+          <span class="tile-label">Award</span>
+          <span class="tile-count">6</span>
+        </button>
+        <button type="button" class="kind-tile" data-filter-value="research-publication" style="background:#e2d6df">
+          
+          <svg class="tile-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg>
+          <span class="tile-label">Publication</span>
+          <span class="tile-count">12</span>
+        </button>
+        <button type="button" class="kind-tile" data-filter-value="article" style="background:#d7e0e6">
+          
+          <svg class="tile-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
+          <span class="tile-label">Article</span>
+          <span class="tile-count">11</span>
+        </button>
+        <button type="button" class="kind-tile" data-filter-value="podcast" style="background:#f1dbd7">
+          
+          <svg class="tile-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 14h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-7a9 9 0 0 1 18 0v7a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3"/></svg>
+          <span class="tile-label">Podcast</span>
+          <span class="tile-count">4</span>
+        </button>
+        <button type="button" class="kind-tile" data-filter-value="press-mentions" style="background:#dfe0d0">
+          
+          <svg class="tile-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2Zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2"/><path d="M18 14h-8"/><path d="M15 18h-5"/><path d="M10 6h8v4h-8V6Z"/></svg>
+          <span class="tile-label">Press</span>
+          <span class="tile-count">13</span>
+        </button>
+        <button type="button" class="kind-tile" data-filter-value="educational-content" style="background:#efe6d3">
+          
+          <svg class="tile-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/></svg>
+          <span class="tile-label">Educational Content</span>
+          <span class="tile-count">13</span>
+        </button>
+        <button type="button" class="kind-tile" data-filter-value="feature" style="background:#e6e3de">
+          
+          <svg class="tile-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <span class="tile-label">Feature</span>
+          <span class="tile-count">34</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <p class="work-count"><span id="workCount">146</span> of 146 results</p>
+
+  <div class="work-grid" id="workGrid">
+      <a class="work-card" data-category="none" data-kind="feature" href="https://medschool.cuanschutz.edu/colorado-cancer-center/rising-stars-over-the-rockies" target="_blank" rel="noopener">
+        
+        <div class="work-top">
+          <span class="work-kind">Feature</span>
+          
+        </div>
+        <div class="work-bottom">
+          <h3 class="work-title">CU Cancer Center Rising Stars Over the Rockies (RSOR). Building, Defining and Communicating Your Brand: Expanding Your Reach Beyond Academia</h3>
+          
+        </div>
+      </a>
+      <a class="work-card" data-category="none" data-kind="feature" href="https://tlasprogram.wordpress.com/" target="_blank" rel="noopener">
+        
+        <div class="work-top">
+          <span class="work-kind">Feature</span>
+          
+        </div>
+        <div class="work-bottom">
+          <h3 class="work-title">Think Like a Scientist (TLaS) outreach program</h3>
+          
+        </div>
+      </a>
+      <a class="work-card" data-category="none" data-kind="educational-content" href="https://www.youtube.com/@tlasthinklikeascientist2621/featured" target="_blank" rel="noopener">
+        
+        <div class="work-top">
+          <span class="work-kind">Educational Content</span>
+          
+        </div>
+        <div class="work-bottom">
+          <h3 class="work-title">Think Like a Scientist (TLaS) Science-at-Home Experiments YouTube</h3>
+          <p class="work-meta">YouTube</p>
+        </div>
+      </a>
+      <a class="work-card" data-category="none" data-kind="feature" href="https://medschool.cuanschutz.edu/basic-sciences" target="_blank" rel="noopener">
+        
+        <div class="work-top">
+          <span class="work-kind">Feature</span>
+          
+        </div>
+        <div class="work-bottom">
+          <h3 class="work-title">CU Anschutz Basic Science Departments website</h3>
+          
+        </div>
+      </a>
+      <a class="work-card" data-category="none" data-kind="feature" href="https://pubmed.ncbi.nlm.nih.gov/15219998/" target="_blank" rel="noopener">
+        
+        <div class="work-top">
+          <span class="work-kind">Feature</span>
+          
+        </div>
+        <div class="work-bottom">
+          <h3 class="work-title">B cell antigen receptor signaling 101</h3>
+          
+        </div>
+      </a>
+      <a class="work-card" data-category="none" data-kind="feature" href="https://pubmed.ncbi.nlm.nih.gov/17475894/" target="_blank" rel="noopener">
+        
+        <div class="work-top">
+          <span class="work-kind">Feature</span>
+          
+        </div>
+        <div class="work-bottom">
+          <h3 class="work-title">A new population of cells lacking expression of CD27 represents a notable component of the B cell memory compartment in systemic lupus erythematosus</h3>
+          
+        </div>
+      </a>
+      <a class="work-card" data-category="none" data-kind="educational-content" href="https://cctsi.cuanschutz.edu/training/communicating#ac-workshop-3-2" target="_blank" rel="noopener">
+        
+        <div class="work-top">
+          <span class="work-kind">Educational Content</span>
+          
+        </div>
+        <div class="work-bottom">
+          <h3 class="work-title">Communicating Your Science to the Public Workshop Series</h3>
+          <p class="work-meta">Colorado Clinical and Translational Sciences Institute (CCTSI)</p>
+        </div>
+      </a>
+      <a class="work-card" data-category="none" data-kind="feature" href="https://www.unbiasedscience.com/the-team" target="_blank" rel="noopener">
+        
+        <div class="work-top">
+          <span class="work-kind">Feature</span>
+          
+        </div>
+        <div class="work-bottom">
+          <h3 class="work-title">Scientific Advisory Board Member</h3>
+          
+        </div>
+      </a>
+      <a class="work-card" data-category="none" data-kind="feature" href="https://www.kunc.org/news/2026-09-18/cdc-colorados-kindergarteners-have-some-of-the-lowest-mmr-vaccination-rates-in-the-country" target="_blank" rel="noopener">
+        
+        <div class="work-top">
+          <span class="work-kind">Feature</span>
+          
+        </div>
+        <div class="work-bottom">
+          <h3 class="work-title">CDC: Colorado’s kindergarteners have some of the lowest MMR vaccination rates in the country</h3>
+          
+        </div>
+      </a>
+      <a class="work-card" data-category="none" data-kind="feature" href="https://aimeepughbernard.substack.com/" target="_blank" rel="noopener">
+        
+        <div class="work-top">
+          <span class="work-kind">Feature</span>
+          
+        </div>
+        <div class="work-bottom">
+          <h3 class="work-title">Science Crosstalk Substack - where science and communication collide</h3>
+          
+        </div>
+      </a>
+      <a class="work-card" data-category="none" data-kind="feature" href="https://www.instagram.com/funsizeimmuninja/?hl=en" target="_blank" rel="noopener">
+        
+        <div class="work-top">
+          <span class="work-kind">Feature</span>
+          
+        </div>
+        <div class="work-bottom">
+          <h3 class="work-title">Instagram @funsizeimmuninja</h3>
+          
+        </div>
+      </a>
+      <a class="work-card" data-category="none" data-kind="feature" href="https://www.tiktok.com/@funsizeimmuninja" target="_blank" rel="noopener">
+        
+        <div class="work-top">
+          <span class="work-kind">Feature</span>
+          
+        </div>
+        <div class="work-bottom">
+          <h3 class="work-title">TikTok @funsizeimmuninja</h3>
+          
+        </div>
+      </a>
+      <a class="work-card" data-category="none" data-kind="feature" href="https://www.instagram.com/cuanschutz.biomedsci" target="_blank" rel="noopener">
+        
+        <div class="work-top">
+          <span class="work-kind">Feature</span>
+          
+        </div>
+        <div class="work-bottom">
+          <h3 class="work-title">Instagram @cuanschutz.biomedsci</h3>
+          
+        </div>
+      </a>
+      <a class="work-card" data-category="none" data-kind="feature" href="https://events.rochester.edu/event/myhub-career-development-retreat" target="_blank" rel="noopener">
+        
+        <div class="work-top">
+          <span class="work-kind">Feature</span>
+          
+        </div>
+        <div class="work-bottom">
+          <h3 class="work-title">myHub Career Development Retreat. University of Rochester, From Data to Dialogue: Science Communication for the Real World</h3>
+          
+        </div>
+      </a>
+      <a class="work-card" data-category="none" data-kind="feature" href="https://www.youtube.com/watch?v=A8_ZmujMvEE" target="_blank" rel="noopener">
+        
+        <div class="work-top">
+          <span class="work-kind">Feature</span>
+          
+        </div>
+        <div class="work-bottom">
+          <h3 class="work-title">CU Academy of Medical Educators Faculty Development in 5. Communicating Science to the General Public</h3>
+          
+        </div>
+      </a>
+      <a class="work-card" data-category="none" data-kind="feature" href="https://www.youtube.com/watch?v=hEq1NBQ_03Y&amp;list=PLMOD9vxVasTB0qerBVknmbS95GCuIq1i0&amp;index=17&amp;t=7s" target="_blank" rel="noopener">
+        
+        <div class="work-top">
+          <span class="work-kind">Feature</span>
+          
+        </div>
+        <div class="work-bottom">
+          <h3 class="work-title">CU Academy of Medical Educators Grand Rounds Communicating Science to the General Public</h3>
+          
+        </div>
+      </a>
+      <a class="work-card" data-category="none" data-kind="feature" href="https://news.cuanschutz.edu/news-stories/cu-anschutz-scientists-look-to-the-next-generation-of-immunotherapy" target="_blank" rel="noopener">
+        
+        <div class="work-top">
+          <span class="work-kind">Feature</span>
+          
+        </div>
+        <div class="work-bottom">
+          <h3 class="work-title">CU Anschutz Today newsletter, Transforming Healthcare Lecture Series. The Future of Immunotherapy and Breakthroughs Beyond Cancer</h3>
+          
+        </div>
+      </a>
+      <a class="work-card" data-category="none" data-kind="feature" href="https://medschool.cuanschutz.edu/colorado-cancer-center/education" target="_blank" rel="noopener">
+        
+        <div class="work-top">
+          <span class="work-kind">Feature</span>
+          
+        </div>
+        <div class="work-bottom">
+          <h3 class="work-title">Cancer Research Training and Education Coordination (CRTEC) Cancer Center Mentored Member Collaborative Forum. Communicating Your Research to the Public</h3>
+          
+        </div>
+      </a>
+      <a class="work-card" data-category="none" data-kind="feature" href="https://immunologyexplained.aai.org/videos/does-the-number-of-recommended-vaccines-overwhelm-the-immune-system/" target="_blank" rel="noopener">
+        
+        <div class="work-top">
+          <span class="work-kind">Feature</span>
+          
+        </div>
+        <div class="work-bottom">
+          <h3 class="work-title">Does the number of recommended vaccines overwhelm the immune system?</h3>
+          
+        </div>
+      </a>
+      <div class="work-card has-photo" data-category="science-communicator" data-kind="article">
+        <div class="work-photo"><img src="../src/communicator.webp" alt="" loading="lazy"></div>
+        <div class="work-top">
+          <span class="work-kind">Article</span>
+          <span class="work-cat">Science Communicator</span>
+        </div>
+        <div class="work-bottom">
+          <h3 class="work-title">10 Tips for Effective Science Communication</h3>
+          <p class="work-meta">Immunize Colorado, for scientists and healthcare professionals</p>
+        </div>
+      </div>
+      <div class="work-card has-photo" data-category="science-communicator" data-kind="article">
+        <div class="work-photo"><img src="../src/communicator.webp" alt="" loading="lazy"></div>
+        <div class="work-top">
+          <span class="work-kind">Article</span>
+          <span class="work-cat">Science Communicator</span>
+        </div>
+        <div class="work-bottom">
+          <h3 class="work-title">Immunology 101 Blog Series</h3>
+          <p class="work-meta">Immunize Colorado</p>
+        </div>
+      </div>
+      <div class="work-card has-photo" data-category="science-communicator" data-kind="article">
+        <div class="work-photo"><img src="../src/communicator.webp" alt="" loading="lazy"></div>
+        <div class="work-top">
+          <span class="work-kind">Article</span>
+          <span class="work-cat">Science Communicator</span>
+        </div>
+        <div class="work-bottom">
+          <h3 class="work-title">Immune health is all about balance. An immunologist explains...</h3>
+          <p class="work-meta">The Conversation / Slate</p>
+        </div>
+      </div>
+      <div class="work-card has-photo" data-category="educator" data-kind="course">
+        <div class="work-photo"><img src="../src/educator.webp" alt="" loading="lazy"></div>
+        <div class="work-top">
+          <span class="work-kind">Course</span>
+          <span class="work-cat">Educator</span>
+        </div>
+        <div class="work-bottom">
+          <h3 class="work-title">Fun-Size Immunology Workshop</h3>
+          <p class="work-meta">CU Human Immunology &amp; Immunotherapy Initiative (HI3)</p>
+        </div>
+      </div>
+      <div class="work-card has-photo" data-category="educator" data-kind="course">
+        <div class="work-photo"><img src="../src/educator.webp" alt="" loading="lazy"></div>
+        <div class="work-top">
+          <span class="work-kind">Course</span>
+          <span class="work-cat">Educator</span>
+        </div>
+        <div class="work-bottom">
+          <h3 class="work-title">IDPT5016 Foundational Principles</h3>
+          <p class="work-meta">CU School of Medicine, Year 1 (&#x27;The Plains&#x27;)</p>
+        </div>
+      </div>
+      <div class="work-card has-photo" data-category="educator" data-kind="course">
+        <div class="work-photo"><img src="../src/educator.webp" alt="" loading="lazy"></div>
+        <div class="work-top">
+          <span class="work-kind">Course</span>
+          <span class="work-cat">Educator</span>
+        </div>
+        <div class="work-bottom">
+          <h3 class="work-title">IDPT5017 Hematologic &amp; Lymphatic Systems</h3>
+          <p class="work-meta">CU School of Medicine, Year 1</p>
+        </div>
+      </div>
+      <div class="work-card has-photo" data-category="educator" data-kind="course">
+        <div class="work-photo"><img src="../src/educator.webp" alt="" loading="lazy"></div>
+        <div class="work-top">
+          <span class="work-kind">Course</span>
+          <span class="work-cat">Educator</span>
+        </div>
+        <div class="work-bottom">
+          <h3 class="work-title">IDPT5018 Gastrointestinal System</h3>
+          <p class="work-meta">CU School of Medicine, Year 1</p>
+        </div>
+      </div>
+      <div class="work-card has-photo" data-category="educator" data-kind="course">
+        <div class="work-photo"><img src="../src/educator.webp" alt="" loading="lazy"></div>
+        <div class="work-top">
+          <span class="work-kind">Course</span>
+          <span class="work-cat">Educator</span>
+        </div>
+        <div class="work-bottom">
+          <h3 class="work-title">IDPT5019 Pulmonary &amp; Cardiovascular Systems</h3>
+          <p class="work-meta">CU School of Medicine, Year 1</p>
+        </div>
+      </div>
+      <div class="work-card has-photo" data-category="educator" data-kind="course">
+        <div class="work-photo"><img src="../src/educator.webp" alt="" loading="lazy"></div>
+        <div class="work-top">
+          <span class="work-kind">Course</span>
+          <span class="work-cat">Educator</span>
+        </div>
+        <div class="work-bottom">
+          <h3 class="work-title">IDPT5021 Renal &amp; Urinary Systems</h3>
+          <p class="work-meta">CU School of Medicine, Year 1</p>
+        </div>
+      </div>
+      <div class="work-card has-photo" data-category="educator" data-kind="course">
+        <div class="work-photo"><img src="../src/educator.webp" alt="" loading="lazy"></div>
+        <div class="work-top">
+          <span class="work-kind">Course</span>
+          <span class="work-cat">Educator</span>
+        </div>
+        <div class="work-bottom">
+          <h3 class="work-title">IDPT5022 Nervous System</h3>
+          <p class="work-meta">CU School of Medicine, Year 1</p>
+        </div>
+      </div>
+      <div class="work-card has-photo" data-category="educator" data-kind="course">
+        <div class="work-photo"><img src="../src/educator.webp" alt="" loading="lazy"></div>
+        <div class="work-top">
+          <span class="work-kind">Course</span>
+          <span class="work-cat">Educator</span>
+        </div>
+        <div class="work-bottom">
+          <h3 class="work-title">IDPT5023 Musculoskeletal &amp; Integumentary Systems</h3>
+          <p class="work-meta">CU School of Medicine, Year 1</p>
+        </div>
+      </div>
+      <div class="work-card has-photo" data-category="educator" data-kind="course">
+        <div class="work-photo"><img src="../src/educator.webp" alt="" loading="lazy"></div>
+        <div class="work-top">
+          <span class="work-kind">Course</span>
+          <span class="work-cat">Educator</span>
+        </div>
+        <div class="work-bottom">
+          <h3 class="work-title">IDPT5025 Endocrine &amp; Metabolic Systems</h3>
+          <p class="work-meta">CU School of Medicine, Year 1</p>
+        </div>
+      </div>
+      <div class="work-card has-photo" data-category="educator" data-kind="course">
+        <div class="work-photo"><img src="../src/educator.webp" alt="" loading="lazy"></div>
+        <div class="work-top">
+          <span class="work-kind">Course</span>
+          <span class="work-cat">Educator</span>
+        </div>
+        <div class="work-bottom">
+          <h3 class="work-title">IDPT5026 Reproductive System &amp; Life Cycles</h3>
+          <p class="work-meta">CU School of Medicine, Year 1</p>
+        </div>
+      </div>
+      <div class="work-card has-photo" data-category="educator" data-kind="course">
+        <div class="work-photo"><img src="../src/educator.webp" alt="" loading="lazy"></div>
+        <div class="work-top">
+          <span class="work-kind">Course</span>
+          <span class="work-cat">Educator</span>
+        </div>
+        <div class="work-bottom">
+          <h3 class="work-title">IDPT8039 Advanced Sciences Immunology &amp; Immunotherapy</h3>
+          <p class="work-meta">CU School of Medicine, Year 3 (&#x27;The Alpine Summit&#x27;)</p>
+        </div>
+      </div>
+      <div class="work-card has-photo" data-category="educator" data-kind="course">
+        <div class="work-photo"><img src="../src/educator.webp" alt="" loading="lazy"></div>
+        <div class="work-top">
+          <span class="work-kind">Course</span>
+          <span class="work-cat">Educator</span>
+        </div>
+        <div class="work-bottom">
+          <h3 class="work-title">Summer Immersion: Immunology &amp; Microbiology</h3>
+          <p class="work-meta">CU Child Health Advocate/Physician Assistant (CHA/PA) Program, Year 1</p>
+        </div>
+      </div>
+      <div class="work-card has-photo" data-category="educator" data-kind="course">
+        <div class="work-photo"><img src="../src/educator.webp" alt="" loading="lazy"></div>
+        <div class="work-top">
+          <span class="work-kind">Course</span>
+          <span class="work-cat">Educator</span>
+        </div>
+        <div class="work-bottom">
+          <h3 class="work-title">Academic Year: Immunology</h3>
+          <p class="work-meta">CU CHA/PA Program, Year 1</p>
+        </div>
+      </div>
+      <div class="work-card has-photo" data-category="educator" data-kind="course">
+        <div class="work-photo"><img src="../src/educator.webp" alt="" loading="lazy"></div>
+        <div class="work-top">
+          <span class="work-kind">Course</span>
+          <span class="work-cat">Educator</span>
+        </div>
+        <div class="work-bottom">
+          <h3 class="work-title">Academic Year: Immunology</h3>
+          <p class="work-meta">CU CHA/PA Program, Year 2</p>
+        </div>
+      </div>
+      <div class="work-card has-photo" data-category="educator" data-kind="course">
+        <div class="work-photo"><img src="../src/educator.webp" alt="" loading="lazy"></div>
+        <div class="work-top">
+          <span class="work-kind">Course</span>
+          <span class="work-cat">Educator</span>
+        </div>
+        <div class="work-bottom">
+          <h3 class="work-title">DSBS5511 Invaders &amp; Protectors (Microbiology &amp; Immunology)</h3>
+          <p class="work-meta">CU School of Dental Medicine, Year 1</p>
+        </div>
+      </div>
+      <div class="work-card has-photo" data-category="educator" data-kind="course">
+        <div class="work-photo"><img src="../src/educator.webp" alt="" loading="lazy"></div>
+        <div class="work-top">
+          <span class="work-kind">Course</span>
+          <span class="work-cat">Educator</span>
+        </div>
+        <div class="work-bottom">
+          <h3 class="work-title">MIMS6062 Introduction to Science Communication</h3>
+          <p class="work-meta">CU Graduate School</p>
+        </div>
+      </div>
+      <div class="work-card has-photo" data-category="educator" data-kind="course">
+        <div class="work-photo"><img src="../src/educator.webp" alt="" loading="lazy"></div>
+        <div class="work-top">
+          <span class="work-kind">Course</span>
+          <span class="work-cat">Educator</span>
+        </div>
+        <div class="work-bottom">
+          <h3 class="work-title">MIMS7530 Introduction to Immunology</h3>
+          <p class="work-meta">CU Graduate School</p>
+        </div>
+      </div>
+      <div class="work-card has-photo" data-category="educator" data-kind="course">
+        <div class="work-photo"><img src="../src/educator.webp" alt="" loading="lazy"></div>
+        <div class="work-top">
+          <span class="work-kind">Course</span>
+          <span class="work-cat">Educator</span>
+        </div>
+        <div class="work-bottom">
+          <h3 class="work-title">UNHL4820. Scientific Thinking</h3>
+          <p class="work-meta">CU Denver University Honors &amp; Leadership Program</p>
+        </div>
+      </div>
+      <div class="work-card has-photo" data-category="science-communicator" data-kind="educational-content">
+        <div class="work-photo"><img src="../src/communicator.webp" alt="" loading="lazy"></div>
+        <div class="work-top">
+          <span class="work-kind">Educational Content</span>
+          <span class="work-cat">Science Communicator</span>
+        </div>
+        <div class="work-bottom">
+          <h3 class="work-title">Fun Size Science</h3>
+          <p class="work-meta">Unbiased Science, on YouTube</p>
+        </div>
+      </div>
+      <div class="work-card has-photo" data-category="science-communicator" data-kind="press-mentions">
+        <div class="work-photo"><img src="../src/communicator.webp" alt="" loading="lazy"></div>
+        <div class="work-top">
+          <span class="work-kind">Press</span>
+          <span class="work-cat">Science Communicator</span>
+        </div>
+        <div class="work-bottom">
+          <h3 class="work-title">&#x27;Ask a Scientist&#x27; feature with Aimee Pugh Bernard, PhD</h3>
+          <p class="work-meta">CU Anschutz Monthly Friends Report</p>
+        </div>
+      </div>
+      <div class="work-card has-photo" data-category="science-communicator" data-kind="press-mentions">
+        <div class="work-photo"><img src="../src/communicator.webp" alt="" loading="lazy"></div>
+        <div class="work-top">
+          <span class="work-kind">Press</span>
+          <span class="work-cat">Science Communicator</span>
+        </div>
+        <div class="work-bottom">
+          <h3 class="work-title">Science Communicators Strategize How to Demystify Science</h3>
+          <p class="work-meta">CU Anschutz Today</p>
+        </div>
+      </div>
+      <div class="work-card has-photo" data-category="science-communicator" data-kind="press-mentions">
+        <div class="work-photo"><img src="../src/communicator.webp" alt="" loading="lazy"></div>
+        <div class="work-top">
+          <span class="work-kind">Press</span>
+          <span class="work-cat">Science Communicator</span>
+        </div>
+        <div class="work-bottom">
+          <h3 class="work-title">Preventing the Next Pandemic. Better Next Time</h3>
+          <p class="work-meta">Rochester Review</p>
+        </div>
+      </div>
+      <div class="work-card has-photo" data-category="science-communicator" data-kind="press-mentions">
+        <div class="work-photo"><img src="../src/communicator.webp" alt="" loading="lazy"></div>
+        <div class="work-top">
+          <span class="work-kind">Press</span>
+          <span class="work-cat">Science Communicator</span>
+        </div>
+        <div class="work-bottom">
+          <h3 class="work-title">Fake News: Medical Quackery Enters a New Dimension. The spread of misinformation evolves, heightening threats to patients and medical science</h3>
+          <p class="work-meta">CU Anschutz Today</p>
+        </div>
+      </div>
+      <div class="work-card has-photo" data-category="science-communicator" data-kind="press-mentions">
+        <div class="work-photo"><img src="../src/communicator.webp" alt="" loading="lazy"></div>
+        <div class="work-top">
+          <span class="work-kind">Press</span>
+          <span class="work-cat">Science Communicator</span>
+        </div>
+        <div class="work-bottom">
+          <h3 class="work-title">COVID Vaccines: One dose or two? Experts weigh in</h3>
+          <p class="work-meta">CU Anschutz Today</p>
+        </div>
+      </div>
+      <div class="work-card has-photo" data-category="science-communicator" data-kind="press-mentions">
+        <div class="work-photo"><img src="../src/communicator.webp" alt="" loading="lazy"></div>
+        <div class="work-top">
+          <span class="work-kind">Press</span>
+          <span class="work-cat">Science Communicator</span>
+        </div>
+        <div class="work-bottom">
+          <h3 class="work-title">How an Immunity Gap May Be Fueling the Recent Spike in Respiratory Viruses</h3>
+          <p class="work-meta">SELF</p>
+        </div>
+      </div>
+      <div class="work-card has-photo" data-category="science-communicator" data-kind="press-mentions">
+        <div class="work-photo"><img src="../src/communicator.webp" alt="" loading="lazy"></div>
+        <div class="work-top">
+          <span class="work-kind">Press</span>
+          <span class="work-cat">Science Communicator</span>
+        </div>
+        <div class="work-bottom">
+          <h3 class="work-title">Creating Vaccine Confidence Through Building Community. Casual Conversations about Vaccines</h3>
+          <p class="work-meta">CO Immunization Advocates Blog</p>
+        </div>
+      </div>
+      <div class="work-card has-photo" data-category="science-communicator" data-kind="press-mentions">
+        <div class="work-photo"><img src="../src/communicator.webp" alt="" loading="lazy"></div>
+        <div class="work-top">
+          <span class="work-kind">Press</span>
+          <span class="work-cat">Science Communicator</span>
+        </div>
+        <div class="work-bottom">
+          <h3 class="work-title">Investigating Immunity. Uncovering the Mechanisms of the Immune System</h3>
+          <p class="work-meta">futurum</p>
+        </div>
+      </div>
+      <div class="work-card has-photo" data-category="science-communicator" data-kind="press-mentions">
+        <div class="work-photo"><img src="../src/communicator.webp" alt="" loading="lazy"></div>
+        <div class="work-top">
+          <span class="work-kind">Press</span>
+          <span class="work-cat">Science Communicator</span>
+        </div>
+        <div class="work-bottom">
+          <h3 class="work-title">Translating Research to Drive Patient Care. How novel discoveries in the lab make their way to the patient</h3>
+          <p class="work-meta">CU Anschutz Momentum</p>
+        </div>
+      </div>
+      <div class="work-card has-photo" data-category="science-communicator" data-kind="press-mentions">
+        <div class="work-photo"><img src="../src/communicator.webp" alt="" loading="lazy"></div>
+        <div class="work-top">
+          <span class="work-kind">Press</span>
+          <span class="work-cat">Science Communicator</span>
+        </div>
+        <div class="work-bottom">
+          <h3 class="work-title">5 Sneaky Signs You&#x27;re Getting Sick</h3>
+          <p class="work-meta">HuffPost</p>
+        </div>
+      </div>
+      <div class="work-card has-photo" data-category="educator" data-kind="research-publication">
+        <div class="work-photo"><img src="../src/educator.webp" alt="" loading="lazy"></div>
+        <div class="work-top">
+          <span class="work-kind">Publication</span>
+          <span class="work-cat">Educator</span>
+        </div>
+        <div class="work-bottom">
+          <h3 class="work-title">Mini-Review: CREATE-ive Use of Primary Literature in the Science Classroom</h3>
+          
+        </div>
+      </div>
+      <div class="work-card has-photo" data-category="educator" data-kind="research-publication">
+        <div class="work-photo"><img src="../src/educator.webp" alt="" loading="lazy"></div>
+        <div class="work-top">
+          <span class="work-kind">Publication</span>
+          <span class="work-cat">Educator</span>
+        </div>
+        <div class="work-bottom">
+          <h3 class="work-title">University of Colorado COVID-19 Pandemic Response Course: Beyond the Virtual Classroom</h3>
+          <p class="work-meta">American Medical Association Health Systems Science Impact Challenge</p>
+        </div>
+      </div>
+      <div class="work-card has-photo" data-category="educator" data-kind="talk">
+        <div class="work-photo"><img src="../src/educator.webp" alt="" loading="lazy"></div>
+        <div class="work-top">
+          <span class="work-kind">Talk</span>
+          <span class="work-cat">Educator</span>
+        </div>
+        <div class="work-bottom">
+          <h3 class="work-title">COVID-19 Vaccines. Formulations and Immune Response</h3>
+          <p class="work-meta">CU Denver Biology Club</p>
+        </div>
+      </div>
+      <div class="work-card has-photo" data-category="educator" data-kind="talk">
+        <div class="work-photo"><img src="../src/educator.webp" alt="" loading="lazy"></div>
+        <div class="work-top">
+          <span class="work-kind">Talk</span>
+          <span class="work-cat">Educator</span>
+        </div>
+        <div class="work-bottom">
+          <h3 class="work-title">The Science Behind Vaccines</h3>
+          <p class="work-meta">Front Range Community College (FRCC), for biology students</p>
+        </div>
+      </div>
+      <div class="work-card has-photo" data-category="community-outreach" data-kind="talk">
+        <div class="work-photo"><img src="../src/communicator.webp" alt="" loading="lazy"></div>
+        <div class="work-top">
+          <span class="work-kind">Talk</span>
+          <span class="work-cat">Community Outreach</span>
+        </div>
+        <div class="work-bottom">
+          <h3 class="work-title">Killing Cancer from the Inside: Harness the Immune System &amp; Immunotherapy</h3>
+          <p class="work-meta">Denver Metro Regional Science &amp; Engineering Fair (DMRSEF), CU AMC</p>
+        </div>
+      </div>
+      <div class="work-card has-photo" data-category="community-outreach" data-kind="talk">
+        <div class="work-photo"><img src="../src/communicator.webp" alt="" loading="lazy"></div>
+        <div class="work-top">
+          <span class="work-kind">Talk</span>
+          <span class="work-cat">Community Outreach</span>
+        </div>
+        <div class="work-bottom">
+          <h3 class="work-title">Vaccine Questions at Home. Have a Question? Get an Answer!</h3>
+          <p class="work-meta">CO Vaccine Equity Taskforce &amp; African Youth Advocates</p>
+        </div>
+      </div>
+      <a class="work-card" data-category="none" data-kind="feature" href="https://immunologyexplained.aai.org/videos/how-does-the-immune-system-cause-seasonal-allergies/" target="_blank" rel="noopener">
+        
+        <div class="work-top">
+          <span class="work-kind">Feature</span>
+          
+        </div>
+        <div class="work-bottom">
+          <h3 class="work-title">How does the immune system cause seasonal allergies?</h3>
+          
+        </div>
+      </a>
+      <a class="work-card" data-category="none" data-kind="feature" href="https://immunologyexplained.aai.org/videos/how-does-your-babys-immune-system-develop/" target="_blank" rel="noopener">
+        
+        <div class="work-top">
+          <span class="work-kind">Feature</span>
+          
+        </div>
+        <div class="work-bottom">
+          <h3 class="work-title">How does your baby&#x27;s immune system develop?</h3>
+          
+        </div>
+      </a>
+      <a class="work-card" data-category="none" data-kind="feature" href="https://www.youtube.com/watch?v=b7WCdqA16A8" target="_blank" rel="noopener">
+        
+        <div class="work-top">
+          <span class="work-kind">Feature</span>
+          
+        </div>
+        <div class="work-bottom">
+          <h3 class="work-title">CU General Internal Medicine Grand Rounds Translating Medicine.  Science Communication as a Clinical &amp; Academic Tool</h3>
+          
+        </div>
+      </a>
+      <a class="work-card" data-category="none" data-kind="feature" href="https://pubmed.ncbi.nlm.nih.gov/16896281/" target="_blank" rel="noopener">
+        
+        <div class="work-top">
+          <span class="work-kind">Feature</span>
+          
+        </div>
+        <div class="work-bottom">
+          <h3 class="work-title">B cell receptor signaling in human systemic lupus erythematosus</h3>
+          
+        </div>
+      </a>
+      <a class="work-card" data-category="none" data-kind="feature" href="https://pubmed.ncbi.nlm.nih.gov/31579877/" target="_blank" rel="noopener">
+        
+        <div class="work-top">
+          <span class="work-kind">Feature</span>
+          
+        </div>
+        <div class="work-bottom">
+          <h3 class="work-title">A Strategy for the Renovation of a Clinical Pathways Program</h3>
+          
+        </div>
+      </a>
+      <a class="work-card" data-category="none" data-kind="feature" href="https://pubmed.ncbi.nlm.nih.gov/15529346/" target="_blank" rel="noopener">
+        
+        <div class="work-top">
+          <span class="work-kind">Feature</span>
+          
+        </div>
+        <div class="work-bottom">
+          <h3 class="work-title">Rituximab improves peripheral B cell abnormalities in human systemic lupus erythematosus</h3>
+          
+        </div>
+      </a>
+      <a class="work-card" data-category="none" data-kind="feature" href="https://pubmed.ncbi.nlm.nih.gov/18022152/" target="_blank" rel="noopener">
+        
+        <div class="work-top">
+          <span class="work-kind">Feature</span>
+          
+        </div>
+        <div class="work-bottom">
+          <h3 class="work-title">Nkx2.2 regulates cell fate choice in the enteroendocrine cell lineages of the intestine</h3>
+          
+        </div>
+      </a>
+      <a class="work-card" data-category="none" data-kind="feature" href="https://pubmed.ncbi.nlm.nih.gov/14970313/" target="_blank" rel="noopener">
+        
+        <div class="work-top">
+          <span class="work-kind">Feature</span>
+          
+        </div>
+        <div class="work-bottom">
+          <h3 class="work-title">Ghrelin cells replace insulin-producing beta cells in two mouse models of pancreas development</h3>
+          
+        </div>
+      </a>
+      <a class="work-card" data-category="none" data-kind="feature" href="https://news.aai.org/2026/09/10/teaching-tool-guidelines-medical-school/" target="_blank" rel="noopener">
+        
+        <div class="work-top">
+          <span class="work-kind">Feature</span>
+          
+        </div>
+        <div class="work-bottom">
+          <h3 class="work-title">Teaching Tool: AAI-Recommended Immunology Guidelines for Medical School</h3>
+          
+        </div>
+      </a>
+      <a class="work-card" data-category="none" data-kind="feature" href="https://medschool.cuanschutz.edu/infectious-diseases/home" target="_blank" rel="noopener">
+        
+        <div class="work-top">
+          <span class="work-kind">Feature</span>
+          
+        </div>
+        <div class="work-bottom">
+          <h3 class="work-title">CU Adult Infectious Disease Grand Rounds on &#x27;Immunodeficiency and Diagnostic Immunology Laboratory Methods&#x27;</h3>
+          
+        </div>
+      </a>
+      <a class="work-card" data-category="none" data-kind="feature" href="https://www.chhs.colostate.edu/research-and-scholarship/chhs-research-day/2026-chhs-research-day-speakers/" target="_blank" rel="noopener">
+        
+        <div class="work-top">
+          <span class="work-kind">Feature</span>
+          
+        </div>
+        <div class="work-bottom">
+          <h3 class="work-title">2026 College of Health and Human Sciences Research Day Keynote, From Data to Dialogue: Research Communication for the Real World</h3>
+          
+        </div>
+      </a>
+      <a class="work-card" data-category="none" data-kind="feature" href="https://immunologyexplained.aai.org/videos/how-do-allergy-shots-work-with-the-immune-system/" target="_blank" rel="noopener">
+        
+        <div class="work-top">
+          <span class="work-kind">Feature</span>
+          
+        </div>
+        <div class="work-bottom">
+          <h3 class="work-title">How do allergy shots work?</h3>
+          
+        </div>
+      </a>
+      <a class="work-card" data-category="none" data-kind="feature" href="https://immunologyexplained.aai.org/videos/how-research-changed-our-approach-to-peanut-allergy/" target="_blank" rel="noopener">
+        
+        <div class="work-top">
+          <span class="work-kind">Feature</span>
+          
+        </div>
+        <div class="work-bottom">
+          <h3 class="work-title">How research changed our approach to peanut allergy</h3>
+          
+        </div>
+      </a>
+      <a class="work-card" data-category="none" data-kind="feature" href="https://www.cuanschutz.edu/transforming-healthcare-lecture-series" target="_blank" rel="noopener">
+        
+        <div class="work-top">
+          <span class="work-kind">Feature</span>
+          
+        </div>
+        <div class="work-bottom">
+          <h3 class="work-title">Transforming Healthcare Lecture Series. The Future of Immunotherapy</h3>
+          
+        </div>
+      </a>
+      <a class="work-card" data-category="none" data-kind="feature" href="https://immunologyexplained.aai.org/videos/watch-dr-aimee-pugh-bernard-explains-why-you-have-an-allergic-reaction/" target="_blank" rel="noopener">
+        
+        <div class="work-top">
+          <span class="work-kind">Feature</span>
+          
+        </div>
+        <div class="work-bottom">
+          <h3 class="work-title">What happens when you have an allergic reaction?</h3>
+          
+        </div>
+      </a>
+      <a class="work-card" data-category="none" data-kind="feature" href="https://immunologyexplained.aai.org/videos/how-your-immune-system-acts-like-dialing-911/" target="_blank" rel="noopener">
+        
+        <div class="work-top">
+          <span class="work-kind">Feature</span>
+          
+        </div>
+        <div class="work-bottom">
+          <h3 class="work-title">Activating your immune system is like dialing 911</h3>
+          
+        </div>
+      </a>
+      <a class="work-card" data-category="none" data-kind="feature" href="https://www.youtube.com/watch?v=zpqRMWWnDZI" target="_blank" rel="noopener">
+        
+        <div class="work-top">
+          <span class="work-kind">Feature</span>
+          
+        </div>
+        <div class="work-bottom">
+          <h3 class="work-title">TEDxCU talk, &#x27;Confessions of a scientist: science education needs communication training&#x27;</h3>
+          
+        </div>
+      </a>
+      <a class="work-card" data-category="none" data-kind="educational-content" href="https://lupe.science/books/" target="_blank" rel="noopener">
+        
+        <div class="work-top">
+          <span class="work-kind">Educational Content</span>
+          
+        </div>
+        <div class="work-bottom">
+          <h3 class="work-title">My Tiny Helpers</h3>
+          <p class="work-meta">Lupe Science &middot; September 2026</p>
+        </div>
+      </a>
+      <div class="work-card has-photo" data-category="educator" data-kind="talk">
+        <div class="work-photo"><img src="../src/educator.webp" alt="" loading="lazy"></div>
+        <div class="work-top">
+          <span class="work-kind">Talk</span>
+          <span class="work-cat">Educator</span>
+        </div>
+        <div class="work-bottom">
+          <h3 class="work-title">Translating Medicine. Science Communication Academic and Clinical Tool</h3>
+          <p class="work-meta">CU General Internal Medicine Grand Rounds &middot; September 2025</p>
+        </div>
+      </div>
+      <div class="work-card has-photo" data-category="science-communicator" data-kind="talk">
+        <div class="work-photo"><img src="../src/communicator.webp" alt="" loading="lazy"></div>
+        <div class="work-top">
+          <span class="work-kind">Talk</span>
+          <span class="work-cat">Science Communicator</span>
+        </div>
+        <div class="work-bottom">
+          <h3 class="work-title">Your Shot at Protection. How Vaccines Train the Immune System to Fight Disease</h3>
+          <p class="work-meta">CU Alumni &#x27;Healthy &amp; Happy Hour&#x27; &middot; September 2023</p>
+        </div>
+      </div>
+      <a class="work-card has-photo" data-category="science-communicator" data-kind="article" href="https://medium.com/@aimeepughbernard/an-immunologist-offers-tips-for-assessing-science-and-health-info-on-the-internet-5ccc18ac90b8" target="_blank" rel="noopener">
+        <div class="work-photo"><img src="../src/communicator.webp" alt="" loading="lazy"></div>
+        <div class="work-top">
+          <span class="work-kind">Article</span>
+          <span class="work-cat">Science Communicator</span>
+        </div>
+        <div class="work-bottom">
+          <h3 class="work-title">Guest Editorial. An Immunologist Offers Tips for Assessing Health &amp; Science Information on the Internet</h3>
+          <p class="work-meta">Medium &middot; September 2022</p>
+        </div>
+      </a>
+      <div class="work-card has-photo" data-category="science-communicator" data-kind="talk">
+        <div class="work-photo"><img src="../src/communicator.webp" alt="" loading="lazy"></div>
+        <div class="work-top">
+          <span class="work-kind">Talk</span>
+          <span class="work-cat">Science Communicator</span>
+        </div>
+        <div class="work-bottom">
+          <h3 class="work-title">From Data to Dialogue: Science Communication for the Real World</h3>
+          <p class="work-meta">University of Rochester myHub &middot; October 2025</p>
+        </div>
+      </div>
+      <a class="work-card" data-category="none" data-kind="article" href="https://theconversation.com/how-does-your-immune-system-stay-balanced-a-nobel-prize-winning-answer-266842" target="_blank" rel="noopener">
+        
+        <div class="work-top">
+          <span class="work-kind">Article</span>
+          
+        </div>
+        <div class="work-bottom">
+          <h3 class="work-title">How does your immune system stay balanced? A Nobel-prize winning answer!</h3>
+          <p class="work-meta">The Conversation &middot; October 2025</p>
+        </div>
+      </a>
+      <a class="work-card" data-category="none" data-kind="research-publication" href="https://www.jci.org/articles/view/12462" target="_blank" rel="noopener">
+        
+        <div class="work-top">
+          <span class="work-kind">Publication</span>
+          
+        </div>
+        <div class="work-bottom">
+          <h3 class="work-title">Regulation of inherently autoreactive VH4-34 B cells in the maintenance of human B cell tolerance</h3>
+          <p class="work-meta">Journal of Clinical Investigation &middot; October 2001</p>
+        </div>
+      </a>
+      <div class="work-card has-photo" data-category="science-communicator" data-kind="talk">
+        <div class="work-photo"><img src="../src/communicator.webp" alt="" loading="lazy"></div>
+        <div class="work-top">
+          <span class="work-kind">Talk</span>
+          <span class="work-cat">Science Communicator</span>
+        </div>
+        <div class="work-bottom">
+          <h3 class="work-title">The Future of Immunotherapy: Breakthroughs Beyond Cancer</h3>
+          <p class="work-meta">CU Transforming Healthcare 2024 &middot; November 2024</p>
+        </div>
+      </div>
+      <a class="work-card" data-category="none" data-kind="research-publication" href="https://www.jci.org/articles/view/24179" target="_blank" rel="noopener">
+        
+        <div class="work-top">
+          <span class="work-kind">Publication</span>
+          
+        </div>
+        <div class="work-bottom">
+          <h3 class="work-title">Germinal center exclusion of autoreactive B cells is defective in human systemic lupus erythematosus</h3>
+          <p class="work-meta">Journal of Clinical Investigation &middot; November 2005</p>
+        </div>
+      </a>
+      <a class="work-card has-photo" data-category="science-communicator" data-kind="podcast" href="https://podcasts.apple.com/us/podcast/episode-79-dr-aimee-bernard/id1668842021?i=1000659432503" target="_blank" rel="noopener">
+        <div class="work-photo"><img src="../src/communicator.webp" alt="" loading="lazy"></div>
+        <div class="work-top">
+          <span class="work-kind">Podcast</span>
+          <span class="work-cat">Science Communicator</span>
+        </div>
+        <div class="work-bottom">
+          <h3 class="work-title">Career in Teaching and Sci Comm</h3>
+          <p class="work-meta">Flying Intuition &middot; May 2024</p>
+        </div>
+      </a>
+      <div class="work-card has-photo" data-category="educator" data-kind="research-publication">
+        <div class="work-photo"><img src="../src/educator.webp" alt="" loading="lazy"></div>
+        <div class="work-top">
+          <span class="work-kind">Publication</span>
+          <span class="work-cat">Educator</span>
+        </div>
+        <div class="work-bottom">
+          <h3 class="work-title">The Use and Creation of Analogies as a Teaching Tool for Understanding Immunology</h3>
+          <p class="work-meta">American Association of Immunologists, poster and education breakout session &middot; May 2023</p>
+        </div>
+      </div>
+      <div class="work-card has-photo" data-category="science-communicator" data-kind="article">
+        <div class="work-photo"><img src="../src/communicator.webp" alt="" loading="lazy"></div>
+        <div class="work-top">
+          <span class="work-kind">Article</span>
+          <span class="work-cat">Science Communicator</span>
+        </div>
+        <div class="work-bottom">
+          <h3 class="work-title">Guest Commentary. The death of Colorado&#x27;s reasonable vaccine bill should be a call to action</h3>
+          <p class="work-meta">Denver Post &middot; May 2019</p>
+        </div>
+      </div>
+      <a class="work-card" data-category="none" data-kind="article" href="https://www.medpagetoday.com/opinion/second-opinions/120179" target="_blank" rel="noopener">
+        
+        <div class="work-top">
+          <span class="work-kind">Article</span>
+          
+        </div>
+        <div class="work-bottom">
+          <h3 class="work-title">Neutrality Is Dangerous in the Face of Medical Misinformation</h3>
+          <p class="work-meta">MedPage Today &middot; March 2026</p>
+        </div>
+      </a>
+      <div class="work-card has-photo" data-category="educator" data-kind="talk">
+        <div class="work-photo"><img src="../src/educator.webp" alt="" loading="lazy"></div>
+        <div class="work-top">
+          <span class="work-kind">Talk</span>
+          <span class="work-cat">Educator</span>
+        </div>
+        <div class="work-bottom">
+          <h3 class="work-title">Research Day Keynote Speaker</h3>
+          <p class="work-meta">Colorado State University, College of Health &amp; Human Sciences &middot; March 2026</p>
+        </div>
+      </div>
+      <div class="work-card has-photo" data-category="educator" data-kind="talk">
+        <div class="work-photo"><img src="../src/educator.webp" alt="" loading="lazy"></div>
+        <div class="work-top">
+          <span class="work-kind">Talk</span>
+          <span class="work-cat">Educator</span>
+        </div>
+        <div class="work-bottom">
+          <h3 class="work-title">The Impact of Artificial Intelligence (AI) on Education</h3>
+          <p class="work-meta">American Association of Immunologists (AAI) webinar &middot; March 2024</p>
+        </div>
+      </div>
+      <div class="work-card has-photo" data-category="science-communicator" data-kind="talk">
+        <div class="work-photo"><img src="../src/communicator.webp" alt="" loading="lazy"></div>
+        <div class="work-top">
+          <span class="work-kind">Talk</span>
+          <span class="work-cat">Science Communicator</span>
+        </div>
+        <div class="work-bottom">
+          <h3 class="work-title">Sci Comm. The Art of Making Science Interesting and Relatable to the General Public</h3>
+          <p class="work-meta">University of Toronto at Mississauga, Biology Department &middot; March 2024</p>
+        </div>
+      </div>
+      <div class="work-card has-photo" data-category="science-communicator" data-kind="talk">
+        <div class="work-photo"><img src="../src/communicator.webp" alt="" loading="lazy"></div>
+        <div class="work-top">
+          <span class="work-kind">Talk</span>
+          <span class="work-cat">Science Communicator</span>
+        </div>
+        <div class="work-bottom">
+          <h3 class="work-title">Sci Comm. The Art of Making Science Interesting and Relatable to the General Public</h3>
+          <p class="work-meta">Faculty Learning Community of the National Institute for Scientific Teaching (FALCoN NIST) &middot; March 2023</p>
+        </div>
+      </div>
+      <a class="work-card" data-category="none" data-kind="educational-content" href="https://wwnorton.com/books/The-Immune-System/about-the-book" target="_blank" rel="noopener">
+        
+        <div class="work-top">
+          <span class="work-kind">Educational Content</span>
+          
+        </div>
+        <div class="work-bottom">
+          <h3 class="work-title">The Immune System</h3>
+          <p class="work-meta">W.W. Norton &amp; Company &middot; June 2026+</p>
+        </div>
+      </a>
+      <a class="work-card" data-category="none" data-kind="research-publication" href="https://www.jstemoutreach.org/article/164260-bridging-gaps-in-stem-with-science-outreach" target="_blank" rel="noopener">
+        
+        <div class="work-top">
+          <span class="work-kind">Publication</span>
+          
+        </div>
+        <div class="work-bottom">
+          <h3 class="work-title">Bridging Gaps in STEM with Science Outreach</h3>
+          <p class="work-meta">Journal of STEM Outreach &middot; June 2026</p>
+        </div>
+      </a>
+      <a class="work-card" data-category="none" data-kind="research-publication" href="https://journals.physiology.org/doi/abs/10.1152/advan.00039.2026" target="_blank" rel="noopener">
+        
+        <div class="work-top">
+          <span class="work-kind">Publication</span>
+          
+        </div>
+        <div class="work-bottom">
+          <h3 class="work-title">Exploring Careers in Healthcare &amp; Onward (ECHO): A community outreach program to promote healthcare career interest in K-8 students</h3>
+          <p class="work-meta">Advances in Physiology Education &middot; June 2026</p>
+        </div>
+      </a>
+      <a class="work-card" data-category="none" data-kind="research-publication" href="https://www.frontiersin.org/journals/public-health/articles/10.3389/fpubh.2025.1632938/full" target="_blank" rel="noopener">
+        
+        <div class="work-top">
+          <span class="work-kind">Publication</span>
+          
+        </div>
+        <div class="work-bottom">
+          <h3 class="work-title">Editorial: Empowering individuals: promoting health literacy through curriculum and science communication</h3>
+          <p class="work-meta">Frontiers in Public Health &middot; June 2025</p>
+        </div>
+      </a>
+      <a class="work-card" data-category="none" data-kind="educational-content" href="https://www.merlot.org/merlot/viewMaterial.htm?id=773469511" target="_blank" rel="noopener">
+        
+        <div class="work-top">
+          <span class="work-kind">Educational Content</span>
+          
+        </div>
+        <div class="work-bottom">
+          <h3 class="work-title">Raising Environmental Awareness for Community Health (REACH) Curriculum</h3>
+          <p class="work-meta">MERLOT (Multimedia Educational Resource for Learning and Online Teaching) &middot; June 2024</p>
+        </div>
+      </a>
+      <a class="work-card" data-category="none" data-kind="research-publication" href="https://pubmed.ncbi.nlm.nih.gov/38865960/" target="_blank" rel="noopener">
+        
+        <div class="work-top">
+          <span class="work-kind">Publication</span>
+          
+        </div>
+        <div class="work-bottom">
+          <h3 class="work-title">AI and immunology</h3>
+          <p class="work-meta">Immunity &middot; June 2024</p>
+        </div>
+      </a>
+      <a class="work-card" data-category="none" data-kind="article" href="https://theconversation.com/boost-your-immune-system-with-this-centuries-old-health-hack-vaccines-228567" target="_blank" rel="noopener">
+        
+        <div class="work-top">
+          <span class="work-kind">Article</span>
+          
+        </div>
+        <div class="work-bottom">
+          <h3 class="work-title">Boost your immune system with the centuries-old health hack: Vaccines</h3>
+          <p class="work-meta">The Conversation &middot; June 2024</p>
+        </div>
+      </a>
+      <a class="work-card" data-category="none" data-kind="position" href="https://www.aai.org/About/Committees/Public-Outreach-Core-Committee" target="_blank" rel="noopener">
+        
+        <div class="work-top">
+          <span class="work-kind">Position</span>
+          
+        </div>
+        <div class="work-bottom">
+          <h3 class="work-title">Public Outreach Core Committee Chair</h3>
+          <p class="work-meta">American Association of Immunologists (AAI) &middot; July 2026+</p>
+        </div>
+      </a>
+      <a class="work-card" data-category="none" data-kind="educational-content" href="https://www.merlot.org/merlot/viewMaterial.htm?id=773475218" target="_blank" rel="noopener">
+        
+        <div class="work-top">
+          <span class="work-kind">Educational Content</span>
+          
+        </div>
+        <div class="work-bottom">
+          <h3 class="work-title">Exploring Careers in Healthcare and Onward (ECHO): Educational Curriculum</h3>
+          <p class="work-meta">MERLOT (Multimedia Educational Resource for Learning and Online Teaching) &middot; July 2025</p>
+        </div>
+      </a>
+      <div class="work-card has-photo" data-category="community-outreach" data-kind="talk">
+        <div class="work-photo"><img src="../src/communicator.webp" alt="" loading="lazy"></div>
+        <div class="work-top">
+          <span class="work-kind">Talk</span>
+          <span class="work-cat">Community Outreach</span>
+        </div>
+        <div class="work-bottom">
+          <h3 class="work-title">Parents Talk: Why We Immunize for Good</h3>
+          <p class="work-meta">Immunize for Good &middot; July 2024</p>
+        </div>
+      </div>
+      <div class="work-card has-photo" data-category="science-communicator" data-kind="podcast">
+        <div class="work-photo"><img src="../src/communicator.webp" alt="" loading="lazy"></div>
+        <div class="work-top">
+          <span class="work-kind">Podcast</span>
+          <span class="work-cat">Science Communicator</span>
+        </div>
+        <div class="work-bottom">
+          <h3 class="work-title">The Life of a Dedicated Educator</h3>
+          <p class="work-meta">Project Bridge Science Podcast &middot; January 2025</p>
+        </div>
+      </div>
+      <a class="work-card" data-category="none" data-kind="article" href="https://theconversation.com/nutrition-advice-is-rife-with-misinformation-a-medical-education-specialist-explains-how-to-tell-valid-health-information-from-pseudoscience-246478" target="_blank" rel="noopener">
+        
+        <div class="work-top">
+          <span class="work-kind">Article</span>
+          
+        </div>
+        <div class="work-bottom">
+          <h3 class="work-title">Nutrition advice is rife with misinformation − a medical education specialist explains how to tell valid health information from pseudoscience</h3>
+          <p class="work-meta">The Conversation &middot; January 2025</p>
+        </div>
+      </a>
+      <div class="work-card has-photo" data-category="science-communicator" data-kind="podcast">
+        <div class="work-photo"><img src="../src/communicator.webp" alt="" loading="lazy"></div>
+        <div class="work-top">
+          <span class="work-kind">Podcast</span>
+          <span class="work-cat">Science Communicator</span>
+        </div>
+        <div class="work-bottom">
+          <h3 class="work-title">Science Communication to the Public</h3>
+          <p class="work-meta">The Immunology Podcast &middot; January 2024</p>
+        </div>
+      </div>
+      <a class="work-card has-photo" data-category="community-outreach" data-kind="talk" href="https://www.tatteredcover.com/event/your-shot-protection-how-vaccines-train-immune-system-fight-disease" target="_blank" rel="noopener">
+        <div class="work-photo"><img src="../src/communicator.webp" alt="" loading="lazy"></div>
+        <div class="work-top">
+          <span class="work-kind">Talk</span>
+          <span class="work-cat">Community Outreach</span>
+        </div>
+        <div class="work-bottom">
+          <h3 class="work-title">Your Shot at Protection. How Vaccines Train the Immune System to Fight Disease</h3>
+          <p class="work-meta">CU School of Medicine Office of Research Education &amp; Tattered Cover Book Store &middot; January 2022</p>
+        </div>
+      </a>
+      <a class="work-card" data-category="none" data-kind="research-publication" href="https://pubmed.ncbi.nlm.nih.gov/33248160/" target="_blank" rel="noopener">
+        
+        <div class="work-top">
+          <span class="work-kind">Publication</span>
+          
+        </div>
+        <div class="work-bottom">
+          <h3 class="work-title">Mini-review: CREATE-ive use of primary literature in the science classroom</h3>
+          <p class="work-meta">Neuroscience Letters &middot; January 2021</p>
+        </div>
+      </a>
+      <a class="work-card" data-category="none" data-kind="position" href="https://medschool.cuanschutz.edu/immunology-and-microbiology/about-us/faculty/primary-faculty/bernard" target="_blank" rel="noopener">
+        
+        <div class="work-top">
+          <span class="work-kind">Position</span>
+          
+        </div>
+        <div class="work-bottom">
+          <h3 class="work-title">Associate Professor, Department of Immunology and Microbiology</h3>
+          <p class="work-meta">CU Anschutz School of Medicine &middot; January 2019+</p>
+        </div>
+      </a>
+      <div class="work-card has-photo" data-category="community-outreach" data-kind="talk">
+        <div class="work-photo"><img src="../src/communicator.webp" alt="" loading="lazy"></div>
+        <div class="work-top">
+          <span class="work-kind">Talk</span>
+          <span class="work-cat">Community Outreach</span>
+        </div>
+        <div class="work-bottom">
+          <h3 class="work-title">The Science Behind Vaccines and the Immune Response</h3>
+          <p class="work-meta">Immunize Colorado / Shared Harvest Fund &middot; Immunize Colorado Oct 2023, Shared Harvest Fund Nov 2023</p>
+        </div>
+      </div>
+      <a class="work-card" data-category="none" data-kind="article" href="https://www.medpagetoday.com/opinion/second-opinions/119801" target="_blank" rel="noopener">
+        
+        <div class="work-top">
+          <span class="work-kind">Article</span>
+          
+        </div>
+        <div class="work-bottom">
+          <h3 class="work-title">Science Communication Should Be a Core Competency in Medical Training</h3>
+          <p class="work-meta">MedPage Today &middot; February 2026</p>
+        </div>
+      </a>
+      <div class="work-card has-photo" data-category="science-communicator" data-kind="talk">
+        <div class="work-photo"><img src="../src/communicator.webp" alt="" loading="lazy"></div>
+        <div class="work-top">
+          <span class="work-kind">Talk</span>
+          <span class="work-cat">Science Communicator</span>
+        </div>
+        <div class="work-bottom">
+          <h3 class="work-title">Navigating Vaccine Hesitancy</h3>
+          <p class="work-meta">CU Anschutz, 2026 Women&#x27;s Health Symposium &middot; February 2026</p>
+        </div>
+      </div>
+      <a class="work-card" data-category="none" data-kind="press-mentions" href="https://news.cuanschutz.edu/medicine/increasing-access-to-science" target="_blank" rel="noopener">
+        
+        <div class="work-top">
+          <span class="work-kind">Press</span>
+          
+        </div>
+        <div class="work-bottom">
+          <h3 class="work-title">TLaS is Increasing Elementary Schoolers&#x27; Access to Science</h3>
+          <p class="work-meta">CU Anschutz Today &middot; February 2021</p>
+        </div>
+      </a>
+      <a class="work-card" data-category="none" data-kind="research-publication" href="https://www.tandfonline.com/doi/abs/10.1080/24758779.2025.2588485" target="_blank" rel="noopener">
+        
+        <div class="work-top">
+          <span class="work-kind">Publication</span>
+          
+        </div>
+        <div class="work-bottom">
+          <h3 class="work-title">Raising Environmental Awareness for Community Health: The Implementation and Evaluation of an Environmental Science Outreach Program for Elementary Students</h3>
+          <p class="work-meta">Connected Science Learning &middot; December 2025</p>
+        </div>
+      </a>
+      <div class="work-card has-photo" data-category="science-communicator" data-kind="talk">
+        <div class="work-photo"><img src="../src/communicator.webp" alt="" loading="lazy"></div>
+        <div class="work-top">
+          <span class="work-kind">Talk</span>
+          <span class="work-cat">Science Communicator</span>
+        </div>
+        <div class="work-bottom">
+          <h3 class="work-title">New Year! New Life Hacks? Don&#x27;t Believe Everything You Read!</h3>
+          <p class="work-meta">CU Alumni Happy &amp; Healthy Hour &middot; December 2024</p>
+        </div>
+      </div>
+      <div class="work-card has-photo" data-category="educator" data-kind="article">
+        <div class="work-photo"><img src="../src/educator.webp" alt="" loading="lazy"></div>
+        <div class="work-top">
+          <span class="work-kind">Article</span>
+          <span class="work-cat">Educator</span>
+        </div>
+        <div class="work-bottom">
+          <h3 class="work-title">The Creation and Use of Analogies as an Effective Tool for Teaching Immunology Concepts</h3>
+          <p class="work-meta">AAI Newsletter &middot; December 2023</p>
+        </div>
+      </div>
+      <div class="work-card has-photo" data-category="science-communicator" data-kind="talk">
+        <div class="work-photo"><img src="../src/communicator.webp" alt="" loading="lazy"></div>
+        <div class="work-top">
+          <span class="work-kind">Talk</span>
+          <span class="work-cat">Science Communicator</span>
+        </div>
+        <div class="work-bottom">
+          <h3 class="work-title">Lessons on Challenging Communication of Science in Society</h3>
+          <p class="work-meta">The Institute for Science &amp; Policy Symposium, &#x27;The Ethics of Science Communication&#x27; &middot; December 2023</p>
+        </div>
+      </div>
+      <a class="work-card" data-category="none" data-kind="research-publication" href="https://pubmed.ncbi.nlm.nih.gov/42623698/" target="_blank" rel="noopener">
+        
+        <div class="work-top">
+          <span class="work-kind">Publication</span>
+          
+        </div>
+        <div class="work-bottom">
+          <h3 class="work-title">Status of immunology education and establishment of American Association of Immunologists-recommended immunology content guidelines for undergraduate medical education in the United States</h3>
+          <p class="work-meta">Immunohorizons &middot; August 2026</p>
+        </div>
+      </a>
+      <div class="work-card has-photo" data-category="science-communicator" data-kind="press-mentions">
+        <div class="work-photo"><img src="../src/communicator.webp" alt="" loading="lazy"></div>
+        <div class="work-top">
+          <span class="work-kind">Press</span>
+          <span class="work-cat">Science Communicator</span>
+        </div>
+        <div class="work-bottom">
+          <h3 class="work-title">CU Immunology Prof discusses mRNA research funding</h3>
+          <p class="work-meta">KOA Morning News &middot; August 2025</p>
+        </div>
+      </div>
+      <a class="work-card" data-category="none" data-kind="educational-content" href="https://www.merlot.org/merlot/viewMaterial.htm?id=773470786" target="_blank" rel="noopener">
+        
+        <div class="work-top">
+          <span class="work-kind">Educational Content</span>
+          
+        </div>
+        <div class="work-bottom">
+          <h3 class="work-title">Think Like a Scientist (TLaS) Curriculum</h3>
+          <p class="work-meta">MERLOT (Multimedia Educational Resource for Learning and Online Teaching) &middot; August 2024</p>
+        </div>
+      </a>
+      <div class="work-card has-photo" data-category="educator" data-kind="talk">
+        <div class="work-photo"><img src="../src/educator.webp" alt="" loading="lazy"></div>
+        <div class="work-top">
+          <span class="work-kind">Talk</span>
+          <span class="work-cat">Educator</span>
+        </div>
+        <div class="work-bottom">
+          <h3 class="work-title">AI: Super Hero or Super Villain? The Use of AI in Teaching &amp; Learning</h3>
+          <p class="work-meta">Colorado Learning and Teaching with Technology (COLTT) Conference &middot; August 2023</p>
+        </div>
+      </div>
+      <a class="work-card" data-category="none" data-kind="press-mentions" href="https://news.cuanschutz.edu/news-stories/making-science-cool-and-fun" target="_blank" rel="noopener">
+        
+        <div class="work-top">
+          <span class="work-kind">Press</span>
+          
+        </div>
+        <div class="work-bottom">
+          <h3 class="work-title">TLaS Making Science Cool and Fun</h3>
+          <p class="work-meta">CU Anschutz Today &middot; August 2020</p>
+        </div>
+      </a>
+      <a class="work-card" data-category="none" data-kind="position" href="https://www.evicollective.org" target="_blank" rel="noopener">
+        
+        <div class="work-top">
+          <span class="work-kind">Position</span>
+          
+        </div>
+        <div class="work-bottom">
+          <h3 class="work-title">The Evidence Collective (TEC) Expert Network Member</h3>
+          <p class="work-meta">The Evidence Collective (TEC) &middot; April 2026+</p>
+        </div>
+      </a>
+      <div class="work-card has-photo" data-category="science-communicator" data-kind="talk">
+        <div class="work-photo"><img src="../src/communicator.webp" alt="" loading="lazy"></div>
+        <div class="work-top">
+          <span class="work-kind">Talk</span>
+          <span class="work-cat">Science Communicator</span>
+        </div>
+        <div class="work-bottom">
+          <h3 class="work-title">Confessions of a Scientist: Science education needs communication training</h3>
+          <p class="work-meta">TEDxCU &middot; April 2026</p>
+        </div>
+      </div>
+      <div class="work-card has-photo" data-category="science-communicator" data-kind="podcast">
+        <div class="work-photo"><img src="../src/communicator.webp" alt="" loading="lazy"></div>
+        <div class="work-top">
+          <span class="work-kind">Podcast</span>
+          <span class="work-cat">Science Communicator</span>
+        </div>
+        <div class="work-bottom">
+          <h3 class="work-title">The World of Autoimmunity</h3>
+          <p class="work-meta">Unbiased Science Podcast &middot; April 2025</p>
+        </div>
+      </div>
+      <div class="work-card has-photo" data-category="educator" data-kind="position">
+        <div class="work-photo"><img src="../src/educator.webp" alt="" loading="lazy"></div>
+        <div class="work-top">
+          <span class="work-kind">Position</span>
+          <span class="work-cat">Educator</span>
+        </div>
+        <div class="work-bottom">
+          <h3 class="work-title">Course Director, MIMS6062 Introduction to Science Communication</h3>
+          <p class="work-meta">CU Graduate School &middot; 2026-current</p>
+        </div>
+      </div>
+      <div class="work-card has-photo" data-category="educator" data-kind="award">
+        <div class="work-photo"><img src="../src/educator.webp" alt="" loading="lazy"></div>
+        <div class="work-top">
+          <span class="work-kind">Award</span>
+          <span class="work-cat">Educator</span>
+        </div>
+        <div class="work-bottom">
+          <h3 class="work-title">CU Child Health Advocate/Physician Assistant &#x27;Guest Lecture&#x27; Teaching Award</h3>
+          <p class="work-meta">School of Medicine &middot; 2026</p>
+        </div>
+      </div>
+      <a class="work-card has-photo" data-category="science-communicator" data-kind="position" href="https://theunbiasedscipod.substack.com/" target="_blank" rel="noopener">
+        <div class="work-photo"><img src="../src/communicator.webp" alt="" loading="lazy"></div>
+        <div class="work-top">
+          <span class="work-kind">Position</span>
+          <span class="work-cat">Science Communicator</span>
+        </div>
+        <div class="work-bottom">
+          <h3 class="work-title">Unbiased Science — Immunology Expert</h3>
+          <p class="work-meta">Unbiased Science &middot; 2025+</p>
+        </div>
+      </a>
+      <div class="work-card has-photo" data-category="science-communicator" data-kind="educational-content">
+        <div class="work-photo"><img src="../src/communicator.webp" alt="" loading="lazy"></div>
+        <div class="work-top">
+          <span class="work-kind">Educational Content</span>
+          <span class="work-cat">Science Communicator</span>
+        </div>
+        <div class="work-bottom">
+          <h3 class="work-title">Allergies and the Immune Response</h3>
+          <p class="work-meta">AAI Immunology Explained &middot; 2025</p>
+        </div>
+      </div>
+      <div class="work-card has-photo" data-category="science-communicator" data-kind="educational-content">
+        <div class="work-photo"><img src="../src/communicator.webp" alt="" loading="lazy"></div>
+        <div class="work-top">
+          <span class="work-kind">Educational Content</span>
+          <span class="work-cat">Science Communicator</span>
+        </div>
+        <div class="work-bottom">
+          <h3 class="work-title">The immune system is a mobile defense system - like calling 911</h3>
+          <p class="work-meta">AAI Immunology Explained &middot; 2025</p>
+        </div>
+      </div>
+      <a class="work-card" data-category="none" data-kind="position" href="https://medschool.cuanschutz.edu/docs/librariesprovider173/current-docs-3-25/2025-rules-of-the-som.pdf?sfvrsn=19a102b4_3" target="_blank" rel="noopener">
+        
+        <div class="work-top">
+          <span class="work-kind">Position</span>
+          
+        </div>
+        <div class="work-bottom">
+          <h3 class="work-title">University of Colorado Medical School Student Promotions Committee Member</h3>
+          <p class="work-meta">University of Colorado School of Medicine &middot; 2024+</p>
+        </div>
+      </a>
+      <div class="work-card has-photo" data-category="science-communicator" data-kind="educational-content">
+        <div class="work-photo"><img src="../src/communicator.webp" alt="" loading="lazy"></div>
+        <div class="work-top">
+          <span class="work-kind">Educational Content</span>
+          <span class="work-cat">Science Communicator</span>
+        </div>
+        <div class="work-bottom">
+          <h3 class="work-title">AAI Immunology Explained</h3>
+          <p class="work-meta">American Association of Immunologists (AAI) &middot; 2024+</p>
+        </div>
+      </div>
+      <div class="work-card has-photo" data-category="educator" data-kind="award">
+        <div class="work-photo"><img src="../src/educator.webp" alt="" loading="lazy"></div>
+        <div class="work-top">
+          <span class="work-kind">Award</span>
+          <span class="work-cat">Educator</span>
+        </div>
+        <div class="work-bottom">
+          <h3 class="work-title">CU Chancellor&#x27;s Teaching Recognition Award</h3>
+          <p class="work-meta">School of Medicine &middot; 2024</p>
+        </div>
+      </div>
+      <div class="work-card has-photo" data-category="science-communicator" data-kind="position">
+        <div class="work-photo"><img src="../src/communicator.webp" alt="" loading="lazy"></div>
+        <div class="work-top">
+          <span class="work-kind">Position</span>
+          <span class="work-cat">Science Communicator</span>
+        </div>
+        <div class="work-bottom">
+          <h3 class="work-title">co-Director, CCTSI Workshop Series — Communicating Your Science to the Public</h3>
+          <p class="work-meta">CCTSI &middot; 2023-current</p>
+        </div>
+      </div>
+      <div class="work-card has-photo" data-category="educator" data-kind="award">
+        <div class="work-photo"><img src="../src/educator.webp" alt="" loading="lazy"></div>
+        <div class="work-top">
+          <span class="work-kind">Award</span>
+          <span class="work-cat">Educator</span>
+        </div>
+        <div class="work-bottom">
+          <h3 class="work-title">CU School of Medicine S.T.A.R.ling Award</h3>
+          <p class="work-meta">CU School of Medicine &middot; 2023</p>
+        </div>
+      </div>
+      <div class="work-card has-photo" data-category="educator" data-kind="award">
+        <div class="work-photo"><img src="../src/educator.webp" alt="" loading="lazy"></div>
+        <div class="work-top">
+          <span class="work-kind">Award</span>
+          <span class="work-cat">Educator</span>
+        </div>
+        <div class="work-bottom">
+          <h3 class="work-title">CU School of Medicine STAR Award</h3>
+          <p class="work-meta">CU School of Medicine &middot; 2023</p>
+        </div>
+      </div>
+      <div class="work-card has-photo" data-category="science-communicator" data-kind="talk">
+        <div class="work-photo"><img src="../src/communicator.webp" alt="" loading="lazy"></div>
+        <div class="work-top">
+          <span class="work-kind">Talk</span>
+          <span class="work-cat">Science Communicator</span>
+        </div>
+        <div class="work-bottom">
+          <h3 class="work-title">Addressing Mis &amp; Disinformation in Health and Science Communication</h3>
+          <p class="work-meta">2023 CCTSI CU-CSU Summit &middot; 2023</p>
+        </div>
+      </div>
+      <div class="work-card has-photo" data-category="educator" data-kind="position">
+        <div class="work-photo"><img src="../src/educator.webp" alt="" loading="lazy"></div>
+        <div class="work-top">
+          <span class="work-kind">Position</span>
+          <span class="work-cat">Educator</span>
+        </div>
+        <div class="work-bottom">
+          <h3 class="work-title">Course Director, MIMS7530 Introduction to Immunology</h3>
+          <p class="work-meta">CU Graduate School &middot; 2021-current</p>
+        </div>
+      </div>
+      <div class="work-card has-photo" data-category="educator" data-kind="position">
+        <div class="work-photo"><img src="../src/educator.webp" alt="" loading="lazy"></div>
+        <div class="work-top">
+          <span class="work-kind">Position</span>
+          <span class="work-cat">Educator</span>
+        </div>
+        <div class="work-bottom">
+          <h3 class="work-title">Content Director, Immunology CU School of Medicine</h3>
+          <p class="work-meta">CU School of Medicine &middot; 2020-current</p>
+        </div>
+      </div>
+      <div class="work-card has-photo" data-category="educator" data-kind="position">
+        <div class="work-photo"><img src="../src/educator.webp" alt="" loading="lazy"></div>
+        <div class="work-top">
+          <span class="work-kind">Position</span>
+          <span class="work-cat">Educator</span>
+        </div>
+        <div class="work-bottom">
+          <h3 class="work-title">Course Director, DSBS5511 Invaders &amp; Protectors</h3>
+          <p class="work-meta">CU School of Dental Medicine &middot; 2019-2024</p>
+        </div>
+      </div>
+      <div class="work-card has-photo" data-category="educator" data-kind="position">
+        <div class="work-photo"><img src="../src/educator.webp" alt="" loading="lazy"></div>
+        <div class="work-top">
+          <span class="work-kind">Position</span>
+          <span class="work-cat">Educator</span>
+        </div>
+        <div class="work-bottom">
+          <h3 class="work-title">Content Director, Immunology CU Anschutz Physician Assistant Program</h3>
+          <p class="work-meta">CU Child Health Advocate/Physician Assistant Program &middot; 2018-current</p>
+        </div>
+      </div>
+      <a class="work-card" data-category="none" data-kind="position" href="https://www.immunizecolorado.org/who-we-are/our-mission-history/" target="_blank" rel="noopener">
+        
+        <div class="work-top">
+          <span class="work-kind">Position</span>
+          
+        </div>
+        <div class="work-bottom">
+          <h3 class="work-title">Immunize Colorado Board Member</h3>
+          <p class="work-meta">Immunize Colorado &middot; 2018-2026</p>
+        </div>
+      </a>
+      <a class="work-card" data-category="none" data-kind="educational-content" href="https://medschool.cuanschutz.edu/immunology-and-microbiology/dept-resources/teaching-resources/teacher-training-program/overview" target="_blank" rel="noopener">
+        
+        <div class="work-top">
+          <span class="work-kind">Educational Content</span>
+          
+        </div>
+        <div class="work-bottom">
+          <h3 class="work-title">CU Anschutz Teacher Training Program (TTP)</h3>
+          <p class="work-meta">CU Anschutz &middot; 2018+</p>
+        </div>
+      </a>
+      <a class="work-card" data-category="none" data-kind="educational-content" href="https://medschool.cuanschutz.edu/immunology-and-microbiology/dept-resources/teaching-resources" target="_blank" rel="noopener">
+        
+        <div class="work-top">
+          <span class="work-kind">Educational Content</span>
+          
+        </div>
+        <div class="work-bottom">
+          <h3 class="work-title">CU Anschutz Department of Immunology and Microbiology Teaching Resources</h3>
+          <p class="work-meta">CU Anschutz &middot; 2018+</p>
+        </div>
+      </a>
+      <div class="work-card has-photo" data-category="educator" data-kind="position">
+        <div class="work-photo"><img src="../src/educator.webp" alt="" loading="lazy"></div>
+        <div class="work-top">
+          <span class="work-kind">Position</span>
+          <span class="work-cat">Educator</span>
+        </div>
+        <div class="work-bottom">
+          <h3 class="work-title">Course Director, UNHL4820 Scientific Thinking</h3>
+          <p class="work-meta">CU Denver, University Honors &amp; Leadership Program &middot; 2015-2021</p>
+        </div>
+      </div>
+      <a class="work-card" data-category="none" data-kind="position" href="https://medschool.cuanschutz.edu/immunology-immunotherapy/about-hi3" target="_blank" rel="noopener">
+        
+        <div class="work-top">
+          <span class="work-kind">Position</span>
+          
+        </div>
+        <div class="work-bottom">
+          <h3 class="work-title">Human Immunology and Immunotherapy Initiative Assistant Director</h3>
+          <p class="work-meta">CU Anschutz &middot; 2015+</p>
+        </div>
+      </a>
+      <div class="work-card has-photo" data-category="educator" data-kind="award">
+        <div class="work-photo"><img src="../src/educator.webp" alt="" loading="lazy"></div>
+        <div class="work-top">
+          <span class="work-kind">Award</span>
+          <span class="work-cat">Educator</span>
+        </div>
+        <div class="work-bottom">
+          <h3 class="work-title">CU Denver College of Liberal Arts &amp; Sciences Non-Tenure Faculty Teaching Award</h3>
+          <p class="work-meta">CU Denver &middot; 2014</p>
+        </div>
+      </div>
+      <div class="work-card has-photo" data-category="educator" data-kind="award">
+        <div class="work-photo"><img src="../src/educator.webp" alt="" loading="lazy"></div>
+        <div class="work-top">
+          <span class="work-kind">Award</span>
+          <span class="work-cat">Educator</span>
+        </div>
+        <div class="work-bottom">
+          <h3 class="work-title">CU Denver College of Liberal Arts &amp; Sciences Non-Tenure Faculty Teaching Award</h3>
+          <p class="work-meta">CU Denver &middot; 2011</p>
+        </div>
+      </div>
+  </div>
+</main>
+
+
+<script>
+  // ---- Mobile nav toggle (shared with index.html) ----
+  const navMobileToggle = document.getElementById('navMobileToggle');
+  const navMenu = document.getElementById('navMenu');
+  const navBg = document.getElementById('navBg');
+  navMobileToggle.addEventListener('click', () => {
+    const open = navMenu.classList.toggle('is-open');
+    navMobileToggle.classList.toggle('is-open', open);
+    navBg.classList.toggle('is-open', open);
+    navMobileToggle.setAttribute('aria-expanded', String(open));
+  });
+  navBg.addEventListener('click', () => {
+    navMenu.classList.remove('is-open');
+    navMobileToggle.classList.remove('is-open');
+    navBg.classList.remove('is-open');
+    navMobileToggle.setAttribute('aria-expanded', 'false');
+  });
+
+  // ---- Filter: single-select kind tiles. Like floema, the grid fades
+  // fully out, swaps which cards are hidden while invisible, then fades
+  // back in — instead of cards abruptly popping in/out mid-view. ----
+  const tiles = [...document.querySelectorAll('.kind-tile')];
+  const cards = [...document.querySelectorAll('.work-card')];
+  const countEl = document.getElementById('workCount');
+  const workGrid = document.getElementById('workGrid');
+  const reduceMotionWork = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const FADE_MS = 250;
+
+  // Floema's rule: cycle through fixed block layouts (6, 3, 6, 3 cards) and
+  // let the slot decide each card's shape. Layer on a content rule: within a
+  // block, the wide slot goes to the card with the most text, the tall slot to
+  // a photo card (else the next most text), and the rest fill the squares.
+  const LAYOUTS = [
+    { name: 'l1', slots: ['s1', 'v', 's2', 's3', 's4', 'h'] },
+    { name: 'l2', slots: ['h', 's1', 's2'] },
+    { name: 'l3', slots: ['h', 'v', 's1', 's2', 's3', 's4'] },
+    { name: 'l4', slots: ['s1', 's2', 'h'] },
+  ];
+  const textLen = (c) => c.textContent.replace(/\s+/g, ' ').trim().length;
+
+  function fillBlock(block, chunk, slots) {
+    const pool = chunk.slice();
+    const take = (pred) => { const i = pool.findIndex(pred); return i < 0 ? null : pool.splice(i, 1)[0]; };
+    const byLen = () => pool.reduce((best, c) => (!best || textLen(c) > textLen(best) ? c : best), null);
+    const assign = {};
+    if (slots.includes('h')) { const c = byLen(); pool.splice(pool.indexOf(c), 1); assign.h = c; }
+    if (slots.includes('v')) {
+      const c = take((x) => x.classList.contains('has-photo')) || (() => { const b = byLen(); pool.splice(pool.indexOf(b), 1); return b; })();
+      assign.v = c;
+    }
+    slots.forEach((slot) => { if (!assign[slot]) assign[slot] = pool.shift(); });
+    slots.forEach((slot) => {
+      const card = assign[slot];
+      card.className = card.className.replace(/\bslot-\S+/g, '').trim() + ' slot-' + slot;
+      block.appendChild(card);
+    });
+  }
+
+  function layoutGrid(list) {
+    workGrid.replaceChildren();
+    const rest = list.slice();
+    let li = 0;
+    while (rest.length) {
+      let pick = null;
+      for (let k = 0; k < LAYOUTS.length; k++) {
+        const L = LAYOUTS[(li + k) % LAYOUTS.length];
+        if (L.slots.length <= rest.length) { pick = L; li = (li + k + 1) % LAYOUTS.length; break; }
+      }
+      const block = document.createElement('div');
+      if (pick) {
+        block.className = 'work-block ' + pick.name;
+        fillBlock(block, rest.splice(0, pick.slots.length), pick.slots);
+      } else {
+        block.className = 'work-block sq';
+        rest.splice(0).forEach((c) => { c.className = c.className.replace(/\bslot-\S+/g, '').trim(); block.appendChild(c); });
+      }
+      workGrid.appendChild(block);
+    }
+  }
+
+  function setCards(kind) {
+    const list = cards.filter((card) => kind === 'all' || card.dataset.kind === kind);
+    layoutGrid(list);
+    countEl.textContent = list.length;
+  }
+  setCards('all');
+
+  function applyFilter(kind) {
+    if (reduceMotionWork) { setCards(kind); return; }
+    workGrid.classList.add('is-filtering');
+    setTimeout(() => {
+      setCards(kind);
+      // Force a reflow so the browser registers the opacity:0 state before
+      // the class comes off, or the fade-back-in never plays.
+      void workGrid.offsetHeight;
+      workGrid.classList.remove('is-filtering');
+    }, FADE_MS);
+  }
+
+  tiles.forEach((tile) => {
+    tile.addEventListener('click', () => {
+      tiles.forEach((t) => {
+        const active = t === tile;
+        t.classList.toggle('is-active', active);
+        const existingCheck = t.querySelector('.tile-check');
+        if (active && !existingCheck) {
+          const check = document.createElement('span');
+          check.className = 'tile-check';
+          check.innerHTML = '&#10003;';
+          t.prepend(check);
+        } else if (!active && existingCheck) {
+          existingCheck.remove();
+        }
+      });
+      applyFilter(tile.dataset.filterValue);
+    });
+  });
+</script>
+</body>
+</html>

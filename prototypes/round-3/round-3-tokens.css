@@ -1,0 +1,17 @@
+/* Round 3 — shared design tokens (Figma gray field + warm card surfaces).
+   Link this from every round-3 page; page-specific layout stays in each HTML file. */
+
+:root {
+  --r3-field: #bccadb;
+  --r3-ink: #121212;
+  --r3-ink-muted: rgba(18, 18, 18, 0.4);
+  --r3-ink-soft: rgba(18, 18, 18, 0.5);
+  --r3-card: #d4c8ba;
+  --r3-accent: #e45a47;
+  --r3-gutter: clamp(24px, 3vw, 34px);
+  --r3-serif: "Instrument Serif", Georgia, "Times New Roman", serif;
+  --r3-sans: "DM Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --r3-mono: "Neue Montreal Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+  --r3-radius: 8px;
+  --r3-ease: cubic-bezier(0.215, 0.61, 0.355, 1);
+}

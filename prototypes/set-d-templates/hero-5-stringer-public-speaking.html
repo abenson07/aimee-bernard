@@ -1,0 +1,63 @@
+<!--
+TEMPLATE REFERENCE — NOT A PAGE. Do not link or publish.
+Source: user paste "hero-5" from the Stringer Webflow kit (NOT the Hummingbird hero-5, which is the prefooter — see hero-5.html).
+Used for: Public Speaking hero (Figma Desktop 80:49, 1054 tall) -> plan class `.page-hero--split`.
+Figma (source of visual truth): background is a vertical BLUE FADE `linear-gradient(to bottom, #bbc9db, #f5f4f1)` (this page only; other pages stay flat #bccadb — user: "This one can have the blue fade. the others we'll keep as is");
+padding 80px 0; container max 1800, side padding 32, gap 48.
+Row 1 (flex, space-between, align end): H1 "Headline about public speaking" 112px / line-height 103px / -4.48px, width 812, color #121212; right column 332px wide, padding-bottom 8, text 20px mono (Inconsolata in Figma -> IBM Plex Mono for us), line-height 28px, letter-spacing -.3px, color rgba(18,18,18,.64): "And why it's so important that she does it and how."
+Row 2 (flex, gap 16, height 640): image A flex-1 (912 wide) radius 16, cover, crop left -9.79% / width 119.58%; image B 448 wide radius 16, cover, crop left -40.85% / width 181.71%.
+Figma copy is template placeholder text ("Headline about public speaking"); it is visible in the frame, so build it as shown unless told otherwise (FLAG in README).
+NOT USED from the template: the "Shop fins" button, "Wax & care" link, and the "Santa Cruz and north" footer row (`.hero-5-foot`) — Figma shows none of them.
+Template layout (grid-12): title `grid-column: 1/10; max-width: 13ch`, subline `grid-column: 10/13`, media A `1/9` (3:2), media B `9/13` (fill).
+Saved trimmed: removed Webflow reset, `w-*` CSS and the GSAP/SplitText reveal script (rebuild with IntersectionObserver: title words slide up, subline rises, images fade).
+Template colors NOT used: section bg #ece8e2, text #121212, subtle #121212a3, media bg #e2ddd4.
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>hero-5 (Stringer) — reference</title>
+<style>
+.section.is-short { padding-top: 80px; padding-bottom: 80px; position: relative }
+.text-display-xl { letter-spacing: -.04em; margin: 0; font-size: 112px; font-weight: 500; line-height: .92 }
+.text-display-xl.hero-5-title { grid-column: 1/10; max-width: 13ch }
+.text-body-lg { letter-spacing: -.015em; margin: 0; font-size: 20px; font-weight: 400; line-height: 1.4; color: #121212a3 }
+.text-body-lg.hero-5-sub { grid-column: 10/13; align-self: end; padding-bottom: 8px }
+.media { background-color: #e2ddd4; width: 100%; padding-top: 125%; position: relative; overflow: hidden }
+.media.is-fill { height: 100%; min-height: 560px; padding-top: 0 }
+.media.is-fill.is-cell { min-height: 0 }
+.media.is-3x2 { padding-top: 66.6667% }
+.media-img { object-fit: cover; object-position: center; width: 100%; height: 100%; position: absolute; top: 0; left: 0 }
+.main-container { width: 100%; max-width: 1800px; margin: 0 auto; padding: 0 32px; position: relative }
+.grid-12 { grid-template-columns: repeat(12, minmax(0,1fr)); gap: 16px; display: grid }
+.grid-12.hero-5-head { align-items: end; padding-bottom: 48px }
+.hero-5-media-a { grid-column: 1/9 }
+.hero-5-media-b { grid-column: 9/13 }
+@media screen and (max-width:991px) { .text-display-xl { font-size: 80px } .text-display-xl.hero-5-title { grid-column-end: 9 } .text-body-lg.hero-5-sub { grid-column-start: 9 } }
+@media screen and (max-width:767px) {
+  .section.is-short { padding-top: 64px; padding-bottom: 64px }
+  .text-display-xl { font-size: 56px } .text-display-xl.hero-5-title { grid-column-end: 13 }
+  .text-body-lg.hero-5-sub { grid-column: 1/13; padding-bottom: 0 }
+  .media.is-fill { height: auto; min-height: 0; padding-top: 125% } .media.is-fill.is-cell { padding-top: 66.6667% }
+  .main-container { padding: 0 24px } .grid-12 { row-gap: 32px } .grid-12.hero-5-head { padding-bottom: 32px }
+  .hero-5-media-a { grid-column-end: 13 } .hero-5-media-b { grid-column-start: 1 }
+}
+@media screen and (max-width:479px) { .text-display-xl { font-size: 40px } .text-body-lg { font-size: 18px } .main-container { padding: 0 20px } }
+</style>
+</head>
+<body>
+<section data-motion="" class="section is-short stringer-hero-5">
+  <div class="main-container">
+    <div class="grid-12 hero-5-head">
+      <h1 data-reveal="words" class="text-display-xl hero-5-title">Made to outlast the board.</h1>
+      <p data-reveal="up" class="text-body-lg hero-5-sub">Fins, wax, pads and leashes. The parts you touch on land, made in small runs.</p>
+    </div>
+    <div class="grid-12">
+      <div class="hero-5-media-a"><div data-reveal="fade" class="media is-3x2"><img src="https://byqsupply-components.netlify.app/Stringer/images/c01-tailgate-mug.webp" alt="Coffee on the tailgate before the session, fins beside the board" class="media-img"></div></div>
+      <div class="hero-5-media-b"><div data-reveal="fade" class="media is-fill is-cell"><img src="https://byqsupply-components.netlify.app/Stringer/images/p02-waddell-b-context.webp" alt="A hand setting smoke-tint thruster fins down on gravel" class="media-img"></div></div>
+    </div>
+    <!-- foot row (Shop fins / Wax & care / Santa Cruz and north) — NOT in Figma, do not build -->
+  </div>
+</section>
+</body>
+</html>

@@ -1,0 +1,99 @@
+<!--
+TEMPLATE REFERENCE — NOT A PAGE. Do not link or publish.
+Source: user paste "cms-grid-1" from the HaldenMiller Webflow kit (site 696522643959b08678050cc8). User: "This is for the teacher training program and the cctsi workshop series."
+Used for: Educator page, section "CMS Grid 1" (Figma 80:12648, 900 tall) -> plan class `.feature-pair`.
+Figma (source of visual truth), padding 120px 32px, gap 64:
+  Intro block: tag chip (bg depth `#e1dcd5`, radius 16, padding 4x8, mono 10px uppercase: "Blog") + h2 "Thinking through structure" (72px / 1.1 / -1.44px, Instrument Serif in Figma -> ours Instrument Sans); left-aligned, width 680. (Figma also has an empty 124x48 "Button & Arrows" slot on the right — nothing visible.)
+  Two cards side by side (flex, gap 16), each 512px tall, radius 12, padding 32, photo background with 64%-dark gradients (160px) at top and bottom (plus a 20% black wash on card 2):
+    header row (mono 12px uppercase, letter-spacing .75px, rgba(247,247,242,.88)): left "TTP" / "Insights", right "June 26, 2025"
+    title (24px / 28px / -.5px, #f7f7f2), bottom-left: "Teacher Training Program" / "Structuring a pitch that doesn't sound like a pitch"
+  NO "Read now" button in Figma (the template has one on each card): do NOT build it.
+Real content for our version (data/work-timeline.json):
+  Card 1: "Teacher Training Program" — CU Anschutz Teacher Training Program (TTP), 2018+ (https://medschool.cuanschutz.edu/immunology-and-microbiology/dept-resources/teaching-resources/teacher-training-program/overview)
+  Card 2: "Communicating Your Science to the Public" workshop series — Colorado Clinical and Translational Sciences Institute (CCTSI); Aimee is co-Director, 2023-current (https://cctsi.cuanschutz.edu/training/communicating#ac-workshop-3-2)
+  (links: stub `#` unless told otherwise; tag/date text: see README open question 40)
+Template behavior (rebuild in CSS, no GSAP): card hover = the photo scales 1 -> 1.1 (500ms easeInOut); heading/cards blur-in on scroll (blur 12px + opacity 0 -> 1) — replace with our fade.
+Saved trimmed: removed Webflow reset, `w-*` CSS, `@font-face` blocks, `:root` token lists (values below), per-breakpoint token re-declarations, the `window.__ix` JSON and scripts, the CMS-template duplicate list (`.hide-cms`), and the two "Read now" buttons.
+Resolved tokens: dark #191818; light #f7f7f2; dark-64 rgba(25,24,24,.64); radius general--default 12px; spacing-32 = 32px (24px <=767px); spacing-64 = 64px (48px <=767px); section padding medium 120px (64px <=767px);
+  h3 40px/44px/-1px (<=767px: 32/36); h6 24px/28px/-.5px (<=767px: 20/20); label-1 12px/16px/.75px (<=767px: 10/12); label-2 10px/12px (<=767px: 8/10); card heights 512px (<=767px: 360px).
+Template colors NOT used: page bg #f7f7f2 and the section's bottom gradient to `--background--depth`.
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>cms-grid-1 (HaldenMiller) — reference</title>
+<style>
+.label-large { font-size: 12px; line-height: 16px; letter-spacing: .75px; text-transform: uppercase; justify-content: flex-start; align-items: flex-end }
+.label-small { font-size: 10px; line-height: 12px; letter-spacing: .75px; text-transform: uppercase }
+.main-container { z-index: 2; max-width: 1800px; padding: 0 32px; width: 100%; margin: 0 auto; position: relative }
+.section.blog-home-b-section { padding-top: 120px; padding-bottom: 120px; position: relative }
+.text-h3 { font-size: 40px; line-height: 44px; letter-spacing: -1px; justify-content: flex-start; align-items: center }   /* Figma: 72px / 1.1 / -1.44px */
+.text-h6 { font-size: 24px; line-height: 28px; letter-spacing: -.5px }
+.no-margins { margin-top: 0; margin-bottom: 0 }
+.label-master { padding: 4px 8px; border-radius: 16px; background-color: #e1dcd5; text-align: center; justify-content: center; align-items: center; display: flex }   /* .depth variant */
+.card-featured-blog-a { border-radius: 12px; color: #f7f7f2; width: 100%; height: auto; text-decoration: none; display: block; position: relative; overflow: hidden }
+.image-wrap-featured-article { width: 100%; height: 100%; position: absolute; inset: 0% }
+.image-cover { z-index: 1; object-fit: cover; width: 100%; height: 100%; transition: transform .5s ease-in-out }
+.card-featured-blog-a:hover .image-cover { transform: scale(1.1) }
+.content-featured-article { z-index: 2; padding: 32px; flex-flow: column; justify-content: space-between; align-items: stretch; width: 100%; height: 612px; display: flex; position: relative }
+.content-featured-article.small { height: 512px }
+.overlay-featured-article-top { background-image: linear-gradient(180deg, rgba(25,24,24,.64), rgba(247,247,242,0)); width: 100%; height: 30%; position: absolute; inset: 0% 0% auto }      /* Figma: 160px tall */
+.overlay-featured-article-bottom { background-image: linear-gradient(0deg, rgba(25,24,24,.64), rgba(247,247,242,0)); width: 100%; height: 30%; position: absolute; inset: auto 0% 0% }   /* Figma: 160px tall */
+.featured-article-top-tile { justify-content: space-between; align-items: center; display: flex }
+.featured-article-bottom-tile { grid-column-gap: 32px; justify-content: space-between; align-items: flex-end; display: flex }
+.heading-featured-article { color: #f7f7f2; max-width: 600px }
+.headline-blog-home-b { max-width: 680px; margin-bottom: 64px; grid-row-gap: 24px; flex-flow: column; justify-content: flex-start; align-items: flex-start; display: flex }
+.blog-halves-home-b { grid-column-gap: 16px; grid-row-gap: 16px; grid-template-columns: 1fr 1fr; display: grid }
+@media screen and (max-width:767px) {
+  .main-container { padding: 0 16px }
+  .section.blog-home-b-section { padding-top: 64px; padding-bottom: 64px }
+  .text-h3 { letter-spacing: -.5px; font-size: 32px; line-height: 36px }
+  .text-h6 { letter-spacing: -.25px; font-size: 20px; line-height: 20px }
+  .label-large { letter-spacing: .75px; font-size: 10px; line-height: 12px }
+  .card-featured-blog-a { border-radius: 12px }
+  .content-featured-article.small { height: 360px; padding: 24px }
+  .headline-blog-home-b { grid-row-gap: 16px; margin-bottom: 48px }
+  .blog-halves-home-b { grid-column-gap: 12px; grid-row-gap: 12px }
+}
+@media screen and (max-width:479px) { .blog-halves-home-b { grid-template-columns: 1fr } }
+</style>
+</head>
+<body>
+<section class="section blog-home-b-section">
+  <div class="main-container">
+    <div class="headline-blog-home-b">
+      <div class="label-master depth"><div class="label-small">Blog</div></div>
+      <h2 class="text-h3 no-margins">Thinking through structure</h2>
+    </div>
+    <div class="home-b-blog">
+      <div class="blog-halves-home-b">
+        <a href="#" class="card-featured-blog-a">
+          <div class="image-wrap-featured-article"><img src="https://byqsupply-components.netlify.app/HaldenMiller/images/BlogImage1.png" alt="" class="image-cover"></div>
+          <div class="content-featured-article small">
+            <div class="featured-article-top-tile"><div class="label-large">Insights</div><div class="label-large">June 26, 2025</div></div>
+            <div class="featured-article-bottom-tile">
+              <div class="heading-featured-article"><div class="text-h6">How to Communicate During a Merger Without Losing Trust</div></div>
+              <!-- "Read now" button (glass, `.cta-main.secondary.is-secondary-dark`) — NOT in Figma, do not build -->
+            </div>
+          </div>
+          <div class="overlay-featured-article-top"></div>
+          <div class="overlay-featured-article-bottom"></div>
+        </a>
+        <a href="#" class="card-featured-blog-a">
+          <div class="image-wrap-featured-article"><img src="https://byqsupply-components.netlify.app/HaldenMiller/images/BlogImage2.png" alt="" class="image-cover"></div>
+          <div class="content-featured-article small">
+            <div class="featured-article-top-tile"><div class="label-large">Insights</div><div class="label-large">June 26, 2025</div></div>
+            <div class="featured-article-bottom-tile">
+              <div class="heading-featured-article"><div class="text-h6">The Language of Leadership in Times of Change</div></div>
+            </div>
+          </div>
+          <div class="overlay-featured-article-top"></div>
+          <div class="overlay-featured-article-bottom"></div>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+</body>
+</html>

@@ -1,0 +1,538 @@
+[
+  {
+    "date": null,
+    "description": "A full serving of the foundational concepts in human immunology and immunotherapy in a 'fun-size' 2.5-day workshop.",
+    "endDate": null,
+    "fileUrl": null,
+    "kind": "course",
+    "links": null,
+    "startDate": null,
+    "title": "Fun-Size Immunology Workshop",
+    "url": null,
+    "venue": "CU Human Immunology & Immunotherapy Initiative (HI3)"
+  },
+  {
+    "date": null,
+    "description": null,
+    "endDate": null,
+    "fileUrl": null,
+    "kind": "course",
+    "links": null,
+    "startDate": null,
+    "title": "IDPT5016 Foundational Principles",
+    "url": null,
+    "venue": "CU School of Medicine, Year 1 ('The Plains')"
+  },
+  {
+    "date": null,
+    "description": null,
+    "endDate": null,
+    "fileUrl": null,
+    "kind": "course",
+    "links": null,
+    "startDate": null,
+    "title": "IDPT5017 Hematologic & Lymphatic Systems",
+    "url": null,
+    "venue": "CU School of Medicine, Year 1"
+  },
+  {
+    "date": null,
+    "description": null,
+    "endDate": null,
+    "fileUrl": null,
+    "kind": "course",
+    "links": null,
+    "startDate": null,
+    "title": "IDPT5018 Gastrointestinal System",
+    "url": null,
+    "venue": "CU School of Medicine, Year 1"
+  },
+  {
+    "date": null,
+    "description": null,
+    "endDate": null,
+    "fileUrl": null,
+    "kind": "course",
+    "links": null,
+    "startDate": null,
+    "title": "IDPT5019 Pulmonary & Cardiovascular Systems",
+    "url": null,
+    "venue": "CU School of Medicine, Year 1"
+  },
+  {
+    "date": null,
+    "description": null,
+    "endDate": null,
+    "fileUrl": null,
+    "kind": "course",
+    "links": null,
+    "startDate": null,
+    "title": "IDPT5021 Renal & Urinary Systems",
+    "url": null,
+    "venue": "CU School of Medicine, Year 1"
+  },
+  {
+    "date": null,
+    "description": null,
+    "endDate": null,
+    "fileUrl": null,
+    "kind": "course",
+    "links": null,
+    "startDate": null,
+    "title": "IDPT5022 Nervous System",
+    "url": null,
+    "venue": "CU School of Medicine, Year 1"
+  },
+  {
+    "date": null,
+    "description": null,
+    "endDate": null,
+    "fileUrl": null,
+    "kind": "course",
+    "links": null,
+    "startDate": null,
+    "title": "IDPT5023 Musculoskeletal & Integumentary Systems",
+    "url": null,
+    "venue": "CU School of Medicine, Year 1"
+  },
+  {
+    "date": null,
+    "description": null,
+    "endDate": null,
+    "fileUrl": null,
+    "kind": "course",
+    "links": null,
+    "startDate": null,
+    "title": "IDPT5025 Endocrine & Metabolic Systems",
+    "url": null,
+    "venue": "CU School of Medicine, Year 1"
+  },
+  {
+    "date": null,
+    "description": null,
+    "endDate": null,
+    "fileUrl": null,
+    "kind": "course",
+    "links": null,
+    "startDate": null,
+    "title": "IDPT5026 Reproductive System & Life Cycles",
+    "url": null,
+    "venue": "CU School of Medicine, Year 1"
+  },
+  {
+    "date": null,
+    "description": null,
+    "endDate": null,
+    "fileUrl": null,
+    "kind": "course",
+    "links": null,
+    "startDate": null,
+    "title": "IDPT8039 Advanced Sciences Immunology & Immunotherapy",
+    "url": null,
+    "venue": "CU School of Medicine, Year 3 ('The Alpine Summit')"
+  },
+  {
+    "date": null,
+    "description": null,
+    "endDate": null,
+    "fileUrl": null,
+    "kind": "course",
+    "links": null,
+    "startDate": null,
+    "title": "Summer Immersion: Immunology & Microbiology",
+    "url": null,
+    "venue": "CU Child Health Advocate/Physician Assistant (CHA/PA) Program, Year 1"
+  },
+  {
+    "date": null,
+    "description": null,
+    "endDate": null,
+    "fileUrl": null,
+    "kind": "course",
+    "links": null,
+    "startDate": null,
+    "title": "Academic Year: Immunology",
+    "url": null,
+    "venue": "CU CHA/PA Program, Year 1"
+  },
+  {
+    "date": null,
+    "description": null,
+    "endDate": null,
+    "fileUrl": null,
+    "kind": "course",
+    "links": null,
+    "startDate": null,
+    "title": "Academic Year: Immunology",
+    "url": null,
+    "venue": "CU CHA/PA Program, Year 2"
+  },
+  {
+    "date": null,
+    "description": "This course covers basic principles of general and medical microbiology with emphasis on oral microorganisms while integrating the response of the immune system to fight these invaders.",
+    "endDate": null,
+    "fileUrl": null,
+    "kind": "course",
+    "links": null,
+    "startDate": null,
+    "title": "DSBS5511 Invaders & Protectors (Microbiology & Immunology)",
+    "url": null,
+    "venue": "CU School of Dental Medicine, Year 1"
+  },
+  {
+    "date": null,
+    "description": "This introductory course in science communication is designed to introduce the skills to effectively convey complex scientific concepts to diverse audiences, including the public, policymakers, and fellow scientists from different fields. Through a combination of brief lectures, in-class activities and practical assignments, students will learn key principles of clear and accurate scientific communication, the ethics of public science discourse, and strategies for engaging written, media and digital platforms. Emphasis is placed on adapting messages for different target audiences, crafting compelling narratives, and developing visual aids. By the end of the course, students will be prepared to communicate their research effectively across a range of platforms.",
+    "endDate": null,
+    "fileUrl": null,
+    "kind": "course",
+    "links": null,
+    "startDate": null,
+    "title": "MIMS6062 Introduction to Science Communication",
+    "url": null,
+    "venue": "CU Graduate School"
+  },
+  {
+    "date": null,
+    "description": "This course is an introductory immunology course designed to provide students with an introduction to the field of immunology, intended for students who already have some background in general biology and cell biology.",
+    "endDate": null,
+    "fileUrl": null,
+    "kind": "course",
+    "links": null,
+    "startDate": null,
+    "title": "MIMS7530 Introduction to Immunology",
+    "url": null,
+    "venue": "CU Graduate School"
+  },
+  {
+    "date": null,
+    "description": "Intensive analysis of primary and secondary literature from across the sciences designed to develop the critical thinking, content integration, and analysis skills necessary to be successful throughout academic endeavors and professional careers. Through reading, group work, oral and written presentations, and class discussion students expand their understanding and appreciation of the scientific method and develop the ability to critically analyze and evaluate experimental design in the scientific and social contexts.",
+    "endDate": null,
+    "fileUrl": null,
+    "kind": "course",
+    "links": null,
+    "startDate": null,
+    "title": "UNHL4820. Scientific Thinking",
+    "url": null,
+    "venue": "CU Denver University Honors & Leadership Program"
+  },
+  {
+    "date": null,
+    "description": "CREATE (Consider, Read, Elucidate hypotheses, Analyze and interpret data, Think of the next Experiment) is a pedagogical approach for teaching and learning science through the rigorous analysis of primary scientific literature. This mini-review focuses on the tools, assignments, and in-class activities by which this strategy immerses students in the process of science, and provides a case study of CREATE implementation in an advanced immunology undergraduate course.",
+    "endDate": null,
+    "fileUrl": null,
+    "kind": "research-publication",
+    "links": [
+      {
+        "_key": "vfgptbtq",
+        "_type": "link",
+        "label": "Read the Paper",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/33248160/"
+      }
+    ],
+    "startDate": null,
+    "title": "Mini-Review: CREATE-ive Use of Primary Literature in the Science Classroom",
+    "url": null,
+    "venue": null
+  },
+  {
+    "date": null,
+    "description": "The COVID-19 outbreak swiftly evolved into a pandemic with enormous societal impacts. In March 2020, a student-led course, in partnership with an array of faculty members, was developed at the University of Colorado School of Medicine to provide learners with current scientific knowledge regarding COVID-19 and a platform to support the community as the pandemic evolved. Students completed asynchronous online modules and applied their online knowledge through community service within focused pillars — service learning, education, bioethics and medical humanities, and research.",
+    "endDate": null,
+    "fileUrl": null,
+    "kind": "research-publication",
+    "links": [
+      {
+        "_key": "u7lx2v96",
+        "_type": "link",
+        "label": "Read the Paper",
+        "url": "https://www.ama-assn.org/system/files/2021-01/health-systems-science-impact-challenge.pdf"
+      }
+    ],
+    "startDate": null,
+    "title": "University of Colorado COVID-19 Pandemic Response Course: Beyond the Virtual Classroom",
+    "url": null,
+    "venue": "American Medical Association Health Systems Science Impact Challenge"
+  },
+  {
+    "date": null,
+    "description": "Aimee spoke to undergraduate students in the CU Denver Biology Club about SARS-CoV-2, COVID-19, and the vaccines that provide long-lasting protection from serious harm and death.",
+    "endDate": null,
+    "fileUrl": null,
+    "kind": "talk",
+    "links": null,
+    "startDate": null,
+    "title": "COVID-19 Vaccines. Formulations and Immune Response",
+    "url": null,
+    "venue": "CU Denver Biology Club"
+  },
+  {
+    "date": null,
+    "description": "Aimee spoke to students at Front Range Community College (FRCC) about the immune response to vaccines and how they train the immune system to fight infectious disease.",
+    "endDate": null,
+    "fileUrl": null,
+    "kind": "talk",
+    "links": null,
+    "startDate": null,
+    "title": "The Science Behind Vaccines",
+    "url": null,
+    "venue": "Front Range Community College (FRCC), for biology students"
+  },
+  {
+    "date": "September 2025",
+    "description": "Aimee spoke to CU GIM faculty about integrating science communication into their daily practice to enhance academic portfolios and improve conversations with patients.",
+    "endDate": null,
+    "fileUrl": null,
+    "kind": "talk",
+    "links": [
+      {
+        "_key": "i60r372g",
+        "_type": "link",
+        "label": "LINK",
+        "url": "https://medschool.cuanschutz.edu/general-internal-medicine"
+      }
+    ],
+    "startDate": null,
+    "title": "Translating Medicine. Science Communication Academic and Clinical Tool",
+    "url": null,
+    "venue": "CU General Internal Medicine Grand Rounds"
+  },
+  {
+    "date": "May 2023",
+    "description": "The use of analogies while teaching complex concepts allows the unknown to become familiar and act as an aid toward deeper understanding. Analogies were used as a teaching tool during an immunology course for dental, medical, physician assistant, and graduate students to explain complex concepts, and to communicate and enhance the learning and retention of a wide variety of complex immunological concepts. The incorporation of analogies into the learning process augments scientific communication skills and acts as a model for effective communication while speaking to future patients and the general public.",
+    "endDate": null,
+    "fileUrl": null,
+    "kind": "research-publication",
+    "links": [
+      {
+        "_key": "hos4rhbs",
+        "_type": "link",
+        "label": "Read the Abstract",
+        "url": "https://plan.core-apps.com/aai2023/abstract/b7dbbda034c3a9c4ba84fcb0cd656c76"
+      }
+    ],
+    "startDate": null,
+    "title": "The Use and Creation of Analogies as a Teaching Tool for Understanding Immunology",
+    "url": null,
+    "venue": "American Association of Immunologists, poster and education breakout session"
+  },
+  {
+    "date": "March 2026",
+    "description": "Aimee was invited to the 2026 CSU HHS Research Day as the keynote speaker to inspire the graduate student participants into diving into science communication beyond academia.",
+    "endDate": null,
+    "fileUrl": null,
+    "kind": "talk",
+    "links": [
+      {
+        "_key": "wwi06qd6",
+        "_type": "link",
+        "label": "LINK",
+        "url": "https://www.chhs.colostate.edu/research-and-scholarship/chhs-research-day/2026-chhs-research-day-speakers/"
+      }
+    ],
+    "startDate": null,
+    "title": "Research Day Keynote Speaker",
+    "url": null,
+    "venue": "Colorado State University, College of Health & Human Sciences"
+  },
+  {
+    "date": "March 2024",
+    "description": "Aimee joined Ruru Rusmin (CUNY) to present an education webinar hosted by AAI to explore how AI-driven tools can support immunology educators to improve lesson plans and provide interactive and engaging experiences for students at all levels.",
+    "endDate": null,
+    "fileUrl": null,
+    "kind": "talk",
+    "links": [
+      {
+        "_key": "hjsh4vvn",
+        "_type": "link",
+        "label": "LINK",
+        "url": "https://virtual.aai.org/aai/2024/webinars/409971/faculty.presenters.ai.and.its.impact.on.education.html"
+      }
+    ],
+    "startDate": null,
+    "title": "The Impact of Artificial Intelligence (AI) on Education",
+    "url": null,
+    "venue": "American Association of Immunologists (AAI) webinar"
+  },
+  {
+    "date": "December 2023",
+    "description": "Aimee wrote about her experience in the classroom creating and using analogies as a teaching tool to help students learn complex immunology concepts. Over 15+ years of teaching, students have consistently given positive feedback on the use of analogies to initially grasp complicated immunology concepts.",
+    "endDate": null,
+    "fileUrl": null,
+    "kind": "article",
+    "links": [
+      {
+        "_key": "2zf99s4m",
+        "_type": "link",
+        "label": "LINK",
+        "url": "https://www.aai.org/AAISite/media/Publications/AAI_Newsletter/AAI-2023-12-Newsletter.pdf"
+      }
+    ],
+    "startDate": null,
+    "title": "The Creation and Use of Analogies as an Effective Tool for Teaching Immunology Concepts",
+    "url": null,
+    "venue": "AAI Newsletter"
+  },
+  {
+    "date": "August 2023",
+    "description": "Aimee hosted an interactive breakout session on experimenting with AI for the purposes of teaching and learning in higher education.",
+    "endDate": null,
+    "fileUrl": null,
+    "kind": "talk",
+    "links": [
+      {
+        "_key": "d4n16viq",
+        "_type": "link",
+        "label": "LINK",
+        "url": "https://www.cu.edu/coltt-2023-program"
+      }
+    ],
+    "startDate": null,
+    "title": "AI: Super Hero or Super Villain? The Use of AI in Teaching & Learning",
+    "url": null,
+    "venue": "Colorado Learning and Teaching with Technology (COLTT) Conference"
+  },
+  {
+    "date": "2026-current",
+    "description": null,
+    "endDate": null,
+    "fileUrl": null,
+    "kind": "position",
+    "links": null,
+    "startDate": null,
+    "title": "Course Director, MIMS6062 Introduction to Science Communication",
+    "url": null,
+    "venue": "CU Graduate School"
+  },
+  {
+    "date": "2026",
+    "description": "First-year PA students select one 'guest lecturer' per year at the end of the academic year to receive the award.",
+    "endDate": null,
+    "fileUrl": null,
+    "kind": "award",
+    "links": null,
+    "startDate": null,
+    "title": "CU Child Health Advocate/Physician Assistant 'Guest Lecture' Teaching Award",
+    "url": null,
+    "venue": "School of Medicine"
+  },
+  {
+    "date": "2024",
+    "description": "Winners are named by the school- or college-wide student governance groups and a committee in each school/college selects the winner; one award (of 1000+ faculty) is given at the May commencement ceremony each year.",
+    "endDate": null,
+    "fileUrl": null,
+    "kind": "award",
+    "links": null,
+    "startDate": null,
+    "title": "CU Chancellor's Teaching Recognition Award",
+    "url": null,
+    "venue": "School of Medicine"
+  },
+  {
+    "date": "2023",
+    "description": "'Students Thanking and Recognizing' (S.T.A.R.)ling Outstanding Faculty Teaching Award, selected by the Class of 2027 medical students at the end of their first block, Foundational Principles. Represents 1 individual block; only 1 award given at the end of each block.",
+    "endDate": null,
+    "fileUrl": null,
+    "kind": "award",
+    "links": null,
+    "startDate": null,
+    "title": "CU School of Medicine S.T.A.R.ling Award",
+    "url": null,
+    "venue": "CU School of Medicine"
+  },
+  {
+    "date": "2023",
+    "description": "'Students Thanking and Recognizing' (S.T.A.R.) Outstanding Faculty Teaching Award, selected by the Class of 2026 medical students at the end of their first year (AY2022/2023). Represents the entire first year; three awards (of 100+ faculty) given at the end of the first year.",
+    "endDate": null,
+    "fileUrl": null,
+    "kind": "award",
+    "links": null,
+    "startDate": null,
+    "title": "CU School of Medicine STAR Award",
+    "url": null,
+    "venue": "CU School of Medicine"
+  },
+  {
+    "date": "2021-current",
+    "description": null,
+    "endDate": null,
+    "fileUrl": null,
+    "kind": "position",
+    "links": null,
+    "startDate": null,
+    "title": "Course Director, MIMS7530 Introduction to Immunology",
+    "url": null,
+    "venue": "CU Graduate School"
+  },
+  {
+    "date": "2020-current",
+    "description": "Years 1-4. See the related courses below for curriculum detail.",
+    "endDate": null,
+    "fileUrl": null,
+    "kind": "position",
+    "links": null,
+    "startDate": null,
+    "title": "Content Director, Immunology CU School of Medicine",
+    "url": null,
+    "venue": "CU School of Medicine"
+  },
+  {
+    "date": "2019-2024",
+    "description": "Year 1. See the related course below for curriculum detail.",
+    "endDate": null,
+    "fileUrl": null,
+    "kind": "position",
+    "links": null,
+    "startDate": null,
+    "title": "Course Director, DSBS5511 Invaders & Protectors",
+    "url": null,
+    "venue": "CU School of Dental Medicine"
+  },
+  {
+    "date": "2018-current",
+    "description": "Year 1 and Year 2. See the related courses below for curriculum detail.",
+    "endDate": null,
+    "fileUrl": null,
+    "kind": "position",
+    "links": null,
+    "startDate": null,
+    "title": "Content Director, Immunology CU Anschutz Physician Assistant Program",
+    "url": null,
+    "venue": "CU Child Health Advocate/Physician Assistant Program"
+  },
+  {
+    "date": "2015-2021",
+    "description": "Focused on the intensive analysis of literature from across the sciences to develop essential critical thinking, content integration, and analysis skills.",
+    "endDate": null,
+    "fileUrl": null,
+    "kind": "position",
+    "links": null,
+    "startDate": null,
+    "title": "Course Director, UNHL4820 Scientific Thinking",
+    "url": null,
+    "venue": "CU Denver, University Honors & Leadership Program"
+  },
+  {
+    "date": "2014",
+    "description": null,
+    "endDate": null,
+    "fileUrl": null,
+    "kind": "award",
+    "links": null,
+    "startDate": null,
+    "title": "CU Denver College of Liberal Arts & Sciences Non-Tenure Faculty Teaching Award",
+    "url": null,
+    "venue": "CU Denver"
+  },
+  {
+    "date": "2011",
+    "description": null,
+    "endDate": null,
+    "fileUrl": null,
+    "kind": "award",
+    "links": null,
+    "startDate": null,
+    "title": "CU Denver College of Liberal Arts & Sciences Non-Tenure Faculty Teaching Award",
+    "url": null,
+    "venue": "CU Denver"
+  }
+]
