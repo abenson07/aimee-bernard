@@ -6,5 +6,5 @@ p, h1 { margin: 0; }:root { --paper: #f2f1ee; --ink: #1c1b1a; }
 * { box-sizing: border-box; }
 body { margin: 0; min-height: 100vh; background: linear-gradient(180deg, #b7c6d9 0%, var(--paper) 40%, var(--paper) 100%); color: var(--ink); font-family: "Instrument Sans", "Helvetica Neue", Arial, sans-serif; }
 .coming-soon { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 12px; padding: 160px 24px 96px; text-align: center; }
-.coming-soon h1 { margin: 0; font-weight: 500; letter-spacing: -0.04em; line-height: 0.95; font-size: clamp(3rem, 8vw, 6rem); }
+.coming-soon h1 { margin: 0; font-family: var(--headline); font-weight: 600; letter-spacing: -0.01em; line-height: 0.95; font-size: clamp(3rem, 8vw, 6rem); }
 .coming-soon p { margin: 0; font-size: 1.15rem; opacity: 0.64; }

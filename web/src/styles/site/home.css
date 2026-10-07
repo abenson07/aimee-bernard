@@ -33,7 +33,7 @@
   img, video { max-width: 100%; display: block; }
   a { color: inherit; text-decoration: none; }
   p { margin: 0; }
-  h2, h3 { margin: 0; font-weight: 400; }
+  h2, h3 { margin: 0; font-family: var(--headline); font-weight: 600; }
 
   .main-container { width: 100%; max-width: 1800px; margin: 0 auto; padding: 0 32px; }
   :root { --space: clamp(140px, 12vw, 220px); }
@@ -41,7 +41,7 @@
 
   .label { letter-spacing: 0.7px; text-transform: uppercase; font-size: 14px; font-weight: 500; line-height: 16px; }
   .label.muted { color: var(--muted); }
-  .display { font-family: var(--display); font-weight: 500; letter-spacing: -0.04em; line-height: 0.9; }
+  .display { font-family: var(--headline); font-weight: 600; letter-spacing: -0.01em; line-height: 0.9; }
   .display-md { font-size: clamp(32px, 4.4vw, 80px); line-height: 1; }
 
   .mask { overflow: hidden; padding: 0.15em 0 0.3em; margin: -0.15em 0 -0.3em; }
@@ -53,12 +53,12 @@
   /* ---------- Hero: hybrid of Dendrite's About layout + Home hover system ---------- */
   .hero { position: relative; min-height: 100vh; overflow: hidden; padding: 152px var(--gutter) 4rem; display: flex; flex-direction: column; justify-content: center; }
   .hero-role-bg { position: absolute; inset: 0; z-index: 1; background-size: cover; background-position: center; opacity: 0; transition: opacity 0.5s ease; pointer-events: none; }
-  .hero-name { position: relative; z-index: 60; font-size: clamp(3rem, 9vw, 8rem); text-align: left; margin: 0 0 1.5rem; transition: color 0.4s ease; }
+  .hero-name { position: relative; z-index: 60; font-size: clamp(2.75rem, 5.4vw, 6.5rem); text-align: left; margin: 0 0 1.5rem; transition: color 0.4s ease; }
   .hero.role-hover .hero-name { color: #fff; }
   .hero-name .surname { opacity: 0.38; transition: opacity 0.4s ease; }
   .identity-words { position: relative; z-index: 60; list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 0.5rem 1.75rem; }
   .identity-word {
-    display: inline-block; color: var(--ink); text-decoration: none; font-family: var(--display); font-size: clamp(1.6rem, 2.6vw, 2.4rem);
+    display: inline-block; color: var(--ink); text-decoration: none; font-family: var(--headline); font-weight: 600; font-size: clamp(1.6rem, 2.6vw, 2.4rem);
     letter-spacing: -0.01em; line-height: 1.1; opacity: 0.32; transition: opacity 0.4s ease, color 0.4s ease;
   }
   .identity-word:hover { opacity: 1; }
@@ -81,8 +81,8 @@
   /* Fixed rows: four lines on wide screens, eight short lines on narrow ones.
      Nothing reflows, so a word is never split. Font size follows the container width. */
   .byq-gem--inline-media-text-01__line {
-    margin: 0 auto; font-family: var(--display); font-weight: 500; letter-spacing: -0.04em; color: var(--ink);
-    font-size: clamp(1.4rem, calc(100cqw / 24), 4.2rem); line-height: 1.45; text-align: center;
+    margin: 0 auto; font-family: var(--headline); font-weight: 600; letter-spacing: -0.01em; color: var(--ink);
+    font-size: clamp(1.4rem, calc(100cqw / 20), 4.8rem); line-height: 1.45; text-align: center;
   }
   .byq-gem--inline-media-text-01__row { display: block; white-space: nowrap; }
   .byq-gem--inline-media-text-01__seg {
@@ -137,7 +137,7 @@
   .cred-marquee { overflow: hidden; mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent); }
   .cred-track { display: flex; gap: 48px; width: max-content; animation: cred-scroll 32s linear infinite; }
   .cred-logo img { height: 60%; width: auto; max-width: 150px; object-fit: contain; filter: grayscale(1); }
-  .cred-logo { flex: none; min-width: 160px; height: 56px; display: flex; align-items: center; justify-content: center; font-family: var(--display); font-size: 22px; letter-spacing: -0.6px; color: var(--ink); opacity: 0.72; white-space: nowrap; }
+  .cred-logo { flex: none; min-width: 160px; height: 56px; display: flex; align-items: center; justify-content: center; font-family: var(--display); font-weight: 500; font-size: 22px; letter-spacing: -0.6px; color: var(--ink); opacity: 0.72; white-space: nowrap; }
   @keyframes cred-scroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
 
   .awards-panel { text-align: center; }
@@ -174,18 +174,18 @@
   }
   .outreach-head { width: 100%; display: flex; justify-content: flex-start; margin: 0; text-align: left; }
   .outreach-head h2 {
-    font-family: var(--display);
-    font-weight: 500;
+    font-family: var(--headline);
+    font-weight: 600;
     font-style: normal;
     font-size: 40px;
     line-height: 44px;
-    letter-spacing: -1px;
+    letter-spacing: -0.01em;
     max-width: 448px;
     margin: 0;
     text-align: left;
     color: var(--ink);
   }
-  .outreach-head h2 em { font-style: italic; font-weight: 400; }
+  .outreach-head h2 em { font-style: normal; font-weight: 600; }
   .outreach-grid {
     width: 100%;
     display: grid;
@@ -267,7 +267,7 @@
   /* ---------- Press ---------- */
   #press-section { padding: 96px 32px 160px; }
   .press-inner { width: min(1144px, 100%); margin: 0 auto; display: flex; flex-direction: column; gap: 48px; }
-  .press-head h2 { font-family: var(--display); font-weight: 500; font-size: 40px; line-height: 44px; letter-spacing: -1px; color: var(--ink); }
+  .press-head h2 { font-family: var(--headline); font-weight: 600; font-size: 40px; line-height: 44px; letter-spacing: -0.01em; color: var(--ink); }
   .press-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
   .press-card {
     display: flex; flex-direction: column; justify-content: space-between; gap: 32px; min-height: 200px;
@@ -284,7 +284,7 @@
 
   /* ---------- Prefooter closing statement ---------- */
   .prefooter { padding: 0 32px 160px; text-align: center; }
-  .prefooter h2 { font-family: var(--display); font-weight: 500; font-size: clamp(2.6rem, 6.4vw, 6rem); line-height: 0.98; letter-spacing: -0.03em; max-width: 1000px; margin: 0 auto; }
+  .prefooter h2 { font-family: var(--headline); font-weight: 600; font-size: clamp(2.6rem, 6.4vw, 6rem); line-height: 0.98; letter-spacing: -0.01em; max-width: 1000px; margin: 0 auto; }
 
 
   /* ---------- Floating cell field — cartoon germs and healthy cells drift
@@ -305,7 +305,7 @@
   .footer { padding: 96px 0 24px; }
   .flex-top-footer { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 32px; margin-bottom: 140px; }
   .left-top-footer { max-width: 640px; }
-  .text-big-footer { font-family: var(--display); font-weight: 500; font-size: clamp(40px, 3.6vw, 60px); line-height: 1; letter-spacing: -0.03em; }
+  .text-big-footer { font-family: var(--headline); font-weight: 600; font-size: clamp(40px, 3.6vw, 60px); line-height: 1; letter-spacing: -0.01em; }
   .flex-footer-links { display: flex; flex-wrap: wrap; justify-content: flex-end; align-items: flex-end; gap: 24px; }
   .line-link-block { display: inline-block; padding-top: 2px; font-size: 16px; line-height: 24px; }
   .underline-link-master { height: 1px; margin-top: 2px; }
@@ -313,7 +313,7 @@
   .line-link-block:hover .underline-link-fill, .line-link-block:focus-visible .underline-link-fill { width: 100%; transition: width .4s var(--ease-out); }
   .line-link-block.is-soon { color: var(--muted); cursor: default; }
   .brand-footer-big {
-    font-family: var(--display); font-weight: 500; line-height: .8; letter-spacing: -0.05em; white-space: nowrap;
+    font-family: var(--headline); font-weight: 600; line-height: .8; letter-spacing: -0.01em; white-space: nowrap;
     font-size: 13.6vw; margin: 0 -0.04em; padding-bottom: .06em;
   }
   @media (min-width: 1864px) { .brand-footer-big { font-size: 253px; } }
@@ -339,12 +339,10 @@
   .mascot { position: fixed; left: 0; top: 0; z-index: 95; pointer-events: none; }
   .mascot-inner { position: relative; opacity: 0; transform: translate(-50%, -50%) scale(0.85); transition: opacity 0.3s ease, transform 0.3s var(--ease-out); }
   .mascot-inner.is-visible { opacity: 1; transform: translate(-50%, -50%) scale(1); }
-  .mascot-shape { width: 40px; height: 40px; border-radius: 50%; background: var(--ink); position: relative; }
-  .mascot-shape::before, .mascot-shape::after { content: ""; position: absolute; top: 14px; width: 6px; height: 6px; border-radius: 50%; background: var(--paper); }
-  .mascot-shape::before { left: 10px; }
-  .mascot-shape::after { left: 24px; }
   /* Absolute and offset from the shape's own box, so the bubble never
      changes the shape's size/position or the hit area under the cursor. */
+  /* The cursor follower is a little cell, same art as the nav mascot. */
+  .mascot-shape { display: block; width: 56px; height: 56px; }
   .mascot-bubble {
     position: absolute; top: 50%; left: calc(100% + 14px); transform: translateY(-50%);
     max-width: 220px; width: max-content; background: var(--paper); border: 1px solid var(--line);

@@ -1,5 +1,6 @@
 /* Notch nav + cell mascot, shared by every Macrophage page that doesn't load shared.css (Home, Work). */
 :root {
+  --headline: "Encode Sans Condensed", "Arial Narrow", "Helvetica Neue", Arial, sans-serif;
   --display: "Instrument Sans", "Helvetica Neue", Arial, sans-serif;
   --body: "Instrument Sans", "Helvetica Neue", Arial, sans-serif;
   --mono: "Instrument Sans", "Helvetica Neue", Arial, sans-serif;
