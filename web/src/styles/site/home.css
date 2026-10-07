@@ -82,7 +82,7 @@
      Nothing reflows, so a word is never split. Font size follows the container width. */
   .byq-gem--inline-media-text-01__line {
     margin: 0 auto; font-family: var(--headline); font-weight: 600; letter-spacing: -0.01em; color: var(--ink);
-    font-size: clamp(1.4rem, calc(100cqw / 20), 4.8rem); line-height: 1.45; text-align: center;
+    font-size: clamp(1.4rem, calc(100cqw / 22), 4.4rem); line-height: 1.12; text-align: center;
   }
   .byq-gem--inline-media-text-01__row { display: block; white-space: nowrap; }
   .byq-gem--inline-media-text-01__seg {
@@ -99,7 +99,7 @@
   /* The swipe game lives inside the sentence: cells and pathogens sit where the photos used to. */
   .ninja { position: relative; isolation: isolate; }
   .ninja > canvas { position: absolute; inset: 0; z-index: 2; pointer-events: none; display: block; }
-  .ninja__slot { display: inline-block; width: 1.5em; height: 1.5em; margin: 0 0 0 0.1em; vertical-align: -0.45em; transform: rotate(var(--rot, 0deg)); }
+  .ninja__slot { display: inline-block; width: 1.25em; height: 1.25em; margin: -0.3em 0 -0.3em 0.14em; vertical-align: -0.3em; transform: rotate(var(--rot, 0deg)); }
   .ninja__slot img { display: block; width: 100%; height: 100%; user-select: none; -webkit-user-drag: none; transform-origin: 50% 55%; transition: transform 0.38s cubic-bezier(0.5, 0, 0.9, 0.5); }
   .ninja__slot.is-out img { transform: scale(0); }
   .ninja__slot.is-in img { animation: ninja-pop 0.52s cubic-bezier(0.3, 1.5, 0.5, 1) both; }
@@ -312,11 +312,6 @@
   .underline-link-fill { width: 0%; height: 100%; background: var(--ink); transition: width .3s ease-in; }
   .line-link-block:hover .underline-link-fill, .line-link-block:focus-visible .underline-link-fill { width: 100%; transition: width .4s var(--ease-out); }
   .line-link-block.is-soon { color: var(--muted); cursor: default; }
-  .brand-footer-big {
-    font-family: var(--headline); font-weight: 600; line-height: .8; letter-spacing: -0.01em; white-space: nowrap;
-    font-size: 13.6vw; margin: 0 -0.04em; padding-bottom: .06em;
-  }
-  @media (min-width: 1864px) { .brand-footer-big { font-size: 253px; } }
   .wrap-bottom-footer { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin-top: 32px; }
   .text-bottom-footer { font-size: 14px; line-height: 1.05; }
   .text-bottom-footer a { text-decoration: underline; text-underline-offset: 2px; }

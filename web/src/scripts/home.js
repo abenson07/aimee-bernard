@@ -85,7 +85,6 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
   function trackCursor(e) { setMascotX(e.clientX); setMascotY(e.clientY); }
 
   identityWords.forEach((word) => {
-    word.addEventListener('click', (e) => e.preventDefault());
     word.addEventListener('mouseenter', (e) => {
       heroEl.classList.add('role-hover');
       showRoleBg(word.dataset.bg);

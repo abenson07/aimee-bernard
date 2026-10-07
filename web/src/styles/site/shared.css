@@ -545,7 +545,6 @@ body:has(.site-footer) { background: var(--ink); }
 .site-footer__links a { position: relative; font-size: 16px; padding-bottom: 2px; }
 .site-footer__links a::after { content: ""; position: absolute; left: 0; bottom: 0; height: 1px; width: 0; background: currentColor; transition: width 0.4s var(--ease); }
 .site-footer__links a:hover::after { width: 100%; }
-.site-footer__word { font-family: var(--headline); font-weight: 600; font-size: 8.9cqw; line-height: 0.95; letter-spacing: -0.01em; white-space: nowrap; }
 .site-footer__bottom { display: flex; gap: 12px; justify-content: space-between; font-family: var(--mono); font-size: 12px; opacity: 0.6; }
 @media (max-width: 767px) { .site-footer__inner { padding: 64px 20px 20px; gap: 40px; } .site-footer__links { flex-direction: column; } }
 @media (prefers-reduced-motion: reduce) { .site-footer { position: static; } .page-main { margin-bottom: 0; } }
