@@ -1,0 +1,378 @@
+/* Direction 2, first pass — hero is a hybrid of Dendrite's About-state
+     layout (big name, portrait, bio, socials) and its Home-state identity-word
+     hover interaction (kept, plus a new mascot). Mission statement uses the
+     BYQ inline-media-text component with real copy/photos. Same palette and
+     fonts as Direction 1, so the two directions stay easy to compare. */
+  :root {
+    --paper: #f2f1ee;
+    --ink: #1c1b1a;
+    --muted: rgba(28, 27, 26, 0.62);
+    --line: rgba(28, 27, 26, 0.14);
+    --radius: 24px;
+    --gutter: 3rem;
+    --display: "Instrument Sans", "Helvetica Neue", Arial, sans-serif;
+    --sans: "Instrument Sans", "Helvetica Neue", Arial, sans-serif;
+    --ease-out: cubic-bezier(0.215, 0.61, 0.355, 1);
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0;
+    font-family: var(--sans);
+    color: var(--ink);
+    letter-spacing: -0.02em;
+    font-weight: 500;
+  }
+  /* One continuous gradient behind the whole page — sections have no
+     background of their own, so the colors fade seamlessly across section
+     boundaries instead of cutting at hard edges. */
+  body {
+    background-image: linear-gradient(180deg, #b7c6d9 0%, var(--paper) 32%, var(--paper) 100%);
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+  }
+  img, video { max-width: 100%; display: block; }
+  a { color: inherit; text-decoration: none; }
+  p { margin: 0; }
+  h2, h3 { margin: 0; font-weight: 400; }
+
+  .main-container { width: 100%; max-width: 1800px; margin: 0 auto; padding: 0 32px; }
+  :root { --space: clamp(140px, 12vw, 220px); }
+  .section { padding-block: var(--space); }
+
+  .label { letter-spacing: 0.7px; text-transform: uppercase; font-size: 14px; font-weight: 500; line-height: 16px; }
+  .label.muted { color: var(--muted); }
+  .display { font-family: var(--display); font-weight: 500; letter-spacing: -0.04em; line-height: 0.9; }
+  .display-md { font-size: clamp(32px, 4.4vw, 80px); line-height: 1; }
+
+  .mask { overflow: hidden; padding: 0.15em 0 0.3em; margin: -0.15em 0 -0.3em; }
+  .mask > .slide { display: block; transform: translateY(150%); transition: transform 0.9s var(--ease-out); }
+  .is-in > .slide { transform: none; }
+  .fade { opacity: 0; transform: translateY(16px); transition: opacity 1s var(--ease-out), transform 1s var(--ease-out); }
+  .fade.is-in { opacity: 1; transform: none; }
+
+  /* ---------- Hero: hybrid of Dendrite's About layout + Home hover system ---------- */
+  .hero { position: relative; min-height: 100vh; overflow: hidden; padding: 152px var(--gutter) 4rem; display: flex; flex-direction: column; justify-content: center; }
+  .hero-role-bg { position: absolute; inset: 0; z-index: 1; background-size: cover; background-position: center; opacity: 0; transition: opacity 0.5s ease; pointer-events: none; }
+  .hero-name { position: relative; z-index: 60; font-size: clamp(3rem, 9vw, 8rem); text-align: left; margin: 0 0 1.5rem; transition: color 0.4s ease; }
+  .hero.role-hover .hero-name { color: #fff; }
+  .hero-name .surname { opacity: 0.38; transition: opacity 0.4s ease; }
+  .identity-words { position: relative; z-index: 60; list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 0.5rem 1.75rem; }
+  .identity-word {
+    display: inline-block; color: var(--ink); text-decoration: none; font-family: var(--display); font-size: clamp(1.6rem, 2.6vw, 2.4rem);
+    letter-spacing: -0.01em; line-height: 1.1; opacity: 0.32; transition: opacity 0.4s ease, color 0.4s ease;
+  }
+  .identity-word:hover { opacity: 1; }
+  .hero.role-hover .identity-word { color: #fff; }
+  .hero-bottom { position: absolute; z-index: 60; left: var(--gutter); bottom: var(--gutter); display: flex; align-items: flex-end; }
+  .hero-portrait { position: absolute; right: var(--gutter); bottom: 0; height: 95vh; width: auto; max-width: 50vw; object-fit: contain; object-position: bottom right; z-index: 2; transition: opacity 0.4s ease; transform: scaleX(-1); }
+  .hero.role-hover .hero-portrait { opacity: 0; }
+  .hero-socials { list-style: none; margin: 0; padding: 0; display: flex; gap: 0.6rem; }
+  .hero-socials a {
+    display: flex; align-items: center; justify-content: center; width: 44px; height: 44px;
+    border-radius: 50%; border: 1px solid var(--line); font-size: 0.7rem; font-weight: 700;
+    letter-spacing: 0.02em; transition: background-color 0.3s ease, color 0.4s ease, border-color 0.4s ease;
+  }
+  .hero-socials a:hover { background: var(--ink); color: var(--paper); }
+  .hero.role-hover .hero-socials a { border-color: rgba(255, 255, 255, 0.4); color: #fff; }
+  .hero.role-hover .hero-socials a:hover { background: #fff; color: var(--ink); }
+
+  /* ---------- Mission statement (text only) + cell/pathogen swipe game ---------- */
+  .byq-gem--inline-media-text-01 { position: relative; width: min(100%, 90rem); margin: 0 auto; color: var(--ink); text-align: center; container-type: inline-size; }
+  /* Fixed rows: four lines on wide screens, eight short lines on narrow ones.
+     Nothing reflows, so a word is never split. Font size follows the container width. */
+  .byq-gem--inline-media-text-01__line {
+    margin: 0 auto; font-family: var(--display); font-weight: 500; letter-spacing: -0.04em; color: var(--ink);
+    font-size: clamp(1.4rem, calc(100cqw / 24), 4.2rem); line-height: 1.45; text-align: center;
+  }
+  .byq-gem--inline-media-text-01__row { display: block; white-space: nowrap; }
+  .byq-gem--inline-media-text-01__seg {
+    display: inline-block; white-space: nowrap; opacity: 0; transform: translateY(0.3em);
+    transition: opacity 0.9s var(--ease-out) calc(var(--d, 0) * 160ms), transform 0.9s var(--ease-out) calc(var(--d, 0) * 160ms);
+  }
+  .byq-gem--inline-media-text-01.is-in .byq-gem--inline-media-text-01__seg { opacity: 1; transform: none; }
+  @media (max-width: 700px) {
+    .byq-gem--inline-media-text-01__line { font-size: clamp(1.5rem, calc(100cqw / 11), 3rem); }
+    .byq-gem--inline-media-text-01__seg { display: block; margin: 0 !important; }
+  }
+  @media (prefers-reduced-motion: reduce) { .byq-gem--inline-media-text-01__seg { opacity: 1; transform: none; transition: none; } }
+
+  /* The swipe game lives inside the sentence: cells and pathogens sit where the photos used to. */
+  .ninja { position: relative; isolation: isolate; }
+  .ninja > canvas { position: absolute; inset: 0; z-index: 2; pointer-events: none; display: block; }
+  .ninja__slot { display: inline-block; width: 1.5em; height: 1.5em; margin: 0 0 0 0.1em; vertical-align: -0.45em; transform: rotate(var(--rot, 0deg)); }
+  .ninja__slot img { display: block; width: 100%; height: 100%; user-select: none; -webkit-user-drag: none; transform-origin: 50% 55%; transition: transform 0.38s cubic-bezier(0.5, 0, 0.9, 0.5); }
+  .ninja__slot.is-out img { transform: scale(0); }
+  .ninja__slot.is-in img { animation: ninja-pop 0.52s cubic-bezier(0.3, 1.5, 0.5, 1) both; }
+  .ninja__slot.is-shake img { animation: ninja-shake 0.5s ease-in-out; }
+  .ninja__slot.is-burst img { transform: scale(1.5) rotate(18deg); opacity: 0; transition: transform 0.2s ease-out, opacity 0.2s ease-out; }
+  @keyframes ninja-pop { from { transform: scale(0); } to { transform: scale(1); } }
+  @keyframes ninja-shake { 0%, 100% { transform: translateX(0) rotate(0); } 15% { transform: translateX(-9%) rotate(-8deg); } 35% { transform: translateX(8%) rotate(7deg); } 55% { transform: translateX(-6%) rotate(-5deg); } 75% { transform: translateX(4%) rotate(3deg); } }
+  .ninja__hint { margin-top: clamp(28px, 4vw, 56px); text-align: center; font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+  .ninja__hint [data-popped] { font-variant-numeric: tabular-nums; color: var(--ink); }
+  @media (prefers-reduced-motion: reduce) { .ninja__slot img { transition: none; animation: none !important; } }
+
+  /* ---------- Stats / marquee / awards, pinned scroll-swap (same content
+     as Direction 1, restructured into one pinned section: the "by the
+     numbers" header stays put while the panel beneath it swaps between
+     the three stats, the logo marquee, and the awards grid) ---------- */
+  /* Fill the screen and center the panel block vertically, so while pinned
+     it sits in the middle of the viewport (top padding clears the navbar). */
+  .stats-pin__pin-target { min-height: 100vh; min-height: 100svh; display: flex; flex-direction: column; justify-content: center; padding-block: 96px 32px; }
+  .stats-pin__viewport { position: relative; width: 100%; flex: 1; min-height: clamp(540px, 50vw, 680px); }
+  .panel-label { margin: 0 0 20px; text-align: center; }
+  .panel-title { margin: 0 auto 48px; max-width: 1200px; text-align: center; }
+  .stats-pin__panel {
+    position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: center;
+    opacity: 0; visibility: hidden; transform: translateY(16px);
+    transition: opacity 0.5s var(--ease-out), transform 0.5s var(--ease-out), visibility 0s linear 0.5s;
+  }
+  .stats-pin__panel.is-active { opacity: 1; visibility: visible; transform: none; transition: opacity 0.5s var(--ease-out), transform 0.5s var(--ease-out); }
+
+  .stats-thirds { display: grid; grid-template-columns: repeat(3, 1fr); border-top: 1px solid var(--line); }
+  .stat { display: flex; flex-direction: column; align-items: center; gap: 24px; padding-top: 40px; text-align: center; }
+  .stat + .stat { border-left: 1px solid var(--line); }
+  .stat-num { font-size: clamp(88px, 10vw, 180px); line-height: 0.85; }
+
+  .cred-marquee-label { margin: 0 0 16px; text-align: center; font-size: 13px; color: var(--muted); }
+  .cred-marquee { overflow: hidden; mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent); }
+  .cred-track { display: flex; gap: 48px; width: max-content; animation: cred-scroll 32s linear infinite; }
+  .cred-logo img { height: 60%; width: auto; max-width: 150px; object-fit: contain; filter: grayscale(1); }
+  .cred-logo { flex: none; min-width: 160px; height: 56px; display: flex; align-items: center; justify-content: center; font-family: var(--display); font-size: 22px; letter-spacing: -0.6px; color: var(--ink); opacity: 0.72; white-space: nowrap; }
+  @keyframes cred-scroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+  .awards-panel { text-align: center; }
+    .award-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 2.5rem 1.5rem; max-width: 1100px; margin: 0 auto; }
+  .award { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 0.85rem; }
+  .award-wreath { width: 100%; max-width: 110px; height: auto; color: var(--ink); }
+  .award-title { font-weight: 700; font-size: 1rem; line-height: 1.3; margin: 0; font-family: var(--sans); }
+  .award-meta { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.04em; opacity: 0.6; margin: 0; font-family: var(--sans); }
+
+  /* Below the breakpoint where the pin CSS-media check (in JS) disables
+     the ScrollTrigger pin, fall back to a normal stacked layout: every
+     panel visible, no absolute overlay. */
+  @media (max-width: 767px) {
+    .stats-pin__pin-target { min-height: 0; padding-block: 96px 64px; }
+    .stats-pin__viewport { min-height: 0; }
+    .stats-pin__panel {
+      position: static; opacity: 1; visibility: visible; transform: none; transition: none;
+      margin-bottom: 96px;
+    }
+    .stats-pin__panel:last-child { margin-bottom: 0; }
+  }
+
+  /* ---------- "What she's working on"
+     Layout lock: People Work services section (framer-1s4tegi) at 1920.
+     1144 content column, 80px stack, 16px card gutters, titles above photos. ---------- */
+  #outreach-section { padding: 160px 32px; }
+  .outreach-inner {
+    width: min(1144px, 100%);
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 80px;
+  }
+  .outreach-head { width: 100%; display: flex; justify-content: flex-start; margin: 0; text-align: left; }
+  .outreach-head h2 {
+    font-family: var(--display);
+    font-weight: 500;
+    font-style: normal;
+    font-size: 40px;
+    line-height: 44px;
+    letter-spacing: -1px;
+    max-width: 448px;
+    margin: 0;
+    text-align: left;
+    color: var(--ink);
+  }
+  .outreach-head h2 em { font-style: italic; font-weight: 400; }
+  .outreach-grid {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 16px;
+    align-items: start;
+  }
+  @media (max-width: 1100px) {
+    .outreach-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+  .outreach-tile { display: flex; flex-direction: column; gap: 24px; min-width: 0; }
+  .outreach-tile h3 {
+    font-family: var(--sans);
+    font-weight: 600;
+    font-size: 20px;
+    line-height: 24px;
+    letter-spacing: -0.25px;
+    color: var(--ink);
+  }
+  .outreach-media {
+    aspect-ratio: 371 / 421;
+    border-radius: 16px;
+    overflow: hidden;
+    background: var(--line);
+  }
+  .outreach-media img { width: 100%; height: 100%; object-fit: cover; }
+  .outreach-copy { display: flex; flex-direction: column; gap: 24px; }
+  .outreach-tile p {
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 24px;
+    letter-spacing: 0;
+    color: rgba(28, 27, 26, 0.64);
+  }
+  .outreach-link {
+    align-self: flex-start;
+    display: inline-flex;
+    flex-direction: column;
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 24px;
+    letter-spacing: 0;
+    color: var(--ink);
+  }
+  .outreach-link::after { content: ""; height: 1px; width: 100%; background: currentColor; }
+  .outreach-all {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    height: 56px;
+    padding: 0 8px 0 20px;
+    border-radius: 20px;
+    background: #f3f5ee;
+    color: var(--ink);
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 24px;
+    letter-spacing: 0;
+  }
+  .outreach-all__icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 16px;
+    background: #e3f21a;
+    color: var(--ink);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: none;
+  }
+  .outreach-all__icon svg { width: 16px; height: 16px; display: block; }
+  @media (max-width: 800px) {
+    #outreach-section { padding: 96px 24px; }
+    .outreach-inner { gap: 48px; }
+    .outreach-grid { grid-template-columns: 1fr; gap: 48px; }
+    .outreach-head h2 { font-size: 36px; line-height: 40px; }
+  }
+
+  /* ---------- Press ---------- */
+  #press-section { padding: 96px 32px 160px; }
+  .press-inner { width: min(1144px, 100%); margin: 0 auto; display: flex; flex-direction: column; gap: 48px; }
+  .press-head h2 { font-family: var(--display); font-weight: 500; font-size: 40px; line-height: 44px; letter-spacing: -1px; color: var(--ink); }
+  .press-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+  .press-card {
+    display: flex; flex-direction: column; justify-content: space-between; gap: 32px; min-height: 200px;
+    padding: 28px; border-radius: 16px; background: color-mix(in srgb, var(--paper) 55%, var(--line));
+    border: 1px solid var(--line); color: inherit; transition: transform 0.3s var(--ease-out), box-shadow 0.3s var(--ease-out);
+  }
+  .press-logo { display: inline-flex; align-items: center; height: 22px; }
+  .press-logo img { height: 100%; width: auto; max-width: 110px; object-fit: contain; filter: grayscale(1); opacity: 0.8; }
+  .press-card:hover { transform: translateY(-3px); box-shadow: 0 16px 34px rgba(0, 0, 0, 0.08); }
+  .press-card h3 { font-size: 18px; line-height: 24px; font-weight: 600; letter-spacing: -0.2px; color: var(--ink); }
+  .press-card .press-meta { display: flex; gap: 12px; padding-top: 16px; border-top: 1px solid var(--line); font-size: 12px; text-transform: uppercase; letter-spacing: 0.04em; color: var(--muted); }
+  @media (max-width: 1100px) { .press-grid { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 700px) { #press-section { padding: 64px 24px 96px; } .press-grid { grid-template-columns: 1fr; } }
+
+  /* ---------- Prefooter closing statement ---------- */
+  .prefooter { padding: 0 32px 160px; text-align: center; }
+  .prefooter h2 { font-family: var(--display); font-weight: 500; font-size: clamp(2.6rem, 6.4vw, 6rem); line-height: 0.98; letter-spacing: -0.03em; max-width: 1000px; margin: 0 auto; }
+
+
+  /* ---------- Floating cell field — cartoon germs and healthy cells drift
+     behind the prefooter statement and through the band below it. Sweep the
+     cursor fast to slice germs (see immune-game.js). The canvas never takes
+     pointer events, so scrolling, text selection and links behave as normal. ---------- */
+  .cell-field { position: relative; isolation: isolate; }
+  .cell-field .prefooter { padding: 120px 32px 0; }
+  .cell-field > canvas { position: absolute; inset: 0; z-index: -1; pointer-events: none; display: block; }
+  .cell-field-band { height: clamp(320px, 48vh, 560px); display: flex; align-items: flex-end; justify-content: center; padding: 0 32px 28px; }
+  .cell-field-hint { font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); text-align: center; }
+  .cell-field-hint [data-cleared] { font-variant-numeric: tabular-nums; color: var(--ink); }
+
+  /* ---------- Footer: port of the supplied Koda "footer-1" — big statement
+     left, link row right, a full-width wordmark, then a small bottom line.
+     Restyled to this page's type/palette; the Webflow underline hover is
+     redone in CSS (fill grows left→right on hover, shrinks on leave). ---------- */
+  .footer { padding: 96px 0 24px; }
+  .flex-top-footer { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 32px; margin-bottom: 140px; }
+  .left-top-footer { max-width: 640px; }
+  .text-big-footer { font-family: var(--display); font-weight: 500; font-size: clamp(40px, 3.6vw, 60px); line-height: 1; letter-spacing: -0.03em; }
+  .flex-footer-links { display: flex; flex-wrap: wrap; justify-content: flex-end; align-items: flex-end; gap: 24px; }
+  .line-link-block { display: inline-block; padding-top: 2px; font-size: 16px; line-height: 24px; }
+  .underline-link-master { height: 1px; margin-top: 2px; }
+  .underline-link-fill { width: 0%; height: 100%; background: var(--ink); transition: width .3s ease-in; }
+  .line-link-block:hover .underline-link-fill, .line-link-block:focus-visible .underline-link-fill { width: 100%; transition: width .4s var(--ease-out); }
+  .line-link-block.is-soon { color: var(--muted); cursor: default; }
+  .brand-footer-big {
+    font-family: var(--display); font-weight: 500; line-height: .8; letter-spacing: -0.05em; white-space: nowrap;
+    font-size: 13.6vw; margin: 0 -0.04em; padding-bottom: .06em;
+  }
+  @media (min-width: 1864px) { .brand-footer-big { font-size: 253px; } }
+  .wrap-bottom-footer { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin-top: 32px; }
+  .text-bottom-footer { font-size: 14px; line-height: 1.05; }
+  .text-bottom-footer a { text-decoration: underline; text-underline-offset: 2px; }
+  .circle-bottom-footer { flex: none; width: 6px; height: 6px; margin: 0 4px; border-radius: 50%; background: var(--ink); }
+  @media (max-width: 991px) {
+    .flex-top-footer { flex-direction: column; align-items: flex-start; }
+    .flex-footer-links { justify-content: flex-start; }
+  }
+  @media (max-width: 479px) {
+    .footer { padding-top: 100px; }
+    .flex-top-footer { margin-bottom: 100px; }
+    .flex-footer-links { flex-direction: column; align-items: flex-start; }
+    .line-link-block { font-size: 24px; }
+  }
+
+  /* ---------- Mascot placeholder (shared shape, D2: persona-follow guide) ---------- */
+  /* Outer element: GSAP drives its x/y translate continuously (cursor-follow).
+     Inner element: plain CSS handles the centering/scale/opacity toggle, so
+     the two transforms never fight each other. */
+  .mascot { position: fixed; left: 0; top: 0; z-index: 95; pointer-events: none; }
+  .mascot-inner { position: relative; opacity: 0; transform: translate(-50%, -50%) scale(0.85); transition: opacity 0.3s ease, transform 0.3s var(--ease-out); }
+  .mascot-inner.is-visible { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+  .mascot-shape { width: 40px; height: 40px; border-radius: 50%; background: var(--ink); position: relative; }
+  .mascot-shape::before, .mascot-shape::after { content: ""; position: absolute; top: 14px; width: 6px; height: 6px; border-radius: 50%; background: var(--paper); }
+  .mascot-shape::before { left: 10px; }
+  .mascot-shape::after { left: 24px; }
+  /* Absolute and offset from the shape's own box, so the bubble never
+     changes the shape's size/position or the hit area under the cursor. */
+  .mascot-bubble {
+    position: absolute; top: 50%; left: calc(100% + 14px); transform: translateY(-50%);
+    max-width: 220px; width: max-content; background: var(--paper); border: 1px solid var(--line);
+    border-radius: 14px; padding: 10px 14px; font-size: 13px; line-height: 1.4;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
+  }
+
+
+  @media (max-width: 900px) {
+    .hero-portrait { display: none; }
+    .mascot { display: none; }
+  }
+  @media (max-width: 767px) {
+    .stats-thirds { grid-template-columns: 1fr; }
+    .stat { padding-block: 48px; }
+    .stat + .stat { border-left: 0; border-top: 1px solid var(--line); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .mask > .slide, .fade { transform: none !important; opacity: 1 !important; transition: none !important; }
+  }
+
+/* Astro drops the whitespace between the mission segments, so space them here. */
+.byq-gem--inline-media-text-01__seg + .byq-gem--inline-media-text-01__seg { margin-left: 0.24em; }
+
+/* Phones: keep the footer cell field from crowding its text. */
+@media (max-width: 767px) {
+  .cell-field .prefooter { padding-top: 72px; }
+  .cell-field-band { height: 280px; }
+  .cell-field-hint { font-size: 11px; }
+  #press-section { padding-top: 64px; }
+}

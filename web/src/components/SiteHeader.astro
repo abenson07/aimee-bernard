@@ -1,0 +1,54 @@
+---
+// Banner + cell mascot (both scroll away with the page) and the floating
+// pill nav (fixed). Behavior lives in src/scripts/nav.js, which the page
+// loads (shared.js on Educator/Science Communication already includes it).
+import "@/styles/site/nav.css";
+
+const links = [
+  { href: "/", label: "Home" },
+  { href: "/educator", label: "Educator" },
+  { href: "/science-communication", label: "Communicator" },
+  { href: "/work", label: "Work" },
+  { href: "/immunology", label: "Immunologist" },
+  { href: "/community-outreach", label: "Outreach" },
+  { href: "#", label: "Contact" },
+];
+
+const norm = (p: string) => p.replace(/\/+$/, "") || "/";
+const here = norm(Astro.url.pathname);
+---
+
+<div class="site-header">
+  <div class="banner">
+    <span>Available for speaking engagements &amp; science communication consulting</span>
+    <a href="#">Get in touch</a>
+  </div>
+  <div class="site-header__inner">
+    <button type="button" class="nav-mascot" id="navMascot" aria-label="Say hi to the cell">
+      <span class="nav-mascot__body"><img src="/site/cells/t-cell.svg" alt="" draggable="false" /></span>
+      <span class="nav-mascot__bubble" aria-hidden="true"></span>
+    </button>
+  </div>
+</div>
+<nav class="pill-nav" id="pillNav" aria-label="Main">
+  <span class="pill-nav__pill pill-nav__pill--hover" aria-hidden="true"></span>
+  <span class="pill-nav__pill pill-nav__pill--active" aria-hidden="true"></span>
+  <ul class="pill-nav__list">
+    {
+      links.map((l) => {
+        const current = l.href !== "#" && norm(l.href) === here;
+        return (
+          <li>
+            <a
+              href={l.href}
+              class:list={["pill-nav__link", current && "is-current"]}
+              aria-current={current ? "page" : undefined}
+            >
+              {l.label}
+            </a>
+          </li>
+        );
+      })
+    }
+  </ul>
+</nav>

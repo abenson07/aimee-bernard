@@ -1,0 +1,31 @@
+---
+// Layout for the designed (Macrophage) pages. Unlike BaseLayout it does not
+// load the legacy design-system CSS: each page imports its own stylesheet
+// from src/styles/site/, and brings its own <SiteHeader /> so the header can
+// sit inside page wrappers that need it.
+import BaseHead from "@/components/BaseHead.astro";
+import ReviewOverlay from "@/components/ReviewOverlay.astro";
+import type { SeoProps } from "@/types.ts";
+
+type Props = SeoProps;
+
+const seo = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <BaseHead {...seo} />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400..700;1,400..700&display=swap"
+      rel="stylesheet"
+    />
+    <slot name="head" />
+  </head>
+  <body>
+    <slot />
+    <ReviewOverlay />
+  </body>
+</html>

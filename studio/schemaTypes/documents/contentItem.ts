@@ -11,6 +11,7 @@ const KIND_OPTIONS = [
   { title: "Course", value: "course" },
   { title: "Award", value: "award" },
   { title: "Research Publication", value: "research-publication" },
+  { title: "Social", value: "social" },
 ];
 
 export const contentItem = defineType({

@@ -1,13 +1,269 @@
 ---
-// brief: web/docs/content-plan.md#educator
-import Layout from '@/layouts/BaseLayout.astro';
-import Section from '@/components/Section.astro';
-import Heading from '@/components/Heading.astro';
-import Eyebrow from '@/components/Eyebrow.astro';
+import SiteLayout from "@/layouts/SiteLayout.astro";
+import SiteHeader from "@/components/SiteHeader.astro";
+import "@/styles/site/shared.css";
+import "@/styles/site/educator.css";
+import { getImage } from "astro:assets";
+import bwSrc from "@/assets/site/aimee-bw.png";
+const bwUrl = (await getImage({ src: bwSrc, format: "webp", width: 520 })).src;
 ---
-<Layout theme="dark" title="Educator">
-  <Section paddingTop="even" paddingBottom="even">
-    <Eyebrow variant="tag">Persona</Eyebrow>
-    <Heading variant="display" tag="h1">Educator</Heading>
-  </Section>
-</Layout>
+
+<SiteLayout title="Educator">
+<div class="page-main" id="pageMain">
+<SiteHeader />
+
+<main id="page">
+<section class="hero-split">
+  <div class="wrap" style="padding:0">
+    <div class="hero-split__head">
+      <h1 class="display hero-split__title">Teaching immunology so it sticks</h1>
+      <div class="hero-split__side is-info"><p>Aimee has taught 18 courses at CU Anschutz since 2019, from first-year medical students to PhD trainees.</p><span class="hero-split__chip"><img src="/site/set-d/logo-cu-chip.png" alt="" style="width:auto;height:22px"></span></div>
+    </div>
+    <div class="hero-split__media"><div><img src="/site/educator.webp" alt=""></div><div><img src={bwUrl} alt=""></div></div>
+  </div>
+</section>
+
+<section class="mission-sec has-stats" aria-label="Mission and awards">
+  <p class="mission" data-mission>The immune system is endlessly fascinating <span class="m-el m-cell" data-mx="14" data-my="10"><img src="/site/cells/t-cell.svg" alt=""></span> and my job, across teaching, communication and outreach <span class="m-el m-cell m-cell--bad" data-mx="10" data-my="14"><img src="/site/cells/influenza.svg" alt=""></span> is to inspire you <span class="m-el m-cell" data-mx="12" data-my="9"><img src="/site/cells/antibody.svg" alt=""></span> to think so too.</p>
+  <section class="awards-row no-title" aria-label="Awards">
+    <div class="award-grid">
+      <div class="award"><img class="award__wreath" src="/site/wreath.svg" alt=""><p class="award__title">CHA/PA “Guest Lecture” Teaching Award</p><p class="award__meta">CU School of Medicine · 2026</p></div>
+      <div class="award"><img class="award__wreath" src="/site/wreath.svg" alt=""><p class="award__title">Chancellor’s Teaching Recognition Award</p><p class="award__meta">CU School of Medicine · 2024</p></div>
+      <div class="award"><img class="award__wreath" src="/site/wreath.svg" alt=""><p class="award__title">S.T.A.R.ling Outstanding Faculty Teaching Award</p><p class="award__meta">CU School of Medicine · 2023</p></div>
+      <div class="award"><img class="award__wreath" src="/site/wreath.svg" alt=""><p class="award__title">S.T.A.R. Outstanding Faculty Teaching Award</p><p class="award__meta">CU School of Medicine · 2023</p></div>
+      <div class="award"><img class="award__wreath" src="/site/wreath.svg" alt=""><p class="award__title">Non-Tenure Faculty Teaching Award</p><p class="award__meta">CU Denver College of Liberal Arts & Sciences · 2014</p></div>
+      <div class="award"><img class="award__wreath" src="/site/wreath.svg" alt=""><p class="award__title">Non-Tenure Faculty Teaching Award</p><p class="award__meta">CU Denver College of Liberal Arts & Sciences · 2011</p></div>
+    </div>
+  </section>
+</section>
+
+<section class="courses" aria-label="Courses">
+  <div class="wrap">
+    <h2 class="courses__title fade">Courses Aimee directs and teaches</h2>
+    <div class="courses__grid">
+      <button type="button" class="ctile fade" data-panel="panel-som" aria-haspopup="dialog"><img class="ctile__logo" src="/site/set-d/logo-cu-medicine.png" alt=""><span class="ctile__name">CU School of Medicine</span><span class="ctile__meta">Immunology<br>Content Director. 2020-current<br>Years 1-4</span></button>
+      <button type="button" class="ctile fade" data-panel="panel-cha" aria-haspopup="dialog"><img class="ctile__logo" src="/site/set-d/logo-cu-anschutz.png" alt=""><span class="ctile__name">CU Child Health Advocate / Physician Assistant Program</span><span class="ctile__meta">Immunology<br>Content Director. 2018-current<br>Year 1 and Year 2</span></button>
+      <button type="button" class="ctile fade" data-panel="panel-dent" aria-haspopup="dialog"><img class="ctile__logo" src="/site/set-d/logo-cu-medicine.png" alt=""><span class="ctile__name">CU School of Dental Medicine</span><span class="ctile__meta">Course Director. 2019-2024<br>Year 1</span></button>
+      <button type="button" class="ctile fade" data-panel="panel-grad" aria-haspopup="dialog"><img class="ctile__logo" src="/site/set-d/logo-cu-anschutz.png" alt=""><span class="ctile__name">CU Graduate School</span><span class="ctile__meta">Course Director. 2021-current<br>2026-current</span></button>
+      <button type="button" class="ctile fade" data-panel="panel-hi3" aria-haspopup="dialog"><img class="ctile__logo" src="/site/set-d/logo-cu-anschutz.png" alt=""><span class="ctile__name">Human Immunology and Immunotherapy Initiative</span><span class="ctile__meta">Fun-Size Immunology Workshop</span></button>
+      <button type="button" class="ctile fade" data-panel="panel-den" aria-haspopup="dialog"><img class="ctile__logo" src="/site/set-d/logo-cu-medicine.png" alt=""><span class="ctile__name">CU Denver University Honors &amp; Leadership Program</span><span class="ctile__meta">Course Director. 2015-2021</span></button>
+    </div>
+  </div>
+</section>
+
+<section class="feature-pair wrap fade-to-prefooter" aria-label="Programs">
+  <div class="feature-pair__head fade"><span class="tag-chip">Programs</span><h2 class="feature-pair__title">Building the next generation of teachers</h2></div>
+  <div class="fp-grid">
+      <a class="fcard fade" href="#"><div class="fcard__img"><img src="/site/educator.webp" alt="" loading="lazy"></div><div class="fcard__top"><span>TTP</span><span>2018–present</span></div><h3 class="fcard__title">Teacher Training Program</h3></a>
+      <a class="fcard fade" href="#"><div class="fcard__img"><img src="/site/communicator.webp" alt="" loading="lazy"></div><div class="fcard__top"><span>CCTSI</span><span>2023–present</span></div><h3 class="fcard__title">Communicating Your Science to the Public</h3></a>
+  </div>
+</section>
+
+<section class="prefooter" aria-label="Closing statement">
+  <div class="prefooter__circle" aria-hidden="true"></div>
+  <div class="prefooter__inner">
+    <div class="prefooter__icons" aria-hidden="true">
+      <span class="pf-icon" data-mx="50" data-my="30" style="--l:350;--t:22;--w:293.939;--i:240;--r:15deg"><span class="pf-inner"><img src="/site/cells/t-cell.svg" alt="" style="--in:0"></span></span>
+      <span class="pf-icon" data-mx="-40" data-my="-20" style="--l:0;--t:26;--w:255.754;--i:187.225;--r:-30deg"><span class="pf-inner"><img src="/site/cells/neutrophil.svg" alt="" style="--in:0"></span></span>
+      <span class="pf-icon" data-mx="30" data-my="20" style="--l:27;--t:305;--w:132.668;--i:97.12;--r:-30deg"><span class="pf-inner"><img src="/site/cells/staph.svg" alt="" style="--in:0"></span></span>
+      <span class="pf-icon" data-mx="20" data-my="-30" style="--l:719;--t:0;--w:239.054;--i:175;--r:30deg"><span class="pf-inner"><img src="/site/cells/red-blood-cell.svg" alt="" style="--in:0"></span></span>
+      <span class="pf-icon" data-mx="-40" data-my="20" style="--l:1010;--t:-80;--w:413.438;--i:302.657;--r:30deg"><span class="pf-inner"><img src="/site/cells/coronavirus.svg" alt="" style="--in:0"></span></span>
+    </div>
+    <h2 class="prefooter__title fade">Teaching the next generation of scientists</h2>
+  </div>
+</section>
+</main>
+
+<div class="cpanel" id="panel-som" role="dialog" aria-modal="true" aria-label="CU School of Medicine" aria-hidden="true">
+  <div class="cpanel__scrim"></div>
+  <div class="cpanel__sheet">
+    <button type="button" class="cpanel__close" aria-label="Close"><svg width="18" height="18" viewBox="0 0 14 14" fill="none"><path d="M1 1l12 12M13 1L1 13" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></button>
+    <div class="cpanel__scroll">
+      <header class="cpanel__head">
+        <div class="cpanel__lead">
+          <h2 class="cpanel__title">CU School of Medicine</h2>
+          <div class="cpanel__row"><span class="cpanel__pill">Immunology — Content Director</span><span class="cpanel__cat">2020–current · Years 1–4</span></div>
+          <p class="cpanel__intro">Immunology content director across Years 1–4 of the CU School of Medicine curriculum.</p>
+          <p class="cpanel__body">From the first-year organ-system courses (“The Plains”) to the third-year advanced sciences course (“The Alpine Summit”).</p>
+          <ul class="cpanel__tags"><li>IDPT5016–5026 · Year 1</li><li>IDPT8039 · Year 3</li></ul>
+        </div>
+        <div class="cpanel__img"><img src="/site/educator.webp" alt=""></div>
+      </header>
+    <section class="ctl">
+      <div class="ctl__left"><h3 class="ctl__title">YEAR 1. The ‘Plains’</h3><p class="ctl__text">Immunology woven through the organ-system courses of the first year of medical school.</p><a class="ctl__btn" href="#">Course details <svg viewBox="0 0 12 12" fill="none"><path d="M2.5 6H9.5M9.5 6L6 2.5M9.5 6L6 9.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a></div>
+      <div class="ctl__right"><div class="ctl__lines" aria-hidden="true"></div><div class="ctl__events">
+          <div class="ctl__event"><div class="ctl__label">IDPT5016 Foundational Principles</div><div class="ctl__topics"><p>Cells, Organs, and Microenvironments of the Immune System</p><p>Introduction to Innate Immunity and Inflammation</p><p>Integration of Immunology &amp; Microbiology. Host-Pathogen Interaction</p><p>Introduction to the Complement System</p><p>Major Histocompatibility Complex (MHC). Antigen Processing &amp; Presentation</p><p>T cells. Development, Maturation &amp; Activation</p><p>Immune Response to Cancer</p><p>B cells. Development, Maturation &amp; Activation</p><p>Antibody Structure &amp; Function</p><p>Type I-III Hypersensitivities (antibody-mediated)</p><p>Overview of Immunology in the context of Myasthenia Gravis</p></div><div class="ctl__pills"><span class="ctl__pill ">11 sessions</span></div></div>
+          <div class="ctl__event"><div class="ctl__label">IDPT5017 Hematologic &amp; Lymphatic Systems</div><div class="ctl__topics"><p>Vaccines. Formulations and Immune Response</p><p>Immune Response to Tumors. Immunotherapy</p><p>Immune Diagnostics. Interrogation of the Immune System</p><p>Immunodeficiency Schema</p><p>Team-Based Learning. Use and Interpretation of Lab Studies for Diagnosis of Immunodeficiency</p><p>Immunodeficiency Case. Leukocyte Adhesion Deficiency (LAD)</p><p>Immunodeficiency Case. Severe Combined Immunodeficiency Disease (SCID)</p><p>Immunodeficiency Case. Human Immunodeficiency Virus (HIV) and Acquired Immunodeficiency Syndrome (AIDS)</p></div><div class="ctl__pills"><span class="ctl__pill ">8 sessions</span></div></div>
+          <div class="ctl__event"><div class="ctl__label">IDPT5018 Gastrointestinal System</div><div class="ctl__topics"><p>Overview of Mucosal Immunity and Oral Tolerance</p><p>Immunopathogenesis of GI. Inflammatory Bowel Disease (IBD) and Celiac Disease</p></div><div class="ctl__pills"><span class="ctl__pill ">2 sessions</span></div></div>
+          <div class="ctl__event"><div class="ctl__label">IDPT5019 Pulmonary &amp; Cardiovascular Systems</div><div class="ctl__topics"><p>Overview of Pulmonary Immune Defense</p><p>Asthma, Allergens &amp; Anaphylaxis (Oh My!)</p><p>Overview of Autoimmune Lung Disease</p></div><div class="ctl__pills"><span class="ctl__pill ">3 sessions</span></div></div>
+          <div class="ctl__event"><div class="ctl__label">IDPT5021 Renal &amp; Urinary Systems</div><div class="ctl__topics"><p>Immunology of Renal Disease</p><p>Introduction to Transplantation</p></div><div class="ctl__pills"><span class="ctl__pill ">2 sessions</span></div></div>
+          <div class="ctl__event"><div class="ctl__label">IDPT5022 Nervous System</div><div class="ctl__topics"><p>Inflammatory Neuropathy with focus on Multiple Sclerosis and Guillian Barre’ Syndrome</p></div><div class="ctl__pills"><span class="ctl__pill ">1 session</span></div></div>
+          <div class="ctl__event"><div class="ctl__label">IDPT5023 Musculoskeletal &amp; Integumentary Systems</div><div class="ctl__topics"><p>Overview of Rheumatology</p><p>Inflammatory and Non-Inflammatory Arthritis with focus on Osteoarthritis, Rheumatoid Arthritis, Systemic Lupus Erythematosus, Vasculitis, and Gout</p></div><div class="ctl__pills"><span class="ctl__pill ">2 sessions</span></div></div>
+          <div class="ctl__event"><div class="ctl__label">IDPT5025 Endocrine &amp; Metabolic Systems</div><div class="ctl__topics"><p>Overview of Thyroid Dysfunction with focus on Grave’s Disease and Hashimoto’s Thyroiditis</p><p>Immunopathogenesis of Type I Diabetes (T1D)</p></div><div class="ctl__pills"><span class="ctl__pill ">2 sessions</span></div></div>
+          <div class="ctl__event"><div class="ctl__label">IDPT5026 Reproductive System &amp; Life Cycles</div><div class="ctl__topics"><p>Immune System During Pregnancy and Development</p><p>Vaccines Across the Lifespan</p></div><div class="ctl__pills"><span class="ctl__pill ">2 sessions</span></div></div>
+        </div></div>
+    </section>
+    <section class="ctl">
+      <div class="ctl__left"><h3 class="ctl__title">YEAR 3. The ‘Alpine Summit’</h3><p class="ctl__text">Advanced immunology and immunotherapy in the third-year Alpine Summit.</p><a class="ctl__btn" href="#">Course details <svg viewBox="0 0 12 12" fill="none"><path d="M2.5 6H9.5M9.5 6L6 2.5M9.5 6L6 9.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a></div>
+      <div class="ctl__right"><div class="ctl__lines" aria-hidden="true"></div><div class="ctl__events">
+          <div class="ctl__event"><div class="ctl__label">IDPT8039 Advanced Sciences Immunology &amp; Immunotherapy</div><div class="ctl__topics"><p>Vaccines and Communication Strategies</p><p>Solid Tumors, Immune Checkpoint Blockade, and Immune-Related Adverse Events (irAE)</p><p>Liquid Tumors, Chimeric Antigen Receptor (CAR) T cells, and Immune Related Adverse Events (irAE)</p><p>Overview of Atopic Conditions and the Biologics of Atopic Conditions</p><p>Clinical Pathological Conference. Systemic Lupus Erythematosus (SLE)</p></div><div class="ctl__pills"><span class="ctl__pill ">5 sessions</span></div></div>
+        </div></div>
+    </section>
+    </div>
+  </div>
+</div>
+<div class="cpanel" id="panel-cha" role="dialog" aria-modal="true" aria-label="CU Child Health Advocate / Physician Assistant Program" aria-hidden="true">
+  <div class="cpanel__scrim"></div>
+  <div class="cpanel__sheet">
+    <button type="button" class="cpanel__close" aria-label="Close"><svg width="18" height="18" viewBox="0 0 14 14" fill="none"><path d="M1 1l12 12M13 1L1 13" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></button>
+    <div class="cpanel__scroll">
+      <header class="cpanel__head">
+        <div class="cpanel__lead">
+          <h2 class="cpanel__title">CU Child Health Advocate / Physician Assistant Program</h2>
+          <div class="cpanel__row"><span class="cpanel__pill">Immunology — Content Director</span><span class="cpanel__cat">2018–current · Year 1 and Year 2</span></div>
+          <p class="cpanel__intro">Immunology content director for the CU Child Health Advocate / Physician Assistant Program.</p>
+          <p class="cpanel__body">A summer immersion in immunology and microbiology, then immunology through the academic year in Years 1 and 2.</p>
+          <ul class="cpanel__tags"><li>Summer Immersion · Year 1</li><li>Academic Year Immunology · Years 1 &amp; 2</li></ul>
+        </div>
+        <div class="cpanel__img"><img src="/site/immunologist.webp" alt=""></div>
+      </header>
+    <section class="ctl">
+      <div class="ctl__left"><h3 class="ctl__title">YEAR 1</h3><p class="ctl__text">A summer immersion followed by the immunology academic-year course.</p><a class="ctl__btn" href="#">Course details <svg viewBox="0 0 12 12" fill="none"><path d="M2.5 6H9.5M9.5 6L6 2.5M9.5 6L6 9.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a></div>
+      <div class="ctl__right"><div class="ctl__lines" aria-hidden="true"></div><div class="ctl__events">
+          <div class="ctl__event"><div class="ctl__label">Summer Immersion. Immunology &amp; Microbiology</div><div class="ctl__topics"><p>Introduction to Immunology</p><p>Introduction to Microbiology</p><p>Introduction to Inflammation. Host-Pathogen Interaction</p><p>Introduction to Common Pathogens. Host-Pathogen Interaction</p></div><div class="ctl__pills"><span class="ctl__pill ">4 sessions</span></div></div>
+          <div class="ctl__event"><div class="ctl__label">Academic Year. Immunology</div><div class="ctl__topics"><p>Innate Immunity and Complement</p><p>Adaptive Immunity. B cells and Antibody</p><p>Adaptive Immunity. MHC, T cells, and Transplantation</p><p>Pathogenesis of Viruses and Cancer</p><p>Overview of Vaccine Formulations and Immune Response</p></div><div class="ctl__pills"><span class="ctl__pill ">5 sessions</span></div></div>
+        </div></div>
+    </section>
+    <section class="ctl">
+      <div class="ctl__left"><h3 class="ctl__title">YEAR 2</h3><p class="ctl__text">Immunology in the second year: hypersensitivity, immunodeficiency and rheumatologic inflammation.</p><a class="ctl__btn" href="#">Course details <svg viewBox="0 0 12 12" fill="none"><path d="M2.5 6H9.5M9.5 6L6 2.5M9.5 6L6 9.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a></div>
+      <div class="ctl__right"><div class="ctl__lines" aria-hidden="true"></div><div class="ctl__events">
+          <div class="ctl__event"><div class="ctl__label">Academic Year. Immunology</div><div class="ctl__topics"><p>Overview of Types I-IV Hypersensitivities</p><p>Introduction to Immunodeficiency Disorders, including HIV and AIDS</p><p>Inflammatory Cascades in the Context of Rheumatologic Conditions</p></div><div class="ctl__pills"><span class="ctl__pill ">3 sessions</span></div></div>
+        </div></div>
+    </section>
+    </div>
+  </div>
+</div>
+<div class="cpanel" id="panel-dent" role="dialog" aria-modal="true" aria-label="CU School of Dental Medicine" aria-hidden="true">
+  <div class="cpanel__scrim"></div>
+  <div class="cpanel__sheet">
+    <button type="button" class="cpanel__close" aria-label="Close"><svg width="18" height="18" viewBox="0 0 14 14" fill="none"><path d="M1 1l12 12M13 1L1 13" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></button>
+    <div class="cpanel__scroll">
+      <header class="cpanel__head">
+        <div class="cpanel__lead">
+          <h2 class="cpanel__title">CU School of Dental Medicine</h2>
+          <div class="cpanel__row"><span class="cpanel__pill">Course Director</span><span class="cpanel__cat">2019–2024 · Year 1</span></div>
+          <p class="cpanel__intro">Course director for DSBS5511, Invaders &amp; Protectors (Microbiology &amp; Immunology).</p>
+          <p class="cpanel__body">This course covers basic principles of general and medical microbiology with emphasis on oral microorganisms while integrating the response of the immune system to fight these invaders.</p>
+          <ul class="cpanel__tags"><li>DSBS5511 · Year 1</li></ul>
+        </div>
+        <div class="cpanel__img"><img src="/site/communicator.webp" alt=""></div>
+      </header>
+    <section class="ctl">
+      <div class="ctl__left"><h3 class="ctl__title">YEAR 1. DSBS5511</h3><p class="ctl__text">This course covers basic principles of general and medical microbiology with emphasis on oral microorganisms while integrating the response of the immune system to fight these invaders.</p><a class="ctl__btn" href="#">Course details <svg viewBox="0 0 12 12" fill="none"><path d="M2.5 6H9.5M9.5 6L6 2.5M9.5 6L6 9.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a></div>
+      <div class="ctl__right"><div class="ctl__lines" aria-hidden="true"></div><div class="ctl__events">
+          <div class="ctl__event"><div class="ctl__label">DSBS5511. Invaders &amp; Protectors (Microbiology &amp; Immunology)</div><div class="ctl__topics"><p>Overview of the Immune System and Relevance to the Practice of Dental Medicine</p><p>Integration of Immunology and Microbiology. Host-Pathogen Interactions</p><p>Cells, Organs, and Microenvironments of the Immune System</p><p>Introduction to Innate Immunity, Inflammation, and the Complement System</p><p>Adaptive Immunity. B cells and Antibody</p><p>Adaptive Immunity. Major Histocompatibility Complex (MHC) and T cells</p><p>Introduction to Transplantation</p><p>Mucosal Immunity and Oral Tolerance</p><p>Introduction to Periodontal Disease</p><p>Types I-IV Hypersensitivities</p><p>Tolerance &amp; Autoimmunity</p><p>Immunodeficiency Disease. Inherited and Acquired</p><p>Cancer, the Immune System, and Immunotherapy</p><p>Vaccines. Formulations and the Immune Response</p><p>Science Communication. Best Practices for Science Communication and Trusted Patient Relationships</p></div><div class="ctl__pills"><span class="ctl__pill ">15 sessions</span></div></div>
+        </div></div>
+    </section>
+    </div>
+  </div>
+</div>
+<div class="cpanel" id="panel-grad" role="dialog" aria-modal="true" aria-label="CU Graduate School" aria-hidden="true">
+  <div class="cpanel__scrim"></div>
+  <div class="cpanel__sheet">
+    <button type="button" class="cpanel__close" aria-label="Close"><svg width="18" height="18" viewBox="0 0 14 14" fill="none"><path d="M1 1l12 12M13 1L1 13" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></button>
+    <div class="cpanel__scroll">
+      <header class="cpanel__head">
+        <div class="cpanel__lead">
+          <h2 class="cpanel__title">CU Graduate School</h2>
+          <div class="cpanel__row"><span class="cpanel__pill">Course Director</span><span class="cpanel__cat">2021–current</span></div>
+          <p class="cpanel__intro">Course director for two graduate courses: Introduction to Immunology and Introduction to Science Communication.</p>
+          <p class="cpanel__body">One builds a foundation in immunology; the other builds the skills to explain science to any audience.</p>
+          <ul class="cpanel__tags"><li>MIMS7530 · Introduction to Immunology</li><li>MIMS6062 · Science Communication</li></ul>
+        </div>
+        <div class="cpanel__img"><img src={bwUrl} alt=""></div>
+      </header>
+    <section class="ctl">
+      <div class="ctl__left"><h3 class="ctl__title">MIMS7530. Introduction to Immunology</h3><p class="ctl__text">This course is an introductory immunology course designed to provide students with an introduction to the field of immunology. This class is intended to introduce students who already have some background in general biology and cell biology to the study of the immune system. Course Director, 2021–current.</p><a class="ctl__btn" href="#">Course details <svg viewBox="0 0 12 12" fill="none"><path d="M2.5 6H9.5M9.5 6L6 2.5M9.5 6L6 9.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a></div>
+      <div class="ctl__right"><div class="ctl__lines" aria-hidden="true"></div><div class="ctl__events">
+          <div class="ctl__event"><div class="ctl__label">Topics include</div><div class="ctl__topics"><p>Cells, Organs, and Microenvironments of the Immune System</p><p>Innate Immunity, Inflammation, and the Complement System</p><p>Major Histocompatibility Complex (MHC) and Antigen Processing &amp; Presentation</p><p>T cell Development, Activation, and Effector Functions</p><p>Antibody Structure &amp; Function</p><p>B cell Development, Activation and Differentiation</p><p>Antigen Receptor Signaling (BCR and TCR)</p><p>Type I-IV Hypersensitivities</p><p>Immune Response to Cancer &amp; Immunotherapy</p><p>Autoimmunity &amp; Tolerance</p><p>Vaccines and the Immune Response</p></div><div class="ctl__pills"><span class="ctl__pill ">2021–current</span></div></div>
+        </div></div>
+    </section>
+    <section class="ctl">
+      <div class="ctl__left"><h3 class="ctl__title">MIMS6062. Introduction to Science Communication</h3><p class="ctl__text">This introductory course in science communication is designed to introduce the skills to effectively convey complex scientific concepts to diverse audiences, including the public, policymakers, and fellow scientists from different fields. Course Director, 2026–current.</p><a class="ctl__btn" href="#">Course details <svg viewBox="0 0 12 12" fill="none"><path d="M2.5 6H9.5M9.5 6L6 2.5M9.5 6L6 9.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a></div>
+      <div class="ctl__right"><div class="ctl__lines" aria-hidden="true"></div><div class="ctl__events">
+          <div class="ctl__event"><div class="ctl__label">Students learn</div><div class="ctl__topics"><p>Key principles of clear and accurate scientific communication</p><p>Ethics of public science discourse</p><p>Strategies for engaging written, media and digital platforms</p><p>Adapting messages for different target audiences</p><p>Crafting compelling narratives</p><p>Developing visual aids</p></div><div class="ctl__pills"><span class="ctl__pill ">2026–current</span></div></div>
+        </div></div>
+    </section>
+    </div>
+  </div>
+</div>
+<div class="cpanel" id="panel-hi3" role="dialog" aria-modal="true" aria-label="Human Immunology and Immunotherapy Initiative" aria-hidden="true">
+  <div class="cpanel__scrim"></div>
+  <div class="cpanel__sheet">
+    <button type="button" class="cpanel__close" aria-label="Close"><svg width="18" height="18" viewBox="0 0 14 14" fill="none"><path d="M1 1l12 12M13 1L1 13" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></button>
+    <div class="cpanel__scroll">
+      <header class="cpanel__head">
+        <div class="cpanel__lead">
+          <h2 class="cpanel__title">Human Immunology and Immunotherapy Initiative</h2>
+          <div class="cpanel__row"><span class="cpanel__pill">Fun-Size Immunology Workshop</span><span class="cpanel__cat">HI3</span></div>
+          <p class="cpanel__intro">A full serving of immunology in a 2.5-day ‘fun-size’ package.</p>
+          
+          <ul class="cpanel__tags"><li>Fun-Size Immunology Workshop</li></ul>
+        </div>
+        <div class="cpanel__img"><img src="/site/immunologist.webp" alt=""></div>
+      </header>
+    <section class="ctl">
+      <div class="ctl__left"><h3 class="ctl__title">Fun-Size Immunology Workshop</h3><p class="ctl__text">A full serving of immunology in a 2.5-day ‘fun-size’ package.</p><a class="ctl__btn" href="#">Course details <svg viewBox="0 0 12 12" fill="none"><path d="M2.5 6H9.5M9.5 6L6 2.5M9.5 6L6 9.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a></div>
+      <div class="ctl__right"><div class="ctl__lines" aria-hidden="true"></div><div class="ctl__events">
+          <div class="ctl__event"><div class="ctl__label">CU Human Immunology &amp; Immunotherapy Initiative (HI3)</div><div class="ctl__topics"><p>A full serving of immunology in a 2.5-day ‘fun-size’ package.</p></div><div class="ctl__pills"><span class="ctl__pill ">2.5 days</span></div></div>
+        </div></div>
+    </section>
+    </div>
+  </div>
+</div>
+<div class="cpanel" id="panel-den" role="dialog" aria-modal="true" aria-label="CU Denver University Honors &amp; Leadership Program" aria-hidden="true">
+  <div class="cpanel__scrim"></div>
+  <div class="cpanel__sheet">
+    <button type="button" class="cpanel__close" aria-label="Close"><svg width="18" height="18" viewBox="0 0 14 14" fill="none"><path d="M1 1l12 12M13 1L1 13" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></button>
+    <div class="cpanel__scroll">
+      <header class="cpanel__head">
+        <div class="cpanel__lead">
+          <h2 class="cpanel__title">CU Denver University Honors &amp; Leadership Program</h2>
+          <div class="cpanel__row"><span class="cpanel__pill">Course Director</span><span class="cpanel__cat">2015–2021</span></div>
+          <p class="cpanel__intro">Course director for UNHL4820, Scientific Thinking.</p>
+          <p class="cpanel__body">Intensive analysis of primary and secondary literature from across the sciences designed to develop the critical thinking, content integration, and analysis skills necessary to be successful throughout academic endeavors and professional careers.</p>
+          <ul class="cpanel__tags"><li>UNHL4820 · Scientific Thinking</li></ul>
+        </div>
+        <div class="cpanel__img"><img src="/site/educator.webp" alt=""></div>
+      </header>
+    <section class="ctl">
+      <div class="ctl__left"><h3 class="ctl__title">UNHL4820. Scientific Thinking</h3><p class="ctl__text">Intensive analysis of primary and secondary literature from across the sciences designed to develop the critical thinking, content integration, and analysis skills necessary to be successful throughout academic endeavors and professional careers.</p><a class="ctl__btn" href="#">Course details <svg viewBox="0 0 12 12" fill="none"><path d="M2.5 6H9.5M9.5 6L6 2.5M9.5 6L6 9.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a></div>
+      <div class="ctl__right"><div class="ctl__lines" aria-hidden="true"></div><div class="ctl__events">
+          <div class="ctl__event"><div class="ctl__label">Through reading, group work, oral and written presentations, and class discussion, students</div><div class="ctl__topics"><p>Expand understanding and appreciation of the scientific method</p><p>Develop ability to critically analyze and evaluate experimental design in scientific and social contexts</p></div><div class="ctl__pills"><span class="ctl__pill ">2015–2021</span></div></div>
+        </div></div>
+    </section>
+    </div>
+  </div>
+</div>
+
+</div>
+<footer class="site-footer" id="siteFooter">
+<div class="site-footer__inner">
+  <div class="site-footer__top">
+    <p class="site-footer__big">Let’s connect and create something great together.</p>
+    <nav class="site-footer__links" aria-label="Footer">
+      <a href="/">Home</a>
+      <a href="/educator">Educator</a>
+      <a href="/science-communication">Communicator</a>
+      <a href="/work">Work</a>
+      <a href="#">Contact</a>
+    </nav>
+  </div>
+  <div class="site-footer__word" aria-hidden="true">Aimee Pugh-Bernard</div>
+  <div class="site-footer__bottom"><span>© Aimee Pugh-Bernard</span></div>
+</div>
+</footer>
+<script>
+  import "@/scripts/shared.js";
+</script>
+</SiteLayout>

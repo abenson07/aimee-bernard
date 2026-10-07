@@ -1,13 +1,166 @@
 ---
-// brief: web/docs/content-plan.md#resume--work-timeline
-import Layout from '@/layouts/BaseLayout.astro';
-import Section from '@/components/Section.astro';
-import Heading from '@/components/Heading.astro';
-import Eyebrow from '@/components/Eyebrow.astro';
+import SiteLayout from "@/layouts/SiteLayout.astro";
+import SiteHeader from "@/components/SiteHeader.astro";
+import { getWorkItems } from "@/utils/sanity.ts";
+import "@/styles/site/work.css";
+
+const KIND_LABELS: Record<string, string> = {
+  talk: "Talk",
+  course: "Course",
+  position: "Position",
+  award: "Award",
+  "research-publication": "Publication",
+  article: "Article",
+  podcast: "Podcast",
+  "press-mentions": "Press",
+  "educational-content": "Educational Content",
+  social: "Social",
+};
+// Category decides the tag shown on the card and the photo revealed on hover.
+const CATEGORIES: Record<string, { slug: string; photo: string }> = {
+  Educator: { slug: "educator", photo: "/site/educator.webp" },
+  "Science Communicator": { slug: "science-communicator", photo: "/site/communicator.webp" },
+  "Community Outreach": { slug: "community-outreach", photo: "/site/communicator.webp" },
+};
+
+const items = (await getWorkItems()).map((item) => {
+  const cat = item.category ? CATEGORIES[item.category] : undefined;
+  const href = item.url ?? item.fileUrl ?? null;
+  return {
+    kind: item.kind!,
+    kindLabel: KIND_LABELS[item.kind!] ?? item.kind!,
+    category: cat?.slug ?? "none",
+    categoryLabel: cat ? item.category : null,
+    title: item.title ?? "",
+    meta: [item.venue, item.date].filter(Boolean).join(" · ") || null,
+    href,
+    photo: cat?.photo ?? null,
+  };
+});
+const counts = items.reduce<Record<string, number>>((acc, i) => ((acc[i.kind] = (acc[i.kind] ?? 0) + 1), acc), {});
 ---
-<Layout theme="dark" title="Work">
-  <Section paddingTop="even" paddingBottom="even">
-    <Eyebrow variant="tag">Timeline</Eyebrow>
-    <Heading variant="display" tag="h1">Work</Heading>
-  </Section>
-</Layout>
+
+<SiteLayout title="Work">
+<!-- structure + style: Direction 2 (first pass) -->
+<SiteHeader />
+
+<main class="main-container">
+  <div class="work-header">
+    <h1 class="display">Work</h1>
+    <p>Talks, courses, publications, positions, press, and everything else &mdash; pulled straight from the same dataset behind the dashboard. Filter by kind.</p>
+  </div>
+
+  <div class="work-filters">
+    <div class="filter-row">
+      <span class="filter-label">Kind</span>
+      <div class="kind-grid" id="kindGrid">
+        <button type="button" class="kind-tile is-active is-all" data-filter-value="all">
+          <span class="tile-check">&#10003;</span>
+          <svg class="tile-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="7" height="7" x="3" y="3" rx="1"/><rect width="7" height="7" x="14" y="3" rx="1"/><rect width="7" height="7" x="14" y="14" rx="1"/><rect width="7" height="7" x="3" y="14" rx="1"/></svg>
+          <span class="tile-label">All</span>
+          <span class="tile-count">{items.length}</span>
+        </button>
+        <button type="button" class="kind-tile" data-filter-value="talk" style="background:#dce3ee">
+          
+          <svg class="tile-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><path d="M12 19v3"/></svg>
+          <span class="tile-label">Talk</span>
+          <span class="tile-count">{counts["talk"] ?? 0}</span>
+        </button>
+        <button type="button" class="kind-tile" data-filter-value="course" style="background:#dfe7d6">
+          
+          <svg class="tile-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21.42 10.922a1 1 0 0 0-.019-1.838L12.83 5.18a2 2 0 0 0-1.66 0L2.6 9.08a1 1 0 0 0 0 1.832l8.57 3.908a2 2 0 0 0 1.66 0z"/><path d="M22 10v6"/><path d="M6 12.5V16a6 3 0 0 0 12 0v-3.5"/></svg>
+          <span class="tile-label">Course</span>
+          <span class="tile-count">{counts["course"] ?? 0}</span>
+        </button>
+        <button type="button" class="kind-tile" data-filter-value="position" style="background:#e8d9cf">
+          
+          <svg class="tile-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 20V4a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/><rect width="20" height="14" x="2" y="6" rx="2"/></svg>
+          <span class="tile-label">Position</span>
+          <span class="tile-count">{counts["position"] ?? 0}</span>
+        </button>
+        <button type="button" class="kind-tile" data-filter-value="award" style="background:#f0e2b8">
+          
+          <svg class="tile-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/></svg>
+          <span class="tile-label">Award</span>
+          <span class="tile-count">{counts["award"] ?? 0}</span>
+        </button>
+        <button type="button" class="kind-tile" data-filter-value="research-publication" style="background:#e2d6df">
+          
+          <svg class="tile-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg>
+          <span class="tile-label">Publication</span>
+          <span class="tile-count">{counts["research-publication"] ?? 0}</span>
+        </button>
+        <button type="button" class="kind-tile" data-filter-value="article" style="background:#d7e0e6">
+          
+          <svg class="tile-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
+          <span class="tile-label">Article</span>
+          <span class="tile-count">{counts["article"] ?? 0}</span>
+        </button>
+        <button type="button" class="kind-tile" data-filter-value="podcast" style="background:#f1dbd7">
+          
+          <svg class="tile-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 14h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-7a9 9 0 0 1 18 0v7a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3"/></svg>
+          <span class="tile-label">Podcast</span>
+          <span class="tile-count">{counts["podcast"] ?? 0}</span>
+        </button>
+        <button type="button" class="kind-tile" data-filter-value="press-mentions" style="background:#dfe0d0">
+          
+          <svg class="tile-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2Zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2"/><path d="M18 14h-8"/><path d="M15 18h-5"/><path d="M10 6h8v4h-8V6Z"/></svg>
+          <span class="tile-label">Press</span>
+          <span class="tile-count">{counts["press-mentions"] ?? 0}</span>
+        </button>
+        <button type="button" class="kind-tile" data-filter-value="educational-content" style="background:#efe6d3">
+          
+          <svg class="tile-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/></svg>
+          <span class="tile-label">Educational Content</span>
+          <span class="tile-count">{counts["educational-content"] ?? 0}</span>
+        </button>
+        <button type="button" class="kind-tile" data-filter-value="social" style="background:#dde5e3">
+          
+          <svg class="tile-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2"/><circle cx="10" cy="7" r="4"/><path d="M21 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          <span class="tile-label">Social</span>
+          <span class="tile-count">{counts["social"] ?? 0}</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <p class="work-count"><span id="workCount">{items.length}</span> of {items.length} results</p>
+
+  <div class="work-grid" id="workGrid">
+      {items.map((item) => {
+        const Tag = item.href ? "a" : "div";
+        return (
+          <Tag
+            class:list={["work-card", item.photo && "has-photo"]}
+            data-category={item.category}
+            data-kind={item.kind}
+            href={item.href ?? undefined}
+            target={item.href ? "_blank" : undefined}
+            rel={item.href ? "noopener" : undefined}
+          >
+            {item.photo && (
+              <div class="work-photo">
+                <img src={item.photo} alt="" loading="lazy" />
+              </div>
+            )}
+            <div class="work-top">
+              <span class="work-kind">{item.kindLabel}</span>
+              {item.categoryLabel && <span class="work-cat">{item.categoryLabel}</span>}
+            </div>
+            <div class="work-bottom">
+              <h3 class="work-title">{item.title}</h3>
+              {item.meta && <p class="work-meta">{item.meta}</p>}
+            </div>
+          </Tag>
+        );
+      })}
+  </div>
+</main>
+
+
+
+<script>
+  import "@/scripts/nav.js";
+  import "@/scripts/work.js";
+</script>
+</SiteLayout>

@@ -1,0 +1,22 @@
+---
+// Placeholder body for pages that don't have a design yet.
+import SiteLayout from "@/layouts/SiteLayout.astro";
+import SiteHeader from "@/components/SiteHeader.astro";
+import "@/styles/site/coming-soon.css";
+
+interface Props {
+  title: string;
+}
+const { title } = Astro.props;
+---
+
+<SiteLayout title={title} noindex>
+  <SiteHeader />
+  <main class="coming-soon">
+    <h1>{title}</h1>
+    <p>Not yet designed, to come in soon.</p>
+  </main>
+  <script>
+    import "@/scripts/nav.js";
+  </script>
+</SiteLayout>

@@ -1,13 +1,135 @@
 ---
-// brief: web/docs/content-plan.md#science-communication
-import Layout from '@/layouts/BaseLayout.astro';
-import Section from '@/components/Section.astro';
-import Heading from '@/components/Heading.astro';
-import Eyebrow from '@/components/Eyebrow.astro';
+import SiteLayout from "@/layouts/SiteLayout.astro";
+import SiteHeader from "@/components/SiteHeader.astro";
+import "@/styles/site/shared.css";
+import "@/styles/site/science-communication.css";
+import { getImage } from "astro:assets";
+import bwSrc from "@/assets/site/aimee-bw.png";
+import tedxSrc from "@/assets/site/tedx-talk.jpg";
+const bwUrl = (await getImage({ src: bwSrc, format: "webp", width: 520 })).src;
+const tedxUrl = (await getImage({ src: tedxSrc, format: "webp", width: 1280 })).src;
 ---
-<Layout theme="dark" title="Science Communication">
-  <Section paddingTop="even" paddingBottom="even">
-    <Eyebrow variant="tag">Persona</Eyebrow>
-    <Heading variant="display" tag="h1">Science Communication</Heading>
-  </Section>
-</Layout>
+
+<SiteLayout title="Science Communication">
+<div class="page-main" id="pageMain">
+<SiteHeader />
+
+<section class="hero-split is-fade">
+  <div class="wrap" style="padding:0">
+    <div class="hero-split__head">
+      <h1 class="display hero-split__title">Talking about science so people listen</h1>
+      <div class="hero-split__side"><p>Talks, keynotes, and workshops on making immunology clear, honest, and human.</p></div>
+    </div>
+    <div class="hero-split__media"><div><img src="/site/educator.webp" alt=""></div><div><img src={bwUrl} alt=""></div></div>
+  </div>
+</section>
+
+<section class="mission-sec has-stats fade-into" aria-label="Mission and numbers">
+  <p class="mission" data-mission>The immune system is endlessly fascinating <span class="m-el m-cell" data-mx="14" data-my="10"><img src="/site/cells/t-cell.svg" alt=""></span> and my job, across teaching, communication and outreach <span class="m-el m-cell m-cell--bad" data-mx="10" data-my="14"><img src="/site/cells/influenza.svg" alt=""></span> is to inspire you <span class="m-el m-cell" data-mx="12" data-my="9"><img src="/site/cells/antibody.svg" alt=""></span> to think so too.</p>
+  <div class="stats-row is-tight">
+    <div class="stat fade"><div class="stat__num">25+</div><p class="stat__desc">Years as an educator, scientist &amp; communicator</p></div>
+    <div class="stat fade"><div class="stat__num">18</div><p class="stat__desc">Courses taught</p></div>
+    <div class="stat fade"><div class="stat__num">21</div><p class="stat__desc">Talks given</p></div>
+  </div>
+</section>
+
+<section class="marquee" aria-label="Appeared with" aria-hidden="true"><div class="marquee__track"><div class="marquee__set"><span class="marquee__logo"><img src="/site/logos/cu-anschutz.png" alt="CU Anschutz" loading="lazy"></span><span class="marquee__logo"><img src="/site/logos/cu-denver.png" alt="CU Denver" loading="lazy"></span><span class="marquee__logo"><img src="/site/logos/tedx.svg" alt="TEDx" loading="lazy"></span><span class="marquee__logo"><img src="/site/logos/aai.png" alt="AAI" loading="lazy"></span><span class="marquee__logo"><img src="/site/logos/the-conversation.svg" alt="The Conversation" loading="lazy"></span><span class="marquee__logo"><img src="/site/logos/medpagetoday.svg" alt="MedPage Today" loading="lazy"></span><span class="marquee__logo"><img src="/site/logos/self.svg" alt="SELF" loading="lazy"></span><span class="marquee__logo"><img src="/site/logos/huffpost.svg" alt="HuffPost" loading="lazy"></span></div><div class="marquee__set"><span class="marquee__logo"><img src="/site/logos/cu-anschutz.png" alt="CU Anschutz" loading="lazy"></span><span class="marquee__logo"><img src="/site/logos/cu-denver.png" alt="CU Denver" loading="lazy"></span><span class="marquee__logo"><img src="/site/logos/tedx.svg" alt="TEDx" loading="lazy"></span><span class="marquee__logo"><img src="/site/logos/aai.png" alt="AAI" loading="lazy"></span><span class="marquee__logo"><img src="/site/logos/the-conversation.svg" alt="The Conversation" loading="lazy"></span><span class="marquee__logo"><img src="/site/logos/medpagetoday.svg" alt="MedPage Today" loading="lazy"></span><span class="marquee__logo"><img src="/site/logos/self.svg" alt="SELF" loading="lazy"></span><span class="marquee__logo"><img src="/site/logos/huffpost.svg" alt="HuffPost" loading="lazy"></span></div></div></section>
+
+<section class="contrib" aria-label="Regularly contributes to">
+  <div class="wrap">
+    <div class="contrib__head fade"><h2 class="contrib__title">Aimee regularly contributes to...</h2></div>
+    <div class="contrib__row fade">
+      <a class="contrib__card" href="#"><div class="contrib__media"><img src={bwUrl} alt="" style="object-position:50% 25%" loading="lazy"></div><div class="contrib__info"><h3 class="contrib__name">Unbiased Science</h3><p class="contrib__role">Immunology Expert</p></div></a>
+      <a class="contrib__card" href="#"><div class="contrib__media"><img src="/site/immunologist.webp" alt="" style="object-position:70% 50%" loading="lazy"></div><div class="contrib__info"><h3 class="contrib__name">The Immunology Podcast</h3><p class="contrib__role">Guest Expert</p></div></a>
+      <a class="contrib__card" href="#"><div class="contrib__media"><img src="/site/communicator.webp" alt="" style="object-position:62% 40%" loading="lazy"></div><div class="contrib__info"><h3 class="contrib__name">The Conversation</h3><p class="contrib__role">Contributing Author</p></div></a>
+    </div>
+  </div>
+</section>
+
+<section class="tedx" data-tedx aria-label="TEDx talk">
+  <div class="tedx__track"><div class="tedx__stage">
+    <div class="tedx__cover" aria-hidden="true"><img src={tedxUrl} alt=""></div>
+    <div class="wrap" style="width:100%"><div class="tedx__plate">
+      <div class="tedx__head"><span class="label">TEDxCU · April 2026</span><h2 class="tedx__title">Confessions of a Scientist: Science education needs communication training</h2></div>
+      <div class="tedx__frame"><img src={tedxUrl} alt="Aimee Pugh-Bernard speaking at TEDxCU"></div>
+    </div></div>
+  </div></div>
+</section>
+
+<div class="press wrap fade-to-prefooter">
+    <a class="press-feature fade" href="#">
+      <div class="press-feature__body">
+        <div><h3 class="press-feature__title">Research Day Keynote Speaker</h3><p class="press-feature__sub">Colorado State University, College of Health &amp; Human Sciences</p></div>
+        <div class="press-feature__foot"><hr><div class="press-feature__meta"><div class="meta"><span>Keynote</span><span>March 2026</span></div><span class="glass-btn"><span class="button-text-mask"><span class="button-text t1">Read now</span><span class="button-text t2">Read now</span></span></span></div></div>
+      </div>
+      <div class="press-feature__img"><img src="/site/communicator.webp" alt="" loading="lazy"></div>
+    </a>
+    <div class="press-grid fade">
+      <a class="press-card" href="#">
+        <div class="press-card__img" aria-hidden="true"><img src="/site/educator.webp" alt="" loading="lazy"></div>
+        <h3 class="press-card__title">Confessions of a Scientist: Science education needs communication training</h3>
+        <div class="press-card__foot"><hr><div class="meta"><span>TEDxCU</span><span>April 2026</span></div></div>
+      </a>
+      <a class="press-card" href="#">
+        <div class="press-card__img" aria-hidden="true"><img src="/site/immunologist.webp" alt="" loading="lazy"></div>
+        <h3 class="press-card__title">Navigating Vaccine Hesitancy</h3>
+        <div class="press-card__foot"><hr><div class="meta"><span>Women’s Health Symposium</span><span>February 2026</span></div></div>
+      </a>
+      <a class="press-card" href="#">
+        <div class="press-card__img" aria-hidden="true"><img src={bwUrl} alt="" loading="lazy"></div>
+        <h3 class="press-card__title">From Data to Dialogue: Science Communication for the Real World</h3>
+        <div class="press-card__foot"><hr><div class="meta"><span>Rochester myHub</span><span>October 2025</span></div></div>
+      </a>
+      <a class="press-card" href="#">
+        <div class="press-card__img" aria-hidden="true"><img src="/site/communicator.webp" alt="" loading="lazy"></div>
+        <h3 class="press-card__title">Translating Medicine. Science Communication Academic and Clinical Tool</h3>
+        <div class="press-card__foot"><hr><div class="meta"><span>CU Grand Rounds</span><span>September 2025</span></div></div>
+      </a>
+      <a class="press-card" href="#">
+        <div class="press-card__img" aria-hidden="true"><img src="/site/educator.webp" alt="" loading="lazy"></div>
+        <h3 class="press-card__title">The World of Autoimmunity</h3>
+        <div class="press-card__foot"><hr><div class="meta"><span>Unbiased Science Podcast</span><span>April 2025</span></div></div>
+      </a>
+      <a class="press-card" href="#">
+        <div class="press-card__img" aria-hidden="true"><img src="/site/immunologist.webp" alt="" loading="lazy"></div>
+        <h3 class="press-card__title">The Life of a Dedicated Educator</h3>
+        <div class="press-card__foot"><hr><div class="meta"><span>Project Bridge Science Podcast</span><span>January 2025</span></div></div>
+      </a>
+    </div>
+  </div>
+
+<section class="prefooter" aria-label="Closing statement">
+  <div class="prefooter__circle" aria-hidden="true"></div>
+  <div class="prefooter__inner">
+    <div class="prefooter__icons" aria-hidden="true">
+      <span class="pf-icon" data-mx="50" data-my="30" style="--l:350;--t:22;--w:293.939;--i:240;--r:15deg"><span class="pf-inner"><img src="/site/cells/t-cell.svg" alt="" style="--in:0"></span></span>
+      <span class="pf-icon" data-mx="-40" data-my="-20" style="--l:0;--t:26;--w:255.754;--i:187.225;--r:-30deg"><span class="pf-inner"><img src="/site/cells/neutrophil.svg" alt="" style="--in:0"></span></span>
+      <span class="pf-icon" data-mx="30" data-my="20" style="--l:27;--t:305;--w:132.668;--i:97.12;--r:-30deg"><span class="pf-inner"><img src="/site/cells/staph.svg" alt="" style="--in:0"></span></span>
+      <span class="pf-icon" data-mx="20" data-my="-30" style="--l:719;--t:0;--w:239.054;--i:175;--r:30deg"><span class="pf-inner"><img src="/site/cells/red-blood-cell.svg" alt="" style="--in:0"></span></span>
+      <span class="pf-icon" data-mx="-40" data-my="20" style="--l:1010;--t:-80;--w:413.438;--i:302.657;--r:30deg"><span class="pf-inner"><img src="/site/cells/coronavirus.svg" alt="" style="--in:0"></span></span>
+    </div>
+    <h2 class="prefooter__title fade">Sharing new ideas with new audiences</h2>
+  </div>
+</section>
+
+</div>
+<footer class="site-footer" id="siteFooter">
+<div class="site-footer__inner">
+  <div class="site-footer__top">
+    <p class="site-footer__big">Let’s connect and create something great together.</p>
+    <nav class="site-footer__links" aria-label="Footer">
+      <a href="/">Home</a>
+      <a href="/educator">Educator</a>
+      <a href="/science-communication">Communicator</a>
+      <a href="/work">Work</a>
+      <a href="#">Contact</a>
+    </nav>
+  </div>
+  <div class="site-footer__word" aria-hidden="true">Aimee Pugh-Bernard</div>
+  <div class="site-footer__bottom"><span>© Aimee Pugh-Bernard</span></div>
+</div>
+</footer>
+<script>
+  import "@/scripts/shared.js";
+</script>
+</SiteLayout>

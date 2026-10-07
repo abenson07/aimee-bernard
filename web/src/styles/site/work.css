@@ -1,0 +1,148 @@
+/* Direction 2 — Work page, first pass. Masonry grid inspired by
+     floema.com/en/products (top filter chips, "Showing X of Y", cards of
+     varying height); card face borrowed from Antibody's recent-appearances
+     cards (category up top, some cards reveal a photo on hover, others
+     stay plain) but with title moved to the bottom per this round's brief.
+     Same nav/palette/fonts as the rest of Direction 2. */
+  :root {
+    --paper: #f2f1ee;
+    --ink: #1c1b1a;
+    --muted: rgba(28, 27, 26, 0.62);
+    --line: rgba(28, 27, 26, 0.14);
+    --radius: 24px;
+    --gutter: 3rem;
+    --display: "Instrument Sans", "Helvetica Neue", Arial, sans-serif;
+    --sans: "Instrument Sans", "Helvetica Neue", Arial, sans-serif;
+    --ease-out: cubic-bezier(0.215, 0.61, 0.355, 1);
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0;
+    font-family: var(--sans);
+    color: var(--ink);
+    letter-spacing: -0.02em;
+    font-weight: 500;
+  }
+  html, body { background: var(--paper); }
+  img, video { max-width: 100%; display: block; }
+  a { color: inherit; text-decoration: none; }
+  p { margin: 0; }
+  h2, h3 { margin: 0; font-weight: 400; }
+
+  /* No cap at all, on purpose — a data grid should fill whatever screen
+     it's on, not be capped to a comfortable reading width like the
+     editorial pages. Side gutters only. */
+  .main-container { width: 100%; margin: 0 auto; padding: 0 40px; }
+
+  .label { letter-spacing: 0.7px; text-transform: uppercase; font-size: 14px; font-weight: 500; line-height: 16px; }
+  .label.muted { color: var(--muted); }
+  .display { font-family: var(--display); font-weight: 500; letter-spacing: -0.04em; line-height: 0.9; }
+
+  /* ---------- Page header ---------- */
+  .work-header { padding: 168px 0 2.5rem; text-align: center; }
+  .work-header h1 { font-size: clamp(2.75rem, 6vw, 4.75rem); }
+  .work-header p { color: var(--muted); max-width: 38rem; margin: 0.85rem auto 0; font-size: 1rem; line-height: 1.5; }
+
+  /* ---------- Filters (floema-style chip rows + result count) ---------- */
+  .work-filters { padding-bottom: 1.75rem; }
+  .filter-row .filter-label { display: block; font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); margin-bottom: 0.75rem; }
+  /* Square tiles, floema-style: a colored square per kind, selection shown
+     by a dark border + checkmark badge rather than a filled/inverted state. */
+  .kind-grid { display: flex; flex-wrap: nowrap; gap: 0.7rem; width: 100%; }
+  .kind-tile {
+    position: relative; flex: 1 1 0; min-width: 0; aspect-ratio: 1; border-radius: 14px; border: 2px solid transparent;
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.3rem;
+    cursor: pointer; font-family: var(--sans); transition: border-color 0.25s ease, transform 0.25s ease;
+  }
+  .kind-tile:hover { transform: translateY(-2px); }
+  .kind-tile.is-active { border-color: var(--ink); }
+  .kind-tile.is-all { background: var(--ink); color: var(--paper); }
+  .tile-label { font-size: clamp(11px, 1vw, 13px); font-weight: 700; text-align: center; padding: 0 0.35rem; overflow-wrap: anywhere; }
+  .tile-count { font-size: 11px; opacity: 0.6; }
+  .tile-icon { width: clamp(22px, 2.6vw, 34px); height: auto; aspect-ratio: 1; margin-bottom: 0.35rem; opacity: 0.85; transition: transform 0.3s ease; }
+  .kind-tile:hover .tile-icon { transform: scale(1.12) rotate(-4deg); }
+  .tile-check {
+    position: absolute; top: 8px; right: 8px; width: 20px; height: 20px; border-radius: 50%;
+    background: var(--ink); color: var(--paper); font-size: 11px; display: flex; align-items: center; justify-content: center;
+  }
+  .kind-tile.is-all .tile-check { background: var(--paper); color: var(--ink); }
+  .work-count { padding-bottom: 1.25rem; font-size: 13px; color: var(--muted); border-top: 1px solid var(--line); padding-top: 1.25rem; }
+
+  /* ---------- Masonry grid (CSS columns — organic varied heights) ---------- */
+  /* CSS multi-column (column-width) balances columns to fit the CONTENT,
+     not the container — with few cards (e.g. filtered down to 6) it
+     collapses to 2-3 columns and leaves the rest of a wide screen empty,
+     no matter how wide the grid itself is. Grid with auto-fill always
+     lays out a full row of tracks across the container's actual width,
+     so it never leaves a wide screen half-empty. */
+  /* Floema-style block layout: the visible cards are chunked into fixed
+     4-column blocks (see layoutGrid() below). Each block is a named-area grid
+     whose cells are exact squares, and a card's shape (square, wide = 2x1,
+     tall = 1x2) comes from the slot it lands in, not from its content. */
+  .work-grid { --wg: 1.1rem; container-type: inline-size; display: flex; flex-direction: column; gap: var(--wg); padding-bottom: 6rem; transition: opacity 0.25s ease; }
+  .work-block {
+    display: grid; grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-auto-rows: calc((100cqw - 3 * var(--wg)) / 4); gap: var(--wg);
+  }
+  .work-block.l1 { grid-template-areas: "s1 v s2 s3" "s4 v h h"; }
+  .work-block.l2 { grid-template-areas: "h h s1 s2"; }
+  .work-block.l3 { grid-template-areas: "h h v s1" "s2 s3 v s4"; }
+  .work-block.l4 { grid-template-areas: "s1 s2 h h"; }
+  .work-block.sq { grid-template-areas: none; }
+  .work-card.slot-s1 { grid-area: s1; } .work-card.slot-s2 { grid-area: s2; } .work-card.slot-s3 { grid-area: s3; }
+  .work-card.slot-s4 { grid-area: s4; } .work-card.slot-v { grid-area: v; } .work-card.slot-h { grid-area: h; }
+  @media (max-width: 1023px) {
+    .work-block { grid-template-columns: repeat(2, minmax(0, 1fr)); grid-auto-rows: calc((100cqw - var(--wg)) / 2); }
+    .work-block.l1 { grid-template-areas: "s1 s2" "h h" "s3 s4" "v v"; }
+    .work-block.l2 { grid-template-areas: "h h" "s1 s2"; }
+    .work-block.l3 { grid-template-areas: "h h" "s1 s2" "s3 s4" "v v"; }
+    .work-block.l4 { grid-template-areas: "s1 s2" "h h"; }
+  }
+  .work-grid.is-filtering { opacity: 0; }
+  .work-card {
+    display: flex; flex-direction: column; justify-content: space-between; position: relative;
+    border-radius: var(--radius); background: color-mix(in srgb, var(--paper) 55%, var(--line));
+    border: 1px solid var(--line); overflow: hidden; padding: 1.15rem; min-width: 0; min-height: 0;
+    transition: transform 0.3s var(--ease-out), box-shadow 0.3s var(--ease-out);
+  }
+  .work-card { --kind: #e6e3de; transition: transform 0.3s var(--ease-out), box-shadow 0.3s var(--ease-out), background-color 0.45s ease, border-color 0.45s ease; }
+  .work-card[data-kind="talk"] { --kind: #dce3ee; } .work-card[data-kind="course"] { --kind: #dfe7d6; }
+  .work-card[data-kind="position"] { --kind: #e8d9cf; } .work-card[data-kind="award"] { --kind: #f0e2b8; }
+  .work-card[data-kind="research-publication"] { --kind: #e2d6df; } .work-card[data-kind="article"] { --kind: #d7e0e6; }
+  .work-card[data-kind="podcast"] { --kind: #f1dbd7; } .work-card[data-kind="press-mentions"] { --kind: #dfe0d0; }
+  .work-card[data-kind="educational-content"] { --kind: #efe6d3; } .work-card[data-kind="social"] { --kind: #dde5e3; }
+  .work-card:hover { transform: translateY(-3px); box-shadow: 0 16px 34px rgba(0, 0, 0, 0.1); }
+  /* No photo to reveal? Wash the card in its kind's tile colour instead. */
+  .work-card:not(.has-photo):hover { background: var(--kind); border-color: color-mix(in srgb, var(--kind) 55%, var(--ink)); }
+  .work-card[hidden] { display: none; }
+  .work-card.has-photo { color: var(--ink); }
+  .work-photo {
+    position: absolute; inset: 0; z-index: 0; opacity: 0; transform: scale(1.06);
+    transition: opacity 0.4s ease, transform 0.5s var(--ease-out);
+  }
+  .work-photo img { width: 100%; height: 100%; object-fit: cover; }
+  .work-photo::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(0, 0, 0, 0.18) 0%, rgba(0, 0, 0, 0.05) 40%, rgba(0, 0, 0, 0.72) 100%); }
+  .work-card.has-photo:hover { color: #fff; }
+  .work-card.has-photo:hover .work-photo { opacity: 1; transform: scale(1); }
+  .work-top, .work-bottom { position: relative; z-index: 1; }
+  .work-top { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 0.5rem 0.75rem; }
+  .work-kind { font-size: 10.5px; text-transform: uppercase; letter-spacing: 0.06em; font-weight: 700; opacity: 0.72; }
+  .work-cat { font-size: 10.5px; text-transform: uppercase; letter-spacing: 0.06em; opacity: 0.5; }
+  .work-title { font-family: var(--display); font-size: 1.18rem; line-height: 1.25; margin-top: 0.75rem; display: -webkit-box; -webkit-line-clamp: 6; -webkit-box-orient: vertical; overflow: hidden; }
+  .work-meta { font-size: 11.5px; opacity: 0.62; margin-top: 0.4rem; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+
+
+  @media (max-width: 900px) {
+  }
+  @media (max-width: 560px) {
+    /* Phones: one card per row, as tall as its text, so titles are never cut off. */
+    .work-block { grid-template-columns: 1fr; grid-auto-rows: auto; }
+    .work-block.l1, .work-block.l2, .work-block.l3, .work-block.l4 { grid-template-areas: none; }
+    .work-card[class*="slot-"] { grid-area: auto; }
+    .work-card { min-height: 168px; gap: 2rem; }
+    .work-title { -webkit-line-clamp: 8; }
+    .kind-grid { flex-wrap: wrap; }
+    .kind-tile { flex: 1 1 88px; }
+  }
+  @media (max-width: 767px) {
+  }
