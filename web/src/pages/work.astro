@@ -1,7 +1,9 @@
 ---
 import SiteLayout from "@/layouts/SiteLayout.astro";
 import SiteHeader from "@/components/SiteHeader.astro";
-import { getWorkItems } from "@/utils/sanity.ts";
+// Snapshot of the Sanity contentItems. To read live instead, swap this for
+// `getWorkItems()` from "@/utils/sanity.ts" and render on request.
+import snapshot from "@/data/work-snapshot.json";
 import "@/styles/site/work.css";
 
 const KIND_LABELS: Record<string, string> = {
@@ -23,7 +25,7 @@ const CATEGORIES: Record<string, { slug: string; photo: string }> = {
   "Community Outreach": { slug: "community-outreach", photo: "/site/communicator.webp" },
 };
 
-const items = (await getWorkItems()).map((item) => {
+const items = snapshot.map((item) => {
   const cat = item.category ? CATEGORIES[item.category] : undefined;
   const href = item.url ?? item.fileUrl ?? null;
   return {
