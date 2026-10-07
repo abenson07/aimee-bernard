@@ -4,10 +4,10 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="robots" content="noindex, nofollow">
-<title>Home &middot; Aimee Pugh-Bernard (Set B &middot; Direction 2)</title>
+<title>Home &middot; Aimee Pugh-Bernard (Macrophage)</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
 <style>
   /* Direction 2, first pass — hero is a hybrid of Dendrite's About-state
      layout (big name, portrait, bio, socials) and its Home-state identity-word
@@ -21,8 +21,8 @@
     --line: rgba(28, 27, 26, 0.14);
     --radius: 24px;
     --gutter: 3rem;
-    --serif: "Instrument Serif", Georgia, serif;
-    --sans: "DM Sans", sans-serif;
+    --display: "Instrument Sans", "Helvetica Neue", Arial, sans-serif;
+    --sans: "Instrument Sans", "Helvetica Neue", Arial, sans-serif;
     --ease-out: cubic-bezier(0.215, 0.61, 0.355, 1);
   }
   * { box-sizing: border-box; }
@@ -52,7 +52,7 @@
 
   .label { letter-spacing: 0.7px; text-transform: uppercase; font-size: 14px; font-weight: 500; line-height: 16px; }
   .label.muted { color: var(--muted); }
-  .display { font-family: var(--serif); font-weight: 400; letter-spacing: -0.04em; line-height: 0.9; }
+  .display { font-family: var(--display); font-weight: 500; letter-spacing: -0.04em; line-height: 0.9; }
   .display-md { font-size: clamp(44px, 4.4vw, 80px); line-height: 0.95; }
 
   .mask { overflow: hidden; padding: 0.15em 0 0.3em; margin: -0.15em 0 -0.3em; }
@@ -60,67 +60,6 @@
   .is-in > .slide { transform: none; }
   .fade { opacity: 0; transform: translateY(16px); transition: opacity 1s var(--ease-out), transform 1s var(--ease-out); }
   .fade.is-in { opacity: 1; transform: none; }
-
-  /* ---------- Nav: structural port of the supplied Webflow nav-bar —
-     banner strip, then an INSET rounded navbar card (not edge-to-edge),
-     grid layout (brand | links | CTA+toggle) so the link row stays truly
-     centered regardless of brand/CTA width, double-text sliding-mask hover
-     on every link and the CTA, hamburger + dark backdrop overlay on
-     mobile. Decorative specifics (colors, the skew on the text slide,
-     the multi-column mega-menu) are left out — the mechanics are the same. ---------- */
-  .nav-wrap { position: fixed; inset: 0 0 auto 0; z-index: 90; }
-  .banner {
-    background: var(--ink); color: var(--paper); text-align: center;
-    display: flex; justify-content: center; gap: 0.5rem; align-items: center;
-    padding: 0.55rem 1rem; font-size: 12px; letter-spacing: 0.04em; text-transform: uppercase;
-  }
-  .banner a { text-decoration: underline; }
-  .nav-outer { padding: 12px 24px; }
-  .navbar {
-    max-width: 1800px; margin: 0 auto; border-radius: 16px;
-    background: color-mix(in srgb, var(--paper) 92%, transparent);
-    -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px);
-    border: 1px solid var(--line); box-shadow: 0 12px 30px rgba(0, 0, 0, 0.06);
-  }
-  .nav-container { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 1.5rem; padding: 10px 18px; }
-  .nav-brand { justify-self: start; font-family: var(--serif); font-size: 1.1rem; }
-  .nav-menu-inner { display: flex; align-items: center; gap: 0.25rem; }
-  /* Every link (and the CTA) uses the same double-text mask: two copies of
-     the label stacked, the visible one at rest and a duplicate parked
-     directly below it — hover slides both up one full step so the
-     duplicate takes over, giving a clean crossfade-by-motion instead of
-     a plain color change. */
-  .nav-link { position: relative; padding: 8px 16px; border-radius: 999px; overflow: hidden; }
-  .nav-link:hover { background: var(--line); }
-  .nav-link.is-soon { display: inline-block; cursor: pointer; }
-  .link-text-mask, .button-text-mask { position: relative; display: block; height: 1.3em; overflow: hidden; }
-  .link-text, .button-text {
-    display: block; transition: transform 0.5s cubic-bezier(0.65, 0, 0.35, 1);
-  }
-  .link-text.t2, .button-text.t2 { position: absolute; top: 100%; left: 0; }
-  .nav-link:hover .link-text, .cta-main:hover .button-text { transform: translateY(-100%); }
-  .nav-right { justify-self: end; display: flex; align-items: center; gap: 1rem; }
-  .cta-main {
-    position: relative; display: inline-flex; padding: 10px 20px; border-radius: 999px; overflow: hidden;
-  }
-  .cta-main .button-bg { position: absolute; inset: 0; background: var(--ink); border-radius: 999px; transition: transform 0.4s var(--ease-out); z-index: 0; }
-  .cta-main:hover .button-bg { transform: scale(0.95); }
-  .cta-main .button-text-mask { position: relative; z-index: 1; display: flex; align-items: center; }
-  .cta-main .button-text { color: var(--paper); font-size: 13px; font-weight: 700; }
-  .menu-button {
-    display: none; width: 40px; height: 36px; border: 1px solid var(--line); border-radius: 999px;
-    background: none; align-items: center; justify-content: center; cursor: pointer; color: var(--ink); position: relative;
-  }
-  .menu-button .menu-open, .menu-button .menu-close { display: flex; align-items: center; justify-content: center; }
-  .menu-button .menu-close { display: none; }
-  .menu-button.is-open .menu-open { display: none; }
-  .menu-button.is-open .menu-close { display: flex; }
-  /* Dark backdrop behind the open mobile menu, same as the reference's nav-bg. */
-  .nav-bg {
-    position: fixed; inset: 0; z-index: 88; background: rgba(0, 0, 0, 0.32);
-    opacity: 0; pointer-events: none; transition: opacity 0.3s ease;
-  }
-  .nav-bg.is-open { opacity: 1; pointer-events: auto; }
 
   /* ---------- Hero: hybrid of Dendrite's About layout + Home hover system ---------- */
   .hero { position: relative; min-height: 100vh; overflow: hidden; padding: 152px var(--gutter) 4rem; display: flex; flex-direction: column; justify-content: center; }
@@ -130,7 +69,7 @@
   .hero-name .surname { opacity: 0.38; transition: opacity 0.4s ease; }
   .identity-words { position: relative; z-index: 60; list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 0.5rem 1.75rem; }
   .identity-word {
-    display: inline-block; color: var(--ink); text-decoration: none; font-family: var(--serif); font-size: clamp(1.6rem, 2.6vw, 2.4rem);
+    display: inline-block; color: var(--ink); text-decoration: none; font-family: var(--display); font-size: clamp(1.6rem, 2.6vw, 2.4rem);
     letter-spacing: -0.01em; line-height: 1.1; opacity: 0.32; transition: opacity 0.4s ease, color 0.4s ease;
   }
   .identity-word:hover { opacity: 1; }
@@ -148,62 +87,40 @@
   .hero.role-hover .hero-socials a { border-color: rgba(255, 255, 255, 0.4); color: #fff; }
   .hero.role-hover .hero-socials a:hover { background: #fff; color: var(--ink); }
 
-  /* ---------- Mission statement: BYQ inline-media-text (reskinned) ---------- */
-  .byq-gem--inline-media-text-01 {
-    --imt-w: 2.5em; --imt-h: 0.84em; --imt-tint: 28 27 26;
-    position: relative; width: min(100%, 90rem); margin: 0 auto; color: var(--ink); font-family: var(--sans);
-    text-align: center; container-type: inline-size;
-  }
+  /* ---------- Mission statement (text only) + cell/pathogen swipe game ---------- */
+  .byq-gem--inline-media-text-01 { position: relative; width: min(100%, 90rem); margin: 0 auto; color: var(--ink); text-align: center; container-type: inline-size; }
   /* Fixed rows: four lines on wide screens, eight short lines on narrow ones.
-     Nothing reflows, so a word is never split and the "!" never wraps alone.
-     Font size is tied to the container width so the longest row always fits. */
+     Nothing reflows, so a word is never split. Font size follows the container width. */
   .byq-gem--inline-media-text-01__line {
-    margin: 0 auto; font-family: var(--serif); font-weight: 400; letter-spacing: -0.02em; color: var(--ink);
-    font-size: clamp(1.4rem, calc(100cqw / 23), 5.6rem); line-height: 1.22; text-align: center;
+    margin: 0 auto; font-family: var(--display); font-weight: 500; letter-spacing: -0.04em; color: var(--ink);
+    font-size: clamp(1.4rem, calc(100cqw / 24), 4.2rem); line-height: 1.45; text-align: center;
   }
   .byq-gem--inline-media-text-01__row { display: block; white-space: nowrap; }
   .byq-gem--inline-media-text-01__seg {
-    display: inline-block; white-space: nowrap;
-    opacity: 0; transform: translateY(0.3em);
+    display: inline-block; white-space: nowrap; opacity: 0; transform: translateY(0.3em);
     transition: opacity 0.9s var(--ease-out) calc(var(--d, 0) * 160ms), transform 0.9s var(--ease-out) calc(var(--d, 0) * 160ms);
   }
-  .byq-gem--inline-media-text-01__row + .byq-gem--inline-media-text-01__row { margin-top: 0.04em; }
   .byq-gem--inline-media-text-01.is-in .byq-gem--inline-media-text-01__seg { opacity: 1; transform: none; }
-  .byq-gem--inline-media-text-01__nb { margin-left: -0.02em; }
-  .byq-gem--inline-media-text-01__w {
-    display: inline-block; color: var(--ink);
-    color: color-mix(in oklab, rgb(var(--imt-tint)) calc(var(--imt-k, 0) * 100%), var(--ink));
-    transition: color 0.7s cubic-bezier(0.2, 0.7, 0.2, 1);
-  }
-  .byq-gem--inline-media-text-01__w + .byq-gem--inline-media-text-01__w { margin-left: 0.24em; }
-  /* Every photo pill is the same size, always. Only the picture inside changes. */
-  .byq-gem--inline-media-text-01__pill {
-    position: relative; display: inline-block; width: var(--imt-w); height: var(--imt-h);
-    margin: 0 0 0 0.16em; padding: 0; border: 0; background: none; color: inherit; font: inherit;
-    vertical-align: -0.03em; cursor: pointer; -webkit-tap-highlight-color: transparent; user-select: none; outline: none;
-  }
-  .byq-gem--inline-media-text-01__shell {
-    position: absolute; inset: 0; overflow: hidden; border-radius: 0.42em; background: var(--line); isolation: isolate;
-    transition: border-radius 0.7s cubic-bezier(0.2, 0.8, 0.2, 1);
-  }
-  .byq-gem--inline-media-text-01__shell img {
-    position: absolute; inset: 0; display: block; width: 100%; height: 100%; max-width: none;
-    object-fit: cover; object-position: var(--pos, 50% 50%); scale: 1.14; translate: calc(var(--imt-mx, 0) * -4%) 0;
-    filter: saturate(0) brightness(0.62);
-    transition: scale 0.76s cubic-bezier(0.22, 0.8, 0.18, 1), translate 0.9s cubic-bezier(0.2, 0.8, 0.2, 1), filter 0.6s ease;
-    pointer-events: none;
-  }
-  .byq-gem--inline-media-text-01__pill.is-active { cursor: default; }
-  .byq-gem--inline-media-text-01__pill.is-active .byq-gem--inline-media-text-01__shell { border-radius: 0.24em; }
-  .byq-gem--inline-media-text-01__pill.is-active img { scale: 1.02; filter: saturate(1) brightness(1); }
-  .byq-gem--inline-media-text-01__pill.is-dim:hover img { filter: saturate(0.5) brightness(0.8); }
-  .byq-gem--inline-media-text-01__pill:focus-visible .byq-gem--inline-media-text-01__shell { outline: 2px solid var(--ink); outline-offset: 0.06em; }
   @media (max-width: 700px) {
-    .byq-gem--inline-media-text-01__line { font-size: clamp(1.5rem, calc(100cqw / 13), 3.2rem); }
+    .byq-gem--inline-media-text-01__line { font-size: clamp(1.5rem, calc(100cqw / 11), 3rem); }
     .byq-gem--inline-media-text-01__seg { display: block; margin: 0 !important; }
-    .byq-gem--inline-media-text-01__row + .byq-gem--inline-media-text-01__row { margin-top: 0; }
   }
   @media (prefers-reduced-motion: reduce) { .byq-gem--inline-media-text-01__seg { opacity: 1; transform: none; transition: none; } }
+
+  /* The swipe game lives inside the sentence: cells and pathogens sit where the photos used to. */
+  .ninja { position: relative; isolation: isolate; }
+  .ninja > canvas { position: absolute; inset: 0; z-index: 2; pointer-events: none; display: block; }
+  .ninja__slot { display: inline-block; width: 1.5em; height: 1.5em; margin: 0 0 0 0.1em; vertical-align: -0.45em; transform: rotate(var(--rot, 0deg)); }
+  .ninja__slot img { display: block; width: 100%; height: 100%; user-select: none; -webkit-user-drag: none; transform-origin: 50% 55%; transition: transform 0.38s cubic-bezier(0.5, 0, 0.9, 0.5); }
+  .ninja__slot.is-out img { transform: scale(0); }
+  .ninja__slot.is-in img { animation: ninja-pop 0.52s cubic-bezier(0.3, 1.5, 0.5, 1) both; }
+  .ninja__slot.is-shake img { animation: ninja-shake 0.5s ease-in-out; }
+  .ninja__slot.is-burst img { transform: scale(1.5) rotate(18deg); opacity: 0; transition: transform 0.2s ease-out, opacity 0.2s ease-out; }
+  @keyframes ninja-pop { from { transform: scale(0); } to { transform: scale(1); } }
+  @keyframes ninja-shake { 0%, 100% { transform: translateX(0) rotate(0); } 15% { transform: translateX(-9%) rotate(-8deg); } 35% { transform: translateX(8%) rotate(7deg); } 55% { transform: translateX(-6%) rotate(-5deg); } 75% { transform: translateX(4%) rotate(3deg); } }
+  .ninja__hint { margin-top: clamp(28px, 4vw, 56px); text-align: center; font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+  .ninja__hint [data-popped] { font-variant-numeric: tabular-nums; color: var(--ink); }
+  @media (prefers-reduced-motion: reduce) { .ninja__slot img { transition: none; animation: none !important; } }
 
   /* ---------- Stats / marquee / awards, pinned scroll-swap (same content
      as Direction 1, restructured into one pinned section: the "by the
@@ -230,7 +147,8 @@
   .cred-marquee-label { margin: 0 0 16px; text-align: center; font-size: 13px; color: var(--muted); }
   .cred-marquee { overflow: hidden; mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent); }
   .cred-track { display: flex; gap: 48px; width: max-content; animation: cred-scroll 32s linear infinite; }
-  .cred-logo { flex: none; min-width: 160px; height: 56px; display: flex; align-items: center; justify-content: center; font-family: var(--serif); font-size: 22px; letter-spacing: -0.6px; color: var(--ink); opacity: 0.72; white-space: nowrap; }
+  .cred-logo img { height: 60%; width: auto; max-width: 150px; object-fit: contain; filter: grayscale(1); }
+  .cred-logo { flex: none; min-width: 160px; height: 56px; display: flex; align-items: center; justify-content: center; font-family: var(--display); font-size: 22px; letter-spacing: -0.6px; color: var(--ink); opacity: 0.72; white-space: nowrap; }
   @keyframes cred-scroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
 
   .awards-panel { text-align: center; }
@@ -267,8 +185,8 @@
   }
   .outreach-head { width: 100%; display: flex; justify-content: flex-start; margin: 0; text-align: left; }
   .outreach-head h2 {
-    font-family: var(--serif);
-    font-weight: 400;
+    font-family: var(--display);
+    font-weight: 500;
     font-style: normal;
     font-size: 40px;
     line-height: 44px;
@@ -360,13 +278,15 @@
   /* ---------- Press ---------- */
   #press-section { padding: 96px 32px 160px; }
   .press-inner { width: min(1144px, 100%); margin: 0 auto; display: flex; flex-direction: column; gap: 48px; }
-  .press-head h2 { font-family: var(--serif); font-weight: 400; font-size: 40px; line-height: 44px; letter-spacing: -1px; color: var(--ink); }
+  .press-head h2 { font-family: var(--display); font-weight: 500; font-size: 40px; line-height: 44px; letter-spacing: -1px; color: var(--ink); }
   .press-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
   .press-card {
     display: flex; flex-direction: column; justify-content: space-between; gap: 32px; min-height: 200px;
     padding: 28px; border-radius: 16px; background: color-mix(in srgb, var(--paper) 55%, var(--line));
     border: 1px solid var(--line); color: inherit; transition: transform 0.3s var(--ease-out), box-shadow 0.3s var(--ease-out);
   }
+  .press-logo { display: inline-flex; align-items: center; height: 22px; }
+  .press-logo img { height: 100%; width: auto; max-width: 110px; object-fit: contain; filter: grayscale(1); opacity: 0.8; }
   .press-card:hover { transform: translateY(-3px); box-shadow: 0 16px 34px rgba(0, 0, 0, 0.08); }
   .press-card h3 { font-size: 18px; line-height: 24px; font-weight: 600; letter-spacing: -0.2px; color: var(--ink); }
   .press-card .press-meta { display: flex; gap: 12px; padding-top: 16px; border-top: 1px solid var(--line); font-size: 12px; text-transform: uppercase; letter-spacing: 0.04em; color: var(--muted); }
@@ -375,7 +295,7 @@
 
   /* ---------- Prefooter closing statement ---------- */
   .prefooter { padding: 0 32px 160px; text-align: center; }
-  .prefooter h2 { font-family: var(--serif); font-weight: 400; font-size: clamp(2.6rem, 6.4vw, 6rem); line-height: 0.98; letter-spacing: -0.03em; max-width: 1000px; margin: 0 auto; }
+  .prefooter h2 { font-family: var(--display); font-weight: 500; font-size: clamp(2.6rem, 6.4vw, 6rem); line-height: 0.98; letter-spacing: -0.03em; max-width: 1000px; margin: 0 auto; }
 
 
   /* ---------- Floating cell field — cartoon germs and healthy cells drift
@@ -396,7 +316,7 @@
   .footer { padding: 96px 0 24px; }
   .flex-top-footer { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 32px; margin-bottom: 140px; }
   .left-top-footer { max-width: 640px; }
-  .text-big-footer { font-family: var(--serif); font-weight: 400; font-size: clamp(40px, 3.6vw, 60px); line-height: 1; letter-spacing: -0.03em; }
+  .text-big-footer { font-family: var(--display); font-weight: 500; font-size: clamp(40px, 3.6vw, 60px); line-height: 1; letter-spacing: -0.03em; }
   .flex-footer-links { display: flex; flex-wrap: wrap; justify-content: flex-end; align-items: flex-end; gap: 24px; }
   .line-link-block { display: inline-block; padding-top: 2px; font-size: 16px; line-height: 24px; }
   .underline-link-master { height: 1px; margin-top: 2px; }
@@ -404,10 +324,10 @@
   .line-link-block:hover .underline-link-fill, .line-link-block:focus-visible .underline-link-fill { width: 100%; transition: width .4s var(--ease-out); }
   .line-link-block.is-soon { color: var(--muted); cursor: default; }
   .brand-footer-big {
-    font-family: var(--serif); font-weight: 400; line-height: .8; letter-spacing: -0.05em; white-space: nowrap;
-    font-size: 17.4vw; margin: 0 -0.04em; padding-bottom: .06em;
+    font-family: var(--display); font-weight: 500; line-height: .8; letter-spacing: -0.05em; white-space: nowrap;
+    font-size: 13.6vw; margin: 0 -0.04em; padding-bottom: .06em;
   }
-  @media (min-width: 1864px) { .brand-footer-big { font-size: 324px; } }
+  @media (min-width: 1864px) { .brand-footer-big { font-size: 253px; } }
   .wrap-bottom-footer { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin-top: 32px; }
   .text-bottom-footer { font-size: 14px; line-height: 1.05; }
   .text-bottom-footer a { text-decoration: underline; text-underline-offset: 2px; }
@@ -447,27 +367,8 @@
   @media (max-width: 900px) {
     .hero-portrait { display: none; }
     .mascot { display: none; }
-    .nav-container { grid-template-columns: 1fr auto; }
-    .cta-main { display: none; }
-    .menu-button { display: flex; }
-    /* The link row becomes a full menu panel, pinned below the navbar
-       card, that grows open/shut instead of sitting inline. */
-    .nav-menu-inner {
-      position: fixed; left: 24px; right: 24px; top: 82px; z-index: 91;
-      flex-direction: column; align-items: stretch; gap: 0;
-      background: var(--paper); border: 1px solid var(--line); border-radius: 16px;
-      max-height: 0; overflow: hidden; opacity: 0;
-      transition: max-height 0.4s var(--ease-out), opacity 0.3s ease;
-    }
-    .nav-menu-inner.is-open { max-height: 320px; opacity: 1; padding: 8px; }
-    .nav-link { border-radius: 10px; padding: 14px 12px; }
-    .link-text-mask { height: auto; overflow: visible; }
-    .link-text.t2 { display: none; }
-    .nav-link:hover .link-text { transform: none; }
   }
   @media (max-width: 767px) {
-    .nav-outer { padding: 10px 16px; }
-    .banner { font-size: 11px; padding: 0.5rem 0.75rem; }
     .stats-thirds { grid-template-columns: 1fr; }
     .stat { padding-block: 48px; }
     .stat + .stat { border-left: 0; border-top: 1px solid var(--line); }
@@ -476,40 +377,38 @@
     .mask > .slide, .fade { transform: none !important; opacity: 1 !important; transition: none !important; }
   }
 </style>
+<link rel="stylesheet" href="nav.css">
 </head>
 <body>
 <!-- structure + style: Direction 2 (first pass) -->
-<div class="nav-wrap">
+<!-- Notch nav (brought over from the T cell): the banner and the cell mascot scroll away with
+     the page; only the pill nav stays fixed (top on desktop, bottom on phones). Behavior: nav.js. -->
+<div class="site-header">
   <div class="banner">
     <span>Available for speaking engagements &amp; science communication consulting</span>
     <a href="#">Get in touch</a>
   </div>
-  <div class="nav-outer">
-    <header class="navbar">
-      <div class="nav-container">
-        <a href="index.html" class="nav-brand">APB</a>
-        <nav class="nav-menu-inner" id="navMenu">
-          <a href="educator.html" class="nav-link"><span class="link-text-mask"><span class="link-text t1">Educator</span><span class="link-text t2">Educator</span></span></a>
-          <span class="nav-link is-soon"><span class="link-text-mask"><span class="link-text t1">Communicator</span><span class="link-text t2">Communicator</span></span></span>
-          <a href="work.html" class="nav-link"><span class="link-text-mask"><span class="link-text t1">Work</span><span class="link-text t2">Work</span></span></a>
-          <span class="nav-link is-soon"><span class="link-text-mask"><span class="link-text t1">Immunologist</span><span class="link-text t2">Immunologist</span></span></span>
-          <span class="nav-link is-soon"><span class="link-text-mask"><span class="link-text t1">Outreach</span><span class="link-text t2">Outreach</span></span></span>
-        </nav>
-        <div class="nav-right">
-          <a href="#" class="cta-main">
-            <span class="button-text-mask"><span class="button-text t1">Get in touch</span><span class="button-text t2">Get in touch</span></span>
-            <span class="button-bg"></span>
-          </a>
-          <button type="button" class="menu-button" id="navMobileToggle" aria-label="Menu" aria-expanded="false">
-            <span class="menu-open"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 4.5h12M2 8h12M2 11.5h12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span>
-            <span class="menu-close"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M1 1l12 12M13 1L1 13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span>
-          </button>
-        </div>
-      </div>
-    </header>
+  <div class="site-header__inner">
+    <button type="button" class="nav-mascot" id="navMascot" aria-label="Say hi to the cell">
+      <span class="nav-mascot__body"><img src="../src/cells/t-cell.svg" alt="" draggable="false"></span>
+      <span class="nav-mascot__bubble" aria-hidden="true"></span>
+    </button>
   </div>
 </div>
-<div class="nav-bg" id="navBg"></div>
+<nav class="pill-nav" id="pillNav" aria-label="Main">
+  <span class="pill-nav__pill pill-nav__pill--hover" aria-hidden="true"></span>
+  <span class="pill-nav__pill pill-nav__pill--active" aria-hidden="true"></span>
+  <ul class="pill-nav__list">
+        <li><a href="index.html" class="pill-nav__link is-current" aria-current="page">Home</a></li>
+        <li><a href="about.html" class="pill-nav__link">About</a></li>
+        <li><a href="educator.html" class="pill-nav__link">Educator</a></li>
+        <li><a href="public-speaking.html" class="pill-nav__link">Communicator</a></li>
+        <li><a href="work.html" class="pill-nav__link">Work</a></li>
+        <li><span class="pill-nav__link is-soon" tabindex="0" title="Coming soon">Immunologist</span></li>
+        <li><span class="pill-nav__link is-soon" tabindex="0" title="Coming soon">Outreach</span></li>
+        <li><a href="#" class="pill-nav__link">Contact</a></li>
+  </ul>
+</nav>
 
 <section class="hero" id="hero-section">
   <div class="hero-role-bg" aria-hidden="true"></div>
@@ -538,26 +437,30 @@
 
 <section class="section" id="mission-section" aria-label="Mission">
   <div class="main-container">
-    <section class="byq-gem--inline-media-text-01" aria-label="Mission statement with inline photos">
+    <div class="ninja" id="ninja">
+    <section class="byq-gem--inline-media-text-01" aria-label="Mission statement">
       <h2 class="byq-gem--inline-media-text-01__line">
         <span class="byq-gem--inline-media-text-01__row">
           <span class="byq-gem--inline-media-text-01__seg">The immune system is</span>
-          <span class="byq-gem--inline-media-text-01__seg">endlessly fascinating<button class="byq-gem--inline-media-text-01__pill" type="button" data-tint="90 74 58" style="--pos: 50% 40%" aria-label="Aimee teaching a course" aria-pressed="false"><span class="byq-gem--inline-media-text-01__shell"><img src="../src/educator.webp" alt="" draggable="false" /></span></button><span class="byq-gem--inline-media-text-01__nb">,</span></span>
+          <span class="byq-gem--inline-media-text-01__seg">endlessly fascinating<span class="ninja__slot" aria-hidden="true"></span>,</span>
         </span>
         <span class="byq-gem--inline-media-text-01__row">
           <span class="byq-gem--inline-media-text-01__seg">and my job &mdash;</span>
-          <span class="byq-gem--inline-media-text-01__seg">across teaching<button class="byq-gem--inline-media-text-01__pill" type="button" data-tint="120 96 70" style="--pos: 50% 35%" aria-label="Aimee in the lab" aria-pressed="false"><span class="byq-gem--inline-media-text-01__shell"><img src="../src/immunologist.webp" alt="" draggable="false" /></span></button><span class="byq-gem--inline-media-text-01__nb">,</span></span>
+          <span class="byq-gem--inline-media-text-01__seg">across teaching<span class="ninja__slot" aria-hidden="true"></span>,</span>
         </span>
         <span class="byq-gem--inline-media-text-01__row">
-          <span class="byq-gem--inline-media-text-01__seg">communication<button class="byq-gem--inline-media-text-01__pill" type="button" data-tint="150 110 90" style="--pos: 50% 30%" aria-label="Aimee speaking to an audience" aria-pressed="false"><span class="byq-gem--inline-media-text-01__shell"><img src="../src/communicator.webp" alt="" draggable="false" /></span></button><span class="byq-gem--inline-media-text-01__nb">,</span></span>
+          <span class="byq-gem--inline-media-text-01__seg">communication<span class="ninja__slot" aria-hidden="true"></span>,</span>
           <span class="byq-gem--inline-media-text-01__seg">and outreach &mdash;</span>
         </span>
         <span class="byq-gem--inline-media-text-01__row">
           <span class="byq-gem--inline-media-text-01__seg">is to inspire you</span>
-          <span class="byq-gem--inline-media-text-01__seg">to think so too!</span>
+          <span class="byq-gem--inline-media-text-01__seg">to think so too!<span class="ninja__slot" aria-hidden="true"></span></span>
         </span>
       </h2>
     </section>
+    <canvas aria-hidden="true"></canvas>
+    <p class="ninja__hint">Swipe the germs &middot; cells just shake it off &middot; <span data-popped>0</span> popped</p>
+    </div>
   </div>
 </section>
 
@@ -637,22 +540,22 @@
           <p class="panel-title display display-md">I&rsquo;ve shared this science in classrooms, at conferences, and in newsrooms, from TEDx to The Conversation.</p>
           <div class="cred-marquee" aria-hidden="true">
             <div class="cred-track">
-              <span class="cred-logo">CU Anschutz</span>
-              <span class="cred-logo">CU Denver</span>
-              <span class="cred-logo">TEDx</span>
-              <span class="cred-logo">AAI</span>
-              <span class="cred-logo">The Conversation</span>
-              <span class="cred-logo">MedPage Today</span>
-              <span class="cred-logo">SELF</span>
-              <span class="cred-logo">HuffPost</span>
-              <span class="cred-logo">CU Anschutz</span>
-              <span class="cred-logo">CU Denver</span>
-              <span class="cred-logo">TEDx</span>
-              <span class="cred-logo">AAI</span>
-              <span class="cred-logo">The Conversation</span>
-              <span class="cred-logo">MedPage Today</span>
-              <span class="cred-logo">SELF</span>
-              <span class="cred-logo">HuffPost</span>
+              <span class="cred-logo"><img src="../src/logos/cu-anschutz.png" alt="CU Anschutz" loading="lazy"></span>
+              <span class="cred-logo"><img src="../src/logos/cu-denver.png" alt="CU Denver" loading="lazy"></span>
+              <span class="cred-logo"><img src="../src/logos/tedx.svg" alt="TEDx" loading="lazy"></span>
+              <span class="cred-logo"><img src="../src/logos/aai.png" alt="AAI" loading="lazy"></span>
+              <span class="cred-logo"><img src="../src/logos/the-conversation.svg" alt="The Conversation" loading="lazy"></span>
+              <span class="cred-logo"><img src="../src/logos/medpagetoday.svg" alt="MedPage Today" loading="lazy"></span>
+              <span class="cred-logo"><img src="../src/logos/self.svg" alt="SELF" loading="lazy"></span>
+              <span class="cred-logo"><img src="../src/logos/huffpost.svg" alt="HuffPost" loading="lazy"></span>
+              <span class="cred-logo"><img src="../src/logos/cu-anschutz.png" alt="CU Anschutz" loading="lazy"></span>
+              <span class="cred-logo"><img src="../src/logos/cu-denver.png" alt="CU Denver" loading="lazy"></span>
+              <span class="cred-logo"><img src="../src/logos/tedx.svg" alt="TEDx" loading="lazy"></span>
+              <span class="cred-logo"><img src="../src/logos/aai.png" alt="AAI" loading="lazy"></span>
+              <span class="cred-logo"><img src="../src/logos/the-conversation.svg" alt="The Conversation" loading="lazy"></span>
+              <span class="cred-logo"><img src="../src/logos/medpagetoday.svg" alt="MedPage Today" loading="lazy"></span>
+              <span class="cred-logo"><img src="../src/logos/self.svg" alt="SELF" loading="lazy"></span>
+              <span class="cred-logo"><img src="../src/logos/huffpost.svg" alt="HuffPost" loading="lazy"></span>
             </div>
           </div>
         </div>
@@ -660,7 +563,7 @@
         <div class="stats-pin__panel" data-panel-index="2" aria-label="Award-winning educator">
           <div class="awards-panel">
             <div class="panel-label label">Award-winning educator</div>
-          <p class="panel-title display display-md">Six teaching awards since 2011 tell me the explaining is working.</p>
+          <p class="panel-title display display-md">The explaining works. Teaching awards since 2011.</p>
             <svg width="0" height="0" style="position: absolute" aria-hidden="true">
               <defs>
                 <symbol id="wreath" viewBox="0 0 1280 1222">
@@ -841,27 +744,27 @@ l-6 30 23 -22 c22 -19 27 -20 61 -9 93 33 242 180 306 304 122 236 167 543
     <div class="press-grid fade" data-reveal>
       <a class="press-card" href="#">
         <h3>How an Immunity Gap May Be Fueling the Recent Spike in Respiratory Viruses</h3>
-        <div class="press-meta"><span>SELF</span></div>
+        <div class="press-meta"><span class="press-logo"><img src="../src/logos/self.svg" alt="SELF" loading="lazy"></span></div>
       </a>
       <a class="press-card" href="#">
         <h3>5 Sneaky Signs You&rsquo;re Getting Sick</h3>
-        <div class="press-meta"><span>HuffPost</span></div>
+        <div class="press-meta"><span class="press-logo"><img src="../src/logos/huffpost.svg" alt="HuffPost" loading="lazy"></span></div>
       </a>
       <a class="press-card" href="#">
         <h3>CU Immunology Prof discusses mRNA research funding</h3>
-        <div class="press-meta"><span>KOA Morning News</span></div>
+        <div class="press-meta"><span class="press-logo"><img src="../src/logos/koa.png" alt="KOA Morning News" loading="lazy"></span></div>
       </a>
       <a class="press-card" href="#">
         <h3>Science Communicators Strategize How to Demystify Science</h3>
-        <div class="press-meta"><span>CU Anschutz Today</span></div>
+        <div class="press-meta"><span class="press-logo"><img src="../src/logos/cu-anschutz.png" alt="CU Anschutz Today" loading="lazy"></span></div>
       </a>
       <a class="press-card" href="#">
         <h3>TLaS is Increasing Elementary Schoolers&rsquo; Access to Science</h3>
-        <div class="press-meta"><span>CU Anschutz Today</span><span>Feb 2021</span></div>
+        <div class="press-meta"><span class="press-logo"><img src="../src/logos/cu-anschutz.png" alt="CU Anschutz Today" loading="lazy"></span><span>Feb 2021</span></div>
       </a>
       <a class="press-card" href="#">
         <h3>Fake News: Medical Quackery Enters a New Dimension</h3>
-        <div class="press-meta"><span>CU Anschutz Today</span></div>
+        <div class="press-meta"><span class="press-logo"><img src="../src/logos/cu-anschutz.png" alt="CU Anschutz Today" loading="lazy"></span></div>
       </a>
     </div>
   </div>
@@ -921,23 +824,6 @@ l-6 30 23 -22 c22 -19 27 -20 61 -9 93 33 242 180 306 304 122 236 167 543
   gsap.registerPlugin(ScrollTrigger);
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  // ---- Mobile nav toggle: menu panel + dark backdrop, mirroring the
-  // reference's NAVBAR_OPEN/CLOSE + nav-bg behavior ----
-  const navMobileToggle = document.getElementById('navMobileToggle');
-  const navMenu = document.getElementById('navMenu');
-  const navBg = document.getElementById('navBg');
-  navMobileToggle.addEventListener('click', () => {
-    const open = navMenu.classList.toggle('is-open');
-    navMobileToggle.classList.toggle('is-open', open);
-    navBg.classList.toggle('is-open', open);
-    navMobileToggle.setAttribute('aria-expanded', String(open));
-  });
-  navBg.addEventListener('click', () => {
-    navMenu.classList.remove('is-open');
-    navMobileToggle.classList.remove('is-open');
-    navBg.classList.remove('is-open');
-    navMobileToggle.setAttribute('aria-expanded', 'false');
-  });
 
   // ---- Reveal on scroll (stats/marquee/awards heading) ----
   const io = new IntersectionObserver((entries) => {
@@ -1035,119 +921,26 @@ l-6 30 23 -22 c22 -19 27 -20 61 -9 93 33 242 180 306 304 122 236 167 543
     if (followingCursor) { document.removeEventListener('mousemove', trackCursor); followingCursor = false; }
   });
 
-  // ---- Mission statement (inline-media-text). Rows are fixed in the markup,
-  // pills never change size, and each row fades in one at a time. ----
+  // ---- Mission statement: each row fades in one at a time ----
   (() => {
-    const P = 'byq-gem--inline-media-text-01';
-    const root = document.querySelector(`.${P}`);
+    const root = document.querySelector('.byq-gem--inline-media-text-01');
     if (!root) return;
-    const line = root.querySelector(`.${P}__line`);
-    if (!line) return;
-    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const P = 'byq-gem--inline-media-text-01';
     const narrowMQ = window.matchMedia('(max-width: 700px)');
-    const pills = [...line.querySelectorAll(`.${P}__pill`)];
-    const rows = [...line.querySelectorAll(`.${P}__row`)];
-    const segs = [...line.querySelectorAll(`.${P}__seg`)];
-
-    // Split the plain text into word spans (for the colour tint near the open pill).
-    const words = [];
-    segs.forEach((seg) => {
-      [...seg.childNodes].forEach((node) => {
-        if (node.nodeType !== 3) return;
-        const frag = document.createDocumentFragment();
-        node.textContent.trim().split(/\s+/).filter(Boolean).forEach((part) => {
-          const w = document.createElement('span');
-          w.className = `${P}__w`;
-          w.textContent = part;
-          words.push(w);
-          frag.appendChild(w);
-        });
-        node.replaceWith(frag);
-      });
-    });
-
-    // Stagger index: one step per row on wide screens, per segment on narrow.
     const setStagger = () => {
-      if (narrowMQ.matches) segs.forEach((seg, i) => seg.style.setProperty('--d', i));
-      else rows.forEach((row, i) => row.querySelectorAll(`.${P}__seg`).forEach((seg) => seg.style.setProperty('--d', i)));
+      if (narrowMQ.matches) root.querySelectorAll(`.${P}__seg`).forEach((seg, i) => seg.style.setProperty('--d', i));
+      else root.querySelectorAll(`.${P}__row`).forEach((row, i) => row.querySelectorAll(`.${P}__seg`).forEach((seg) => seg.style.setProperty('--d', i)));
     };
     setStagger();
     narrowMQ.addEventListener('change', setStagger);
-
-    if (reduce.matches) root.classList.add('is-in');
-    else {
-      const io = new IntersectionObserver((entries) => {
-        if (entries.some((e) => e.isIntersecting)) { root.classList.add('is-in'); io.disconnect(); }
-      }, { rootMargin: '0px 0px -15% 0px' });
-      io.observe(root);
-    }
-
-    pills.forEach((p) => { if (!p.dataset.tint) p.dataset.tint = '28 27 26'; });
-    let active = -1;
-    const fsz = () => parseFloat(getComputedStyle(line).fontSize) || 16;
-    const paintTint = () => {
-      if (active < 0) { words.forEach((w) => w.style.setProperty('--imt-k', '0')); return; }
-      root.style.setProperty('--imt-tint', pills[active].dataset.tint);
-      const fs = fsz();
-      const pr = pills[active].getBoundingClientRect();
-      const pcy = pr.top + pr.height / 2;
-      words.forEach((w) => {
-        const r = w.getBoundingClientRect();
-        const dx = Math.max(0, pr.left - r.right, r.left - pr.right);
-        const dy = Math.abs(r.top + r.height / 2 - pcy);
-        const d = Math.hypot(dx, dy * 1.25) / fs;
-        w.style.setProperty('--imt-k', Math.pow(Math.max(0, 1 - d / 3.6), 1.7).toFixed(3));
-      });
-    };
-    const activate = (i) => {
-      if (i === active) return;
-      active = i;
-      pills.forEach((p, n) => {
-        const on = n === i;
-        p.classList.toggle('is-active', on);
-        p.classList.toggle('is-dim', !on);
-        p.setAttribute('aria-pressed', on ? 'true' : 'false');
-        if (!on) p.style.removeProperty('--imt-mx');
-      });
-      paintTint();
-    };
-
-    let intent = 0;
-    pills.forEach((p, i) => {
-      p.addEventListener('pointerenter', (e) => {
-        if (e.pointerType !== 'mouse' && e.pointerType !== 'pen') return;
-        clearTimeout(intent);
-        intent = setTimeout(() => activate(i), 70);
-      });
-      p.addEventListener('pointerleave', () => { clearTimeout(intent); p.style.removeProperty('--imt-mx'); });
-      p.addEventListener('click', () => activate(i));
-      p.addEventListener('focus', () => activate(i));
-      p.addEventListener('pointermove', (e) => {
-        if (i !== active || reduce.matches) return;
-        const r = p.getBoundingClientRect();
-        const mx = ((e.clientX - r.left) / r.width) * 2 - 1;
-        p.style.setProperty('--imt-mx', Math.max(-1, Math.min(1, mx)).toFixed(3));
-      });
-    });
-
-    let rq = 0;
-    const relayout = () => { cancelAnimationFrame(rq); rq = requestAnimationFrame(paintTint); };
-    if ('ResizeObserver' in window) new ResizeObserver(relayout).observe(line);
-    if (document.fonts && document.fonts.ready) document.fonts.ready.then(relayout);
-
-    // Photos take turns being the "lit" one on a slow cycle; hover overrides it.
-    activate(0);
-    let cycleTimer = null;
-    function scheduleCycle() {
-      clearTimeout(cycleTimer);
-      if (reduce.matches) return;
-      cycleTimer = setTimeout(() => { activate((active + 1) % pills.length); scheduleCycle(); }, 2600);
-    }
-    scheduleCycle();
-    root.addEventListener('pointerenter', () => clearTimeout(cycleTimer));
-    root.addEventListener('pointerleave', scheduleCycle);
+    const io2 = new IntersectionObserver((entries) => {
+      if (entries.some((e) => e.isIntersecting)) { root.classList.add('is-in'); io2.disconnect(); }
+    }, { rootMargin: '0px 0px -15% 0px' });
+    io2.observe(root);
   })();
 </script>
 <script src="immune-game.js"></script>
+<script src="immune-swipe.js"></script>
+<script src="nav.js" defer></script>
 </body>
 </html>
