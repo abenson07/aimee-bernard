@@ -18,9 +18,9 @@ const heroUrl = (await getImage({ src: heroSrc, format: "webp", width: 1040 })).
   <div>
     <h1 class="display hero-name">Aimee <span class="surname">Pugh-Bernard</span></h1>
     <ul class="identity-words" id="identityWords">
-      <li><a href="/educator" class="identity-word" data-bg="/site/educator.webp" data-text="Aimee has been teaching at CU Anschutz since 2019.">Educator</a></li>
-      <li><a href="/immunology" class="identity-word" data-bg="/site/immunologist.webp" data-text="Aimee is a published immunologist with 12 peer-reviewed papers to her name.">Immunologist</a></li>
-      <li><a href="/science-communication" class="identity-word" data-bg="/site/communicator.webp" data-text="Aimee is passionate about making immunology accessible to all.">Communicator</a></li>
+      <li><a href="/educator" class="identity-word" data-bg="/site/educator.webp" data-text="Class is in session! Aimee’s been teaching since 2007!">Educator</a></li>
+      <li><a href="/immunology" class="identity-word" data-bg="/site/immunologist.webp" data-text="Meet a published immunologist! Aimee has 12 peer-reviewed papers to her name!">Immunologist</a></li>
+      <li><a href="/science-communication" class="identity-word" data-bg="/site/communicator.webp" data-text="Aimee is passionate about making immunology accessible to everyone!">Communicator</a></li>
     </ul>
   </div>
 
@@ -66,43 +66,25 @@ const heroUrl = (await getImage({ src: heroSrc, format: "webp", width: 1040 })).
 </section>
 
 <section class="section" id="outreach-section" aria-label="What she's working on">
-  <div class="outreach-inner">
-    <div class="outreach-head">
-      <h2>What she's <em>working</em> on</h2>
-    </div>
-    <div class="outreach-grid">
-      <article class="outreach-tile">
-        <h3>Think Like a Scientist</h3>
-        <div class="outreach-media"><img src="/site/communicator.webp" alt="Think Like a Scientist outreach"></div>
-        <div class="outreach-copy">
-          <p>Hands-on science outreach for elementary and middle-school kids, alongside volunteer scientists at CU Anschutz.</p>
-          <a class="outreach-link" href="https://tlasprogram.wordpress.com/" target="_blank" rel="noopener">View work</a>
-        </div>
-      </article>
-      <article class="outreach-tile">
-        <h3>Fun Size Immuninja</h3>
-        <div class="outreach-media"><img src="/site/immunologist.webp" alt="Fun Size Immuninja"></div>
-        <div class="outreach-copy">
-          <p>Uses her expertise as an immunologist to break down the science of the immune system for anyone who comes across her page.</p>
-          <a class="outreach-link" href="https://www.instagram.com/funsizeimmuninja/?hl=en" target="_blank" rel="noopener">View work</a>
-        </div>
-      </article>
-      <article class="outreach-tile">
-        <h3>Teacher Training Program</h3>
-        <div class="outreach-media"><img src="/site/educator.webp" alt="Teacher Training Program"></div>
-        <div class="outreach-copy">
-          <p>Mentors PhD students and postdocs on curriculum design, teaching practice, and assessment.</p>
-          <a class="outreach-link" href="https://medschool.cuanschutz.edu/immunology-and-microbiology/dept-resources/teaching-resources/teacher-training-program/overview" target="_blank" rel="noopener">View work</a>
-        </div>
-      </article>
-      <article class="outreach-tile">
-        <h3>The World of Autoimmunity</h3>
-        <div class="outreach-media"><img src="/site/immunologist.webp" alt="The World of Autoimmunity podcast"></div>
-        <div class="outreach-copy">
-          <p>Unbiased Science Podcast &middot; April 2025. A recent conversation on autoimmune disease, unpacked for a general audience.</p>
-          <a class="outreach-link" href="https://www.youtube.com/watch?v=zV58abJ_nTQ" target="_blank" rel="noopener">View work</a>
-        </div>
-      </article>
+  <div class="workon">
+    <div class="workon__head"><h2 class="workon__title">What she's working on</h2></div>
+    <div class="workon__row">
+      <a class="workon__card" href="https://tlasprogram.wordpress.com/" target="_blank" rel="noopener">
+        <div class="workon__media"><img src="/site/communicator.webp" alt="" style="object-position:62% 40%" loading="lazy"></div>
+        <div class="workon__info"><h3 class="workon__name">Think Like a Scientist</h3><p class="workon__role">Science outreach program</p></div>
+      </a>
+      <a class="workon__card" href="https://www.instagram.com/funsizeimmuninja/?hl=en" target="_blank" rel="noopener">
+        <div class="workon__media"><img src="/site/immunologist.webp" alt="" style="object-position:70% 50%" loading="lazy"></div>
+        <div class="workon__info"><h3 class="workon__name">Fun Size Immuninja</h3><p class="workon__role">Immunology on Instagram</p></div>
+      </a>
+      <a class="workon__card" href="https://medschool.cuanschutz.edu/immunology-and-microbiology/dept-resources/teaching-resources/teacher-training-program/overview" target="_blank" rel="noopener">
+        <div class="workon__media"><img src="/site/educator.webp" alt="" style="object-position:40% 40%" loading="lazy"></div>
+        <div class="workon__info"><h3 class="workon__name">Teacher Training Program</h3><p class="workon__role">Mentoring PhD students and postdocs</p></div>
+      </a>
+      <a class="workon__card" href="https://www.youtube.com/watch?v=zV58abJ_nTQ" target="_blank" rel="noopener">
+        <div class="workon__media"><img src="/site/immunologist.webp" alt="" style="object-position:30% 50%" loading="lazy"></div>
+        <div class="workon__info"><h3 class="workon__name">The World of Autoimmunity</h3><p class="workon__role">Unbiased Science Podcast · April 2025</p></div>
+      </a>
     </div>
     <a class="outreach-all" href="/work">
       All work
@@ -130,7 +112,7 @@ const heroUrl = (await getImage({ src: heroSrc, format: "webp", width: 1040 })).
               <div class="label muted">Courses taught</div>
             </div>
             <div class="stat">
-              <div class="mask" data-reveal><div class="display stat-num slide">21</div></div>
+              <div class="mask" data-reveal><div class="display stat-num slide">21+</div></div>
               <div class="label muted">Talks given</div>
             </div>
           </div>
@@ -144,7 +126,7 @@ const heroUrl = (await getImage({ src: heroSrc, format: "webp", width: 1040 })).
               <span class="cred-logo"><img src="/site/logos/cu-anschutz.png" alt="CU Anschutz" loading="lazy"></span>
               <span class="cred-logo"><img src="/site/logos/cu-denver.png" alt="CU Denver" loading="lazy"></span>
               <span class="cred-logo"><img src="/site/logos/tedx.svg" alt="TEDx" loading="lazy"></span>
-              <span class="cred-logo"><img src="/site/logos/aai.png" alt="AAI" loading="lazy"></span>
+              <span class="cred-logo"><img src="/site/logos/immunology-explained.png" alt="Immunology Explained" loading="lazy"></span>
               <span class="cred-logo"><img src="/site/logos/the-conversation.svg" alt="The Conversation" loading="lazy"></span>
               <span class="cred-logo"><img src="/site/logos/medpagetoday.svg" alt="MedPage Today" loading="lazy"></span>
               <span class="cred-logo"><img src="/site/logos/self.svg" alt="SELF" loading="lazy"></span>
@@ -152,7 +134,7 @@ const heroUrl = (await getImage({ src: heroSrc, format: "webp", width: 1040 })).
               <span class="cred-logo"><img src="/site/logos/cu-anschutz.png" alt="CU Anschutz" loading="lazy"></span>
               <span class="cred-logo"><img src="/site/logos/cu-denver.png" alt="CU Denver" loading="lazy"></span>
               <span class="cred-logo"><img src="/site/logos/tedx.svg" alt="TEDx" loading="lazy"></span>
-              <span class="cred-logo"><img src="/site/logos/aai.png" alt="AAI" loading="lazy"></span>
+              <span class="cred-logo"><img src="/site/logos/immunology-explained.png" alt="Immunology Explained" loading="lazy"></span>
               <span class="cred-logo"><img src="/site/logos/the-conversation.svg" alt="The Conversation" loading="lazy"></span>
               <span class="cred-logo"><img src="/site/logos/medpagetoday.svg" alt="MedPage Today" loading="lazy"></span>
               <span class="cred-logo"><img src="/site/logos/self.svg" alt="SELF" loading="lazy"></span>
@@ -300,34 +282,34 @@ l-6 30 23 -22 c22 -19 27 -20 61 -9 93 33 242 180 306 304 122 236 167 543
             </svg>
             <div class="award-grid">
               <div class="award">
-                <svg class="award-wreath" viewBox="0 0 1280 1222"><use href="#wreath"></use></svg>
+                <div class="award-seal"><svg class="award-wreath" viewBox="0 0 1280 1222"><use href="#wreath"></use></svg><span class="award-seal__year">2026</span></div>
                 <p class="award-title">CHA/PA "Guest Lecture" Teaching Award</p>
-                <p class="award-meta">CU School of Medicine &middot; 2026</p>
+                <p class="award-meta">CU School of Medicine</p>
               </div>
               <div class="award">
-                <svg class="award-wreath" viewBox="0 0 1280 1222"><use href="#wreath"></use></svg>
+                <div class="award-seal"><svg class="award-wreath" viewBox="0 0 1280 1222"><use href="#wreath"></use></svg><span class="award-seal__year">2024</span></div>
                 <p class="award-title">Chancellor's Teaching Recognition Award</p>
-                <p class="award-meta">CU School of Medicine &middot; 2024</p>
+                <p class="award-meta">CU School of Medicine</p>
               </div>
               <div class="award">
-                <svg class="award-wreath" viewBox="0 0 1280 1222"><use href="#wreath"></use></svg>
+                <div class="award-seal"><svg class="award-wreath" viewBox="0 0 1280 1222"><use href="#wreath"></use></svg><span class="award-seal__year">2023</span></div>
                 <p class="award-title">S.T.A.R.ling Outstanding Faculty Teaching Award</p>
-                <p class="award-meta">CU School of Medicine &middot; 2023</p>
+                <p class="award-meta">CU School of Medicine</p>
               </div>
               <div class="award">
-                <svg class="award-wreath" viewBox="0 0 1280 1222"><use href="#wreath"></use></svg>
+                <div class="award-seal"><svg class="award-wreath" viewBox="0 0 1280 1222"><use href="#wreath"></use></svg><span class="award-seal__year">2023</span></div>
                 <p class="award-title">S.T.A.R. Outstanding Faculty Teaching Award</p>
-                <p class="award-meta">CU School of Medicine &middot; 2023</p>
+                <p class="award-meta">CU School of Medicine</p>
               </div>
               <div class="award">
-                <svg class="award-wreath" viewBox="0 0 1280 1222"><use href="#wreath"></use></svg>
+                <div class="award-seal"><svg class="award-wreath" viewBox="0 0 1280 1222"><use href="#wreath"></use></svg><span class="award-seal__year">2014</span></div>
                 <p class="award-title">Non-Tenure Faculty Teaching Award</p>
-                <p class="award-meta">CU Denver College of Liberal Arts &amp; Sciences &middot; 2014</p>
+                <p class="award-meta">CU Denver College of Liberal Arts &amp; Sciences</p>
               </div>
               <div class="award">
-                <svg class="award-wreath" viewBox="0 0 1280 1222"><use href="#wreath"></use></svg>
+                <div class="award-seal"><svg class="award-wreath" viewBox="0 0 1280 1222"><use href="#wreath"></use></svg><span class="award-seal__year">2011</span></div>
                 <p class="award-title">Non-Tenure Faculty Teaching Award</p>
-                <p class="award-meta">CU Denver College of Liberal Arts &amp; Sciences &middot; 2011</p>
+                <p class="award-meta">CU Denver College of Liberal Arts &amp; Sciences</p>
               </div>
             </div>
           </div>

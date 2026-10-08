@@ -18,11 +18,11 @@ const KIND_LABELS: Record<string, string> = {
   "educational-content": "Educational Content",
   social: "Social",
 };
-// Category decides the tag shown on the card and the photo revealed on hover.
-const CATEGORIES: Record<string, { slug: string; photo: string }> = {
-  Educator: { slug: "educator", photo: "/site/educator.webp" },
-  "Science Communicator": { slug: "science-communicator", photo: "/site/communicator.webp" },
-  "Community Outreach": { slug: "community-outreach", photo: "/site/communicator.webp" },
+// Category decides the tag shown on the card.
+const CATEGORIES: Record<string, { slug: string }> = {
+  Educator: { slug: "educator" },
+  "Science Communicator": { slug: "science-communicator" },
+  "Community Outreach": { slug: "community-outreach" },
 };
 
 const items = snapshot.map((item) => {
@@ -36,7 +36,6 @@ const items = snapshot.map((item) => {
     title: item.title ?? "",
     meta: [item.venue, item.date].filter(Boolean).join(" · ") || null,
     href,
-    photo: cat?.photo ?? null,
   };
 });
 const counts = items.reduce<Record<string, number>>((acc, i) => ((acc[i.kind] = (acc[i.kind] ?? 0) + 1), acc), {});
@@ -49,7 +48,7 @@ const counts = items.reduce<Record<string, number>>((acc, i) => ((acc[i.kind] = 
 <main class="main-container">
   <div class="work-header">
     <h1 class="display">Work</h1>
-    <p>Talks, courses, publications, positions, press, and everything else &mdash; pulled straight from the same dataset behind the dashboard. Filter by kind.</p>
+    <p>Talks, courses, publications, positions, press, and more. Pick a type to narrow it down.</p>
   </div>
 
   <div class="work-filters">
@@ -133,18 +132,13 @@ const counts = items.reduce<Record<string, number>>((acc, i) => ((acc[i.kind] = 
         const Tag = item.href ? "a" : "div";
         return (
           <Tag
-            class:list={["work-card", item.photo && "has-photo"]}
+            class="work-card"
             data-category={item.category}
             data-kind={item.kind}
             href={item.href ?? undefined}
             target={item.href ? "_blank" : undefined}
             rel={item.href ? "noopener" : undefined}
           >
-            {item.photo && (
-              <div class="work-photo">
-                <img src={item.photo} alt="" loading="lazy" />
-              </div>
-            )}
             <div class="work-top">
               <span class="work-kind">{item.kindLabel}</span>
               {item.categoryLabel && <span class="work-cat">{item.categoryLabel}</span>}

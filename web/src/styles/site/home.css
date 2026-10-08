@@ -131,13 +131,13 @@
   .stats-thirds { display: grid; grid-template-columns: repeat(3, 1fr); border-top: 1px solid var(--line); }
   .stat { display: flex; flex-direction: column; align-items: center; gap: 24px; padding-top: 40px; text-align: center; }
   .stat + .stat { border-left: 1px solid var(--line); }
-  .stat-num { font-size: clamp(88px, 10vw, 180px); line-height: 0.85; }
+  .stat-num { font-size: clamp(75px, 8.5vw, 153px); line-height: 0.85; }
 
   .cred-marquee-label { margin: 0 0 16px; text-align: center; font-size: 13px; color: var(--muted); }
-  .cred-marquee { overflow: hidden; mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent); }
-  .cred-track { display: flex; gap: 48px; width: max-content; animation: cred-scroll 32s linear infinite; }
-  .cred-logo img { height: 60%; width: auto; max-width: 150px; object-fit: contain; filter: grayscale(1); }
-  .cred-logo { flex: none; min-width: 160px; height: 56px; display: flex; align-items: center; justify-content: center; font-family: var(--display); font-weight: 500; font-size: 22px; letter-spacing: -0.6px; color: var(--ink); opacity: 0.72; white-space: nowrap; }
+  .cred-marquee { margin-top: 72px; overflow: hidden; mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent); }
+  .cred-track { display: flex; gap: 96px; padding-right: 96px; width: max-content; animation: cred-scroll 32s linear infinite; }
+  .cred-logo img { height: 100%; width: auto; filter: grayscale(1); }
+  .cred-logo { flex: none; height: 32px; display: flex; align-items: center; font-family: var(--display); font-weight: 500; font-size: 22px; letter-spacing: -0.6px; color: var(--ink); opacity: 0.72; white-space: nowrap; }
   @keyframes cred-scroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
 
   .awards-panel { text-align: center; }
@@ -163,74 +163,8 @@
   /* ---------- "What she's working on"
      Layout lock: People Work services section (framer-1s4tegi) at 1920.
      1144 content column, 80px stack, 16px card gutters, titles above photos. ---------- */
-  #outreach-section { padding: 160px 32px; }
-  .outreach-inner {
-    width: min(1144px, 100%);
-    margin: 0 auto;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 80px;
-  }
-  .outreach-head { width: 100%; display: flex; justify-content: flex-start; margin: 0; text-align: left; }
-  .outreach-head h2 {
-    font-family: var(--headline);
-    font-weight: 600;
-    font-style: normal;
-    font-size: 40px;
-    line-height: 44px;
-    letter-spacing: -0.01em;
-    max-width: 448px;
-    margin: 0;
-    text-align: left;
-    color: var(--ink);
-  }
-  .outreach-head h2 em { font-style: normal; font-weight: 600; }
-  .outreach-grid {
-    width: 100%;
-    display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 16px;
-    align-items: start;
-  }
   @media (max-width: 1100px) {
-    .outreach-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  }
-  .outreach-tile { display: flex; flex-direction: column; gap: 24px; min-width: 0; }
-  .outreach-tile h3 {
-    font-family: var(--sans);
-    font-weight: 600;
-    font-size: 20px;
-    line-height: 24px;
-    letter-spacing: -0.25px;
-    color: var(--ink);
-  }
-  .outreach-media {
-    aspect-ratio: 371 / 421;
-    border-radius: 16px;
-    overflow: hidden;
-    background: var(--line);
-  }
-  .outreach-media img { width: 100%; height: 100%; object-fit: cover; }
-  .outreach-copy { display: flex; flex-direction: column; gap: 24px; }
-  .outreach-tile p {
-    font-size: 16px;
-    font-weight: 400;
-    line-height: 24px;
-    letter-spacing: 0;
-    color: rgba(28, 27, 26, 0.64);
-  }
-  .outreach-link {
-    align-self: flex-start;
-    display: inline-flex;
-    flex-direction: column;
-    font-size: 16px;
-    font-weight: 600;
-    line-height: 24px;
-    letter-spacing: 0;
-    color: var(--ink);
-  }
-  .outreach-link::after { content: ""; height: 1px; width: 100%; background: currentColor; }
+    }
   .outreach-all {
     display: inline-flex;
     align-items: center;
@@ -258,11 +192,7 @@
   }
   .outreach-all__icon svg { width: 16px; height: 16px; display: block; }
   @media (max-width: 800px) {
-    #outreach-section { padding: 96px 24px; }
-    .outreach-inner { gap: 48px; }
-    .outreach-grid { grid-template-columns: 1fr; gap: 48px; }
-    .outreach-head h2 { font-size: 36px; line-height: 40px; }
-  }
+          }
 
   /* ---------- Press ---------- */
   #press-section { padding: 96px 32px 160px; }
@@ -369,3 +299,19 @@
   .cell-field-hint { font-size: 11px; }
   #press-section { padding-top: 64px; }
 }
+
+/* ---------- "What she's working on": same card style as the Communicator page's "contributes to" ---------- */
+#outreach-section { padding: 108px 32px; }
+.workon { width: min(1800px, 100%); margin: 0 auto; display: flex; flex-direction: column; align-items: center; gap: 48px; }
+.workon__head { width: 100%; border-bottom: 1px solid var(--line); padding-bottom: 32px; text-align: center; }
+.workon__title { font-family: var(--headline); font-weight: 600; font-size: clamp(2rem, 3.9vw, 3.5rem); line-height: 1.1; letter-spacing: -0.01em; }
+.workon__row { width: 100%; display: flex; gap: 16px; }
+.workon__card { flex: 1 1 0; min-width: 0; display: flex; flex-direction: column; gap: 16px; transition: flex-grow 0.7s cubic-bezier(0.22, 0.8, 0.18, 1); }
+.workon__media { position: relative; height: 560px; border-radius: 16px; overflow: hidden; background: var(--line); }
+.workon__media img { position: absolute; inset: 0; width: 100%; height: 100%; max-width: none; object-fit: cover; }
+.workon__info { display: flex; flex-direction: column; gap: 4px; }
+.workon__name { font-family: var(--headline); font-weight: 600; font-size: 24px; line-height: 1.1; letter-spacing: -0.01em; }
+.workon__role { font-size: 14px; line-height: 20px; color: var(--muted); }
+@media (hover: hover) and (min-width: 768px) { .workon__row:hover .workon__card { flex-grow: 1; } .workon__row .workon__card:hover { flex-grow: 2.2; } }
+@media (max-width: 991px) { .workon__media { height: 420px; } }
+@media (max-width: 767px) { #outreach-section { padding: 72px 20px; } .workon__row { flex-direction: column; } .workon__media { height: 300px; } }
