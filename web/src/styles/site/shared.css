@@ -196,7 +196,7 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
    a faint echo of the same tint pools at the bottom of the section above it,
    so the circle feels like it's arriving rather than starting abruptly. */
 .fade-to-prefooter { position: relative; }
-.fade-to-prefooter::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 240px; background: radial-gradient(ellipse 140% 100% at 50% 100%, rgba(18, 18, 18, 0.045), transparent 70%); pointer-events: none; }
+.fade-to-prefooter::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 240px; background: linear-gradient(180deg, transparent, color-mix(in srgb, var(--ink) 4.5%, transparent)); pointer-events: none; }
 .prefooter__circle { position: absolute; z-index: 0; left: -375px; top: -1143px; width: 2190px; height: 2190px; border-radius: 50%; background: rgba(18, 18, 18, 0.045); pointer-events: none; }
 /* The circle is taller than the section and gets flatly clipped by .prefooter's
    overflow:hidden, which reads as a hard horizontal cut. This fades that clip
