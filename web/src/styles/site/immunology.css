@@ -37,8 +37,6 @@ a.paper__link:hover .paper__arrow { opacity: 1; transform: translate(2px, -2px);
 .tlas__feature-title { font-family: var(--headline); font-weight: 600; font-size: 22px; line-height: 26px; letter-spacing: -0.01em; }
 .tlas__feature-text { font-size: 15px; line-height: 22px; color: rgba(247, 247, 242, 0.64); }
 .tlas__foot { display: flex; flex-direction: column; align-items: flex-start; gap: 24px; }
-.tlas__eyebrow { display: flex; align-items: center; gap: 12px; }
-.tlas__dot { width: 8px; height: 8px; border-radius: 2px; background: #e3f21a; flex: none; }
 @media (max-width: 991px) { .tlas__media { min-height: 520px; } .tlas__content { padding-left: 16px; } .tlas__features { grid-template-columns: 1fr; gap: 24px; } }
 @media (max-width: 767px) {
   .tlas-sec { padding: 56px 20px 88px; }
