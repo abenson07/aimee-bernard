@@ -79,11 +79,16 @@
       if (art === last) art = PALS[(PALS.indexOf(art) + 1) % PALS.length];
       last = art;
       img.src = '/site/cells/' + art + '.svg';
-      img.style.setProperty('--s', Math.round(rand(44, 64)) + 'px');
-      img.style.setProperty('--rot', Math.round(rand(-22, 22)) + 'deg');
-      img.style.setProperty('--bob', rand(5, 8).toFixed(1) + 's');
-      img.style.setProperty('--delay', (-rand(0, 6)).toFixed(1) + 's');
-      img.style.right = Math.round(rand(5, 16)) + '%';
+      // Variety: top or bottom edge, anywhere along it, different sizes and tilts,
+      // some mirrored. Top ones stay on the right half so they miss the card's label.
+      const top = Math.random() < 0.35;
+      img.style.setProperty('--s', Math.round(rand(40, 66)) + 'px');
+      img.style.setProperty('--rot', Math.round(rand(-35, 35)) + 'deg');
+      img.style.setProperty('--flip', Math.random() < 0.5 ? -1 : 1);
+      img.style.setProperty('--bob', rand(4, 9).toFixed(1) + 's');
+      img.style.setProperty('--delay', (-rand(0, 8)).toFixed(1) + 's');
+      img.style.left = Math.round(top ? rand(50, 88) : rand(5, 85)) + '%';
+      if (top) img.classList.add('work-pal--top');
       list[i].appendChild(img);
       i += Math.floor(rand(7, 12));
     }

@@ -148,6 +148,7 @@
   }
 
   /* ---------- Playful, quiet: a few cells sit on card edges (assigned by work.js when the grid loads) ---------- */
-  .work-pal { position: absolute; bottom: calc(var(--s, 52px) * -0.66); width: var(--s, 52px); height: auto; z-index: 3; pointer-events: none; transform: rotate(var(--rot, 0deg)); filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.12)); animation: pal-bob var(--bob, 6s) ease-in-out infinite alternate; animation-delay: var(--delay, 0s); }
+  .work-pal { position: absolute; bottom: calc(var(--s, 52px) * -0.66); width: var(--s, 52px); height: auto; z-index: 3; pointer-events: none; transform: rotate(var(--rot, 0deg)) scaleX(var(--flip, 1)); filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.12)); animation: pal-bob var(--bob, 6s) ease-in-out infinite alternate; animation-delay: var(--delay, 0s); }
+  .work-pal--top { top: calc(var(--s, 52px) * -0.68); bottom: auto; }
   @keyframes pal-bob { from { translate: 0 0; } to { translate: 0 -6px; } }
   @media (prefers-reduced-motion: reduce) { .work-pal { animation: none; } }
