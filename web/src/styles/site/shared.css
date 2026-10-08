@@ -251,8 +251,8 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 .m-cell--bad img { animation-duration: 2.6s; animation-direction: reverse; }
 @keyframes m-cell-bob { 0%, 100% { transform: translateY(0) rotate(-6deg); } 50% { transform: translateY(-6%) rotate(6deg); } }
 @media (prefers-reduced-motion: reduce) { .m-cell img { animation: none; } }
-.mission-sec.has-stats { display: flex; flex-direction: column; gap: 112px; align-items: center; }
-@media (max-width: 767px) { .mission-sec { padding: 64px 20px; } .mission-sec.has-stats { gap: 72px; } }
+.mission-sec.has-stats { display: flex; flex-direction: column; gap: 160px; align-items: center; }
+@media (max-width: 767px) { .mission-sec { padding: 64px 20px; } .mission-sec.has-stats { gap: 96px; } }
 
 /* ---------- Persona stack (sticky cards) — Figma 80:20824 ---------- */
 .stack { padding: 120px 0; }
@@ -383,6 +383,8 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 
 /* ---------- Mission + awards band (Educator) ---------- */
 .mission-sec .awards-row { padding: 0; width: 100%; }
+.mission-sec .award-grid { grid-template-columns: repeat(3, 1fr); max-width: 960px; margin: 0 auto; gap: 56px 32px; }
+@media (max-width: 560px) { .mission-sec .award-grid { grid-template-columns: repeat(2, 1fr); gap: 40px 16px; } }
 
 /* ---------- Courses (program tiles) — Figma 80:11791 ---------- */
 .courses { padding: 120px 0; }
