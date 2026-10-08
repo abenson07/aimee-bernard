@@ -20,7 +20,7 @@ const heroUrl = (await getImage({ src: heroSrc, format: "webp", width: 1040 })).
     <ul class="identity-words" id="identityWords">
       <li><a href="/educator" class="identity-word" data-bg="/site/educator.webp" data-text="Class is in session! Aimee’s been teaching since 2007!">Educator</a></li>
       <li><a href="/immunology" class="identity-word" data-bg="/site/immunologist.webp" data-text="Meet a published immunologist! Aimee has 12 peer-reviewed papers to her name!">Immunologist</a></li>
-      <li><a href="/science-communication" class="identity-word" data-bg="/site/communicator.webp" data-text="Aimee is passionate about making immunology accessible to everyone!">Communicator</a></li>
+      <li><a href="/communicator" class="identity-word" data-bg="/site/communicator.webp" data-text="Aimee is passionate about making immunology accessible to everyone!">Communicator</a></li>
     </ul>
   </div>
 
@@ -326,28 +326,34 @@ l-6 30 23 -22 c22 -19 27 -20 61 -9 93 33 242 180 306 304 122 236 167 543
     </div>
     <div class="press-grid fade" data-reveal>
       <a class="press-card" href="#">
-        <h3>How an Immunity Gap May Be Fueling the Recent Spike in Respiratory Viruses</h3>
-        <div class="press-meta"><span class="press-logo"><img src="/site/logos/self.svg" alt="SELF" loading="lazy"></span></div>
+        <div class="press-card__img" aria-hidden="true"><img src="/site/immunologist.webp" alt="" loading="lazy"></div>
+        <h3 class="press-card__title">How an Immunity Gap May Be Fueling the Recent Spike in Respiratory Viruses</h3>
+        <div class="press-card__foot"><hr><div class="meta"><span class="outlet-logo"><img src="/site/logos/self.svg" alt="SELF" loading="lazy"></span></div></div>
       </a>
       <a class="press-card" href="#">
-        <h3>5 Sneaky Signs You&rsquo;re Getting Sick</h3>
-        <div class="press-meta"><span class="press-logo"><img src="/site/logos/huffpost.svg" alt="HuffPost" loading="lazy"></span></div>
+        <div class="press-card__img" aria-hidden="true"><img src="/site/educator.webp" alt="" loading="lazy"></div>
+        <h3 class="press-card__title">5 Sneaky Signs You&rsquo;re Getting Sick</h3>
+        <div class="press-card__foot"><hr><div class="meta"><span class="outlet-logo"><img src="/site/logos/huffpost.svg" alt="HuffPost" loading="lazy"></span></div></div>
       </a>
       <a class="press-card" href="#">
-        <h3>CU Immunology Prof discusses mRNA research funding</h3>
-        <div class="press-meta"><span class="press-logo"><img src="/site/logos/koa.png" alt="KOA Morning News" loading="lazy"></span></div>
+        <div class="press-card__img" aria-hidden="true"><img src="/site/communicator.webp" alt="" loading="lazy"></div>
+        <h3 class="press-card__title">CU Immunology Prof discusses mRNA research funding</h3>
+        <div class="press-card__foot"><hr><div class="meta"><span class="outlet-logo"><img src="/site/logos/koa.png" alt="KOA Morning News" loading="lazy"></span></div></div>
       </a>
       <a class="press-card" href="#">
-        <h3>Science Communicators Strategize How to Demystify Science</h3>
-        <div class="press-meta"><span class="press-logo"><img src="/site/logos/cu-anschutz.png" alt="CU Anschutz Today" loading="lazy"></span></div>
+        <div class="press-card__img" aria-hidden="true"><img src="/site/educator.webp" alt="" loading="lazy"></div>
+        <h3 class="press-card__title">Science Communicators Strategize How to Demystify Science</h3>
+        <div class="press-card__foot"><hr><div class="meta"><span class="outlet-logo"><img src="/site/logos/cu-anschutz.png" alt="CU Anschutz Today" loading="lazy"></span></div></div>
       </a>
       <a class="press-card" href="#">
-        <h3>TLaS is Increasing Elementary Schoolers&rsquo; Access to Science</h3>
-        <div class="press-meta"><span class="press-logo"><img src="/site/logos/cu-anschutz.png" alt="CU Anschutz Today" loading="lazy"></span><span>Feb 2021</span></div>
+        <div class="press-card__img" aria-hidden="true"><img src="/site/communicator.webp" alt="" loading="lazy"></div>
+        <h3 class="press-card__title">TLaS is Increasing Elementary Schoolers&rsquo; Access to Science</h3>
+        <div class="press-card__foot"><hr><div class="meta"><span class="outlet-logo"><img src="/site/logos/cu-anschutz.png" alt="CU Anschutz Today" loading="lazy"></span><span>Feb 2021</span></div></div>
       </a>
       <a class="press-card" href="#">
-        <h3>Fake News: Medical Quackery Enters a New Dimension</h3>
-        <div class="press-meta"><span class="press-logo"><img src="/site/logos/cu-anschutz.png" alt="CU Anschutz Today" loading="lazy"></span></div>
+        <div class="press-card__img" aria-hidden="true"><img src="/site/immunologist.webp" alt="" loading="lazy"></div>
+        <h3 class="press-card__title">Fake News: Medical Quackery Enters a New Dimension</h3>
+        <div class="press-card__foot"><hr><div class="meta"><span class="outlet-logo"><img src="/site/logos/cu-anschutz.png" alt="CU Anschutz Today" loading="lazy"></span></div></div>
       </a>
     </div>
   </div>
@@ -370,7 +376,7 @@ l-6 30 23 -22 c22 -19 27 -20 61 -9 93 33 242 180 306 304 122 236 167 543
       <nav class="flex-footer-links" aria-label="Footer">
         <a href="/" class="line-link-block"><div>Home</div><div class="underline-link-master"><div class="underline-link-fill"></div></div></a>
         <a href="/educator" class="line-link-block"><div>Educator</div><div class="underline-link-master"><div class="underline-link-fill"></div></div></a>
-        <a href="/science-communication" class="line-link-block"><div>Communicator</div><div class="underline-link-master"><div class="underline-link-fill"></div></div></a>
+        <a href="/communicator" class="line-link-block"><div>Communicator</div><div class="underline-link-master"><div class="underline-link-fill"></div></div></a>
         <a href="/work" class="line-link-block"><div>Work</div><div class="underline-link-master"><div class="underline-link-fill"></div></div></a>
         <a href="/immunology" class="line-link-block"><div>Immunologist</div><div class="underline-link-master"><div class="underline-link-fill"></div></div></a>
         <a href="/community-outreach" class="line-link-block"><div>Outreach</div><div class="underline-link-master"><div class="underline-link-fill"></div></div></a>
