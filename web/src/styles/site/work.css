@@ -102,7 +102,7 @@
   .work-card {
     display: flex; flex-direction: column; justify-content: space-between; position: relative;
     border-radius: var(--radius); background: color-mix(in srgb, var(--paper) 55%, var(--line));
-    border: 1px solid var(--line); padding: 1.15rem; min-width: 0; min-height: 0;
+    border: 1px solid var(--line); overflow: hidden; padding: 1.15rem; min-width: 0; min-height: 0;
     transition: transform 0.3s var(--ease-out), box-shadow 0.3s var(--ease-out);
   }
   .work-card { --kind: #e6e3de; transition: transform 0.3s var(--ease-out), box-shadow 0.3s var(--ease-out), background-color 0.45s ease, border-color 0.45s ease; }
@@ -147,8 +147,6 @@
   @media (max-width: 767px) {
   }
 
-  /* ---------- Playful, quiet: a few cells sit on card edges (assigned by work.js when the grid loads) ---------- */
-  .work-pal { position: absolute; bottom: calc(var(--s, 52px) * -0.66); width: var(--s, 52px); height: auto; z-index: 3; pointer-events: none; transform: rotate(var(--rot, 0deg)) scaleX(var(--flip, 1)); filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.12)); animation: pal-bob var(--bob, 6s) ease-in-out infinite alternate; animation-delay: var(--delay, 0s); }
-  .work-pal--top { top: calc(var(--s, 52px) * -0.68); bottom: auto; }
-  @keyframes pal-bob { from { translate: 0 0; } to { translate: 0 -6px; } }
-  @media (prefers-reduced-motion: reduce) { .work-pal { animation: none; } }
+  /* ---------- Playful, quiet: a few cards hold one cell that floats behind the text.
+     work.js assigns them when the grid loads and moves them (drift + a push from scrolling). ---------- */
+  .work-pal { position: absolute; left: 0; top: 0; width: var(--s, 64px); height: auto; z-index: 0; opacity: 0.4; pointer-events: none; will-change: transform; }

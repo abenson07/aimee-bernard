@@ -62,36 +62,92 @@
     }
   }
 
-  // A few cells sit on the edge of random cards. They are children of the card,
-  // so they scroll and move with it. Reassigned whenever the grid is laid out.
-  const PALS = ['t-cell', 'vaccine', 'red-blood-cell', 'antibody', 'neutrophil', 'interferon'];
+  // A few random cards each hold one cell that floats behind the text, like the
+  // cells in the home footer. It drifts slowly and gets pushed by scrolling, as if
+  // the card were full of liquid: scroll down and it lags downward, scroll up and
+  // it lags upward, then settles back to drifting. Reassigned on every grid layout.
+  // Only cells and germs (no vials, antibodies or signal molecules).
+  const PALS = ['t-cell', 'neutrophil', 'red-blood-cell', 'coronavirus', 'influenza', 'rhinovirus', 'e-coli', 'staph'];
   const rand = (a, b) => a + Math.random() * (b - a);
+  const clamp = (v, lo, hi) => Math.max(lo, Math.min(hi, v));
+  let pals = [];
+  let lastArt = '';
+  let palRaf = 0, lastT = 0, lastScroll = window.scrollY;
+
+  const palIO = new IntersectionObserver((entries) => {
+    entries.forEach((e) => { const p = pals.find((q) => q.card === e.target); if (p) p.visible = e.isIntersecting; });
+    wakePals();
+  }, { rootMargin: '120px 0px' });
+
   function assignPals(list) {
-    cards.forEach((c) => c.querySelectorAll('.work-pal').forEach((p) => p.remove()));
+    pals.forEach((p) => { p.el.remove(); palIO.unobserve(p.card); });
+    pals = [];
     let i = Math.floor(rand(1, 5));
-    let last = -1;
     while (i < list.length) {
-      const img = document.createElement('img');
-      img.className = 'work-pal';
-      img.alt = '';
-      img.setAttribute('aria-hidden', 'true');
+      const card = list[i];
+      const el = document.createElement('img');
+      el.className = 'work-pal';
+      el.alt = '';
+      el.setAttribute('aria-hidden', 'true');
       let art = PALS[Math.floor(Math.random() * PALS.length)];
-      if (art === last) art = PALS[(PALS.indexOf(art) + 1) % PALS.length];
-      last = art;
-      img.src = '/site/cells/' + art + '.svg';
-      // Variety: top or bottom edge, anywhere along it, different sizes and tilts,
-      // some mirrored. Top ones stay on the right half so they miss the card's label.
-      const top = Math.random() < 0.35;
-      img.style.setProperty('--s', Math.round(rand(40, 66)) + 'px');
-      img.style.setProperty('--rot', Math.round(rand(-35, 35)) + 'deg');
-      img.style.setProperty('--flip', Math.random() < 0.5 ? -1 : 1);
-      img.style.setProperty('--bob', rand(4, 9).toFixed(1) + 's');
-      img.style.setProperty('--delay', (-rand(0, 8)).toFixed(1) + 's');
-      img.style.left = Math.round(top ? rand(50, 88) : rand(5, 85)) + '%';
-      if (top) img.classList.add('work-pal--top');
-      list[i].appendChild(img);
+      if (art === lastArt) art = PALS[(PALS.indexOf(art) + 1) % PALS.length];
+      lastArt = art;
+      el.src = '/site/cells/' + art + '.svg';
+      const size = Math.round(rand(56, 84));
+      el.style.setProperty('--s', size + 'px');
+      card.appendChild(el);
+      const w = Math.max(card.clientWidth - size, 1), h = Math.max(card.clientHeight - size, 1);
+      const heading = rand(0, Math.PI * 2), speed = rand(7, 14);
+      pals.push({
+        el, card, size, visible: false,
+        x: rand(0.1, 0.9) * w, y: rand(0.1, 0.9) * h,
+        ax: Math.cos(heading) * speed, ay: Math.sin(heading) * speed,   // ambient drift
+        vx: 0, vy: 0, rot: rand(-20, 20), vr: rand(-6, 6),
+      });
+      pals[pals.length - 1].vx = pals[pals.length - 1].ax;
+      pals[pals.length - 1].vy = pals[pals.length - 1].ay;
+      palIO.observe(card);
       i += Math.floor(rand(7, 12));
     }
+    placePals();
+  }
+
+  function placePals() {
+    pals.forEach((p) => { p.el.style.transform = 'translate3d(' + p.x.toFixed(1) + 'px,' + p.y.toFixed(1) + 'px,0) rotate(' + p.rot.toFixed(1) + 'deg)'; });
+  }
+
+  function palFrame(now) {
+    const dt = Math.min(0.05, (now - lastT) / 1000) || 0.016;
+    lastT = now;
+    const dy = clamp(window.scrollY - lastScroll, -90, 90);
+    lastScroll = window.scrollY;
+    let any = false;
+    for (const p of pals) {
+      if (!p.visible) continue;
+      any = true;
+      const w = Math.max(p.card.clientWidth - p.size, 1), h = Math.max(p.card.clientHeight - p.size, 1);
+      // Fluid response: the cell trails the scroll, with a little sideways wobble.
+      p.vy += dy * 4;
+      p.vx += (Math.random() - 0.5) * Math.abs(dy) * 1.2;
+      p.vr += dy * 0.15;
+      // Ease back to the slow ambient drift.
+      const k = Math.min(1, dt * 1.6);
+      p.vx += (p.ax - p.vx) * k; p.vy += (p.ay - p.vy) * k; p.vr += (0 - p.vr) * k * 0.5;
+      p.x += p.vx * dt; p.y += p.vy * dt; p.rot += p.vr * dt;
+      // Soft walls: bounce off the card edges and turn the ambient drift around.
+      if (p.x < 0) { p.x = 0; p.vx = Math.abs(p.vx) * 0.6; p.ax = Math.abs(p.ax); }
+      if (p.x > w) { p.x = w; p.vx = -Math.abs(p.vx) * 0.6; p.ax = -Math.abs(p.ax); }
+      if (p.y < 0) { p.y = 0; p.vy = Math.abs(p.vy) * 0.6; p.ay = Math.abs(p.ay); }
+      if (p.y > h) { p.y = h; p.vy = -Math.abs(p.vy) * 0.6; p.ay = -Math.abs(p.ay); }
+    }
+    placePals();
+    palRaf = any ? requestAnimationFrame(palFrame) : 0;
+  }
+
+  function wakePals() {
+    if (reduceMotionWork || palRaf || !pals.some((p) => p.visible)) return;
+    lastT = performance.now(); lastScroll = window.scrollY;
+    palRaf = requestAnimationFrame(palFrame);
   }
 
   function setCards(kind) {
