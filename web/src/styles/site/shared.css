@@ -294,6 +294,10 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 .press-card__foot { display: flex; flex-direction: column; gap: 24px; }
 .press-card__foot hr { border: 0; height: 1px; background: rgba(25, 24, 24, 0.16); margin: 0; }
 .press-card .meta span:first-child { color: rgba(25, 24, 24, 0.88); }
+.press-card .meta { align-items: center; }
+.outlet-logo { display: inline-flex; align-items: center; height: 40px; }
+.outlet-logo img { height: 100%; width: auto; max-width: 150px; object-fit: contain; filter: grayscale(1); opacity: 0.9; transition: filter 0.2s ease, opacity 0.2s ease; }
+.press-card:hover .outlet-logo img { filter: grayscale(1) brightness(0) invert(1); opacity: 0.95; }
 .press-card .meta span:last-child:not(:first-child) { color: rgba(25, 24, 24, 0.64); }
 @media (hover: hover) and (min-width: 992px) {
   .press-card:hover .press-card__img { opacity: 1; }
