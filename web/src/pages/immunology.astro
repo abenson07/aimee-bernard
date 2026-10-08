@@ -8,6 +8,7 @@ import "@/styles/site/shared.css";
 import "@/styles/site/immunology.css";
 import { getImage } from "astro:assets";
 import bwSrc from "@/assets/site/aimee-bw.png";
+import tlasSrc from "@/assets/site/tlas-students-working-at-tables.jpg";
 
 // Rendered on request so dashboard edits show up without a redeploy; Vercel
 // caches the page for a minute and refreshes it in the background.
@@ -24,6 +25,7 @@ try {
 }
 
 const bwUrl = (await getImage({ src: bwSrc, format: "webp", width: 520 })).src;
+const tlasUrl = (await getImage({ src: tlasSrc, format: "webp", width: 1024 })).src;
 
 // "June 2026" -> a sortable number. Undated items sort last.
 const when = (d: string | null) => {
@@ -95,7 +97,7 @@ const firstYear = Math.min(...papers.filter((p) => p.t).map((p) => new Date(p.t)
 <section class="tlas-sec wrap fade-to-prefooter" aria-label="Think Like a Scientist">
   <div class="tlas">
     <div class="tlas__grid">
-      <div class="tlas__media fade"><img src="/site/educator.webp" alt="" style="object-position:40% 40%" loading="lazy"></div>
+      <div class="tlas__media fade"><img src={tlasUrl} alt="Students working at tables in a Think Like a Scientist session" loading="lazy"></div>
       <div class="tlas__content">
         <div class="tlas__copy">
           <span class="tlas__label fade">Outreach</span>
