@@ -63,16 +63,16 @@
   }
 
   // A few random cards each hold one cell that floats behind the text, like the
-  // cells in the home footer. It drifts slowly and gets pushed by scrolling, as if
-  // the card were full of liquid: scroll down and it lags downward, scroll up and
-  // it lags upward, then settles back to drifting. Reassigned on every grid layout.
+  // cells in the home footer. It drifts slowly and trails the scroll a little, as
+  // if suspended in liquid: scroll down and it eases downward relative to the card,
+  // scroll up and it eases upward, then settles back. Reassigned on every grid layout.
   // Only cells and germs (no vials, antibodies or signal molecules).
   const PALS = ['t-cell', 'neutrophil', 'red-blood-cell', 'coronavirus', 'influenza', 'rhinovirus', 'e-coli', 'staph'];
   const rand = (a, b) => a + Math.random() * (b - a);
   const clamp = (v, lo, hi) => Math.max(lo, Math.min(hi, v));
   let pals = [];
   let lastArt = '';
-  let palRaf = 0, lastT = 0, lastScroll = window.scrollY;
+  let palRaf = 0, lastT = 0, lastScroll = window.scrollY, scrollV = 0;
 
   const palIO = new IntersectionObserver((entries) => {
     entries.forEach((e) => { const p = pals.find((q) => q.card === e.target); if (p) p.visible = e.isIntersecting; });
@@ -102,7 +102,8 @@
         el, card, size, visible: false,
         x: rand(0.1, 0.9) * w, y: rand(0.1, 0.9) * h,
         ax: Math.cos(heading) * speed, ay: Math.sin(heading) * speed,   // ambient drift
-        vx: 0, vy: 0, rot: rand(-20, 20), vr: rand(-6, 6),
+        vx: 0, vy: 0, rot: rand(-20, 20), vr: rand(-4, 4),
+        wob: rand(0.25, 0.5), ph: rand(0, Math.PI * 2),   // slow meander
       });
       pals[pals.length - 1].vx = pals[pals.length - 1].ax;
       pals[pals.length - 1].vy = pals[pals.length - 1].ay;
@@ -119,26 +120,32 @@
   function palFrame(now) {
     const dt = Math.min(0.05, (now - lastT) / 1000) || 0.016;
     lastT = now;
-    const dy = clamp(window.scrollY - lastScroll, -90, 90);
+    // Scroll speed in px/s, smoothed so a flick doesn't jolt anything.
+    const raw = (window.scrollY - lastScroll) / dt;
     lastScroll = window.scrollY;
+    scrollV += (clamp(raw, -2500, 2500) - scrollV) * Math.min(1, dt * 5);
+    const t = now / 1000;
     let any = false;
     for (const p of pals) {
       if (!p.visible) continue;
       any = true;
       const w = Math.max(p.card.clientWidth - p.size, 1), h = Math.max(p.card.clientHeight - p.size, 1);
-      // Fluid response: the cell trails the scroll, with a little sideways wobble.
-      p.vy += dy * 4;
-      p.vx += (Math.random() - 0.5) * Math.abs(dy) * 1.2;
-      p.vr += dy * 0.15;
-      // Ease back to the slow ambient drift.
-      const k = Math.min(1, dt * 1.6);
-      p.vx += (p.ax - p.vx) * k; p.vy += (p.ay - p.vy) * k; p.vr += (0 - p.vr) * k * 0.5;
-      p.x += p.vx * dt; p.y += p.vy * dt; p.rot += p.vr * dt;
-      // Soft walls: bounce off the card edges and turn the ambient drift around.
-      if (p.x < 0) { p.x = 0; p.vx = Math.abs(p.vx) * 0.6; p.ax = Math.abs(p.ax); }
-      if (p.x > w) { p.x = w; p.vx = -Math.abs(p.vx) * 0.6; p.ax = -Math.abs(p.ax); }
-      if (p.y < 0) { p.y = 0; p.vy = Math.abs(p.vy) * 0.6; p.ay = Math.abs(p.ay); }
-      if (p.y > h) { p.y = h; p.vy = -Math.abs(p.vy) * 0.6; p.ay = -Math.abs(p.ay); }
+      // Where the liquid is carrying it: slow drift and meander, plus a gentle trail
+      // behind the scroll (about a fifth of the scroll speed).
+      const tx = p.ax + Math.sin(t * p.wob + p.ph) * 4;
+      const ty = p.ay + scrollV * 0.2 + Math.cos(t * p.wob * 0.8 + p.ph) * 4;
+      const k = Math.min(1, dt * 2);
+      p.vx += (tx - p.vx) * k;
+      p.vy += (ty - p.vy) * k;
+      // Cushioned edges: ease away from the sides instead of bouncing off them.
+      const m = 36, push = 140 * dt;
+      if (p.x < m) { p.vx += ((m - p.x) / m) * push; if (p.ax < 0) p.ax = -p.ax; }
+      if (p.x > w - m) { p.vx -= ((p.x - (w - m)) / m) * push; if (p.ax > 0) p.ax = -p.ax; }
+      if (p.y < m) { p.vy += ((m - p.y) / m) * push; if (p.ay < 0) p.ay = -p.ay; }
+      if (p.y > h - m) { p.vy -= ((p.y - (h - m)) / m) * push; if (p.ay > 0) p.ay = -p.ay; }
+      p.x = clamp(p.x + p.vx * dt, 0, w);
+      p.y = clamp(p.y + p.vy * dt, 0, h);
+      p.rot += (p.vr + scrollV * 0.004) * dt;
     }
     placePals();
     palRaf = any ? requestAnimationFrame(palFrame) : 0;
@@ -146,7 +153,7 @@
 
   function wakePals() {
     if (reduceMotionWork || palRaf || !pals.some((p) => p.visible)) return;
-    lastT = performance.now(); lastScroll = window.scrollY;
+    lastT = performance.now(); lastScroll = window.scrollY; scrollV = 0;
     palRaf = requestAnimationFrame(palFrame);
   }
 

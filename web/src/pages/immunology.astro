@@ -45,17 +45,6 @@ const papers = [...byTitle.values()]
   .sort((a, b) => b.t - a.t);
 
 const firstYear = Math.min(...papers.filter((p) => p.t).map((p) => new Date(p.t).getFullYear()));
-
-// Think Like a Scientist items from the same content.
-const tlasItems = source.filter((i) => /think like a scientist|\bTLaS\b/i.test(i.title ?? ""));
-const tlasLinks = tlasItems
-  .filter((i) => i.kind === "educational-content" && i.url)
-  .map((i) => ({
-    label: /youtube/i.test(i.title ?? "") ? "Experiments at home" : /curriculum/i.test(i.title ?? "") ? "Curriculum" : "Program website",
-    href: i.url!,
-  }))
-  .sort((a, b) => (a.label === "Program website" ? -1 : b.label === "Program website" ? 1 : 0));
-const tlasPress = tlasItems.filter((i) => i.kind === "press-mentions" && i.url);
 ---
 
 <SiteLayout title="Immunologist">
@@ -151,7 +140,7 @@ const tlasPress = tlasItems.filter((i) => i.kind === "press-mentions" && i.url);
       <a href="/educator">Educator</a>
       <a href="/science-communication">Communicator</a>
       <a href="/work">Work</a>
-      <a href="#">Contact</a>
+      <a href="/contact">Contact</a>
     </nav>
   </div>
   <div class="footer-word" aria-hidden="true"><span class="footer-word__first">Aimee</span><span class="footer-word__last">Pugh-Bernard</span></div>

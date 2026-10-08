@@ -11,7 +11,7 @@ const links = [
   { href: "/immunology", label: "Immunologist" },
   { href: "/work", label: "Work" },
   { href: "/community-outreach", label: "Outreach" },
-  { href: "#", label: "Contact" },
+  { href: "/contact", label: "Contact" },
 ];
 
 const norm = (p: string) => p.replace(/\/+$/, "") || "/";
@@ -21,7 +21,7 @@ const here = norm(Astro.url.pathname);
 <div class="site-header">
   <div class="banner">
     <span>Available for speaking engagements &amp; science communication consulting</span>
-    <a href="#">Get in touch</a>
+    <a href="/contact">Get in touch</a>
   </div>
   <div class="site-header__inner">
     <button type="button" class="nav-mascot" id="navMascot" aria-label="Say hi to the cell">

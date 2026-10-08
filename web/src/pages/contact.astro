@@ -1,0 +1,60 @@
+---
+import SiteLayout from "@/layouts/SiteLayout.astro";
+import SiteHeader from "@/components/SiteHeader.astro";
+import "@/styles/site/shared.css";
+import "@/styles/site/contact.css";
+---
+
+<SiteLayout title="Contact">
+<div class="page-main" id="pageMain">
+<SiteHeader />
+
+<main id="page">
+<section class="contact" aria-label="Contact">
+  <div class="contact__grid">
+    <aside class="contact__panel fade">
+      <img class="contact__photo" src="/site/communicator.webp" alt="" />
+      <div class="contact__shade" aria-hidden="true"></div>
+      <a class="press-card contact__talk" href="/science-communication">
+        <div class="press-card__img" aria-hidden="true"><img src="/site/communicator.webp" alt="" loading="lazy" /></div>
+        <h3 class="press-card__title">Confessions of a Scientist: Science education needs communication training</h3>
+        <div class="press-card__foot"><hr /><div class="meta"><span class="outlet-logo"><img src="/site/logos/tedx.svg" alt="TEDxCU" loading="lazy" /></span><span>April 2026</span></div></div>
+      </a>
+    </aside>
+
+    <div class="contact__form-side fade">
+      <form class="contact__form" id="contactForm" method="post" action="#">
+        <div class="contact__intro">
+          <h1 class="display contact__title">Get in touch</h1>
+          <p class="contact__lede">Tell Aimee a little about what you have in mind, and she’ll get back to you.</p>
+        </div>
+        <hr />
+        <div class="contact__fields">
+          <label class="field"><span class="field__label">Name</span><input name="name" type="text" placeholder="Your name" required maxlength="256" /></label>
+          <label class="field"><span class="field__label">Email</span><input name="email" type="email" placeholder="Email address" required maxlength="256" /></label>
+          <label class="field">
+            <span class="field__label">What is this about?</span>
+            <select name="topic">
+              <option value="">Choose one</option>
+              <option>Speaking engagement</option>
+              <option>Consulting</option>
+              <option>Classroom or community visit</option>
+              <option>Something else</option>
+            </select>
+          </label>
+          <label class="field"><span class="field__label">Message</span><textarea name="message" placeholder="Message" maxlength="5000" required></textarea></label>
+        </div>
+        <div class="contact__actions">
+          <button type="submit" class="glass-btn contact__send"><span class="button-text-mask"><span class="button-text t1">Send message</span><span class="button-text t2">Send message</span></span></button>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+</main>
+
+</div>
+<script>
+  import "@/scripts/shared.js";
+</script>
+</SiteLayout>
