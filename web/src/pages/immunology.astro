@@ -1,5 +1,171 @@
 ---
-import ComingSoon from "@/components/ComingSoon.astro";
+import SiteLayout from "@/layouts/SiteLayout.astro";
+import SiteHeader from "@/components/SiteHeader.astro";
+import { getWorkItems, type WorkItem } from "@/utils/sanity.ts";
+// Saved copy of the Sanity items, used only if Sanity can't be reached.
+import snapshot from "@/data/work-snapshot.json";
+import "@/styles/site/shared.css";
+import "@/styles/site/immunology.css";
+import { getImage } from "astro:assets";
+import bwSrc from "@/assets/site/aimee-bw.png";
+
+// Rendered on request so dashboard edits show up without a redeploy; Vercel
+// caches the page for a minute and refreshes it in the background.
+export const prerender = false;
+Astro.response.headers.set("Cache-Control", "public, s-maxage=60, stale-while-revalidate=300");
+
+let source: WorkItem[];
+try {
+  source = await getWorkItems();
+  if (!source.length) throw new Error("Sanity returned no items");
+} catch (err) {
+  console.warn("Immunology: using the saved snapshot.", err);
+  source = snapshot as WorkItem[];
+}
+
+const bwUrl = (await getImage({ src: bwSrc, format: "webp", width: 520 })).src;
+
+// "June 2026" -> a sortable number. Undated items sort last.
+const when = (d: string | null) => {
+  const t = d ? Date.parse(`1 ${d}`) : NaN;
+  return Number.isNaN(t) ? 0 : t;
+};
+
+// The same paper can be entered twice; keep the entry with the most detail.
+const detail = (i: WorkItem) => [i.venue, i.date, i.url].filter(Boolean).length;
+const byTitle = new Map<string, WorkItem>();
+for (const item of source) {
+  if (item.kind !== "research-publication" || !item.title) continue;
+  const key = item.title.toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
+  const prev = byTitle.get(key);
+  if (!prev || detail(item) > detail(prev)) byTitle.set(key, item);
+}
+const papers = [...byTitle.values()]
+  .map((i) => ({ title: i.title!, venue: i.venue, date: i.date, href: i.url ?? i.fileUrl ?? null, t: when(i.date) }))
+  .sort((a, b) => b.t - a.t);
+
+const firstYear = Math.min(...papers.filter((p) => p.t).map((p) => new Date(p.t).getFullYear()));
+
+// Think Like a Scientist items from the same content.
+const tlasItems = source.filter((i) => /think like a scientist|\bTLaS\b/i.test(i.title ?? ""));
+const tlasLinks = tlasItems
+  .filter((i) => i.kind === "educational-content" && i.url)
+  .map((i) => ({
+    label: /youtube/i.test(i.title ?? "") ? "Experiments at home" : /curriculum/i.test(i.title ?? "") ? "Curriculum" : "Program website",
+    href: i.url!,
+  }))
+  .sort((a, b) => (a.label === "Program website" ? -1 : b.label === "Program website" ? 1 : 0));
+const tlasPress = tlasItems.filter((i) => i.kind === "press-mentions" && i.url);
 ---
 
-<ComingSoon title="Immunology" />
+<SiteLayout title="Immunologist">
+<div class="page-main" id="pageMain">
+<SiteHeader />
+
+<main id="page">
+<section class="hero-split">
+  <div class="wrap" style="padding:0">
+    <div class="hero-split__head">
+      <h1 class="display hero-split__title">Why the immune system is worth understanding</h1>
+      <div class="hero-split__side is-info"><p>Aimee’s research asks how the body tells friend from foe, and what happens when it gets it wrong.</p></div>
+    </div>
+    <div class="hero-split__media"><div><img src="/site/immunologist.webp" alt=""></div><div><img src={bwUrl} alt=""></div></div>
+  </div>
+</section>
+
+<section class="mission-sec has-stats" aria-label="Mission and numbers">
+  <p class="mission" data-mission>Every allergy <span class="m-el m-cell" data-mx="14" data-my="10"><img src="/site/cells/t-cell.svg" alt=""></span> infection <span class="m-el m-cell m-cell--bad" data-mx="10" data-my="14"><img src="/site/cells/influenza.svg" alt=""></span> and autoimmune disease comes down to one question: how does the body decide what to attack? I study that decision <span class="m-el m-cell" data-mx="12" data-my="9"><img src="/site/cells/antibody.svg" alt=""></span> so more people can live well with their immune system.</p>
+  <div class="stats-row is-tight">
+    <div class="stat fade"><div class="stat__num">{papers.length}</div><p class="stat__desc">Papers and publications</p></div>
+    <div class="stat fade"><div class="stat__num">25+</div><p class="stat__desc">Years as an educator, scientist &amp; communicator</p></div>
+    {Number.isFinite(firstYear) && <div class="stat fade"><div class="stat__num">{firstYear}</div><p class="stat__desc">Year of first publication</p></div>}
+  </div>
+</section>
+
+<section class="papers wrap" aria-label="Papers">
+  <div class="papers__head fade"><span class="tag-chip">Research</span><h2 class="feature-pair__title">The papers behind the questions</h2></div>
+  <ul class="papers__list fade">
+    {papers.map((p) => {
+      const inner = (
+        <>
+          <span class="paper__title">{p.title}</span>
+          <span class="paper__venue">{p.venue ?? ""}</span>
+          <span class="paper__date">{p.date ?? ""}</span>
+          {p.href && <svg class="paper__arrow" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M4 12L12 4M12 4H5.5M12 4v6.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>}
+        </>
+      );
+      return (
+        <li class="paper">
+          {p.href ? <a class="paper__link" href={p.href} target="_blank" rel="noopener">{inner}</a> : <div class="paper__row">{inner}</div>}
+        </li>
+      );
+    })}
+  </ul>
+</section>
+
+<section class="tlas-sec wrap fade-to-prefooter" aria-label="Think Like a Scientist">
+  <div class="feature-pair__head fade"><span class="tag-chip">Outreach</span><h2 class="feature-pair__title">Think Like a Scientist</h2></div>
+  <div class="tlas fade">
+    <div class="tlas__body">
+      <div>
+        <h3 class="tlas__title">Putting science in the hands of elementary schoolers</h3>
+        <p class="tlas__text">Think Like a Scientist is Aimee’s outreach program, bringing hands-on experiments and a free curriculum to young students and the teachers who run them.</p>
+      </div>
+      <div class="tlas__foot">
+        <hr>
+        <div class="tlas__links">
+          {tlasLinks.map((l) => (
+            <a class="glass-btn" href={l.href} target="_blank" rel="noopener"><span class="button-text-mask"><span class="button-text t1">{l.label}</span><span class="button-text t2">{l.label}</span></span></a>
+          ))}
+        </div>
+      </div>
+    </div>
+    <div class="tlas__img"><img src="/site/educator.webp" alt="" style="object-position:40% 40%" loading="lazy"></div>
+  </div>
+  {tlasPress.length > 0 && (
+    <div class="tlas-press fade">
+      {tlasPress.map((p) => (
+        <a class="press-card" href={p.url!} target="_blank" rel="noopener">
+          <h3 class="press-card__title">{p.title}</h3>
+          <div class="press-card__foot"><hr><div class="meta"><span>{p.venue}</span><span>{p.date}</span></div></div>
+        </a>
+      ))}
+    </div>
+  )}
+</section>
+
+<section class="prefooter" aria-label="Closing statement">
+  <div class="prefooter__circle" aria-hidden="true"></div>
+  <div class="prefooter__inner">
+    <div class="prefooter__icons" aria-hidden="true">
+      <span class="pf-icon" data-mx="50" data-my="30" style="--l:350;--t:22;--w:293.939;--i:240;--r:15deg"><span class="pf-inner"><img src="/site/cells/t-cell.svg" alt="" style="--in:0"></span></span>
+      <span class="pf-icon" data-mx="-40" data-my="-20" style="--l:0;--t:26;--w:255.754;--i:187.225;--r:-30deg"><span class="pf-inner"><img src="/site/cells/neutrophil.svg" alt="" style="--in:0"></span></span>
+      <span class="pf-icon" data-mx="30" data-my="20" style="--l:27;--t:305;--w:132.668;--i:97.12;--r:-30deg"><span class="pf-inner"><img src="/site/cells/staph.svg" alt="" style="--in:0"></span></span>
+      <span class="pf-icon" data-mx="20" data-my="-30" style="--l:719;--t:0;--w:239.054;--i:175;--r:30deg"><span class="pf-inner"><img src="/site/cells/red-blood-cell.svg" alt="" style="--in:0"></span></span>
+      <span class="pf-icon" data-mx="-40" data-my="20" style="--l:1010;--t:-80;--w:413.438;--i:302.657;--r:30deg"><span class="pf-inner"><img src="/site/cells/coronavirus.svg" alt="" style="--in:0"></span></span>
+    </div>
+  </div>
+</section>
+</main>
+
+</div>
+<footer class="site-footer" id="siteFooter">
+<div class="site-footer__inner">
+  <div class="site-footer__top">
+    <p class="site-footer__big">Curious about how the immune system works?</p>
+    <nav class="site-footer__links" aria-label="Footer">
+      <a href="/">Home</a>
+      <a href="/educator">Educator</a>
+      <a href="/science-communication">Communicator</a>
+      <a href="/work">Work</a>
+      <a href="#">Contact</a>
+    </nav>
+  </div>
+  <div class="footer-word" aria-hidden="true"><span class="footer-word__first">Aimee</span><span class="footer-word__last">Pugh-Bernard</span></div>
+  <div class="site-footer__bottom"><span>© Aimee Pugh-Bernard</span></div>
+</div>
+</footer>
+<script>
+  import "@/scripts/shared.js";
+</script>
+</SiteLayout>
