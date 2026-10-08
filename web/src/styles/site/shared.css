@@ -390,7 +390,8 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 .courses__grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
 .ctile { height: 262px; border-radius: 8px; background: #e1e0de; padding: 23px 32px; display: flex; flex-direction: column; align-items: center; justify-content: space-between; text-align: center; transition: transform 0.4s var(--ease); width: 100%; }
 .ctile:hover { transform: translateY(-4px); }
-.ctile__logo { height: 46px; width: 140px; object-fit: contain; mix-blend-mode: multiply; }
+.ctile__logo { height: 84px; width: 84px; object-fit: contain; transition: transform 0.4s var(--ease); }
+.ctile:hover .ctile__logo { transform: rotate(-6deg) scale(1.06); }
 .ctile__name { font-family: var(--body); font-size: clamp(1.4rem, 2.1vw, 1.9rem); line-height: 1.22; color: #0b0b0b; }
 .ctile__meta { font-family: var(--mono); font-size: 11px; line-height: 14px; letter-spacing: 0.75px; text-transform: uppercase; color: var(--muted); min-height: 28px; }
 @media (max-width: 991px) { .courses__grid { grid-template-columns: 1fr 1fr; } }
