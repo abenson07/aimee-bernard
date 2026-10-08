@@ -5,6 +5,8 @@ import "@/styles/site/shared.css";
 import "@/styles/site/educator.css";
 import { getImage } from "astro:assets";
 import bwSrc from "@/assets/site/aimee-bw.png";
+// Courses taught since 2007. Edit by hand; Aimee to confirm the final count.
+const coursesTaught = 18;
 const bwUrl = (await getImage({ src: bwSrc, format: "webp", width: 520 })).src;
 ---
 
@@ -17,7 +19,7 @@ const bwUrl = (await getImage({ src: bwSrc, format: "webp", width: 520 })).src;
   <div class="wrap" style="padding:0">
     <div class="hero-split__head">
       <h1 class="display hero-split__title">Teaching immunology so it sticks</h1>
-      <div class="hero-split__side is-info"><p>Aimee has taught 18 courses at CU Anschutz since 2019, from first-year medical students to PhD trainees.</p><span class="hero-split__chip"><img src="/site/set-d/logo-cu-chip.png" alt="" style="width:auto;height:22px"></span></div>
+      <div class="hero-split__side is-info"><p>Since 2007, Aimee has taught {coursesTaught} courses, from first-year medical students to PhD trainees, and more may follow.</p><span class="hero-split__chip"><img src="/site/set-d/logo-cu-chip.png" alt="" style="width:auto;height:22px"></span></div>
     </div>
     <div class="hero-split__media"><div><img src="/site/educator.webp" alt=""></div><div><img src={bwUrl} alt=""></div></div>
   </div>
