@@ -15,7 +15,9 @@ const RULES: Array<[RegExp, string]> = [
   [/^cu\b|^school of medicine|anschutz/i, "cu-anschutz.png"],
 ];
 
-export function outletLogo(venue: string | null | undefined): string | null {
+export function outletLogo(venue: string | null | undefined, title?: string | null): string | null {
+  // Immunology Explained items often list AAI as the venue; the series logo wins.
+  if (title && /immunology explained/i.test(title)) return "/site/logos/immunology-explained.png";
   if (!venue) return null;
   const hit = RULES.find(([re]) => re.test(venue.trim()));
   return hit ? `/site/logos/${hit[1]}` : null;

@@ -50,9 +50,9 @@ const items = source.map((item) => {
     categoryLabel: cat ? item.category : null,
     title: item.title ?? "",
     venue: item.venue,
-    logo: outletLogo(item.venue),
+    logo: outletLogo(item.venue, item.title),
     // Courses keep the venue text because the detail (e.g. "Year 1") matters.
-    meta: [outletLogo(item.venue) && item.kind !== "course" ? null : item.venue, item.date].filter(Boolean).join(" · ") || null,
+    meta: [outletLogo(item.venue, item.title) && item.kind !== "course" ? null : item.venue, item.date].filter(Boolean).join(" · ") || null,
     href,
     // Optional: only items with an image in the dashboard get one.
     photo: item.image ? `${item.image}?w=900&auto=format` : null,
