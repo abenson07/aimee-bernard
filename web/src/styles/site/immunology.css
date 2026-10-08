@@ -25,20 +25,19 @@ a.paper__link:hover .paper__arrow { opacity: 1; transform: translate(2px, -2px);
 .tlas-sec { padding: 80px 32px 120px; display: flex; flex-direction: column; gap: 64px; }
 .tlas-head { display: flex; flex-direction: column; align-items: flex-start; gap: 24px; max-width: 680px; }
 .tlas-head__text { font-size: 20px; line-height: 1.4; max-width: 44ch; }
-.tlas-grid { display: grid; grid-template-columns: 1fr auto; gap: 16px; align-items: stretch; }
+.tlas-grid { display: grid; grid-template-columns: 421px 1fr; gap: 16px; align-items: stretch; }
 .tlas-grid__img { border-radius: 24px; overflow: hidden; position: relative; min-height: 560px; }
 .tlas-grid__img img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
-.tlas-list { display: flex; flex-direction: column; justify-content: center; gap: 48px; width: 421px; max-width: 100%; padding: 0 24px; }
+.tlas-list { display: flex; flex-direction: column; justify-content: center; gap: 48px; padding: 0 48px; }
 .tlas-feature { display: flex; flex-direction: column; gap: 16px; }
 .tlas-feature__top { display: flex; align-items: center; gap: 16px; }
-.tlas-feature__icon { width: 36px; height: 36px; object-fit: contain; flex: none; }
 .tlas-feature__title { font-family: var(--headline); font-weight: 600; font-size: 24px; line-height: 28px; letter-spacing: -0.01em; }
 .tlas-feature__text { font-size: 16px; line-height: 24px; color: var(--muted); }
 .tlas-btn { align-self: flex-start; color: var(--ink); border-color: var(--line); background: var(--card); box-shadow: none; }
-@media (max-width: 991px) { .tlas-list { width: 340px; gap: 36px; padding: 0 8px; } }
+@media (max-width: 991px) { .tlas-grid { grid-template-columns: 300px 1fr; } .tlas-list { gap: 36px; padding: 0 16px; } }
 @media (max-width: 767px) {
   .tlas-sec { padding: 56px 20px 88px; gap: 40px; }
   .tlas-grid { grid-template-columns: 1fr; gap: 40px; }
   .tlas-grid__img { min-height: 320px; border-radius: 16px; }
-  .tlas-list { width: 100%; padding: 0; }
+  .tlas-list { padding: 0; }
 }
