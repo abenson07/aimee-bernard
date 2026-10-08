@@ -196,7 +196,7 @@
 
   /* ---------- Press ---------- */
   #press-section { padding: 96px 32px 160px; }
-  .press-inner { width: min(1144px, 100%); margin: 0 auto; display: flex; flex-direction: column; gap: 48px; }
+  .press-inner { width: min(1800px, 100%); margin: 0 auto; display: flex; flex-direction: column; gap: 48px; }
   .press-head h2 { font-family: var(--headline); font-weight: 600; font-size: 40px; line-height: 44px; letter-spacing: -0.01em; color: var(--ink); }
   .press-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
   .press-card { position: relative; height: 360px; padding: 32px; border-radius: 16px; background: var(--card, #efede7); color: var(--ink); overflow: hidden; display: flex; flex-direction: column; justify-content: space-between; transition: color 0.05s linear; }
@@ -210,8 +210,8 @@
   .press-card .meta { display: flex; align-items: center; gap: 24px; font-family: var(--mono); font-size: 12px; line-height: 16px; letter-spacing: 0.75px; text-transform: uppercase; }
   .press-card .meta span:first-child { color: rgba(25, 24, 24, 0.88); }
   .press-card .meta span:last-child:not(:first-child) { color: rgba(25, 24, 24, 0.64); }
-  .outlet-logo { display: inline-flex; align-items: center; height: 40px; }
-  .outlet-logo img { height: 100%; width: auto; max-width: 150px; object-fit: contain; filter: grayscale(1); opacity: 0.9; transition: filter 0.2s ease, opacity 0.2s ease; }
+  .outlet-logo { display: inline-flex; align-items: center; height: 24px; }
+  .outlet-logo img { height: 100%; width: auto; max-width: 110px; object-fit: contain; filter: grayscale(1); opacity: 0.9; transition: filter 0.2s ease, opacity 0.2s ease; }
   @media (hover: hover) and (min-width: 992px) {
     .press-card:hover .press-card__img { opacity: 1; }
     .press-card:hover { color: #f7f7f2; }
