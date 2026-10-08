@@ -22,26 +22,23 @@ a.paper__link:hover .paper__arrow { opacity: 1; transform: translate(2px, -2px);
 }
 
 /* ---------- Think Like a Scientist ---------- */
-.tlas-sec { padding: 40px 0 120px; display: flex; flex-direction: column; gap: 96px; overflow: hidden; }
-.tlas-marquee { overflow: hidden; }
-.tlas-marquee__track { display: flex; width: max-content; animation: tlas-scroll 50s linear infinite; }
-.tlas-marquee__set { display: flex; gap: 8px; padding-right: 8px; flex: none; }
-.tlas-marquee__item { flex: none; width: 400px; height: 400px; border-radius: 16px; overflow: hidden; }
-.tlas-marquee__item.is-small { width: 274px; }
-.tlas-marquee__item img { width: 100%; height: 100%; object-fit: cover; }
-@keyframes tlas-scroll { to { transform: translateX(-50%); } }
-@media (prefers-reduced-motion: reduce) { .tlas-marquee__track { animation: none; } }
-.tlas-intro { display: grid; grid-template-columns: 1fr 1.5fr; gap: 32px; padding: 0 32px; }
-.tlas-intro__left { display: flex; flex-direction: column; align-items: flex-start; gap: 24px; max-width: 418px; }
-.tlas-intro__title { font-family: var(--headline); font-weight: 600; font-size: clamp(2.2rem, 5vw, 4.5rem); line-height: 1; letter-spacing: -0.01em; }
-.tlas-intro__right { display: flex; flex-direction: column; gap: 40px; }
-.tlas-intro__text { font-size: 20px; line-height: 1.4; max-width: 56ch; }
-.tlas__links { display: flex; flex-wrap: wrap; gap: 12px; }
-.tlas__links .glass-btn { color: var(--ink); border-color: var(--line); background: var(--card); box-shadow: none; }
-@media (max-width: 991px) { .tlas-marquee__item { width: 320px; height: 320px; } .tlas-marquee__item.is-small { width: 220px; } }
+.tlas-sec { padding: 80px 32px 120px; display: flex; flex-direction: column; gap: 64px; }
+.tlas-head { display: flex; flex-direction: column; align-items: flex-start; gap: 24px; max-width: 680px; }
+.tlas-head__text { font-size: 20px; line-height: 1.4; max-width: 44ch; }
+.tlas-grid { display: grid; grid-template-columns: 1fr auto; gap: 16px; align-items: stretch; }
+.tlas-grid__img { border-radius: 24px; overflow: hidden; position: relative; min-height: 560px; }
+.tlas-grid__img img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.tlas-list { display: flex; flex-direction: column; justify-content: center; gap: 48px; width: 421px; max-width: 100%; padding: 0 24px; }
+.tlas-feature { display: flex; flex-direction: column; gap: 16px; }
+.tlas-feature__top { display: flex; align-items: center; gap: 16px; }
+.tlas-feature__icon { width: 36px; height: 36px; object-fit: contain; flex: none; }
+.tlas-feature__title { font-family: var(--headline); font-weight: 600; font-size: 24px; line-height: 28px; letter-spacing: -0.01em; }
+.tlas-feature__text { font-size: 16px; line-height: 24px; color: var(--muted); }
+.tlas-btn { align-self: flex-start; color: var(--ink); border-color: var(--line); background: var(--card); box-shadow: none; }
+@media (max-width: 991px) { .tlas-list { width: 340px; gap: 36px; padding: 0 8px; } }
 @media (max-width: 767px) {
-  .tlas-sec { padding: 24px 0 88px; gap: 64px; }
-  .tlas-intro { grid-template-columns: 1fr; padding: 0 20px; }
-  .tlas-intro__text { font-size: 18px; }
-  .tlas-marquee__item { width: 250px; height: 250px; } .tlas-marquee__item.is-small { width: 160px; }
+  .tlas-sec { padding: 56px 20px 88px; gap: 40px; }
+  .tlas-grid { grid-template-columns: 1fr; gap: 40px; }
+  .tlas-grid__img { min-height: 320px; border-radius: 16px; }
+  .tlas-list { width: 100%; padding: 0; }
 }
