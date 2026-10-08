@@ -17,6 +17,6 @@ export const NOINDEX_ROUTES: string[] = [
   "/404",
   "/immunology",
   "/community-outreach",
-  "/programs/teach-like-a-scientist",
+  "/programs/think-like-a-scientist",
   "/programs/teacher-training-program",
 ];

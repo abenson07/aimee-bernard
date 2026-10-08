@@ -103,35 +103,28 @@ const tlasPress = tlasItems.filter((i) => i.kind === "press-mentions" && i.url);
   </ul>
 </section>
 
-<section class="tlas-sec wrap fade-to-prefooter" aria-label="Think Like a Scientist">
-  <div class="feature-pair__head fade"><span class="tag-chip">Outreach</span><h2 class="feature-pair__title">Think Like a Scientist</h2></div>
-  <div class="tlas fade">
-    <div class="tlas__body">
-      <div>
-        <h3 class="tlas__title">Putting science in the hands of elementary schoolers</h3>
-        <p class="tlas__text">Think Like a Scientist is Aimee’s outreach program, bringing hands-on experiments and a free curriculum to young students and the teachers who run them.</p>
-      </div>
-      <div class="tlas__foot">
-        <hr>
-        <div class="tlas__links">
-          {tlasLinks.map((l) => (
-            <a class="glass-btn" href={l.href} target="_blank" rel="noopener"><span class="button-text-mask"><span class="button-text t1">{l.label}</span><span class="button-text t2">{l.label}</span></span></a>
-          ))}
+<section class="tlas-sec fade-to-prefooter" aria-label="Think Like a Scientist">
+  <div class="tlas-marquee" aria-hidden="true">
+    <div class="tlas-marquee__track">
+      {[0, 1].map(() => (
+        <div class="tlas-marquee__set">
+          <div class="tlas-marquee__item"><img src="/site/educator.webp" alt="" loading="lazy"></div>
+          <div class="tlas-marquee__item is-small"><img src="/site/communicator.webp" alt="" loading="lazy"></div>
+          <div class="tlas-marquee__item"><img src="/site/immunologist.webp" alt="" loading="lazy"></div>
+          <div class="tlas-marquee__item is-small"><img src={bwUrl} alt="" loading="lazy"></div>
         </div>
-      </div>
-    </div>
-    <div class="tlas__img"><img src="/site/educator.webp" alt="" style="object-position:40% 40%" loading="lazy"></div>
-  </div>
-  {tlasPress.length > 0 && (
-    <div class="tlas-press fade">
-      {tlasPress.map((p) => (
-        <a class="press-card" href={p.url!} target="_blank" rel="noopener">
-          <h3 class="press-card__title">{p.title}</h3>
-          <div class="press-card__foot"><hr><div class="meta"><span>{p.venue}</span><span>{p.date}</span></div></div>
-        </a>
       ))}
     </div>
-  )}
+  </div>
+  <div class="tlas-intro wrap">
+    <div class="tlas-intro__left fade"><span class="tag-chip">Outreach</span><h2 class="tlas-intro__title">Think Like a Scientist</h2></div>
+    <div class="tlas-intro__right fade">
+      <p class="tlas-intro__text">Think Like a Scientist (TLaS) is Aimee’s outreach program for elementary schoolers. It puts hands-on experiments and a free curriculum in front of young students, and in the hands of the teachers who run them, so science feels like something they can do.</p>
+      <div class="tlas__links">
+        <a class="glass-btn" href="/programs/think-like-a-scientist"><span class="button-text-mask"><span class="button-text t1">Explore the program</span><span class="button-text t2">Explore the program</span></span></a>
+      </div>
+    </div>
+  </div>
 </section>
 
 <section class="prefooter" aria-label="Closing statement">
