@@ -62,9 +62,37 @@
     }
   }
 
+  // A few cells sit on the edge of random cards. They are children of the card,
+  // so they scroll and move with it. Reassigned whenever the grid is laid out.
+  const PALS = ['t-cell', 'vaccine', 'red-blood-cell', 'antibody', 'neutrophil', 'interferon'];
+  const rand = (a, b) => a + Math.random() * (b - a);
+  function assignPals(list) {
+    cards.forEach((c) => c.querySelectorAll('.work-pal').forEach((p) => p.remove()));
+    let i = Math.floor(rand(1, 5));
+    let last = -1;
+    while (i < list.length) {
+      const img = document.createElement('img');
+      img.className = 'work-pal';
+      img.alt = '';
+      img.setAttribute('aria-hidden', 'true');
+      let art = PALS[Math.floor(Math.random() * PALS.length)];
+      if (art === last) art = PALS[(PALS.indexOf(art) + 1) % PALS.length];
+      last = art;
+      img.src = '/site/cells/' + art + '.svg';
+      img.style.setProperty('--s', Math.round(rand(44, 64)) + 'px');
+      img.style.setProperty('--rot', Math.round(rand(-22, 22)) + 'deg');
+      img.style.setProperty('--bob', rand(5, 8).toFixed(1) + 's');
+      img.style.setProperty('--delay', (-rand(0, 6)).toFixed(1) + 's');
+      img.style.right = Math.round(rand(5, 16)) + '%';
+      list[i].appendChild(img);
+      i += Math.floor(rand(7, 12));
+    }
+  }
+
   function setCards(kind) {
     const list = cards.filter((card) => kind === 'all' || card.dataset.kind === kind);
     layoutGrid(list);
+    assignPals(list);
     countEl.textContent = list.length;
   }
   setCards('all');

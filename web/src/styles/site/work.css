@@ -102,7 +102,7 @@
   .work-card {
     display: flex; flex-direction: column; justify-content: space-between; position: relative;
     border-radius: var(--radius); background: color-mix(in srgb, var(--paper) 55%, var(--line));
-    border: 1px solid var(--line); overflow: hidden; padding: 1.15rem; min-width: 0; min-height: 0;
+    border: 1px solid var(--line); padding: 1.15rem; min-width: 0; min-height: 0;
     transition: transform 0.3s var(--ease-out), box-shadow 0.3s var(--ease-out);
   }
   .work-card { --kind: #e6e3de; transition: transform 0.3s var(--ease-out), box-shadow 0.3s var(--ease-out), background-color 0.45s ease, border-color 0.45s ease; }
@@ -117,7 +117,7 @@
   .work-card[hidden] { display: none; }
   .work-card.has-photo { color: var(--ink); }
   .work-photo {
-    position: absolute; inset: 0; z-index: 0; opacity: 0; transform: scale(1.06);
+    position: absolute; inset: 0; z-index: 0; border-radius: inherit; overflow: hidden; opacity: 0; transform: scale(1.06);
     transition: opacity 0.4s ease, transform 0.5s var(--ease-out);
   }
   .work-photo img { width: 100%; height: 100%; object-fit: cover; }
@@ -147,16 +147,7 @@
   @media (max-width: 767px) {
   }
 
-  /* ---------- Playful, quiet: a few cells drift behind the grid ---------- */
-  .work-floaters { position: fixed; inset: 0; z-index: 0; overflow: hidden; pointer-events: none; }
-  .floater { position: absolute; width: var(--s, 72px); height: auto; opacity: 0.4; animation: floater-drift var(--d, 70s) ease-in-out infinite alternate; animation-delay: var(--delay, 0s); }
-  .f1 { --s: 84px; left: 4%;  top: 18%; --dx: 40px;  --dy: 60px;  --r: 25deg;  --d: 64s; }
-  .f2 { --s: 56px; left: 90%; top: 30%; --dx: -50px; --dy: 40px;  --r: -30deg; --d: 78s; --delay: -20s; }
-  .f3 { --s: 70px; left: 82%; top: 72%; --dx: -30px; --dy: -70px; --r: 20deg;  --d: 70s; --delay: -35s; }
-  .f4 { --s: 60px; left: 7%;  top: 68%; --dx: 50px;  --dy: -40px; --r: -25deg; --d: 84s; --delay: -10s; }
-  .f5 { --s: 90px; left: 48%; top: 8%;  --dx: 70px;  --dy: 50px;  --r: 15deg;  --d: 90s; --delay: -50s; }
-  .f6 { --s: 64px; left: 55%; top: 84%; --dx: -60px; --dy: -30px; --r: -20deg; --d: 74s; --delay: -5s; }
-  @keyframes floater-drift { from { transform: translate(0, 0) rotate(0deg); } to { transform: translate(var(--dx), var(--dy)) rotate(var(--r)); } }
-  @media (prefers-reduced-motion: reduce) { .floater { animation: none; } }
-  @media (max-width: 767px) { .f5, .f6 { display: none; } .floater { opacity: 0.3; } }
-  .main-container { position: relative; z-index: 1; }
+  /* ---------- Playful, quiet: a few cells sit on card edges (assigned by work.js when the grid loads) ---------- */
+  .work-pal { position: absolute; bottom: calc(var(--s, 52px) * -0.66); width: var(--s, 52px); height: auto; z-index: 3; pointer-events: none; transform: rotate(var(--rot, 0deg)); filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.12)); animation: pal-bob var(--bob, 6s) ease-in-out infinite alternate; animation-delay: var(--delay, 0s); }
+  @keyframes pal-bob { from { translate: 0 0; } to { translate: 0 -6px; } }
+  @media (prefers-reduced-motion: reduce) { .work-pal { animation: none; } }
