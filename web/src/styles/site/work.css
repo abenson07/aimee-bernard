@@ -129,6 +129,9 @@
   .work-kind { font-size: 10.5px; text-transform: uppercase; letter-spacing: 0.06em; font-weight: 700; opacity: 0.72; }
   .work-cat { font-size: 10.5px; text-transform: uppercase; letter-spacing: 0.06em; opacity: 0.5; }
   .work-title { font-family: var(--headline); font-weight: 600; font-size: 1.18rem; line-height: 1.25; margin-top: 0.75rem; display: -webkit-box; -webkit-line-clamp: 6; -webkit-box-orient: vertical; overflow: hidden; }
+  .work-logo { display: flex; align-items: center; height: 32px; margin-top: 0.75rem; }
+  .work-logo img { height: 100%; width: auto; max-width: 130px; object-fit: contain; filter: grayscale(1); opacity: 0.9; transition: filter 0.2s ease; }
+  .work-card.has-photo:hover .work-logo img { filter: grayscale(1) brightness(0) invert(1); }
   .work-meta { font-size: 11.5px; opacity: 0.62; margin-top: 0.4rem; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
 
 

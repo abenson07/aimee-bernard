@@ -5,6 +5,7 @@ import { getWorkItems, type WorkItem } from "@/utils/sanity.ts";
 // Saved copy of the Sanity items, used only if Sanity can't be reached.
 import snapshot from "@/data/work-snapshot.json";
 import "@/styles/site/work.css";
+import { outletLogo } from "@/utils/outletLogos";
 
 // Rendered on request so dashboard edits show up without a redeploy; Vercel
 // caches the page for a minute and refreshes it in the background.
@@ -48,7 +49,10 @@ const items = source.map((item) => {
     category: cat?.slug ?? "none",
     categoryLabel: cat ? item.category : null,
     title: item.title ?? "",
-    meta: [item.venue, item.date].filter(Boolean).join(" · ") || null,
+    venue: item.venue,
+    logo: outletLogo(item.venue),
+    // Courses keep the venue text because the detail (e.g. "Year 1") matters.
+    meta: [outletLogo(item.venue) && item.kind !== "course" ? null : item.venue, item.date].filter(Boolean).join(" · ") || null,
     href,
     // Optional: only items with an image in the dashboard get one.
     photo: item.image ? `${item.image}?w=900&auto=format` : null,
@@ -167,6 +171,7 @@ const counts = items.reduce<Record<string, number>>((acc, i) => ((acc[i.kind] = 
             </div>
             <div class="work-bottom">
               <h3 class="work-title">{item.title}</h3>
+              {item.logo && <span class="work-logo"><img src={item.logo} alt={item.venue ?? ""} loading="lazy" /></span>}
               {item.meta && <p class="work-meta">{item.meta}</p>}
             </div>
           </Tag>
