@@ -42,6 +42,13 @@ export const contentItem = defineType({
       initialValue: false,
     }),
     defineField({
+      name: "image",
+      title: "Image",
+      description: "Optional. Shown when someone hovers this item's card on the Work page. Leave empty if there isn't one.",
+      type: "image",
+      options: { hotspot: true },
+    }),
+    defineField({
       name: "file",
       title: "File",
       type: "file",

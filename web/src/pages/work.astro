@@ -1,10 +1,24 @@
 ---
 import SiteLayout from "@/layouts/SiteLayout.astro";
 import SiteHeader from "@/components/SiteHeader.astro";
-// Snapshot of the Sanity contentItems. To read live instead, swap this for
-// `getWorkItems()` from "@/utils/sanity.ts" and render on request.
+import { getWorkItems, type WorkItem } from "@/utils/sanity.ts";
+// Saved copy of the Sanity items, used only if Sanity can't be reached.
 import snapshot from "@/data/work-snapshot.json";
 import "@/styles/site/work.css";
+
+// Rendered on request so dashboard edits show up without a redeploy; Vercel
+// caches the page for a minute and refreshes it in the background.
+export const prerender = false;
+Astro.response.headers.set("Cache-Control", "public, s-maxage=60, stale-while-revalidate=300");
+
+let source: WorkItem[];
+try {
+  source = await getWorkItems();
+  if (!source.length) throw new Error("Sanity returned no items");
+} catch (err) {
+  console.warn("Work: using the saved snapshot.", err);
+  source = snapshot as WorkItem[];
+}
 
 const KIND_LABELS: Record<string, string> = {
   talk: "Talk",
@@ -25,7 +39,7 @@ const CATEGORIES: Record<string, { slug: string }> = {
   "Community Outreach": { slug: "community-outreach" },
 };
 
-const items = snapshot.map((item) => {
+const items = source.map((item) => {
   const cat = item.category ? CATEGORIES[item.category] : undefined;
   const href = item.url ?? item.fileUrl ?? null;
   return {
@@ -36,6 +50,8 @@ const items = snapshot.map((item) => {
     title: item.title ?? "",
     meta: [item.venue, item.date].filter(Boolean).join(" · ") || null,
     href,
+    // Optional: only items with an image in the dashboard get one.
+    photo: item.image ? `${item.image}?w=900&auto=format` : null,
   };
 });
 const counts = items.reduce<Record<string, number>>((acc, i) => ((acc[i.kind] = (acc[i.kind] ?? 0) + 1), acc), {});
@@ -44,6 +60,16 @@ const counts = items.reduce<Record<string, number>>((acc, i) => ((acc[i.kind] = 
 <SiteLayout title="Work">
 <!-- structure + style: Direction 2 (first pass) -->
 <SiteHeader />
+
+<!-- A few faint cells drift behind the page. Decorative and not tied to any item. -->
+<div class="work-floaters" aria-hidden="true">
+  <img class="floater f1" src="/site/cells/t-cell.svg" alt="" />
+  <img class="floater f2" src="/site/cells/vaccine.svg" alt="" />
+  <img class="floater f3" src="/site/cells/red-blood-cell.svg" alt="" />
+  <img class="floater f4" src="/site/cells/antibody.svg" alt="" />
+  <img class="floater f5" src="/site/cells/neutrophil.svg" alt="" />
+  <img class="floater f6" src="/site/cells/interferon.svg" alt="" />
+</div>
 
 <main class="main-container">
   <div class="work-header">
@@ -132,13 +158,18 @@ const counts = items.reduce<Record<string, number>>((acc, i) => ((acc[i.kind] = 
         const Tag = item.href ? "a" : "div";
         return (
           <Tag
-            class="work-card"
+            class:list={["work-card", item.photo && "has-photo"]}
             data-category={item.category}
             data-kind={item.kind}
             href={item.href ?? undefined}
             target={item.href ? "_blank" : undefined}
             rel={item.href ? "noopener" : undefined}
           >
+            {item.photo && (
+              <div class="work-photo">
+                <img src={item.photo} alt="" loading="lazy" />
+              </div>
+            )}
             <div class="work-top">
               <span class="work-kind">{item.kindLabel}</span>
               {item.categoryLabel && <span class="work-cat">{item.categoryLabel}</span>}

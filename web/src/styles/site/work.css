@@ -111,7 +111,7 @@
   .work-card[data-kind="research-publication"] { --kind: #e2d6df; } .work-card[data-kind="article"] { --kind: #d7e0e6; }
   .work-card[data-kind="podcast"] { --kind: #f1dbd7; } .work-card[data-kind="press-mentions"] { --kind: #dfe0d0; }
   .work-card[data-kind="educational-content"] { --kind: #efe6d3; } .work-card[data-kind="social"] { --kind: #dde5e3; }
-  .work-card:hover { transform: translateY(-3px); box-shadow: 0 16px 34px rgba(0, 0, 0, 0.1); }
+  .work-card:hover { transform: scale(1.035); z-index: 2; box-shadow: 0 18px 38px rgba(0, 0, 0, 0.12); }
   /* No photo to reveal? Wash the card in its kind's tile colour instead. */
   .work-card:not(.has-photo):hover { background: var(--kind); border-color: color-mix(in srgb, var(--kind) 55%, var(--ink)); }
   .work-card[hidden] { display: none; }
@@ -146,3 +146,17 @@
   }
   @media (max-width: 767px) {
   }
+
+  /* ---------- Playful, quiet: a few cells drift behind the grid ---------- */
+  .work-floaters { position: fixed; inset: 0; z-index: 0; overflow: hidden; pointer-events: none; }
+  .floater { position: absolute; width: var(--s, 72px); height: auto; opacity: 0.4; animation: floater-drift var(--d, 70s) ease-in-out infinite alternate; animation-delay: var(--delay, 0s); }
+  .f1 { --s: 84px; left: 4%;  top: 18%; --dx: 40px;  --dy: 60px;  --r: 25deg;  --d: 64s; }
+  .f2 { --s: 56px; left: 90%; top: 30%; --dx: -50px; --dy: 40px;  --r: -30deg; --d: 78s; --delay: -20s; }
+  .f3 { --s: 70px; left: 82%; top: 72%; --dx: -30px; --dy: -70px; --r: 20deg;  --d: 70s; --delay: -35s; }
+  .f4 { --s: 60px; left: 7%;  top: 68%; --dx: 50px;  --dy: -40px; --r: -25deg; --d: 84s; --delay: -10s; }
+  .f5 { --s: 90px; left: 48%; top: 8%;  --dx: 70px;  --dy: 50px;  --r: 15deg;  --d: 90s; --delay: -50s; }
+  .f6 { --s: 64px; left: 55%; top: 84%; --dx: -60px; --dy: -30px; --r: -20deg; --d: 74s; --delay: -5s; }
+  @keyframes floater-drift { from { transform: translate(0, 0) rotate(0deg); } to { transform: translate(var(--dx), var(--dy)) rotate(var(--r)); } }
+  @media (prefers-reduced-motion: reduce) { .floater { animation: none; } }
+  @media (max-width: 767px) { .f5, .f6 { display: none; } .floater { opacity: 0.3; } }
+  .main-container { position: relative; z-index: 1; }
