@@ -7,13 +7,13 @@ body { overflow-x: hidden; }
 .contact__panel { grid-column: 1 / 7; position: relative; display: flex; flex-direction: column; padding: 32px; border-radius: 16px; overflow: hidden; color: #f7f7f2; background: #1e1c1b; }
 .contact__photo { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 30%; }
 .contact__shade { position: absolute; inset: 0; background: rgba(18, 18, 18, 0.48); }
-.contact__talk { z-index: 1; color: var(--ink); width: 100%; max-width: 392px; height: 240px; margin-top: auto; margin-left: auto; padding: 24px; }
-/* plain card: no hover photo or colour flip (it already sits on the talk's own photo) */
-.press-card.contact__talk:hover { color: var(--ink); transform: none; box-shadow: none; }
-.press-card.contact__talk:hover .press-card__foot hr { background: rgba(25, 24, 24, 0.16); }
-.press-card.contact__talk:hover .meta span:first-child { color: rgba(25, 24, 24, 0.88) !important; }
-.press-card.contact__talk:hover .meta span:last-child:not(:first-child) { color: rgba(25, 24, 24, 0.64) !important; }
-.press-card.contact__talk:hover .outlet-logo img { filter: grayscale(1); opacity: 0.9; }
+.contact__talk { z-index: 1; display: flex; flex-direction: column; justify-content: space-between; gap: 16px; width: 100%; max-width: 392px; min-height: 120px; margin-top: auto; margin-left: auto; padding: 16px; border-radius: 8px; background: var(--card); color: var(--ink); }
+.contact__talk-title { font-size: 14px; line-height: 20px; }
+.contact__talk-foot { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.contact__talk-tag { display: flex; align-items: center; gap: 12px; font-size: 10px; line-height: 12px; letter-spacing: 0.75px; text-transform: uppercase; }
+.contact__talk-dot { width: 8px; height: 8px; border-radius: 2px; background: var(--ink); flex: none; }
+.contact__talk-arrow { width: 12px; height: 12px; flex: none; transition: transform 0.2s ease; }
+.contact__talk:hover .contact__talk-arrow { transform: translateX(3px); }
 
 /* ---------- Form ---------- */
 .contact__form-side { grid-column: 8 / 13; display: flex; align-items: center; }
