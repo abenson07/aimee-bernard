@@ -5,9 +5,13 @@ import "@/styles/site/shared.css";
 import "@/styles/site/science-communication.css";
 import { getImage } from "astro:assets";
 import bwSrc from "@/assets/site/aimee-bw.png";
-import tedxSrc from "@/assets/site/tedx-talk.jpg";
+import LogoStrip from "@/components/site/LogoStrip.astro";
+import LogoStripSkeleton from "@/components/site/LogoStripSkeleton.astro";
+import TedxFeature from "@/components/site/TedxFeature.astro";
+import TedxFeatureSkeleton from "@/components/site/TedxFeatureSkeleton.astro";
+import SciCommFeed from "@/components/site/SciCommFeed.astro";
+import SciCommFeedSkeleton from "@/components/site/SciCommFeedSkeleton.astro";
 const bwUrl = (await getImage({ src: bwSrc, format: "webp", width: 520 })).src;
-const tedxUrl = (await getImage({ src: tedxSrc, format: "webp", width: 1280 })).src;
 ---
 
 <SiteLayout title="Science Communication">
@@ -33,7 +37,7 @@ const tedxUrl = (await getImage({ src: tedxSrc, format: "webp", width: 1280 })).
   </div>
 </section>
 
-<section class="marquee" aria-label="Appeared with" aria-hidden="true"><div class="marquee__track"><div class="marquee__set"><span class="marquee__logo"><img src="/site/logos/cu-anschutz.png" alt="CU Anschutz" loading="lazy"></span><span class="marquee__logo"><img src="/site/logos/cu-denver.png" alt="CU Denver" loading="lazy"></span><span class="marquee__logo"><img src="/site/logos/tedx.svg" alt="TEDx" loading="lazy"></span><span class="marquee__logo"><img src="/site/logos/immunology-explained.png" alt="Immunology Explained" loading="lazy"></span><span class="marquee__logo"><img src="/site/logos/the-conversation.svg" alt="The Conversation" loading="lazy"></span><span class="marquee__logo"><img src="/site/logos/medpagetoday.svg" alt="MedPage Today" loading="lazy"></span><span class="marquee__logo"><img src="/site/logos/self.svg" alt="SELF" loading="lazy"></span><span class="marquee__logo"><img src="/site/logos/huffpost.svg" alt="HuffPost" loading="lazy"></span></div><div class="marquee__set"><span class="marquee__logo"><img src="/site/logos/cu-anschutz.png" alt="CU Anschutz" loading="lazy"></span><span class="marquee__logo"><img src="/site/logos/cu-denver.png" alt="CU Denver" loading="lazy"></span><span class="marquee__logo"><img src="/site/logos/tedx.svg" alt="TEDx" loading="lazy"></span><span class="marquee__logo"><img src="/site/logos/immunology-explained.png" alt="Immunology Explained" loading="lazy"></span><span class="marquee__logo"><img src="/site/logos/the-conversation.svg" alt="The Conversation" loading="lazy"></span><span class="marquee__logo"><img src="/site/logos/medpagetoday.svg" alt="MedPage Today" loading="lazy"></span><span class="marquee__logo"><img src="/site/logos/self.svg" alt="SELF" loading="lazy"></span><span class="marquee__logo"><img src="/site/logos/huffpost.svg" alt="HuffPost" loading="lazy"></span></div></div></section>
+<section class="marquee" aria-label="Appeared with" aria-hidden="true"><div class="marquee__track"><LogoStrip server:defer variant="communicator"><LogoStripSkeleton slot="fallback" variant="communicator" /></LogoStrip></div></section>
 
 <section class="contrib" aria-label="Regularly contributes to">
   <div class="wrap">
@@ -47,56 +51,12 @@ const tedxUrl = (await getImage({ src: tedxSrc, format: "webp", width: 1280 })).
 </section>
 
 <section class="tedx" data-tedx aria-label="TEDx talk">
-  <div class="tedx__track"><div class="tedx__stage">
-    <div class="tedx__cover" aria-hidden="true"><img src={tedxUrl} alt=""></div>
-    <div class="wrap" style="width:100%"><div class="tedx__plate">
-      <div class="tedx__head"><span class="label">TEDxCU · April 2026</span><h2 class="tedx__title">Confessions of a Scientist: Science education needs communication training</h2></div>
-      <div class="tedx__frame"><img src={tedxUrl} alt="Aimee Pugh-Bernard speaking at TEDxCU"></div>
-    </div></div>
-  </div></div>
+  <TedxFeature server:defer><TedxFeatureSkeleton slot="fallback" /></TedxFeature>
 </section>
 
 <div class="press wrap fade-to-prefooter">
-    <a class="press-feature fade" href="#">
-      <div class="press-feature__body">
-        <div><h3 class="press-feature__title">Research Day Keynote Speaker</h3><p class="press-feature__sub">Colorado State University, College of Health &amp; Human Sciences</p></div>
-        <div class="press-feature__foot"><hr><div class="press-feature__meta"><div class="meta"><span>Keynote</span><span>March 2026</span></div><span class="glass-btn"><span class="button-text-mask"><span class="button-text t1">Read now</span><span class="button-text t2">Read now</span></span></span></div></div>
-      </div>
-      <div class="press-feature__img"><img src="/site/communicator.webp" alt="" loading="lazy"></div>
-    </a>
-    <div class="press-grid fade">
-      <a class="press-card" href="#">
-        <div class="press-card__img" aria-hidden="true"><img src="/site/educator.webp" alt="" loading="lazy"></div>
-        <h3 class="press-card__title">Confessions of a Scientist: Science education needs communication training</h3>
-        <div class="press-card__foot"><hr><div class="meta"><span class="outlet-logo"><img src="/site/logos/tedx.svg" alt="TEDxCU" loading="lazy"></span><span>April 2026</span></div></div>
-      </a>
-      <a class="press-card" href="#">
-        <div class="press-card__img" aria-hidden="true"><img src="/site/immunologist.webp" alt="" loading="lazy"></div>
-        <h3 class="press-card__title">Navigating Vaccine Hesitancy</h3>
-        <div class="press-card__foot"><hr><div class="meta"><span class="outlet-logo"><img src="/site/logos/cu-anschutz.png" alt="CU Anschutz Women’s Health Symposium" loading="lazy"></span><span>February 2026</span></div></div>
-      </a>
-      <a class="press-card" href="#">
-        <div class="press-card__img" aria-hidden="true"><img src={bwUrl} alt="" loading="lazy"></div>
-        <h3 class="press-card__title">From Data to Dialogue: Science Communication for the Real World</h3>
-        <div class="press-card__foot"><hr><div class="meta"><span class="outlet-logo"><img src="/site/logos/rochester.svg" alt="University of Rochester myHub" loading="lazy"></span><span>October 2025</span></div></div>
-      </a>
-      <a class="press-card" href="#">
-        <div class="press-card__img" aria-hidden="true"><img src="/site/communicator.webp" alt="" loading="lazy"></div>
-        <h3 class="press-card__title">Translating Medicine. Science Communication Academic and Clinical Tool</h3>
-        <div class="press-card__foot"><hr><div class="meta"><span class="outlet-logo"><img src="/site/logos/cu-anschutz.png" alt="CU Anschutz Grand Rounds" loading="lazy"></span><span>September 2025</span></div></div>
-      </a>
-      <a class="press-card" href="#">
-        <div class="press-card__img" aria-hidden="true"><img src="/site/educator.webp" alt="" loading="lazy"></div>
-        <h3 class="press-card__title">The World of Autoimmunity</h3>
-        <div class="press-card__foot"><hr><div class="meta"><span class="outlet-logo"><img src="/site/logos/unbiased-science.webp" alt="Unbiased Science Podcast" loading="lazy"></span><span>April 2025</span></div></div>
-      </a>
-      <a class="press-card" href="#">
-        <div class="press-card__img" aria-hidden="true"><img src="/site/immunologist.webp" alt="" loading="lazy"></div>
-        <h3 class="press-card__title">The Life of a Dedicated Educator</h3>
-        <div class="press-card__foot"><hr><div class="meta"><span class="outlet-logo"><img src="/site/logos/project-bridge.png" alt="Project Bridge Science Podcast" loading="lazy"></span><span>January 2025</span></div></div>
-      </a>
-    </div>
-  </div>
+  <SciCommFeed server:defer><SciCommFeedSkeleton slot="fallback" /></SciCommFeed>
+</div>
 
 <section class="prefooter" aria-label="Closing statement">
   <div class="prefooter__circle" aria-hidden="true"></div>

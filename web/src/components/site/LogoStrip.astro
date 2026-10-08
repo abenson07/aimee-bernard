@@ -1,0 +1,41 @@
+---
+// The scrolling logo strip on Home and Communicator. Logos come from the
+// `publication` documents that have a "Logo strip position" set.
+import { getStripLogos } from "@/utils/sanity.ts";
+import { ISLAND_CACHE } from "./cacheHeaders.ts";
+
+interface Props {
+  variant: "home" | "communicator";
+}
+const { variant } = Astro.props;
+
+// Shown only if the database can't be reached.
+const FALLBACK = [
+  ["CU Anschutz", "cu-anschutz.png"],
+  ["CU Denver", "cu-denver.png"],
+  ["TEDx", "tedx.svg"],
+  ["Immunology Explained", "immunology-explained.png"],
+  ["The Conversation", "the-conversation.svg"],
+  ["MedPage Today", "medpagetoday.svg"],
+  ["SELF", "self.svg"],
+  ["HuffPost", "huffpost.svg"],
+].map(([name, file]) => ({ name, logo: `/site/logos/${file}` }));
+
+const fetched = await getStripLogos();
+const logos = fetched.length ? fetched : FALLBACK;
+Astro.response.headers.set("Cache-Control", ISLAND_CACHE);
+---
+
+{
+  variant === "home"
+    ? [...logos, ...logos].map((l) => (
+        <span class="cred-logo"><img src={l.logo} alt={l.name} loading="lazy" /></span>
+      ))
+    : [0, 1].map(() => (
+        <div class="marquee__set">
+          {logos.map((l) => (
+            <span class="marquee__logo"><img src={l.logo} alt={l.name} loading="lazy" /></span>
+          ))}
+        </div>
+      ))
+}

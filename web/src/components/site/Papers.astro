@@ -1,0 +1,26 @@
+---
+// Immunologist: "The papers behind the questions", newest first.
+import { getPapers } from "@/utils/sanity.ts";
+import { ISLAND_CACHE } from "./cacheHeaders.ts";
+
+const when = (d: string | null) => {
+  const t = d ? Date.parse(`1 ${d}`) : NaN;
+  return Number.isNaN(t) ? 0 : t;
+};
+const papers = (await getPapers()).sort((a, b) => when(b.date) - when(a.date));
+Astro.response.headers.set("Cache-Control", ISLAND_CACHE);
+---
+
+{
+  papers.map((p) => {
+    const inner = (
+      <>
+        <span class="paper__title">{p.title}</span>
+        <span class="paper__venue">{p.venue ?? ""}</span>
+        <span class="paper__date">{p.date ?? ""}</span>
+        {p.href && <svg class="paper__arrow" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M4 12L12 4M12 4H5.5M12 4v6.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" /></svg>}
+      </>
+    );
+    return <li class="paper">{p.href ? <a class="paper__link" href={p.href} target="_blank" rel="noopener">{inner}</a> : <div class="paper__row">{inner}</div>}</li>;
+  })
+}

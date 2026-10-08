@@ -35,6 +35,14 @@ export const contentItem = defineType({
       validation: (rule) => rule.required(),
     }),
     defineField({
+      name: "featuredOnCommunicator",
+      title: "Feature on Communicator page",
+      description:
+        "Turn this on to show this item in the large feature section on the Communicator page. If more than one item is on, the most recently updated one shows.",
+      type: "boolean",
+      initialValue: false,
+    }),
+    defineField({
       name: "uncertain",
       title: "Uncertain",
       description: "Check this if the kind above is a best guess, not a clear fit.",

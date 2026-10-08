@@ -1,0 +1,11 @@
+---
+// "In the press" on Home: press items, most recently updated first.
+import { getPressItems } from "@/utils/sanity.ts";
+import PressCard from "./PressCard.astro";
+import { ISLAND_CACHE } from "./cacheHeaders.ts";
+
+const items = await getPressItems(6);
+Astro.response.headers.set("Cache-Control", ISLAND_CACHE);
+---
+
+{items.map((item) => <PressCard item={item} />)}

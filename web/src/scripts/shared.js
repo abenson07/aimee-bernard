@@ -248,6 +248,17 @@
   }, { rootMargin: '0px 0px -8% 0px' });
   document.querySelectorAll('.fade, [data-reveal]').forEach((el) => io.observe(el));
 
+  /* Content that streams in from the database arrives after load: watch for it. */
+  const onLate = [];
+  new MutationObserver((records) => {
+    for (const rec of records) rec.addedNodes.forEach((n) => {
+      if (n.nodeType !== 1) return;
+      if (n.matches('.fade, [data-reveal]')) io.observe(n);
+      n.querySelectorAll('.fade, [data-reveal]').forEach((el) => io.observe(el));
+      onLate.forEach((fn) => fn(n));
+    });
+  }).observe(document.body, { childList: true, subtree: true });
+
   /* identity words swap the background photo (Home A / Home B hero) */
   document.querySelectorAll('[data-role-swap]').forEach((root) => {
     const layers = [...root.querySelectorAll('.role-bg')];
@@ -335,12 +346,14 @@
   });
 
   /* TEDx: a full-bleed photo scrubs down into the framed image while scrolling (plain JS) */
-  document.querySelectorAll('[data-tedx]').forEach((sec) => {
+  const initTedx = (sec) => {
+    if (!sec || sec.dataset.tedxReady) return;
     const track = sec.querySelector('.tedx__track'), stage = sec.querySelector('.tedx__stage');
     const frame = sec.querySelector('.tedx__frame'), cover = sec.querySelector('.tedx__cover');
     const head = sec.querySelector('.tedx__head');
     if (!track || !stage || !frame || !cover) return;
     if (reduce || window.innerWidth < 768) return;
+    sec.dataset.tedxReady = '1';
     sec.classList.add('is-live');
     const ease = (t) => 1 - Math.pow(1 - t, 3);
     let target = 0, cur = 0, raf = 0, box = null;
@@ -373,7 +386,9 @@
     window.addEventListener('scroll', onScroll, { passive: true });
     window.addEventListener('resize', () => { box = null; measure(); onScroll(); });
     measure(); onScroll(); cur = target; paint();
-  });
+  };
+  document.querySelectorAll('[data-tedx]').forEach(initTedx);
+  onLate.push((n) => { if (n.querySelector?.('.tedx__track') || n.matches?.('.tedx__track')) initTedx(n.closest('[data-tedx]') ?? n.querySelector('[data-tedx]')); });
 
   /* video stack: sticky cards; earlier cards scale down + dim as later ones arrive (scroll progress, plain JS) */
   document.querySelectorAll('[data-vstack]').forEach((list) => {
@@ -397,9 +412,9 @@
     update();
   });
 
-  /* course panels: a sheet rises from the bottom over a dimmed, pushed-back page */
-  const panels = [...document.querySelectorAll('.cpanel')];
-  if (panels.length) {
+  /* course panels: a sheet rises from the bottom over a dimmed, pushed-back page.
+     Delegated, because the tiles and panels stream in from the database. */
+  {
     let openEl = null, trigger = null;
     const focusables = (root) => [...root.querySelectorAll('button, a[href], [tabindex]:not([tabindex="-1"])')].filter((e) => !e.disabled && e.offsetParent !== null);
     const open = (id, from) => {
@@ -417,10 +432,10 @@
       if (trigger) trigger.focus({ preventScroll: true });
       openEl = null; trigger = null;
     };
-    document.querySelectorAll('[data-panel]').forEach((t) => t.addEventListener('click', (e) => { e.preventDefault(); open(t.dataset.panel, t); }));
-    panels.forEach((p) => {
-      p.querySelector('.cpanel__close').addEventListener('click', close);
-      p.querySelector('.cpanel__scrim').addEventListener('click', close);
+    document.addEventListener('click', (e) => {
+      const t = e.target.closest('[data-panel]');
+      if (t) { e.preventDefault(); open(t.dataset.panel, t); return; }
+      if (openEl && e.target.closest('.cpanel__close, .cpanel__scrim')) close();
     });
     document.addEventListener('keydown', (e) => {
       if (!openEl) return;
@@ -491,48 +506,38 @@
    marks always match the actual number of courses/sessions. Course panels
    start visibility:hidden until opened, so also rebuild right after open. */
 (function () {
-  const panels = [...document.querySelectorAll('.ctl')];
-  if (!panels.length) return;
-  const builders = [];
-  panels.forEach((panel) => {
+  const build = (panel) => {
     const lines = panel.querySelector('.ctl__lines');
     const events = panel.querySelector('.ctl__events');
     if (!lines || !events) return;
-    const build = () => {
-      lines.innerHTML = '';
-      const top = events.getBoundingClientRect().top;
-      events.querySelectorAll('.ctl__event').forEach((ev) => {
-        const label = ev.querySelector('.ctl__label');
-        if (label) {
-          const y = label.getBoundingClientRect().top + label.offsetHeight / 2 - top;
-          const dot = document.createElement('span');
-          dot.className = 'ctl-dot';
-          dot.style.top = y + 'px';
-          const rule = document.createElement('span');
-          rule.className = 'ctl-rule';
-          rule.style.top = y + 'px';
-          lines.append(dot, rule);
-        }
-        ev.querySelectorAll('.ctl__topics p').forEach((p) => {
-          const y = p.getBoundingClientRect().top + p.offsetHeight / 2 - top;
-          const tick = document.createElement('span');
-          tick.className = 'ctl-tick';
-          tick.style.top = y + 'px';
-          lines.append(tick);
-        });
+    lines.innerHTML = '';
+    const top = events.getBoundingClientRect().top;
+    events.querySelectorAll('.ctl__event').forEach((ev) => {
+      const label = ev.querySelector('.ctl__label');
+      if (label) {
+        const y = label.getBoundingClientRect().top + label.offsetHeight / 2 - top;
+        const dot = document.createElement('span');
+        dot.className = 'ctl-dot';
+        dot.style.top = y + 'px';
+        const rule = document.createElement('span');
+        rule.className = 'ctl-rule';
+        rule.style.top = y + 'px';
+        lines.append(dot, rule);
+      }
+      ev.querySelectorAll('.ctl__topics p').forEach((p) => {
+        const y = p.getBoundingClientRect().top + p.offsetHeight / 2 - top;
+        const tick = document.createElement('span');
+        tick.className = 'ctl-tick';
+        tick.style.top = y + 'px';
+        lines.append(tick);
       });
-    };
-    builders.push(build);
-    build();
-    document.fonts?.ready.then(build);
-  });
-  window.addEventListener('resize', () => builders.forEach((b) => b()));
-  document.querySelectorAll('.cpanel').forEach((p) => {
-    p.addEventListener('transitionend', () => builders.forEach((b) => b()));
-  });
-  document.querySelectorAll('[data-panel]').forEach((t) => {
-    t.addEventListener('click', () => setTimeout(() => builders.forEach((b) => b()), 50));
-  });
+    });
+  };
+  const buildAll = () => document.querySelectorAll('.ctl').forEach(build);
+  document.fonts?.ready.then(buildAll);
+  window.addEventListener('resize', buildAll);
+  document.addEventListener('transitionend', (e) => { if (e.target.closest?.('.cpanel')) buildAll(); });
+  document.addEventListener('click', (e) => { if (e.target.closest('[data-panel]')) setTimeout(buildAll, 50); });
 })();
 
 /* Prefooter height (its top to the page's bottom), so .page-main stops painting its background there */

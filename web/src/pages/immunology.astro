@@ -1,52 +1,18 @@
 ---
 import SiteLayout from "@/layouts/SiteLayout.astro";
 import SiteHeader from "@/components/SiteHeader.astro";
-import { getWorkItems, type WorkItem } from "@/utils/sanity.ts";
-// Saved copy of the Sanity items, used only if Sanity can't be reached.
-import snapshot from "@/data/work-snapshot.json";
+import PaperStats from "@/components/site/PaperStats.astro";
+import PaperStatsSkeleton from "@/components/site/PaperStatsSkeleton.astro";
+import Papers from "@/components/site/Papers.astro";
+import PapersSkeleton from "@/components/site/PapersSkeleton.astro";
 import "@/styles/site/shared.css";
 import "@/styles/site/immunology.css";
 import { getImage } from "astro:assets";
 import bwSrc from "@/assets/site/aimee-bw.png";
 import tlasSrc from "@/assets/site/tlas-students-working-at-tables.jpg";
 
-// Rendered on request so dashboard edits show up without a redeploy; Vercel
-// caches the page for a minute and refreshes it in the background.
-export const prerender = false;
-Astro.response.headers.set("Cache-Control", "public, s-maxage=60, stale-while-revalidate=300");
-
-let source: WorkItem[];
-try {
-  source = await getWorkItems();
-  if (!source.length) throw new Error("Sanity returned no items");
-} catch (err) {
-  console.warn("Immunology: using the saved snapshot.", err);
-  source = snapshot as WorkItem[];
-}
-
 const bwUrl = (await getImage({ src: bwSrc, format: "webp", width: 520 })).src;
 const tlasUrl = (await getImage({ src: tlasSrc, format: "webp", width: 1024 })).src;
-
-// "June 2026" -> a sortable number. Undated items sort last.
-const when = (d: string | null) => {
-  const t = d ? Date.parse(`1 ${d}`) : NaN;
-  return Number.isNaN(t) ? 0 : t;
-};
-
-// The same paper can be entered twice; keep the entry with the most detail.
-const detail = (i: WorkItem) => [i.venue, i.date, i.url].filter(Boolean).length;
-const byTitle = new Map<string, WorkItem>();
-for (const item of source) {
-  if (item.kind !== "research-publication" || !item.title) continue;
-  const key = item.title.toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
-  const prev = byTitle.get(key);
-  if (!prev || detail(item) > detail(prev)) byTitle.set(key, item);
-}
-const papers = [...byTitle.values()]
-  .map((i) => ({ title: i.title!, venue: i.venue, date: i.date, href: i.url ?? i.fileUrl ?? null, t: when(i.date) }))
-  .sort((a, b) => b.t - a.t);
-
-const firstYear = Math.min(...papers.filter((p) => p.t).map((p) => new Date(p.t).getFullYear()));
 ---
 
 <SiteLayout title="Immunologist">
@@ -67,30 +33,14 @@ const firstYear = Math.min(...papers.filter((p) => p.t).map((p) => new Date(p.t)
 <section class="mission-sec has-stats" aria-label="Mission and numbers">
   <p class="mission" data-mission>Every allergy <span class="m-el m-cell" data-mx="14" data-my="10"><img src="/site/cells/t-cell.svg" alt=""></span> infection <span class="m-el m-cell m-cell--bad" data-mx="10" data-my="14"><img src="/site/cells/influenza.svg" alt=""></span> and autoimmune disease comes down to one question: how does the body decide what to attack? I study that decision <span class="m-el m-cell" data-mx="12" data-my="9"><img src="/site/cells/antibody.svg" alt=""></span> so more people can live well with their immune system.</p>
   <div class="stats-row is-tight">
-    <div class="stat fade"><div class="stat__num">{papers.length}</div><p class="stat__desc">Papers and publications</p></div>
-    <div class="stat fade"><div class="stat__num">25+</div><p class="stat__desc">Years as an educator, scientist &amp; communicator</p></div>
-    {Number.isFinite(firstYear) && <div class="stat fade"><div class="stat__num">{firstYear}</div><p class="stat__desc">Year of first publication</p></div>}
+    <PaperStats server:defer><PaperStatsSkeleton slot="fallback" /></PaperStats>
   </div>
 </section>
 
 <section class="papers wrap" aria-label="Papers">
   <div class="papers__head fade"><span class="tag-chip">Research</span><h2 class="feature-pair__title">The papers behind the questions</h2></div>
   <ul class="papers__list fade">
-    {papers.map((p) => {
-      const inner = (
-        <>
-          <span class="paper__title">{p.title}</span>
-          <span class="paper__venue">{p.venue ?? ""}</span>
-          <span class="paper__date">{p.date ?? ""}</span>
-          {p.href && <svg class="paper__arrow" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M4 12L12 4M12 4H5.5M12 4v6.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>}
-        </>
-      );
-      return (
-        <li class="paper">
-          {p.href ? <a class="paper__link" href={p.href} target="_blank" rel="noopener">{inner}</a> : <div class="paper__row">{inner}</div>}
-        </li>
-      );
-    })}
+    <Papers server:defer><PapersSkeleton slot="fallback" /></Papers>
   </ul>
 </section>
 

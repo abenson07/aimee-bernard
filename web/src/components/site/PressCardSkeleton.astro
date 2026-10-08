@@ -1,0 +1,18 @@
+---
+interface Props {
+  count?: number;
+}
+const { count = 6 } = Astro.props;
+---
+
+{
+  Array.from({ length: count }).map(() => (
+    <div class="press-card is-loading" aria-hidden="true">
+      <h3 class="press-card__title"><span class="sk sk--line" style="width:92%;height:22px"></span><span class="sk sk--line" style="width:64%;height:22px"></span></h3>
+      <div class="press-card__foot">
+        <hr />
+        <div class="meta"><span class="outlet-logo"><span class="sk sk--logo" style="width:96px"></span></span></div>
+      </div>
+    </div>
+  ))
+}

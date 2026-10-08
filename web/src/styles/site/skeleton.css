@@ -1,0 +1,25 @@
+/* Loading placeholders for content that streams in from the database.
+   Each fallback copies the size of the real thing so nothing jumps. */
+.sk { display: block; position: relative; overflow: hidden; border-radius: 6px; background: color-mix(in srgb, currentColor 9%, transparent); }
+.sk::after {
+  content: ""; position: absolute; inset: 0;
+  background: linear-gradient(90deg, transparent, color-mix(in srgb, #fff 55%, transparent), transparent);
+  transform: translateX(-100%); animation: sk-shimmer 1.4s ease-in-out infinite;
+}
+.sk--round { border-radius: 50%; }
+.sk--line { height: 14px; }
+.sk--logo { width: 110px; height: 100%; }
+@keyframes sk-shimmer { to { transform: translateX(100%); } }
+@media (prefers-reduced-motion: reduce) { .sk::after { animation: none; display: none; } }
+
+/* a card-sized placeholder, matching .press-card */
+.press-card.is-loading { pointer-events: none; }
+.press-card.is-loading .press-card__title { display: flex; flex-direction: column; gap: 12px; }
+.press-card.is-loading .outlet-logo { width: 96px; }
+/* the scrolling logo strips stand still while loading */
+.is-loading .cred-track, .is-loading.marquee__track { animation: none; }
+.cred-logo.is-loading, .marquee__logo.is-loading { opacity: 1; }
+
+/* placeholders on dark surfaces */
+.press-feature .sk { color: #f7f7f2; }
+.press-feature .sk::after { opacity: 0.12; }

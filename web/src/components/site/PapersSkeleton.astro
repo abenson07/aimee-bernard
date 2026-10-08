@@ -1,0 +1,15 @@
+---
+const widths = [78, 40, 62, 85, 48, 70, 55];
+---
+
+{
+  widths.map((w) => (
+    <li class="paper" aria-hidden="true">
+      <div class="paper__row">
+        <span class="paper__title"><span class="sk sk--line" style={`height:22px;width:${w}%`}></span></span>
+        <span class="paper__venue"><span class="sk sk--line" style="width:70%;height:12px"></span></span>
+        <span class="paper__date"><span class="sk sk--line" style="width:80px;height:12px;margin-left:auto"></span></span>
+      </div>
+    </li>
+  ))
+}
