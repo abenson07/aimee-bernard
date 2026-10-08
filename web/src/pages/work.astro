@@ -167,11 +167,11 @@ const counts = items.reduce<Record<string, number>>((acc, i) => ((acc[i.kind] = 
             )}
             <div class="work-top">
               <span class="work-kind">{item.kindLabel}</span>
-              {item.meta && <span class="work-cat">{item.meta}</span>}
+              {item.logo && <span class="work-logo"><img src={item.logo} alt={item.venue ?? ""} loading="lazy" /></span>}
             </div>
             <div class="work-bottom">
               <h3 class="work-title">{item.title}</h3>
-              {item.logo && <span class="work-logo"><img src={item.logo} alt={item.venue ?? ""} loading="lazy" /></span>}
+              {item.meta && <p class="work-meta">{item.meta}</p>}
             </div>
           </Tag>
         );
