@@ -1,0 +1,15 @@
+---
+// Immunologist: the three numbers under the mission statement. Two come from
+// the papers in the database; "25+ years" stays as written.
+import { getPapers, yearOf } from "@/utils/sanity.ts";
+import { ISLAND_CACHE } from "./cacheHeaders.ts";
+
+const papers = await getPapers();
+Astro.response.headers.set("Cache-Control", ISLAND_CACHE);
+const years = papers.map((p) => yearOf(p.date)).filter(Boolean);
+const firstYear = years.length ? Math.min(...years) : null;
+---
+
+<div class="stat"><div class="stat__num">{papers.length}</div><p class="stat__desc">Papers and publications</p></div>
+<div class="stat"><div class="stat__num">25+</div><p class="stat__desc">Years as an educator, scientist &amp; communicator</p></div>
+{firstYear && <div class="stat"><div class="stat__num">{firstYear}</div><p class="stat__desc">Year of first publication</p></div>}

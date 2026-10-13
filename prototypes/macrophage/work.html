@@ -4,10 +4,10 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="robots" content="noindex, nofollow">
-<title>Work &middot; Aimee Pugh-Bernard (Set B &middot; Direction 2)</title>
+<title>Work &middot; Aimee Pugh-Bernard (Macrophage)</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500&family=Instrument+Serif&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
 <style>
   /* Direction 2 — Work page, first pass. Masonry grid inspired by
      floema.com/en/products (top filter chips, "Showing X of Y", cards of
@@ -22,8 +22,8 @@
     --line: rgba(28, 27, 26, 0.14);
     --radius: 24px;
     --gutter: 3rem;
-    --serif: "Instrument Serif", Georgia, serif;
-    --sans: "DM Sans", sans-serif;
+    --display: "Instrument Sans", "Helvetica Neue", Arial, sans-serif;
+    --sans: "Instrument Sans", "Helvetica Neue", Arial, sans-serif;
     --ease-out: cubic-bezier(0.215, 0.61, 0.355, 1);
   }
   * { box-sizing: border-box; }
@@ -47,49 +47,7 @@
 
   .label { letter-spacing: 0.7px; text-transform: uppercase; font-size: 14px; font-weight: 500; line-height: 16px; }
   .label.muted { color: var(--muted); }
-  .display { font-family: var(--serif); font-weight: 400; letter-spacing: -0.04em; line-height: 0.9; }
-
-  /* ---------- Nav (shared with index.html) ---------- */
-  .nav-wrap { position: fixed; inset: 0 0 auto 0; z-index: 90; }
-  .banner {
-    background: var(--ink); color: var(--paper); text-align: center;
-    display: flex; justify-content: center; gap: 0.5rem; align-items: center;
-    padding: 0.55rem 1rem; font-size: 12px; letter-spacing: 0.04em; text-transform: uppercase;
-  }
-  .banner a { text-decoration: underline; }
-  .nav-outer { padding: 12px 24px; }
-  .navbar {
-    max-width: 1800px; margin: 0 auto; border-radius: 16px;
-    background: color-mix(in srgb, var(--paper) 92%, transparent);
-    -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px);
-    border: 1px solid var(--line); box-shadow: 0 12px 30px rgba(0, 0, 0, 0.06);
-  }
-  .nav-container { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 1.5rem; padding: 10px 18px; }
-  .nav-brand { justify-self: start; font-family: var(--serif); font-size: 1.1rem; }
-  .nav-menu-inner { display: flex; align-items: center; gap: 0.25rem; }
-  .nav-link { position: relative; padding: 8px 16px; border-radius: 999px; overflow: hidden; }
-  .nav-link:hover { background: var(--line); }
-  .nav-link.is-soon { display: inline-block; cursor: pointer; }
-  .link-text-mask, .button-text-mask { position: relative; display: block; height: 1.3em; overflow: hidden; }
-  .link-text, .button-text { display: block; transition: transform 0.5s cubic-bezier(0.65, 0, 0.35, 1); }
-  .link-text.t2, .button-text.t2 { position: absolute; top: 100%; left: 0; }
-  .nav-link:hover .link-text, .cta-main:hover .button-text { transform: translateY(-100%); }
-  .nav-right { justify-self: end; display: flex; align-items: center; gap: 1rem; }
-  .cta-main { position: relative; display: inline-flex; padding: 10px 20px; border-radius: 999px; overflow: hidden; }
-  .cta-main .button-bg { position: absolute; inset: 0; background: var(--ink); border-radius: 999px; transition: transform 0.4s var(--ease-out); z-index: 0; }
-  .cta-main:hover .button-bg { transform: scale(0.95); }
-  .cta-main .button-text-mask { position: relative; z-index: 1; }
-  .cta-main .button-text { color: var(--paper); font-size: 13px; font-weight: 700; }
-  .menu-button {
-    display: none; width: 40px; height: 36px; border: 1px solid var(--line); border-radius: 999px;
-    background: none; align-items: center; justify-content: center; cursor: pointer; color: var(--ink); position: relative;
-  }
-  .menu-button .menu-open, .menu-button .menu-close { display: flex; align-items: center; justify-content: center; }
-  .menu-button .menu-close { display: none; }
-  .menu-button.is-open .menu-open { display: none; }
-  .menu-button.is-open .menu-close { display: flex; }
-  .nav-bg { position: fixed; inset: 0; z-index: 88; background: rgba(0, 0, 0, 0.32); opacity: 0; pointer-events: none; transition: opacity 0.3s ease; }
-  .nav-bg.is-open { opacity: 1; pointer-events: auto; }
+  .display { font-family: var(--display); font-weight: 500; letter-spacing: -0.04em; line-height: 0.9; }
 
   /* ---------- Page header ---------- */
   .work-header { padding: 168px 0 2.5rem; text-align: center; }
@@ -181,70 +139,51 @@
   .work-top { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 0.5rem 0.75rem; }
   .work-kind { font-size: 10.5px; text-transform: uppercase; letter-spacing: 0.06em; font-weight: 700; opacity: 0.72; }
   .work-cat { font-size: 10.5px; text-transform: uppercase; letter-spacing: 0.06em; opacity: 0.5; }
-  .work-title { font-family: var(--serif); font-size: 1.18rem; line-height: 1.25; margin-top: 0.75rem; display: -webkit-box; -webkit-line-clamp: 6; -webkit-box-orient: vertical; overflow: hidden; }
+  .work-title { font-family: var(--display); font-size: 1.18rem; line-height: 1.25; margin-top: 0.75rem; display: -webkit-box; -webkit-line-clamp: 6; -webkit-box-orient: vertical; overflow: hidden; }
   .work-meta { font-size: 11.5px; opacity: 0.62; margin-top: 0.4rem; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
 
 
   @media (max-width: 900px) {
-    .nav-container { grid-template-columns: 1fr auto; }
-    .cta-main { display: none; }
-    .menu-button { display: flex; }
-    .nav-menu-inner {
-      position: fixed; left: 24px; right: 24px; top: 82px; z-index: 91;
-      flex-direction: column; align-items: stretch; gap: 0;
-      background: var(--paper); border: 1px solid var(--line); border-radius: 16px;
-      max-height: 0; overflow: hidden; opacity: 0;
-      transition: max-height 0.4s var(--ease-out), opacity 0.3s ease;
-    }
-    .nav-menu-inner.is-open { max-height: 320px; opacity: 1; padding: 8px; }
-    .nav-link { border-radius: 10px; padding: 14px 12px; }
-    .link-text-mask { height: auto; overflow: visible; }
-    .link-text.t2 { display: none; }
-    .nav-link:hover .link-text { transform: none; }
   }
   @media (max-width: 560px) {
     .kind-grid { flex-wrap: wrap; }
     .kind-tile { flex: 1 1 88px; }
   }
   @media (max-width: 767px) {
-    .nav-outer { padding: 10px 16px; }
-    .banner { font-size: 11px; padding: 0.5rem 0.75rem; }
   }
 </style>
+<link rel="stylesheet" href="nav.css">
 </head>
 <body>
 <!-- structure + style: Direction 2 (first pass) -->
-<div class="nav-wrap">
+<!-- Notch nav (brought over from the T cell): the banner and the cell mascot scroll away with
+     the page; only the pill nav stays fixed (top on desktop, bottom on phones). Behavior: nav.js. -->
+<div class="site-header">
   <div class="banner">
     <span>Available for speaking engagements &amp; science communication consulting</span>
     <a href="#">Get in touch</a>
   </div>
-  <div class="nav-outer">
-    <header class="navbar">
-      <div class="nav-container">
-        <a href="index.html" class="nav-brand">APB</a>
-        <nav class="nav-menu-inner" id="navMenu">
-          <a href="educator.html" class="nav-link"><span class="link-text-mask"><span class="link-text t1">Educator</span><span class="link-text t2">Educator</span></span></a>
-          <span class="nav-link is-soon"><span class="link-text-mask"><span class="link-text t1">Communicator</span><span class="link-text t2">Communicator</span></span></span>
-          <a href="work.html" class="nav-link"><span class="link-text-mask"><span class="link-text t1">Work</span><span class="link-text t2">Work</span></span></a>
-          <span class="nav-link is-soon"><span class="link-text-mask"><span class="link-text t1">Immunologist</span><span class="link-text t2">Immunologist</span></span></span>
-          <span class="nav-link is-soon"><span class="link-text-mask"><span class="link-text t1">Outreach</span><span class="link-text t2">Outreach</span></span></span>
-        </nav>
-        <div class="nav-right">
-          <a href="#" class="cta-main">
-            <span class="button-text-mask"><span class="button-text t1">Get in touch</span><span class="button-text t2">Get in touch</span></span>
-            <span class="button-bg"></span>
-          </a>
-          <button type="button" class="menu-button" id="navMobileToggle" aria-label="Menu" aria-expanded="false">
-            <span class="menu-open"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 4.5h12M2 8h12M2 11.5h12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span>
-            <span class="menu-close"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M1 1l12 12M13 1L1 13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span>
-          </button>
-        </div>
-      </div>
-    </header>
+  <div class="site-header__inner">
+    <button type="button" class="nav-mascot" id="navMascot" aria-label="Say hi to the cell">
+      <span class="nav-mascot__body"><img src="../src/cells/t-cell.svg" alt="" draggable="false"></span>
+      <span class="nav-mascot__bubble" aria-hidden="true"></span>
+    </button>
   </div>
 </div>
-<div class="nav-bg" id="navBg"></div>
+<nav class="pill-nav" id="pillNav" aria-label="Main">
+  <span class="pill-nav__pill pill-nav__pill--hover" aria-hidden="true"></span>
+  <span class="pill-nav__pill pill-nav__pill--active" aria-hidden="true"></span>
+  <ul class="pill-nav__list">
+        <li><a href="index.html" class="pill-nav__link">Home</a></li>
+        <li><a href="about.html" class="pill-nav__link">About</a></li>
+        <li><a href="educator.html" class="pill-nav__link">Educator</a></li>
+        <li><a href="public-speaking.html" class="pill-nav__link">Communicator</a></li>
+        <li><a href="work.html" class="pill-nav__link is-current" aria-current="page">Work</a></li>
+        <li><span class="pill-nav__link is-soon" tabindex="0" title="Coming soon">Immunologist</span></li>
+        <li><span class="pill-nav__link is-soon" tabindex="0" title="Coming soon">Outreach</span></li>
+        <li><a href="#" class="pill-nav__link">Contact</a></li>
+  </ul>
+</nav>
 
 <main class="main-container">
   <div class="work-header">
@@ -1940,22 +1879,6 @@
 
 
 <script>
-  // ---- Mobile nav toggle (shared with index.html) ----
-  const navMobileToggle = document.getElementById('navMobileToggle');
-  const navMenu = document.getElementById('navMenu');
-  const navBg = document.getElementById('navBg');
-  navMobileToggle.addEventListener('click', () => {
-    const open = navMenu.classList.toggle('is-open');
-    navMobileToggle.classList.toggle('is-open', open);
-    navBg.classList.toggle('is-open', open);
-    navMobileToggle.setAttribute('aria-expanded', String(open));
-  });
-  navBg.addEventListener('click', () => {
-    navMenu.classList.remove('is-open');
-    navMobileToggle.classList.remove('is-open');
-    navBg.classList.remove('is-open');
-    navMobileToggle.setAttribute('aria-expanded', 'false');
-  });
 
   // ---- Filter: single-select kind tiles. Like floema, the grid fades
   // fully out, swaps which cards are hidden while invisible, then fades
@@ -2057,5 +1980,6 @@
     });
   });
 </script>
+<script src="nav.js" defer></script>
 </body>
 </html>

@@ -30,20 +30,23 @@ const client = createClient({
 });
 
 const logoPath = (file: string) =>
-  fileURLToPath(new URL(`../../prototypes/src/logos/${file}`, import.meta.url));
+  fileURLToPath(new URL(`../../web/public/site/logos/${file}`, import.meta.url));
 
 type PublicationSeed = {
   id: string;
   name: string;
-  url: string;
+  url?: string;
   logo: string;
   /** venue strings on existing contentItem docs that should link here */
   aliases: string[];
+  /** position in the scrolling logo strips on Home and Communicator; omit to leave it out */
+  stripOrder?: number;
 };
 
 const PUBLICATIONS: PublicationSeed[] = [
   {
     id: "publication-self",
+    stripOrder: 7,
     name: "SELF",
     url: "https://www.self.com",
     logo: logoPath("self.svg"),
@@ -51,6 +54,7 @@ const PUBLICATIONS: PublicationSeed[] = [
   },
   {
     id: "publication-huffpost",
+    stripOrder: 8,
     name: "HuffPost",
     url: "https://www.huffpost.com",
     logo: logoPath("huffpost.svg"),
@@ -58,6 +62,7 @@ const PUBLICATIONS: PublicationSeed[] = [
   },
   {
     id: "publication-medpagetoday",
+    stripOrder: 6,
     name: "MedPage Today",
     url: "https://www.medpagetoday.com",
     logo: logoPath("medpagetoday.svg"),
@@ -65,6 +70,7 @@ const PUBLICATIONS: PublicationSeed[] = [
   },
   {
     id: "publication-the-conversation",
+    stripOrder: 5,
     name: "The Conversation",
     url: "https://theconversation.com",
     logo: logoPath("the-conversation.svg"),
@@ -72,6 +78,7 @@ const PUBLICATIONS: PublicationSeed[] = [
   },
   {
     id: "publication-tedx",
+    stripOrder: 3,
     name: "TEDx",
     url: "https://www.ted.com/tedx",
     logo: logoPath("tedx.svg"),
@@ -92,6 +99,7 @@ const PUBLICATIONS: PublicationSeed[] = [
   },
   {
     id: "publication-cu-anschutz",
+    stripOrder: 1,
     name: "CU Anschutz",
     url: "https://www.cuanschutz.edu",
     logo: logoPath("cu-anschutz.png"),
@@ -99,6 +107,7 @@ const PUBLICATIONS: PublicationSeed[] = [
   },
   {
     id: "publication-cu-denver",
+    stripOrder: 2,
     name: "CU Denver",
     url: "https://www.ucdenver.edu",
     logo: logoPath("cu-denver.png"),
@@ -110,6 +119,33 @@ const PUBLICATIONS: PublicationSeed[] = [
     url: "https://www.850koa.com",
     logo: logoPath("koa.png"),
     aliases: ["KOA Morning News"],
+  },
+  {
+    id: "publication-immunology-explained",
+    stripOrder: 4,
+    name: "Immunology Explained",
+    url: "https://www.aai.org",
+    logo: logoPath("immunology-explained.png"),
+    aliases: ["Immunology Explained"],
+  },
+  {
+    id: "publication-rochester",
+    name: "University of Rochester",
+    url: "https://www.rochester.edu",
+    logo: logoPath("rochester.svg"),
+    aliases: ["University of Rochester myHub", "Rochester Review"],
+  },
+  {
+    id: "publication-unbiased-science",
+    name: "Unbiased Science",
+    logo: logoPath("unbiased-science.webp"),
+    aliases: ["Unbiased Science Podcast", "Unbiased Science", "Unbiased Science, on YouTube"],
+  },
+  {
+    id: "publication-project-bridge",
+    name: "Project Bridge Science Podcast",
+    logo: logoPath("project-bridge.png"),
+    aliases: ["Project Bridge Science Podcast"],
   },
 ];
 
@@ -134,7 +170,8 @@ async function main() {
         _id: pub.id,
         _type: "publication",
         name: pub.name,
-        url: pub.url,
+        ...(pub.url ? { url: pub.url } : {}),
+        ...(pub.stripOrder ? { stripOrder: pub.stripOrder } : {}),
         logo: { _type: "image", asset: { _type: "reference", _ref: asset._id } },
       });
       console.log(`  Uploaded logo and wrote ${pub.id}`);

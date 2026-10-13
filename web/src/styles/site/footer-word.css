@@ -1,0 +1,8 @@
+/* Footer wordmark, the same on every page. Desktop: one line. Phones: a large first name with the surname smaller beneath it. */
+.footer-word { display: flex; flex-direction: row; align-items: baseline; gap: 0.22em; font-family: var(--headline, "Encode Sans Condensed", "Arial Narrow", Arial, sans-serif); font-weight: 600; font-size: 8.9vw; line-height: 0.95; letter-spacing: -0.01em; white-space: nowrap; }
+.footer-word__first, .footer-word__last { font-size: inherit; line-height: inherit; }
+@media (max-width: 767px) {
+  .footer-word { flex-direction: column; align-items: flex-start; gap: 0; }
+  .footer-word__first { font-size: 33vw; line-height: 0.82; }
+  .footer-word__last { font-size: 15vw; line-height: 1; margin-top: 0.1em; }
+}

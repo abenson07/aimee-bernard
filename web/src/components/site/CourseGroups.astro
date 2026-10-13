@@ -1,0 +1,75 @@
+---
+// Educator: the course tiles and the panels that open from them. Rendered as
+// two islands (tiles in the grid, panels at the end of the page) because the
+// panels are fixed-position and must sit outside the faded-in grid.
+import { getCourseGroups } from "@/utils/sanity.ts";
+import { ISLAND_CACHE } from "./cacheHeaders.ts";
+
+interface Props {
+  part: "tiles" | "panels";
+}
+const { part } = Astro.props;
+
+const groups = await getCourseGroups();
+Astro.response.headers.set("Cache-Control", ISLAND_CACHE);
+
+const STOCK_PHOTOS = ["/site/educator.webp", "/site/immunologist.webp", "/site/communicator.webp"];
+/** "IDPT5016 Foundational Principles" -> "Foundational Principles"; "Summer Immersion: X" -> "Summer Immersion. X" */
+const courseLabel = (t: string | null) => (t ?? "").replace(/^[A-Z]{3,5}\d{3,4}\.?\s+/, "").replace(": ", ". ");
+const sessions = (n: number) => `${n} ${n === 1 ? "session" : "sessions"}`;
+const external = (u: string) => /^https?:/.test(u);
+---
+
+{
+  part === "tiles" &&
+    groups.map((g) => (
+      <button type="button" class="ctile fade" data-panel={`panel-${g._id}`} aria-haspopup="dialog">
+        <img class="ctile__logo" style={g.icon === "t-cell-grad" ? "width:56px;height:56px" : undefined} src={`/site/icons/${g.icon ?? "lab-coat"}.svg`} alt="" />
+        <span class="ctile__name">{g.name}</span>
+        <span class="ctile__meta">{(g.tileMeta ?? []).map((line, i) => <>{i > 0 && <br />}{line}</>)}</span>
+      </button>
+    ))
+}
+{
+  part === "panels" &&
+    groups.map((g, gi) => (
+      <div class="cpanel" id={`panel-${g._id}`} role="dialog" aria-modal="true" aria-label={g.name ?? ""} aria-hidden="true">
+        <div class="cpanel__scrim"></div>
+        <div class="cpanel__sheet">
+          <button type="button" class="cpanel__close" aria-label="Close"><svg width="18" height="18" viewBox="0 0 14 14" fill="none"><path d="M1 1l12 12M13 1L1 13" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" /></svg></button>
+          <div class="cpanel__scroll">
+            <header class="cpanel__head">
+              <div class="cpanel__lead">
+                <h2 class="cpanel__title">{g.name}</h2>
+                <div class="cpanel__row">{g.pill && <span class="cpanel__pill">{g.pill}</span>}{g.dates && <span class="cpanel__cat">{g.dates}</span>}</div>
+                {g.intro && <p class="cpanel__intro">{g.intro}</p>}
+                {g.body && <p class="cpanel__body">{g.body}</p>}
+                {g.tags?.length ? <ul class="cpanel__tags">{g.tags.map((t) => <li>{t}</li>)}</ul> : null}
+              </div>
+              <div class="cpanel__img"><img src={g.image ? `${g.image}?w=900&auto=format` : STOCK_PHOTOS[gi % STOCK_PHOTOS.length]} alt="" /></div>
+            </header>
+            {(g.years ?? []).map((y) => (
+              <section class="ctl">
+                <div class="ctl__left">
+                  <h3 class="ctl__title">{y.label}</h3>
+                  {y.description && <p class="ctl__text">{y.description}</p>}
+                  {y.linkUrl && (
+                    <a class="ctl__btn" href={y.linkUrl} target={external(y.linkUrl) ? "_blank" : undefined} rel={external(y.linkUrl) ? "noopener" : undefined}>Course details <svg viewBox="0 0 12 12" fill="none"><path d="M2.5 6H9.5M9.5 6L6 2.5M9.5 6L6 9.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" /></svg></a>
+                  )}
+                </div>
+                <div class="ctl__right"><div class="ctl__lines" aria-hidden="true"></div><div class="ctl__events">
+                  {(y.courses ?? []).map((c) => (
+                    <div class="ctl__event">
+                      <div class="ctl__label">{courseLabel(c.title)}</div>
+                      {c.topics?.length ? <div class="ctl__topics">{c.topics.map((t) => <p>{t}</p>)}</div> : null}
+                      {c.topics?.length ? <div class="ctl__pills"><span class="ctl__pill">{sessions(c.topics.length)}</span></div> : null}
+                    </div>
+                  ))}
+                </div></div>
+              </section>
+            ))}
+          </div>
+        </div>
+      </div>
+    ))
+}

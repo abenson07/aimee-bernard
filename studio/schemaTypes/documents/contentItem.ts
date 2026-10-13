@@ -11,6 +11,7 @@ const KIND_OPTIONS = [
   { title: "Course", value: "course" },
   { title: "Award", value: "award" },
   { title: "Research Publication", value: "research-publication" },
+  { title: "Social", value: "social" },
 ];
 
 export const contentItem = defineType({
@@ -34,11 +35,26 @@ export const contentItem = defineType({
       validation: (rule) => rule.required(),
     }),
     defineField({
+      name: "featuredOnCommunicator",
+      title: "Feature on Communicator page",
+      description:
+        "Turn this on to show this item in the large feature section on the Communicator page. If more than one item is on, the most recently updated one shows.",
+      type: "boolean",
+      initialValue: false,
+    }),
+    defineField({
       name: "uncertain",
       title: "Uncertain",
       description: "Check this if the kind above is a best guess, not a clear fit.",
       type: "boolean",
       initialValue: false,
+    }),
+    defineField({
+      name: "image",
+      title: "Image",
+      description: "Optional. Shown when someone hovers this item's card on the Work page. Leave empty if there isn't one.",
+      type: "image",
+      options: { hotspot: true },
     }),
     defineField({
       name: "file",

@@ -1,0 +1,1462 @@
+[
+ {
+  "_id": "contentItem-article-001",
+  "category": "Science Communicator",
+  "date": null,
+  "fileUrl": null,
+  "kind": "article",
+  "title": "10 Tips for Effective Science Communication",
+  "url": null,
+  "venue": "Immunize Colorado, for scientists and healthcare professionals"
+ },
+ {
+  "_id": "contentItem-article-002",
+  "category": "Science Communicator",
+  "date": null,
+  "fileUrl": null,
+  "kind": "article",
+  "title": "Immunology 101 Blog Series",
+  "url": null,
+  "venue": "Immunize Colorado"
+ },
+ {
+  "_id": "contentItem-article-003",
+  "category": "Science Communicator",
+  "date": "September 2022",
+  "fileUrl": null,
+  "kind": "article",
+  "title": "Guest Editorial. An Immunologist Offers Tips for Assessing Health & Science Information on the Internet",
+  "url": "https://medium.com/@aimeepughbernard/an-immunologist-offers-tips-for-assessing-science-and-health-info-on-the-internet-5ccc18ac90b8",
+  "venue": "Medium"
+ },
+ {
+  "_id": "contentItem-article-004",
+  "category": "Science Communicator",
+  "date": null,
+  "fileUrl": null,
+  "kind": "article",
+  "title": "Immune health is all about balance. An immunologist explains...",
+  "url": null,
+  "venue": "The Conversation / Slate"
+ },
+ {
+  "_id": "contentItem-article-005",
+  "category": "Educator",
+  "date": "December 2023",
+  "fileUrl": null,
+  "kind": "article",
+  "title": "The Creation and Use of Analogies as an Effective Tool for Teaching Immunology Concepts",
+  "url": null,
+  "venue": "AAI Newsletter"
+ },
+ {
+  "_id": "contentItem-article-006",
+  "category": "Science Communicator",
+  "date": "May 2019",
+  "fileUrl": null,
+  "kind": "article",
+  "title": "Guest Commentary. The death of Colorado's reasonable vaccine bill should be a call to action",
+  "url": null,
+  "venue": "Denver Post"
+ },
+ {
+  "_id": "contentItem-award-001",
+  "category": "Educator",
+  "date": "2026",
+  "fileUrl": null,
+  "kind": "award",
+  "title": "CU Child Health Advocate/Physician Assistant 'Guest Lecture' Teaching Award",
+  "url": null,
+  "venue": "School of Medicine"
+ },
+ {
+  "_id": "contentItem-award-002",
+  "category": "Educator",
+  "date": "2024",
+  "fileUrl": null,
+  "kind": "award",
+  "title": "CU Chancellor's Teaching Recognition Award",
+  "url": null,
+  "venue": "School of Medicine"
+ },
+ {
+  "_id": "contentItem-award-003",
+  "category": "Educator",
+  "date": "2023",
+  "fileUrl": null,
+  "kind": "award",
+  "title": "CU School of Medicine S.T.A.R.ling Award",
+  "url": null,
+  "venue": "CU School of Medicine"
+ },
+ {
+  "_id": "contentItem-award-004",
+  "category": "Educator",
+  "date": "2023",
+  "fileUrl": null,
+  "kind": "award",
+  "title": "CU School of Medicine STAR Award",
+  "url": null,
+  "venue": "CU School of Medicine"
+ },
+ {
+  "_id": "contentItem-award-005",
+  "category": "Educator",
+  "date": "2014",
+  "fileUrl": null,
+  "kind": "award",
+  "title": "CU Denver College of Liberal Arts & Sciences Non-Tenure Faculty Teaching Award",
+  "url": null,
+  "venue": "CU Denver"
+ },
+ {
+  "_id": "contentItem-award-006",
+  "category": "Educator",
+  "date": "2011",
+  "fileUrl": null,
+  "kind": "award",
+  "title": "CU Denver College of Liberal Arts & Sciences Non-Tenure Faculty Teaching Award",
+  "url": null,
+  "venue": "CU Denver"
+ },
+ {
+  "_id": "contentItem-course-001",
+  "category": "Educator",
+  "date": null,
+  "fileUrl": null,
+  "kind": "course",
+  "title": "Fun-Size Immunology Workshop",
+  "url": null,
+  "venue": "CU Human Immunology & Immunotherapy Initiative (HI3)"
+ },
+ {
+  "_id": "contentItem-course-002",
+  "category": "Educator",
+  "date": null,
+  "fileUrl": null,
+  "kind": "course",
+  "title": "IDPT5016 Foundational Principles",
+  "url": null,
+  "venue": "CU School of Medicine, Year 1 ('The Plains')"
+ },
+ {
+  "_id": "contentItem-course-003",
+  "category": "Educator",
+  "date": null,
+  "fileUrl": null,
+  "kind": "course",
+  "title": "IDPT5017 Hematologic & Lymphatic Systems",
+  "url": null,
+  "venue": "CU School of Medicine, Year 1"
+ },
+ {
+  "_id": "contentItem-course-004",
+  "category": "Educator",
+  "date": null,
+  "fileUrl": null,
+  "kind": "course",
+  "title": "IDPT5018 Gastrointestinal System",
+  "url": null,
+  "venue": "CU School of Medicine, Year 1"
+ },
+ {
+  "_id": "contentItem-course-005",
+  "category": "Educator",
+  "date": null,
+  "fileUrl": null,
+  "kind": "course",
+  "title": "IDPT5019 Pulmonary & Cardiovascular Systems",
+  "url": null,
+  "venue": "CU School of Medicine, Year 1"
+ },
+ {
+  "_id": "contentItem-course-006",
+  "category": "Educator",
+  "date": null,
+  "fileUrl": null,
+  "kind": "course",
+  "title": "IDPT5021 Renal & Urinary Systems",
+  "url": null,
+  "venue": "CU School of Medicine, Year 1"
+ },
+ {
+  "_id": "contentItem-course-007",
+  "category": "Educator",
+  "date": null,
+  "fileUrl": null,
+  "kind": "course",
+  "title": "IDPT5022 Nervous System",
+  "url": null,
+  "venue": "CU School of Medicine, Year 1"
+ },
+ {
+  "_id": "contentItem-course-008",
+  "category": "Educator",
+  "date": null,
+  "fileUrl": null,
+  "kind": "course",
+  "title": "IDPT5023 Musculoskeletal & Integumentary Systems",
+  "url": null,
+  "venue": "CU School of Medicine, Year 1"
+ },
+ {
+  "_id": "contentItem-course-009",
+  "category": "Educator",
+  "date": null,
+  "fileUrl": null,
+  "kind": "course",
+  "title": "IDPT5025 Endocrine & Metabolic Systems",
+  "url": null,
+  "venue": "CU School of Medicine, Year 1"
+ },
+ {
+  "_id": "contentItem-course-010",
+  "category": "Educator",
+  "date": null,
+  "fileUrl": null,
+  "kind": "course",
+  "title": "IDPT5026 Reproductive System & Life Cycles",
+  "url": null,
+  "venue": "CU School of Medicine, Year 1"
+ },
+ {
+  "_id": "contentItem-course-011",
+  "category": "Educator",
+  "date": null,
+  "fileUrl": null,
+  "kind": "course",
+  "title": "IDPT8039 Advanced Sciences Immunology & Immunotherapy",
+  "url": null,
+  "venue": "CU School of Medicine, Year 3 ('The Alpine Summit')"
+ },
+ {
+  "_id": "contentItem-course-012",
+  "category": "Educator",
+  "date": null,
+  "fileUrl": null,
+  "kind": "course",
+  "title": "Summer Immersion: Immunology & Microbiology",
+  "url": null,
+  "venue": "CU Child Health Advocate/Physician Assistant (CHA/PA) Program, Year 1"
+ },
+ {
+  "_id": "contentItem-course-013",
+  "category": "Educator",
+  "date": null,
+  "fileUrl": null,
+  "kind": "course",
+  "title": "Academic Year: Immunology",
+  "url": null,
+  "venue": "CU CHA/PA Program, Year 1"
+ },
+ {
+  "_id": "contentItem-course-014",
+  "category": "Educator",
+  "date": null,
+  "fileUrl": null,
+  "kind": "course",
+  "title": "Academic Year: Immunology",
+  "url": null,
+  "venue": "CU CHA/PA Program, Year 2"
+ },
+ {
+  "_id": "contentItem-course-015",
+  "category": "Educator",
+  "date": null,
+  "fileUrl": null,
+  "kind": "course",
+  "title": "DSBS5511 Invaders & Protectors (Microbiology & Immunology)",
+  "url": null,
+  "venue": "CU School of Dental Medicine, Year 1"
+ },
+ {
+  "_id": "contentItem-course-016",
+  "category": "Educator",
+  "date": null,
+  "fileUrl": null,
+  "kind": "course",
+  "title": "MIMS6062 Introduction to Science Communication",
+  "url": null,
+  "venue": "CU Graduate School"
+ },
+ {
+  "_id": "contentItem-course-017",
+  "category": "Educator",
+  "date": null,
+  "fileUrl": null,
+  "kind": "course",
+  "title": "MIMS7530 Introduction to Immunology",
+  "url": null,
+  "venue": "CU Graduate School"
+ },
+ {
+  "_id": "contentItem-course-018",
+  "category": "Educator",
+  "date": null,
+  "fileUrl": null,
+  "kind": "course",
+  "title": "UNHL4820. Scientific Thinking",
+  "url": null,
+  "venue": "CU Denver University Honors & Leadership Program"
+ },
+ {
+  "_id": "contentItem-educational-content-001",
+  "category": "Science Communicator",
+  "date": null,
+  "fileUrl": null,
+  "kind": "educational-content",
+  "title": "Fun Size Science",
+  "url": null,
+  "venue": "Unbiased Science, on YouTube"
+ },
+ {
+  "_id": "contentItem-educational-content-002",
+  "category": "Science Communicator",
+  "date": "2025",
+  "fileUrl": null,
+  "kind": "educational-content",
+  "title": "Allergies and the Immune Response",
+  "url": null,
+  "venue": "AAI Immunology Explained"
+ },
+ {
+  "_id": "contentItem-educational-content-003",
+  "category": "Science Communicator",
+  "date": "2025",
+  "fileUrl": null,
+  "kind": "educational-content",
+  "title": "The immune system is a mobile defense system - like calling 911",
+  "url": null,
+  "venue": "AAI Immunology Explained"
+ },
+ {
+  "_id": "contentItem-educational-content-004",
+  "category": "Science Communicator",
+  "date": "2024+",
+  "fileUrl": null,
+  "kind": "educational-content",
+  "title": "AAI Immunology Explained",
+  "url": null,
+  "venue": "American Association of Immunologists (AAI)"
+ },
+ {
+  "_id": "contentItem-podcast-001",
+  "category": "Science Communicator",
+  "date": "April 2025",
+  "fileUrl": null,
+  "kind": "podcast",
+  "title": "The World of Autoimmunity",
+  "url": null,
+  "venue": "Unbiased Science Podcast"
+ },
+ {
+  "_id": "contentItem-podcast-002",
+  "category": "Science Communicator",
+  "date": "January 2025",
+  "fileUrl": null,
+  "kind": "podcast",
+  "title": "The Life of a Dedicated Educator",
+  "url": null,
+  "venue": "Project Bridge Science Podcast"
+ },
+ {
+  "_id": "contentItem-podcast-003",
+  "category": "Science Communicator",
+  "date": "January 2024",
+  "fileUrl": null,
+  "kind": "podcast",
+  "title": "Science Communication to the Public",
+  "url": null,
+  "venue": "The Immunology Podcast"
+ },
+ {
+  "_id": "contentItem-podcast-004",
+  "category": "Science Communicator",
+  "date": "May 2024",
+  "fileUrl": null,
+  "kind": "podcast",
+  "title": "Career in Teaching and Sci Comm",
+  "url": "https://podcasts.apple.com/us/podcast/episode-79-dr-aimee-bernard/id1668842021?i=1000659432503",
+  "venue": "Flying Intuition"
+ },
+ {
+  "_id": "contentItem-position-001",
+  "category": "Science Communicator",
+  "date": "2025+",
+  "fileUrl": null,
+  "kind": "position",
+  "title": "Unbiased Science — Immunology Expert",
+  "url": "https://theunbiasedscipod.substack.com/",
+  "venue": "Unbiased Science"
+ },
+ {
+  "_id": "contentItem-position-002",
+  "category": "Science Communicator",
+  "date": "2023-current",
+  "fileUrl": null,
+  "kind": "position",
+  "title": "co-Director, CCTSI Workshop Series — Communicating Your Science to the Public",
+  "url": null,
+  "venue": "CCTSI"
+ },
+ {
+  "_id": "contentItem-position-003",
+  "category": "Educator",
+  "date": "2020-current",
+  "fileUrl": null,
+  "kind": "position",
+  "title": "Content Director, Immunology CU School of Medicine",
+  "url": null,
+  "venue": "CU School of Medicine"
+ },
+ {
+  "_id": "contentItem-position-004",
+  "category": "Educator",
+  "date": "2021-current",
+  "fileUrl": null,
+  "kind": "position",
+  "title": "Course Director, MIMS7530 Introduction to Immunology",
+  "url": null,
+  "venue": "CU Graduate School"
+ },
+ {
+  "_id": "contentItem-position-005",
+  "category": "Educator",
+  "date": "2026-current",
+  "fileUrl": null,
+  "kind": "position",
+  "title": "Course Director, MIMS6062 Introduction to Science Communication",
+  "url": null,
+  "venue": "CU Graduate School"
+ },
+ {
+  "_id": "contentItem-position-006",
+  "category": "Educator",
+  "date": "2018-current",
+  "fileUrl": null,
+  "kind": "position",
+  "title": "Content Director, Immunology CU Anschutz Physician Assistant Program",
+  "url": null,
+  "venue": "CU Child Health Advocate/Physician Assistant Program"
+ },
+ {
+  "_id": "contentItem-position-007",
+  "category": "Educator",
+  "date": "2019-2024",
+  "fileUrl": null,
+  "kind": "position",
+  "title": "Course Director, DSBS5511 Invaders & Protectors",
+  "url": null,
+  "venue": "CU School of Dental Medicine"
+ },
+ {
+  "_id": "contentItem-position-008",
+  "category": "Educator",
+  "date": "2015-2021",
+  "fileUrl": null,
+  "kind": "position",
+  "title": "Course Director, UNHL4820 Scientific Thinking",
+  "url": null,
+  "venue": "CU Denver, University Honors & Leadership Program"
+ },
+ {
+  "_id": "contentItem-press-mentions-001",
+  "category": "Science Communicator",
+  "date": "August 2025",
+  "fileUrl": null,
+  "kind": "press-mentions",
+  "title": "CU Immunology Prof discusses mRNA research funding",
+  "url": null,
+  "venue": "KOA Morning News"
+ },
+ {
+  "_id": "contentItem-press-mentions-002",
+  "category": "Science Communicator",
+  "date": null,
+  "fileUrl": null,
+  "kind": "press-mentions",
+  "title": "'Ask a Scientist' feature with Aimee Pugh Bernard, PhD",
+  "url": null,
+  "venue": "CU Anschutz Monthly Friends Report"
+ },
+ {
+  "_id": "contentItem-press-mentions-003",
+  "category": "Science Communicator",
+  "date": null,
+  "fileUrl": null,
+  "kind": "press-mentions",
+  "title": "Science Communicators Strategize How to Demystify Science",
+  "url": null,
+  "venue": "CU Anschutz Today"
+ },
+ {
+  "_id": "contentItem-press-mentions-004",
+  "category": "Science Communicator",
+  "date": null,
+  "fileUrl": null,
+  "kind": "press-mentions",
+  "title": "Preventing the Next Pandemic. Better Next Time",
+  "url": null,
+  "venue": "Rochester Review"
+ },
+ {
+  "_id": "contentItem-press-mentions-005",
+  "category": "Science Communicator",
+  "date": null,
+  "fileUrl": null,
+  "kind": "press-mentions",
+  "title": "Fake News: Medical Quackery Enters a New Dimension. The spread of misinformation evolves, heightening threats to patients and medical science",
+  "url": null,
+  "venue": "CU Anschutz Today"
+ },
+ {
+  "_id": "contentItem-press-mentions-006",
+  "category": "Science Communicator",
+  "date": null,
+  "fileUrl": null,
+  "kind": "press-mentions",
+  "title": "COVID Vaccines: One dose or two? Experts weigh in",
+  "url": null,
+  "venue": "CU Anschutz Today"
+ },
+ {
+  "_id": "contentItem-press-mentions-007",
+  "category": "Science Communicator",
+  "date": null,
+  "fileUrl": null,
+  "kind": "press-mentions",
+  "title": "How an Immunity Gap May Be Fueling the Recent Spike in Respiratory Viruses",
+  "url": null,
+  "venue": "SELF"
+ },
+ {
+  "_id": "contentItem-press-mentions-008",
+  "category": "Science Communicator",
+  "date": null,
+  "fileUrl": null,
+  "kind": "press-mentions",
+  "title": "Creating Vaccine Confidence Through Building Community. Casual Conversations about Vaccines",
+  "url": null,
+  "venue": "CO Immunization Advocates Blog"
+ },
+ {
+  "_id": "contentItem-press-mentions-009",
+  "category": "Science Communicator",
+  "date": null,
+  "fileUrl": null,
+  "kind": "press-mentions",
+  "title": "Investigating Immunity. Uncovering the Mechanisms of the Immune System",
+  "url": null,
+  "venue": "futurum"
+ },
+ {
+  "_id": "contentItem-press-mentions-010",
+  "category": "Science Communicator",
+  "date": null,
+  "fileUrl": null,
+  "kind": "press-mentions",
+  "title": "Translating Research to Drive Patient Care. How novel discoveries in the lab make their way to the patient",
+  "url": null,
+  "venue": "CU Anschutz Momentum"
+ },
+ {
+  "_id": "contentItem-press-mentions-011",
+  "category": "Science Communicator",
+  "date": null,
+  "fileUrl": null,
+  "kind": "press-mentions",
+  "title": "5 Sneaky Signs You're Getting Sick",
+  "url": null,
+  "venue": "HuffPost"
+ },
+ {
+  "_id": "contentItem-research-publication-001",
+  "category": "Educator",
+  "date": "May 2023",
+  "fileUrl": null,
+  "kind": "research-publication",
+  "title": "The Use and Creation of Analogies as a Teaching Tool for Understanding Immunology",
+  "url": null,
+  "venue": "American Association of Immunologists, poster and education breakout session"
+ },
+ {
+  "_id": "contentItem-research-publication-002",
+  "category": "Educator",
+  "date": null,
+  "fileUrl": null,
+  "kind": "research-publication",
+  "title": "Mini-Review: CREATE-ive Use of Primary Literature in the Science Classroom",
+  "url": null,
+  "venue": null
+ },
+ {
+  "_id": "contentItem-research-publication-003",
+  "category": "Educator",
+  "date": null,
+  "fileUrl": null,
+  "kind": "research-publication",
+  "title": "University of Colorado COVID-19 Pandemic Response Course: Beyond the Virtual Classroom",
+  "url": null,
+  "venue": "American Medical Association Health Systems Science Impact Challenge"
+ },
+ {
+  "_id": "contentItem-talk-001",
+  "category": "Science Communicator",
+  "date": "April 2026",
+  "fileUrl": null,
+  "kind": "talk",
+  "title": "Confessions of a Scientist: Science education needs communication training",
+  "url": null,
+  "venue": "TEDxCU"
+ },
+ {
+  "_id": "contentItem-talk-002",
+  "category": "Educator",
+  "date": "March 2026",
+  "fileUrl": null,
+  "kind": "talk",
+  "title": "Research Day Keynote Speaker",
+  "url": null,
+  "venue": "Colorado State University, College of Health & Human Sciences"
+ },
+ {
+  "_id": "contentItem-talk-003",
+  "category": "Science Communicator",
+  "date": "February 2026",
+  "fileUrl": null,
+  "kind": "talk",
+  "title": "Navigating Vaccine Hesitancy",
+  "url": null,
+  "venue": "CU Anschutz, 2026 Women's Health Symposium"
+ },
+ {
+  "_id": "contentItem-talk-004",
+  "category": "Science Communicator",
+  "date": "October 2025",
+  "fileUrl": null,
+  "kind": "talk",
+  "title": "From Data to Dialogue: Science Communication for the Real World",
+  "url": null,
+  "venue": "University of Rochester myHub"
+ },
+ {
+  "_id": "contentItem-talk-005",
+  "category": "Educator",
+  "date": "September 2025",
+  "fileUrl": null,
+  "kind": "talk",
+  "title": "Translating Medicine. Science Communication Academic and Clinical Tool",
+  "url": null,
+  "venue": "CU General Internal Medicine Grand Rounds"
+ },
+ {
+  "_id": "contentItem-talk-006",
+  "category": "Science Communicator",
+  "date": "December 2024",
+  "fileUrl": null,
+  "kind": "talk",
+  "title": "New Year! New Life Hacks? Don't Believe Everything You Read!",
+  "url": null,
+  "venue": "CU Alumni Happy & Healthy Hour"
+ },
+ {
+  "_id": "contentItem-talk-007",
+  "category": "Science Communicator",
+  "date": "November 2024",
+  "fileUrl": null,
+  "kind": "talk",
+  "title": "The Future of Immunotherapy: Breakthroughs Beyond Cancer",
+  "url": null,
+  "venue": "CU Transforming Healthcare 2024"
+ },
+ {
+  "_id": "contentItem-talk-008",
+  "category": "Educator",
+  "date": "March 2024",
+  "fileUrl": null,
+  "kind": "talk",
+  "title": "The Impact of Artificial Intelligence (AI) on Education",
+  "url": null,
+  "venue": "American Association of Immunologists (AAI) webinar"
+ },
+ {
+  "_id": "contentItem-talk-009",
+  "category": "Science Communicator",
+  "date": "March 2023",
+  "fileUrl": null,
+  "kind": "talk",
+  "title": "Sci Comm. The Art of Making Science Interesting and Relatable to the General Public",
+  "url": null,
+  "venue": "Faculty Learning Community of the National Institute for Scientific Teaching (FALCoN NIST)"
+ },
+ {
+  "_id": "contentItem-talk-010",
+  "category": "Science Communicator",
+  "date": "March 2024",
+  "fileUrl": null,
+  "kind": "talk",
+  "title": "Sci Comm. The Art of Making Science Interesting and Relatable to the General Public",
+  "url": null,
+  "venue": "University of Toronto at Mississauga, Biology Department"
+ },
+ {
+  "_id": "contentItem-talk-011",
+  "category": "Science Communicator",
+  "date": "December 2023",
+  "fileUrl": null,
+  "kind": "talk",
+  "title": "Lessons on Challenging Communication of Science in Society",
+  "url": null,
+  "venue": "The Institute for Science & Policy Symposium, 'The Ethics of Science Communication'"
+ },
+ {
+  "_id": "contentItem-talk-012",
+  "category": "Educator",
+  "date": null,
+  "fileUrl": null,
+  "kind": "talk",
+  "title": "COVID-19 Vaccines. Formulations and Immune Response",
+  "url": null,
+  "venue": "CU Denver Biology Club"
+ },
+ {
+  "_id": "contentItem-talk-013",
+  "category": "Community Outreach",
+  "date": "July 2024",
+  "fileUrl": null,
+  "kind": "talk",
+  "title": "Parents Talk: Why We Immunize for Good",
+  "url": null,
+  "venue": "Immunize for Good"
+ },
+ {
+  "_id": "contentItem-talk-014",
+  "category": "Community Outreach",
+  "date": "Immunize Colorado Oct 2023, Shared Harvest Fund Nov 2023",
+  "fileUrl": null,
+  "kind": "talk",
+  "title": "The Science Behind Vaccines and the Immune Response",
+  "url": null,
+  "venue": "Immunize Colorado / Shared Harvest Fund"
+ },
+ {
+  "_id": "contentItem-talk-015",
+  "category": "Community Outreach",
+  "date": "January 2022",
+  "fileUrl": null,
+  "kind": "talk",
+  "title": "Your Shot at Protection. How Vaccines Train the Immune System to Fight Disease",
+  "url": "https://www.tatteredcover.com/event/your-shot-protection-how-vaccines-train-immune-system-fight-disease",
+  "venue": "CU School of Medicine Office of Research Education & Tattered Cover Book Store"
+ },
+ {
+  "_id": "contentItem-talk-016",
+  "category": "Science Communicator",
+  "date": "2023",
+  "fileUrl": null,
+  "kind": "talk",
+  "title": "Addressing Mis & Disinformation in Health and Science Communication",
+  "url": null,
+  "venue": "2023 CCTSI CU-CSU Summit"
+ },
+ {
+  "_id": "contentItem-talk-017",
+  "category": "Educator",
+  "date": null,
+  "fileUrl": null,
+  "kind": "talk",
+  "title": "The Science Behind Vaccines",
+  "url": null,
+  "venue": "Front Range Community College (FRCC), for biology students"
+ },
+ {
+  "_id": "contentItem-talk-018",
+  "category": "Community Outreach",
+  "date": null,
+  "fileUrl": null,
+  "kind": "talk",
+  "title": "Killing Cancer from the Inside: Harness the Immune System & Immunotherapy",
+  "url": null,
+  "venue": "Denver Metro Regional Science & Engineering Fair (DMRSEF), CU AMC"
+ },
+ {
+  "_id": "contentItem-talk-019",
+  "category": "Science Communicator",
+  "date": "September 2023",
+  "fileUrl": null,
+  "kind": "talk",
+  "title": "Your Shot at Protection. How Vaccines Train the Immune System to Fight Disease",
+  "url": null,
+  "venue": "CU Alumni 'Healthy & Happy Hour'"
+ },
+ {
+  "_id": "contentItem-talk-020",
+  "category": "Educator",
+  "date": "August 2023",
+  "fileUrl": null,
+  "kind": "talk",
+  "title": "AI: Super Hero or Super Villain? The Use of AI in Teaching & Learning",
+  "url": null,
+  "venue": "Colorado Learning and Teaching with Technology (COLTT) Conference"
+ },
+ {
+  "_id": "contentItem-talk-021",
+  "category": "Community Outreach",
+  "date": null,
+  "fileUrl": null,
+  "kind": "talk",
+  "title": "Vaccine Questions at Home. Have a Question? Get an Answer!",
+  "url": null,
+  "venue": "CO Vaccine Equity Taskforce & African Youth Advocates"
+ },
+ {
+  "_id": "sOmfalcSjojVzxV0OLDt2T",
+  "category": null,
+  "date": null,
+  "fileUrl": null,
+  "kind": "talk",
+  "title": "TEDxCU talk, 'Confessions of a scientist: science education needs communication training'",
+  "url": "https://www.youtube.com/watch?v=zpqRMWWnDZI",
+  "venue": null
+ },
+ {
+  "_id": "J7nw86loj9t5XxIx7PrYX3",
+  "category": null,
+  "date": null,
+  "fileUrl": null,
+  "kind": "social",
+  "title": "Instagram @funsizeimmuninja",
+  "url": "https://www.instagram.com/funsizeimmuninja/?hl=en",
+  "venue": null
+ },
+ {
+  "_id": "J7nw86loj9t5XxIx7Pra4n",
+  "category": null,
+  "date": null,
+  "fileUrl": null,
+  "kind": "social",
+  "title": "TikTok @funsizeimmuninja",
+  "url": "https://www.tiktok.com/@funsizeimmuninja",
+  "venue": null
+ },
+ {
+  "_id": "J7nw86loj9t5XxIx7PresH",
+  "category": null,
+  "date": null,
+  "fileUrl": null,
+  "kind": "social",
+  "title": "Instagram @cuanschutz.biomedsci",
+  "url": "https://www.instagram.com/cuanschutz.biomedsci",
+  "venue": null
+ },
+ {
+  "_id": "DN3PqFxD2a20hjfVDQHaMM",
+  "category": null,
+  "date": null,
+  "fileUrl": null,
+  "kind": "article",
+  "title": "Science Crosstalk Substack - where science and communication collide",
+  "url": "https://aimeepughbernard.substack.com/",
+  "venue": null
+ },
+ {
+  "_id": "5ngU42As1RCWpztvaMvhMl",
+  "category": null,
+  "date": null,
+  "fileUrl": null,
+  "kind": "educational-content",
+  "title": "CU Anschutz Basic Science Departments website",
+  "url": "https://medschool.cuanschutz.edu/basic-sciences",
+  "venue": null
+ },
+ {
+  "_id": "3D2eTzEwbOdAIHeIqdk3jb",
+  "category": null,
+  "date": null,
+  "fileUrl": null,
+  "kind": "educational-content",
+  "title": "Think Like a Scientist (TLaS) outreach program",
+  "url": "https://tlasprogram.wordpress.com/",
+  "venue": null
+ },
+ {
+  "_id": "3D2eTzEwbOdAIHeIqdkCjF",
+  "category": null,
+  "date": "August 2024",
+  "fileUrl": null,
+  "kind": "educational-content",
+  "title": "Think Like a Scientist (TLaS) Curriculum",
+  "url": "https://www.merlot.org/merlot/viewMaterial.htm?id=773470786",
+  "venue": "MERLOT (Multimedia Educational Resource for Learning and Online Teaching)"
+ },
+ {
+  "_id": "J7nw86loj9t5XxIx7PuLzm",
+  "category": null,
+  "date": "February 2021",
+  "fileUrl": null,
+  "kind": "press-mentions",
+  "title": "TLaS is Increasing Elementary Schoolers' Access to Science",
+  "url": "https://news.cuanschutz.edu/medicine/increasing-access-to-science",
+  "venue": "CU Anschutz Today"
+ },
+ {
+  "_id": "3D2eTzEwbOdAIHeIqdn50u",
+  "category": null,
+  "date": "August 2020",
+  "fileUrl": null,
+  "kind": "press-mentions",
+  "title": "TLaS Making Science Cool and Fun",
+  "url": "https://news.cuanschutz.edu/news-stories/making-science-cool-and-fun",
+  "venue": "CU Anschutz Today"
+ },
+ {
+  "_id": "5ngU42As1RCWpztvaMxqq7",
+  "category": null,
+  "date": "June 2026",
+  "fileUrl": null,
+  "kind": "research-publication",
+  "title": "Bridging Gaps in STEM with Science Outreach",
+  "url": "https://www.jstemoutreach.org/article/164260-bridging-gaps-in-stem-with-science-outreach",
+  "venue": "Journal of STEM Outreach"
+ },
+ {
+  "_id": "5ngU42As1RCWpztvaMyf3X",
+  "category": null,
+  "date": "June 2024",
+  "fileUrl": null,
+  "kind": "educational-content",
+  "title": "Raising Environmental Awareness for Community Health (REACH) Curriculum",
+  "url": "https://www.merlot.org/merlot/viewMaterial.htm?id=773469511",
+  "venue": "MERLOT (Multimedia Educational Resource for Learning and Online Teaching)"
+ },
+ {
+  "_id": "5ngU42As1RCWpztvaMyyF5",
+  "category": null,
+  "date": "December 2025",
+  "fileUrl": null,
+  "kind": "research-publication",
+  "title": "Raising Environmental Awareness for Community Health: The Implementation and Evaluation of an Environmental Science Outreach Program for Elementary Students",
+  "url": "https://www.tandfonline.com/doi/abs/10.1080/24758779.2025.2588485",
+  "venue": "Connected Science Learning"
+ },
+ {
+  "_id": "3D2eTzEwbOdAIHeIqdtoFy",
+  "category": null,
+  "date": null,
+  "fileUrl": null,
+  "kind": "educational-content",
+  "title": "Think Like a Scientist (TLaS) Science-at-Home Experiments YouTube",
+  "url": "https://www.youtube.com/@tlasthinklikeascientist2621/featured",
+  "venue": "YouTube"
+ },
+ {
+  "_id": "J7nw86loj9t5XxIx7PvWOX",
+  "category": null,
+  "date": "July 2025",
+  "fileUrl": null,
+  "kind": "educational-content",
+  "title": "Exploring Careers in Healthcare and Onward (ECHO): Educational Curriculum",
+  "url": "https://www.merlot.org/merlot/viewMaterial.htm?id=773475218",
+  "venue": "MERLOT (Multimedia Educational Resource for Learning and Online Teaching)"
+ },
+ {
+  "_id": "5ngU42As1RCWpztvaN2fNv",
+  "category": null,
+  "date": "June 2026",
+  "fileUrl": null,
+  "kind": "research-publication",
+  "title": "Exploring Careers in Healthcare & Onward (ECHO): A community outreach program to promote healthcare career interest in K-8 students",
+  "url": "https://journals.physiology.org/doi/abs/10.1152/advan.00039.2026",
+  "venue": "Advances in Physiology Education"
+ },
+ {
+  "_id": "3D2eTzEwbOdAIHeIqdvrJt",
+  "category": null,
+  "date": "August 2026",
+  "fileUrl": null,
+  "kind": "research-publication",
+  "title": "Status of immunology education and establishment of American Association of Immunologists-recommended immunology content guidelines for undergraduate medical education in the United States",
+  "url": "https://pubmed.ncbi.nlm.nih.gov/42623698/",
+  "venue": "Immunohorizons"
+ },
+ {
+  "_id": "3D2eTzEwbOdAIHeIqdwEUX",
+  "category": null,
+  "date": "June 2025",
+  "fileUrl": null,
+  "kind": "research-publication",
+  "title": "Editorial: Empowering individuals: promoting health literacy through curriculum and science communication",
+  "url": "https://www.frontiersin.org/journals/public-health/articles/10.3389/fpubh.2025.1632938/full",
+  "venue": "Frontiers in Public Health"
+ },
+ {
+  "_id": "3D2eTzEwbOdAIHeIqdwaRZ",
+  "category": null,
+  "date": "January 2021",
+  "fileUrl": null,
+  "kind": "research-publication",
+  "title": "Mini-review: CREATE-ive use of primary literature in the science classroom",
+  "url": "https://pubmed.ncbi.nlm.nih.gov/33248160/",
+  "venue": "Neuroscience Letters"
+ },
+ {
+  "_id": "3D2eTzEwbOdAIHeIqdxulR",
+  "category": null,
+  "date": "February 2026",
+  "fileUrl": null,
+  "kind": "article",
+  "title": "Science Communication Should Be a Core Competency in Medical Training",
+  "url": "https://www.medpagetoday.com/opinion/second-opinions/119801",
+  "venue": "MedPage Today"
+ },
+ {
+  "_id": "3D2eTzEwbOdAIHeIqdyDkA",
+  "category": null,
+  "date": "March 2026",
+  "fileUrl": null,
+  "kind": "article",
+  "title": "Neutrality Is Dangerous in the Face of Medical Misinformation",
+  "url": "https://www.medpagetoday.com/opinion/second-opinions/120179",
+  "venue": "MedPage Today"
+ },
+ {
+  "_id": "5ngU42As1RCWpztvaN4mlD",
+  "category": null,
+  "date": "June 2024",
+  "fileUrl": null,
+  "kind": "research-publication",
+  "title": "AI and immunology",
+  "url": "https://pubmed.ncbi.nlm.nih.gov/38865960/",
+  "venue": "Immunity"
+ },
+ {
+  "_id": "J7nw86loj9t5XxIx7PwHq2",
+  "category": null,
+  "date": "October 2001",
+  "fileUrl": null,
+  "kind": "research-publication",
+  "title": "Regulation of inherently autoreactive VH4-34 B cells in the maintenance of human B cell tolerance",
+  "url": "https://www.jci.org/articles/view/12462",
+  "venue": "Journal of Clinical Investigation"
+ },
+ {
+  "_id": "5ngU42As1RCWpztvaN5GsB",
+  "category": null,
+  "date": "November 2005",
+  "fileUrl": null,
+  "kind": "research-publication",
+  "title": "Germinal center exclusion of autoreactive B cells is defective in human systemic lupus erythematosus",
+  "url": "https://www.jci.org/articles/view/24179",
+  "venue": "Journal of Clinical Investigation"
+ },
+ {
+  "_id": "7fWOoYTsEoJYtxF1ZLnbu8",
+  "category": null,
+  "date": null,
+  "fileUrl": null,
+  "kind": "research-publication",
+  "title": "B cell antigen receptor signaling 101",
+  "url": "https://pubmed.ncbi.nlm.nih.gov/15219998/",
+  "venue": null
+ },
+ {
+  "_id": "kVclzyoT3Vi3nUN8UnAhI4",
+  "category": null,
+  "date": null,
+  "fileUrl": null,
+  "kind": "research-publication",
+  "title": "B cell receptor signaling in human systemic lupus erythematosus",
+  "url": "https://pubmed.ncbi.nlm.nih.gov/16896281/",
+  "venue": null
+ },
+ {
+  "_id": "kVclzyoT3Vi3nUN8UnBJ3E",
+  "category": null,
+  "date": null,
+  "fileUrl": null,
+  "kind": "research-publication",
+  "title": "A Strategy for the Renovation of a Clinical Pathways Program",
+  "url": "https://pubmed.ncbi.nlm.nih.gov/31579877/",
+  "venue": null
+ },
+ {
+  "_id": "7fWOoYTsEoJYtxF1ZLoK8K",
+  "category": null,
+  "date": null,
+  "fileUrl": null,
+  "kind": "research-publication",
+  "title": "A new population of cells lacking expression of CD27 represents a notable component of the B cell memory compartment in systemic lupus erythematosus",
+  "url": "https://pubmed.ncbi.nlm.nih.gov/17475894/",
+  "venue": null
+ },
+ {
+  "_id": "kVclzyoT3Vi3nUN8UnBi4i",
+  "category": null,
+  "date": null,
+  "fileUrl": null,
+  "kind": "research-publication",
+  "title": "Rituximab improves peripheral B cell abnormalities in human systemic lupus erythematosus",
+  "url": "https://pubmed.ncbi.nlm.nih.gov/15529346/",
+  "venue": null
+ },
+ {
+  "_id": "kVclzyoT3Vi3nUN8UnBnv2",
+  "category": null,
+  "date": null,
+  "fileUrl": null,
+  "kind": "research-publication",
+  "title": "Nkx2.2 regulates cell fate choice in the enteroendocrine cell lineages of the intestine",
+  "url": "https://pubmed.ncbi.nlm.nih.gov/18022152/",
+  "venue": null
+ },
+ {
+  "_id": "kVclzyoT3Vi3nUN8UnBuoO",
+  "category": null,
+  "date": null,
+  "fileUrl": null,
+  "kind": "research-publication",
+  "title": "Ghrelin cells replace insulin-producing beta cells in two mouse models of pancreas development",
+  "url": "https://pubmed.ncbi.nlm.nih.gov/14970313/",
+  "venue": null
+ },
+ {
+  "_id": "kVclzyoT3Vi3nUN8UnChMS",
+  "category": null,
+  "date": null,
+  "fileUrl": null,
+  "kind": "educational-content",
+  "title": "Teaching Tool: AAI-Recommended Immunology Guidelines for Medical School",
+  "url": "https://news.aai.org/2026/09/10/teaching-tool-guidelines-medical-school/",
+  "venue": null
+ },
+ {
+  "_id": "gGk5cbj0s7dJhqY90vV0P8",
+  "category": null,
+  "date": "October 2025",
+  "fileUrl": null,
+  "kind": "article",
+  "title": "How does your immune system stay balanced? A Nobel-prize winning answer!",
+  "url": "https://theconversation.com/how-does-your-immune-system-stay-balanced-a-nobel-prize-winning-answer-266842",
+  "venue": "The Conversation"
+ },
+ {
+  "_id": "kVclzyoT3Vi3nUN8UnEbfA",
+  "category": null,
+  "date": "January 2025",
+  "fileUrl": null,
+  "kind": "article",
+  "title": "Nutrition advice is rife with misinformation − a medical education specialist explains how to tell valid health information from pseudoscience",
+  "url": "https://theconversation.com/nutrition-advice-is-rife-with-misinformation-a-medical-education-specialist-explains-how-to-tell-valid-health-information-from-pseudoscience-246478",
+  "venue": "The Conversation"
+ },
+ {
+  "_id": "gGk5cbj0s7dJhqY90vVHJ2",
+  "category": null,
+  "date": "June 2024",
+  "fileUrl": null,
+  "kind": "article",
+  "title": "Boost your immune system with the centuries-old health hack: Vaccines",
+  "url": "https://theconversation.com/boost-your-immune-system-with-this-centuries-old-health-hack-vaccines-228567",
+  "venue": "The Conversation"
+ },
+ {
+  "_id": "7fWOoYTsEoJYtxF1ZLqrCu",
+  "category": null,
+  "date": null,
+  "fileUrl": null,
+  "kind": "educational-content",
+  "title": "Communicating Your Science to the Public Workshop Series",
+  "url": "https://cctsi.cuanschutz.edu/training/communicating#ac-workshop-3-2",
+  "venue": "Colorado Clinical and Translational Sciences Institute (CCTSI)"
+ },
+ {
+  "_id": "kVclzyoT3Vi3nUN8UnHcDc",
+  "category": null,
+  "date": "2018+",
+  "fileUrl": null,
+  "kind": "educational-content",
+  "title": "CU Anschutz Teacher Training Program (TTP)",
+  "url": "https://medschool.cuanschutz.edu/immunology-and-microbiology/dept-resources/teaching-resources/teacher-training-program/overview",
+  "venue": "CU Anschutz"
+ },
+ {
+  "_id": "kVclzyoT3Vi3nUN8UnHkpo",
+  "category": null,
+  "date": "2018+",
+  "fileUrl": null,
+  "kind": "educational-content",
+  "title": "CU Anschutz Department of Immunology and Microbiology Teaching Resources",
+  "url": "https://medschool.cuanschutz.edu/immunology-and-microbiology/dept-resources/teaching-resources",
+  "venue": "CU Anschutz"
+ },
+ {
+  "_id": "gGk5cbj0s7dJhqY90vnoFU",
+  "category": null,
+  "date": "July 2026+",
+  "fileUrl": null,
+  "kind": "position",
+  "title": "Public Outreach Core Committee Chair",
+  "url": "https://www.aai.org/About/Committees/Public-Outreach-Core-Committee",
+  "venue": "American Association of Immunologists (AAI)"
+ },
+ {
+  "_id": "7fWOoYTsEoJYtxF1ZMTLD2",
+  "category": null,
+  "date": null,
+  "fileUrl": null,
+  "kind": "position",
+  "title": "Scientific Advisory Board Member",
+  "url": "https://www.unbiasedscience.com/the-team",
+  "venue": null
+ },
+ {
+  "_id": "WCoDKu5YdWxpQP9WGJZ6gl",
+  "category": null,
+  "date": "2024+",
+  "fileUrl": null,
+  "kind": "position",
+  "title": "University of Colorado Medical School Student Promotions Committee Member",
+  "url": "https://medschool.cuanschutz.edu/docs/librariesprovider173/current-docs-3-25/2025-rules-of-the-som.pdf?sfvrsn=19a102b4_3",
+  "venue": "University of Colorado School of Medicine"
+ },
+ {
+  "_id": "WCoDKu5YdWxpQP9WGJaByl",
+  "category": null,
+  "date": "2018-2026",
+  "fileUrl": null,
+  "kind": "position",
+  "title": "Immunize Colorado Board Member",
+  "url": "https://www.immunizecolorado.org/who-we-are/our-mission-history/",
+  "venue": "Immunize Colorado"
+ },
+ {
+  "_id": "WCoDKu5YdWxpQP9WGJad2D",
+  "category": null,
+  "date": "2015+",
+  "fileUrl": null,
+  "kind": "position",
+  "title": "Human Immunology and Immunotherapy Initiative Assistant Director",
+  "url": "https://medschool.cuanschutz.edu/immunology-immunotherapy/about-hi3",
+  "venue": "CU Anschutz"
+ },
+ {
+  "_id": "4i556wximELDYjvROaRlZC",
+  "category": null,
+  "date": "January 2019+",
+  "fileUrl": null,
+  "kind": "position",
+  "title": "Associate Professor, Department of Immunology and Microbiology",
+  "url": "https://medschool.cuanschutz.edu/immunology-and-microbiology/about-us/faculty/primary-faculty/bernard",
+  "venue": "CU Anschutz School of Medicine"
+ },
+ {
+  "_id": "lZM4zz1UvxTc9EMORUs2Ht",
+  "category": null,
+  "date": "September 2026",
+  "fileUrl": null,
+  "kind": "educational-content",
+  "title": "My Tiny Helpers",
+  "url": "https://lupe.science/books/",
+  "venue": "Lupe Science"
+ },
+ {
+  "_id": "lZM4zz1UvxTc9EMORUsh6X",
+  "category": null,
+  "date": "June 2026+",
+  "fileUrl": null,
+  "kind": "educational-content",
+  "title": "The Immune System",
+  "url": "https://wwnorton.com/books/The-Immune-System/about-the-book",
+  "venue": "W.W. Norton & Company"
+ },
+ {
+  "_id": "4i556wximELDYjvROaU8Un",
+  "category": null,
+  "date": "April 2026+",
+  "fileUrl": null,
+  "kind": "position",
+  "title": "The Evidence Collective (TEC) Expert Network Member",
+  "url": "https://www.evicollective.org",
+  "venue": "The Evidence Collective (TEC)"
+ },
+ {
+  "_id": "Voi71C4e9ofH3dLEeAnQ7X",
+  "category": null,
+  "date": null,
+  "fileUrl": null,
+  "kind": "educational-content",
+  "title": "Does the number of recommended vaccines overwhelm the immune system?",
+  "url": "https://immunologyexplained.aai.org/videos/does-the-number-of-recommended-vaccines-overwhelm-the-immune-system/",
+  "venue": null
+ },
+ {
+  "_id": "g8Y6Q0oeVqC5OqcuM2pzMy",
+  "category": null,
+  "date": null,
+  "fileUrl": null,
+  "kind": "educational-content",
+  "title": "How does the immune system cause seasonal allergies?",
+  "url": "https://immunologyexplained.aai.org/videos/how-does-the-immune-system-cause-seasonal-allergies/",
+  "venue": null
+ },
+ {
+  "_id": "pR5YZRSUSrCld27iTB8GLG",
+  "category": null,
+  "date": null,
+  "fileUrl": null,
+  "kind": "educational-content",
+  "title": "How do allergy shots work?",
+  "url": "https://immunologyexplained.aai.org/videos/how-do-allergy-shots-work-with-the-immune-system/",
+  "venue": null
+ },
+ {
+  "_id": "pR5YZRSUSrCld27iTB8bKM",
+  "category": null,
+  "date": null,
+  "fileUrl": null,
+  "kind": "educational-content",
+  "title": "How research changed our approach to peanut allergy",
+  "url": "https://immunologyexplained.aai.org/videos/how-research-changed-our-approach-to-peanut-allergy/",
+  "venue": null
+ },
+ {
+  "_id": "g8Y6Q0oeVqC5OqcuM2rIuD",
+  "category": null,
+  "date": null,
+  "fileUrl": null,
+  "kind": "educational-content",
+  "title": "How does your baby's immune system develop?",
+  "url": "https://immunologyexplained.aai.org/videos/how-does-your-babys-immune-system-develop/",
+  "venue": null
+ },
+ {
+  "_id": "s245AmQlOGrhBXdMrjlU7O",
+  "category": null,
+  "date": null,
+  "fileUrl": null,
+  "kind": "educational-content",
+  "title": "What happens when you have an allergic reaction?",
+  "url": "https://immunologyexplained.aai.org/videos/watch-dr-aimee-pugh-bernard-explains-why-you-have-an-allergic-reaction/",
+  "venue": null
+ },
+ {
+  "_id": "s245AmQlOGrhBXdMrjlckJ",
+  "category": null,
+  "date": null,
+  "fileUrl": null,
+  "kind": "educational-content",
+  "title": "Activating your immune system is like dialing 911",
+  "url": "https://immunologyexplained.aai.org/videos/how-your-immune-system-acts-like-dialing-911/",
+  "venue": null
+ },
+ {
+  "_id": "BODK2JYznqjHJttiWbSFwm",
+  "category": null,
+  "date": null,
+  "fileUrl": null,
+  "kind": "press-mentions",
+  "title": "CDC: Colorado’s kindergarteners have some of the lowest MMR vaccination rates in the country",
+  "url": "https://www.kunc.org/news/2026-09-18/cdc-colorados-kindergarteners-have-some-of-the-lowest-mmr-vaccination-rates-in-the-country",
+  "venue": null
+ },
+ {
+  "_id": "rfA2a0QzByVmrfjyiRlo9a",
+  "category": null,
+  "date": null,
+  "fileUrl": null,
+  "kind": "talk",
+  "title": "Transforming Healthcare Lecture Series. The Future of Immunotherapy",
+  "url": "https://www.cuanschutz.edu/transforming-healthcare-lecture-series",
+  "venue": null
+ },
+ {
+  "_id": "QORuTfeNptZ0iQuU5ovvOT",
+  "category": null,
+  "date": null,
+  "fileUrl": null,
+  "kind": "talk",
+  "title": "CU Anschutz Today newsletter, Transforming Healthcare Lecture Series. The Future of Immunotherapy and Breakthroughs Beyond Cancer",
+  "url": "https://news.cuanschutz.edu/news-stories/cu-anschutz-scientists-look-to-the-next-generation-of-immunotherapy",
+  "venue": null
+ },
+ {
+  "_id": "mlvUgjlufG0gMlJUjoYLLK",
+  "category": null,
+  "date": null,
+  "fileUrl": null,
+  "kind": "talk",
+  "title": "2026 College of Health and Human Sciences Research Day Keynote, From Data to Dialogue: Research Communication for the Real World",
+  "url": "https://www.chhs.colostate.edu/research-and-scholarship/chhs-research-day/2026-chhs-research-day-speakers/",
+  "venue": null
+ },
+ {
+  "_id": "JjpsDhPX3u6UD60BLpZo9P",
+  "category": null,
+  "date": null,
+  "fileUrl": null,
+  "kind": "talk",
+  "title": "myHub Career Development Retreat. University of Rochester, From Data to Dialogue: Science Communication for the Real World",
+  "url": "https://events.rochester.edu/event/myhub-career-development-retreat",
+  "venue": null
+ },
+ {
+  "_id": "1gZRcJ2kLd3BT5WIG4KKuU",
+  "category": null,
+  "date": null,
+  "fileUrl": null,
+  "kind": "talk",
+  "title": "CU Cancer Center Rising Stars Over the Rockies (RSOR). Building, Defining and Communicating Your Brand: Expanding Your Reach Beyond Academia",
+  "url": "https://medschool.cuanschutz.edu/colorado-cancer-center/rising-stars-over-the-rockies",
+  "venue": null
+ },
+ {
+  "_id": "QORuTfeNptZ0iQuU5oxdTa",
+  "category": null,
+  "date": null,
+  "fileUrl": null,
+  "kind": "talk",
+  "title": "Cancer Research Training and Education Coordination (CRTEC) Cancer Center Mentored Member Collaborative Forum. Communicating Your Research to the Public",
+  "url": "https://medschool.cuanschutz.edu/colorado-cancer-center/education",
+  "venue": null
+ },
+ {
+  "_id": "igvX9WG071mGud8yxgsPz3",
+  "category": null,
+  "date": null,
+  "fileUrl": null,
+  "kind": "talk",
+  "title": "CU General Internal Medicine Grand Rounds Translating Medicine.  Science Communication as a Clinical & Academic Tool",
+  "url": "https://www.youtube.com/watch?v=b7WCdqA16A8",
+  "venue": null
+ },
+ {
+  "_id": "O3KxgINb1vCTGCwgFTDTRt",
+  "category": null,
+  "date": null,
+  "fileUrl": null,
+  "kind": "talk",
+  "title": "CU Academy of Medical Educators Faculty Development in 5. Communicating Science to the General Public",
+  "url": "https://www.youtube.com/watch?v=A8_ZmujMvEE",
+  "venue": null
+ },
+ {
+  "_id": "mT2fJ3CWH5kAeI7fOWeWJ3",
+  "category": null,
+  "date": null,
+  "fileUrl": null,
+  "kind": "talk",
+  "title": "CU Adult Infectious Disease Grand Rounds on 'Immunodeficiency and \u000bDiagnostic Immunology Laboratory Methods'",
+  "url": "https://medschool.cuanschutz.edu/infectious-diseases/home",
+  "venue": null
+ },
+ {
+  "_id": "O3KxgINb1vCTGCwgFTEB9Z",
+  "category": null,
+  "date": null,
+  "fileUrl": null,
+  "kind": "talk",
+  "title": "CU Academy of Medical Educators Grand Rounds Communicating Science to the General Public",
+  "url": "https://www.youtube.com/watch?v=hEq1NBQ_03Y&list=PLMOD9vxVasTB0qerBVknmbS95GCuIq1i0&index=17&t=7s",
+  "venue": null
+ }
+]

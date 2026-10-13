@@ -1,0 +1,17 @@
+---
+interface Props {
+  variant: "home" | "communicator";
+}
+const { variant } = Astro.props;
+const blocks = Array.from({ length: 8 });
+---
+
+{
+  variant === "home"
+    ? [...blocks, ...blocks].map(() => <span class="cred-logo is-loading"><span class="sk sk--logo"></span></span>)
+    : [0, 1].map(() => (
+        <div class="marquee__set">
+          {blocks.map(() => <span class="marquee__logo is-loading"><span class="sk sk--logo"></span></span>)}
+        </div>
+      ))
+}

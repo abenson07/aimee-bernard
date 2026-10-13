@@ -1,0 +1,33 @@
+---
+// The six laurel-wreath awards, from the `award` items. Home and Educator
+// style the same list differently.
+import { getAwards, yearOf } from "@/utils/sanity.ts";
+import { ISLAND_CACHE } from "./cacheHeaders.ts";
+
+interface Props {
+  variant: "home" | "educator";
+}
+const { variant } = Astro.props;
+
+const awards = await getAwards();
+Astro.response.headers.set("Cache-Control", ISLAND_CACHE);
+---
+
+{
+  awards.map((a) => {
+    const year = yearOf(a.date) || a.date;
+    return variant === "home" ? (
+      <div class="award">
+        <div class="award-seal"><svg class="award-wreath" viewBox="0 0 1280 1222"><use href="#wreath"></use></svg><span class="award-seal__year">{year}</span></div>
+        <p class="award-title">{a.title}</p>
+        <p class="award-meta">{a.venue}</p>
+      </div>
+    ) : (
+      <div class="award">
+        <div class="award-seal"><img class="award__wreath" src="/site/wreath.svg" alt="" /><span class="award-seal__year">{year}</span></div>
+        <p class="award__title">{a.title}</p>
+        <p class="award__meta">{a.venue}</p>
+      </div>
+    );
+  })
+}

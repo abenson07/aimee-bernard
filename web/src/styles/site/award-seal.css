@@ -1,0 +1,4 @@
+/* The year sits in the middle of the award wreath. */
+.award-seal { position: relative; container-type: inline-size; display: block; width: 100%; max-width: 110px; }
+.award-seal > svg, .award-seal > img { display: block; width: 100%; height: auto; }
+.award-seal__year { position: absolute; left: 0; right: 0; top: 49%; transform: translateY(-50%); text-align: center; font-family: var(--headline); font-weight: 600; font-size: 22cqw; line-height: 1; letter-spacing: -0.01em; color: var(--ink); }

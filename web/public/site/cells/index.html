@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Cell Characters</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<style>
+  /* Gallery of the cartoon immune-system characters. Each one is a
+     standalone 200×200 SVG in this folder, so any prototype can use it:
+       <img src="../src/cells/t-cell.svg" alt="T cell" width="96" height="96">
+     (path is relative to the prototype page). They were drawn for the Set B
+     footer game (set-b/immune-game.js), which loads these same files. */
+  :root { --paper: #f2f1ee; --ink: #1c1b1a; --muted: rgba(28,27,26,.62); --line: rgba(28,27,26,.14); }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--paper); color: var(--ink); font-family: "DM Sans", sans-serif; letter-spacing: -0.01em; }
+  main { max-width: 1200px; margin: 0 auto; padding: 64px 24px 96px; }
+  h1 { font-family: "Instrument Serif", serif; font-weight: 400; font-size: clamp(44px, 6vw, 80px); line-height: .95; letter-spacing: -0.03em; margin: 0 0 12px; }
+  .lede { color: var(--muted); max-width: 620px; line-height: 1.5; margin: 0 0 12px; }
+  code { font-size: 13px; background: rgba(28,27,26,.06); padding: 2px 6px; border-radius: 6px; }
+  h2 { font-size: 13px; text-transform: uppercase; letter-spacing: .08em; font-weight: 600; color: var(--muted); margin: 48px 0 16px; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 16px; }
+  .card { border: 1px solid var(--line); border-radius: 16px; padding: 20px; display: flex; flex-direction: column; gap: 12px; background: #fff8; }
+  .card .well { border-radius: 12px; aspect-ratio: 1; display: grid; place-items: center; background: #1b1830; }
+  .card.light .well { background: #e7e4dc; }
+  .card img { width: 70%; height: 70%; transition: transform .4s cubic-bezier(.215,.61,.355,1); }
+  .card:hover img { transform: rotate(-8deg) scale(1.06); }
+  .card b { font-weight: 600; }
+  .card small { color: var(--muted); line-height: 1.4; }
+  .card a { font-size: 12px; text-decoration: underline; color: inherit; word-break: break-all; }
+  .toggle { font: inherit; font-size: 14px; border: 1px solid var(--line); background: none; border-radius: 999px; padding: 8px 16px; cursor: pointer; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Cell characters</h1>
+  <p class="lede">Cartoon immune cells, germs, and power-ups from the Set B footer game. Each is a standalone 200&times;200 SVG in <code>prototypes/src/cells/</code>. From a prototype page one folder deep, use <code>&lt;img src="../src/cells/t-cell.svg" alt="T cell"&gt;</code>.</p>
+  <button type="button" class="toggle" id="bg">Show on light background</button>
+  <div id="groups"></div>
+</main>
+<script>
+  const GROUPS = [
+    ['Germs (the bad guys)', [
+      ['influenza', 'Influenza', 'Virus with HA (lollipop) and NA (mushroom) surface spikes.'],
+      ['coronavirus', 'Coronavirus', 'Crown of club-shaped spike proteins.'],
+      ['rhinovirus', 'Rhinovirus', 'Icosahedral shell; the common cold.'],
+      ['e-coli', 'E. coli', 'Rod-shaped bacterium with flagella and pili.'],
+      ['staph', 'Staph', 'Grape-like cluster of round bacteria.'],
+    ]],
+    ['Your cells (the good guys)', [
+      ['red-blood-cell', 'Red blood cell', 'Biconcave disc, no nucleus.'],
+      ['t-cell', 'T cell', 'Lymphocyte with microvilli and T-cell receptors.'],
+      ['neutrophil', 'Neutrophil', 'Granular cell with a multi-lobed nucleus.'],
+    ]],
+    ['Helpers and power-ups', [
+      ['antibody', 'Antibody', 'Y-shaped protein that tags germs.'],
+      ['interferon', 'Interferon', 'Warning signal released by infected cells.'],
+      ['vaccine', 'Vaccine', 'Syringe; trains immune memory.'],
+    ]],
+  ];
+  document.getElementById('groups').innerHTML = GROUPS.map(([title, items]) => `
+    <h2>${title}</h2>
+    <div class="grid">${items.map(([file, name, note]) => `
+      <div class="card">
+        <div class="well"><img src="${file}.svg" alt="${name}"></div>
+        <div><b>${name}</b><br><small>${note}</small></div>
+        <a href="${file}.svg" download>src/cells/${file}.svg</a>
+      </div>`).join('')}
+    </div>`).join('');
+  const btn = document.getElementById('bg');
+  btn.addEventListener('click', () => {
+    const light = !document.querySelector('.card.light');
+    document.querySelectorAll('.card').forEach((c) => c.classList.toggle('light', light));
+    btn.textContent = light ? 'Show on dark background' : 'Show on light background';
+  });
+</script>
+</body>
+</html>

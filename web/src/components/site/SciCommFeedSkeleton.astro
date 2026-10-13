@@ -1,0 +1,12 @@
+---
+import PressCardSkeleton from "./PressCardSkeleton.astro";
+---
+
+<div class="press-feature is-loading" aria-hidden="true">
+  <div class="press-feature__body">
+    <div style="display:flex;flex-direction:column;gap:14px"><span class="sk sk--line" style="width:70%;height:30px"></span><span class="sk sk--line" style="width:45%"></span></div>
+    <div class="press-feature__foot"><hr /><div class="press-feature__meta"><span class="sk sk--line" style="width:140px"></span></div></div>
+  </div>
+  <div class="press-feature__img"><span class="sk" style="position:absolute;inset:0;border-radius:0"></span></div>
+</div>
+<div class="press-grid"><PressCardSkeleton count={6} /></div>

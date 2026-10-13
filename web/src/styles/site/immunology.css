@@ -1,0 +1,48 @@
+body { overflow-x: hidden; }
+
+/* ---------- Papers list ---------- */
+.papers { padding: 120px 32px 80px; display: flex; flex-direction: column; gap: 56px; }
+.papers__head { display: flex; flex-direction: column; align-items: flex-start; gap: 24px; max-width: 680px; }
+.papers__list { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--line); }
+.paper { border-bottom: 1px solid var(--line); }
+.paper__link, .paper__row { display: grid; grid-template-columns: 1fr minmax(180px, 280px) 120px 24px; gap: 32px; align-items: baseline; padding: 28px 0; color: inherit; text-decoration: none; transition: padding 0.25s var(--ease), background 0.25s var(--ease); }
+.paper__title { font-family: var(--headline); font-weight: 600; font-size: 22px; line-height: 28px; letter-spacing: -0.01em; text-wrap: balance; }
+.paper__venue, .paper__date { font-family: var(--mono); font-size: 12px; line-height: 16px; letter-spacing: 0.75px; text-transform: uppercase; color: var(--muted); }
+.paper__date { text-align: right; }
+.paper__arrow { width: 16px; height: 16px; align-self: center; opacity: 0.35; transition: opacity 0.2s ease, transform 0.25s var(--ease); }
+a.paper__link:hover { padding-left: 16px; }
+a.paper__link:hover .paper__arrow { opacity: 1; transform: translate(2px, -2px); }
+@media (max-width: 767px) {
+  .papers { padding: 80px 20px 56px; }
+  .paper__link, .paper__row { grid-template-columns: 1fr 20px; gap: 8px 16px; padding: 22px 0; }
+  .paper__title { grid-column: 1; font-size: 19px; line-height: 24px; }
+  .paper__venue { grid-column: 1; }
+  .paper__date { grid-column: 1; text-align: left; }
+  .paper__arrow { grid-column: 2; grid-row: 1; }
+}
+
+/* ---------- Think Like a Scientist ---------- */
+.tlas-sec { padding: 80px 32px 120px; }
+.tlas { padding: 32px; border-radius: 24px; background: #1e1c1b; color: #f7f7f2; }
+.tlas__grid { display: grid; grid-template-columns: 5fr 7fr; gap: 16px; }
+.tlas__media { min-height: 640px; position: relative; border-radius: 16px; overflow: hidden; }
+.tlas__media img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.tlas__content { display: flex; flex-direction: column; justify-content: space-between; gap: 48px; padding: 0 16px 0 32px; min-width: 0; }
+.tlas__copy { display: flex; flex-direction: column; align-items: flex-start; gap: 24px; }
+.tlas__title { font-family: var(--headline); font-weight: 600; font-size: clamp(2.75rem, 5.6vw, 5rem); line-height: 1; letter-spacing: -0.02em; }
+.tlas__sub { font-size: 20px; line-height: 1.4; max-width: 420px; color: rgba(247, 247, 242, 0.64); }
+.tlas__label { font-family: var(--mono); font-size: 12px; line-height: 16px; letter-spacing: 0.75px; text-transform: uppercase; color: rgba(247, 247, 242, 0.64); }
+.tlas__features { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.tlas__feature { display: flex; flex-direction: column; gap: 12px; padding-top: 20px; border-top: 1px solid rgba(247, 247, 242, 0.16); }
+.tlas__feature-title { font-family: var(--headline); font-weight: 600; font-size: 22px; line-height: 26px; letter-spacing: -0.01em; }
+.tlas__feature-text { font-size: 15px; line-height: 22px; color: rgba(247, 247, 242, 0.64); }
+.tlas__foot { display: flex; flex-direction: column; align-items: flex-start; gap: 24px; }
+@media (max-width: 991px) { .tlas__media { min-height: 520px; } .tlas__content { padding-left: 16px; } .tlas__features { grid-template-columns: 1fr; gap: 24px; } }
+@media (max-width: 767px) {
+  .tlas-sec { padding: 56px 20px 88px; }
+  .tlas { padding: 16px; }
+  .tlas__grid { grid-template-columns: 1fr; gap: 32px; }
+  .tlas__media { min-height: 0; aspect-ratio: 4 / 5; }
+  .tlas__content { padding: 0; }
+  .tlas__sub { font-size: 18px; }
+}

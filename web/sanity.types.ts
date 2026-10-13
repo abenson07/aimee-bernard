@@ -54,7 +54,7 @@ export type ContentItem = {
   _updatedAt: string;
   _rev: string;
   title?: string;
-  kind?: "talk" | "podcast" | "press-mentions" | "article" | "educational-content" | "position" | "course" | "award" | "research-publication";
+  kind?: "talk" | "podcast" | "press-mentions" | "article" | "educational-content" | "position" | "course" | "award" | "research-publication" | "social";
   uncertain?: boolean;
   file?: {
     asset?: SanityFileAssetReference;

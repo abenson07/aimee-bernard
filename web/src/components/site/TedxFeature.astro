@@ -1,0 +1,39 @@
+---
+// Communicator: the large scrolling feature. Shows whichever item is switched
+// on as "Feature on Communicator page" in Studio.
+import { getFeaturedCommunicatorItem } from "@/utils/sanity.ts";
+import { ISLAND_CACHE, photo } from "./cacheHeaders.ts";
+
+const item = await getFeaturedCommunicatorItem();
+Astro.response.headers.set("Cache-Control", ISLAND_CACHE);
+const img = photo(item?.image, 1280);
+const external = !!item?.href && /^https?:/.test(item.href);
+const label = [item?.venue, item?.date].filter(Boolean).join(" · ");
+---
+
+{
+  item && (
+    <div class="tedx__track">
+      <div class="tedx__stage">
+        <div class="tedx__cover" aria-hidden="true">{img && <img src={img} alt="" />}</div>
+        <div class="wrap" style="width:100%">
+          <div class="tedx__plate">
+            <div class="tedx__head">
+              {label && <span class="label">{label}</span>}
+              <h2 class="tedx__title">
+                {item.href ? <a href={item.href} target={external ? "_blank" : undefined} rel={external ? "noopener" : undefined}>{item.title}</a> : item.title}
+              </h2>
+            </div>
+            <div class="tedx__frame">
+              {img && (item.href ? (
+                <a href={item.href} target={external ? "_blank" : undefined} rel={external ? "noopener" : undefined} aria-label={`Watch: ${item.title}`}>
+                  <img src={img} alt="" />
+                </a>
+              ) : <img src={img} alt={item.title ?? ""} />)}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}

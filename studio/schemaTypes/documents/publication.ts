@@ -26,6 +26,13 @@ export const publication = defineType({
       description: "The outlet's homepage, for linking off the logo.",
       type: "url",
     }),
+    defineField({
+      name: "stripOrder",
+      title: "Logo strip position",
+      description:
+        "Where this logo sits in the scrolling logo strips on Home and Communicator (1 is first). Leave blank to keep it out of the strips.",
+      type: "number",
+    }),
   ],
   preview: {
     select: { title: "name", media: "logo" },

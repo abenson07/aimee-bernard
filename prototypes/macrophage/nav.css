@@ -1,0 +1,85 @@
+/* Notch nav + cell mascot, shared by every Macrophage page that doesn't load shared.css (Home, Work). */
+:root {
+  --display: "Instrument Sans", "Helvetica Neue", Arial, sans-serif;
+  --body: "Instrument Sans", "Helvetica Neue", Arial, sans-serif;
+  --mono: "Instrument Sans", "Helvetica Neue", Arial, sans-serif;
+}
+/* ---------- Nav, modeled on humaan.com ----------
+   The header (banner + brand + mascot) overlays the top of the page and
+   scrolls away with it. Only the pill nav is fixed: centered at the top on
+   desktop, docked at the bottom on phones. Two pills sit behind the links:
+   a solid one on the current page and a faint one that glides to whatever
+   is hovered (positions set in shared.js). */
+:root { --pill-ink: var(--ink); --pill-hi: #8ec0ff; }
+.site-header { position: absolute; inset: 0 0 auto 0; z-index: 90; }
+.banner { background: var(--ink); color: var(--paper); text-align: center; display: flex; justify-content: center; gap: 0.5rem; align-items: center; padding: 0.55rem 1rem; font-family: var(--mono); font-size: 11px; letter-spacing: 0.04em; text-transform: uppercase; }
+.banner a { text-decoration: underline; }
+.site-header__inner { height: 85px; padding: 0 32px; display: flex; align-items: center; justify-content: space-between; }
+.nav-brand { font-family: var(--display); font-size: 1.5rem; font-weight: 700; letter-spacing: 0.02em; color: var(--pill-ink); }
+
+.pill-nav {
+  position: fixed; left: 50%; top: var(--pill-top, 20px); z-index: 101; transform: translateX(-50%);
+  border-radius: 100vh; max-width: calc(100vw - 24px);
+}
+/* Frosted glass lives on a pseudo-element so the blur never clips the pills. */
+.pill-nav::before {
+  content: ""; position: absolute; inset: 0; z-index: -1; border-radius: inherit; pointer-events: none;
+  background: rgba(255, 255, 255, 0.7); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
+  box-shadow: 0 6px 24px rgba(13, 19, 48, 0.06);
+}
+.pill-nav__list { position: relative; display: flex; margin: 0; padding: 7px; list-style: none; }
+.pill-nav__link {
+  position: relative; z-index: 2; display: block; padding: 8px 12px; border-radius: 100vh; white-space: nowrap;
+  font-family: var(--display); font-size: 15px; font-weight: 500; line-height: 1; letter-spacing: -0.01em;
+  color: var(--pill-ink); transition: color 0.3s; cursor: pointer;
+}
+.pill-nav__link.is-current { color: var(--pill-hi); }
+.pill-nav__link.is-soon { color: color-mix(in srgb, var(--pill-ink) 45%, transparent); cursor: default; }
+.pill-nav__link:focus-visible { outline: 2px solid var(--pill-hi); outline-offset: 2px; }
+.pill-nav__pill {
+  position: absolute; top: 7px; bottom: 7px; left: 0; width: 0; z-index: 1; border-radius: 100vh; pointer-events: none;
+  background: var(--pill-ink); transform: translateX(var(--x, 0px)); width: var(--w, 0px);
+  transition: transform 0.45s cubic-bezier(0.3, 1.35, 0.5, 1), width 0.45s cubic-bezier(0.3, 1.35, 0.5, 1), opacity 0.15s;
+}
+.pill-nav__pill--hover { opacity: 0; background: color-mix(in srgb, var(--pill-ink) 6%, transparent); }
+.pill-nav.is-hovering .pill-nav__pill--hover { opacity: 1; }
+.pill-nav.no-anim .pill-nav__pill { transition: none; }
+
+/* The mascot lives top-left where the name used to be: tilts toward the pointer and can be pulled down like a
+   pull-cord; it springs back and says hi (shared.js "nav mascot"). */
+.nav-mascot {
+  position: relative; width: 56px; height: 56px; padding: 0; border: 0; background: none; cursor: grab;
+  touch-action: none; -webkit-tap-highlight-color: transparent;
+}
+.nav-mascot:active { cursor: grabbing; }
+.nav-mascot__body { display: block; width: 100%; height: 100%; transform-origin: 50% 0%; will-change: transform; }
+.nav-mascot__body img { width: 100%; height: 100%; pointer-events: none; user-select: none; -webkit-user-drag: none; }
+/* Cast swap: the current guy spins away, the next one bounces in. */
+.nav-mascot__body img.is-leaving { animation: mascot-leave 0.28s cubic-bezier(0.5, 0, 0.9, 0.5) forwards; }
+.nav-mascot__body img.is-arriving { animation: mascot-arrive 0.52s cubic-bezier(0.3, 1.5, 0.5, 1) both; }
+@keyframes mascot-leave { to { transform: scale(0) rotate(-200deg); opacity: 0; } }
+@keyframes mascot-arrive { from { transform: scale(0) rotate(160deg); opacity: 0; } 60% { opacity: 1; } to { transform: none; opacity: 1; } }
+.nav-mascot:focus-visible { outline: 2px solid var(--pill-hi); outline-offset: 4px; border-radius: 50%; }
+.nav-mascot__bubble {
+  position: absolute; left: calc(100% + 10px); top: 50%; transform: translateY(-50%) scale(0.85); transform-origin: left center;
+  width: max-content; max-width: 220px; padding: 9px 13px; border-radius: 14px; background: var(--pill-ink); color: #fff;
+  font-family: var(--body); font-size: 13px; line-height: 1.35; text-align: left; opacity: 0; pointer-events: none;
+  transition: opacity 0.25s, transform 0.35s cubic-bezier(0.3, 1.35, 0.5, 1);
+}
+.nav-mascot__bubble.is-on { opacity: 1; transform: translateY(-50%) scale(1); }
+
+@media (max-width: 767px) {
+  .site-header__inner { height: 72px; padding: 0 16px; }
+  .banner { font-size: 10px; padding: 0.5rem 0.75rem; }
+  .wrap { padding: 0 16px; }
+  .pill-nav { top: auto; bottom: 24px; }
+  .pill-nav__list { padding: 5px; overflow-x: auto; scrollbar-width: none; }
+  .pill-nav__list::-webkit-scrollbar { display: none; }
+  .pill-nav__pill { top: 5px; bottom: 5px; }
+  .pill-nav__link { padding: 7px 9px; font-size: 13px; }
+  /* Not enough room for everything on a phone: drop the not-yet-live pages. */
+  .pill-nav li:has(> .is-soon) { display: none; }
+  .nav-mascot { width: 46px; height: 46px; }
+}
+@media (max-width: 400px) { .pill-nav__link { padding: 6px 7px; font-size: 12px; } }
+

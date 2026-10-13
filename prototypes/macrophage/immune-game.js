@@ -1,4 +1,4 @@
-// Ambient "immune ninja" field for the Set B footer. Cartoon germs and
+// Ambient "immune ninja" field for the footer. Cartoon germs and
 // healthy cells float on the paper background between the prefooter and the
 // footer. The cursor leaves a blade trail; a fast swipe slices germs (they
 // split, splat and respawn later). Healthy cells can't be cut: the blade just
@@ -144,6 +144,8 @@
   };
   const BAD = ['flu', 'corona', 'rhino', 'ecoli', 'staph'];
   const SELF = ['rbc', 'tcell', 'neutro'];
+  // The hero swipe game (immune-swipe.js) reuses this art and these kinds.
+  window.ImmuneArt = { ART, KINDS, BAD, SELF };
 
   // ---------- Sizing ----------
   let W = 0, H = 0, scale = 1;

@@ -1,0 +1,33 @@
+---
+// One press card. A photo only shows on hover when the item has one; without
+// a photo the card just scales up (see .press-card in shared.css / home.css).
+import { outletLogo } from "@/utils/outletLogos.ts";
+import type { CardItem } from "@/utils/sanity.ts";
+import { photo } from "./cacheHeaders.ts";
+
+interface Props {
+  item: CardItem;
+}
+const { item } = Astro.props;
+const logo = item.logo ?? outletLogo(item.venue, item.title);
+const img = photo(item.image, 900);
+const Tag = item.href ? "a" : "div";
+const external = !!item.href && /^https?:/.test(item.href);
+---
+
+<Tag
+  class:list={["press-card", { "has-photo": !!img }]}
+  href={item.href ?? undefined}
+  target={external ? "_blank" : undefined}
+  rel={external ? "noopener" : undefined}
+>
+  {img && <div class="press-card__img" aria-hidden="true"><img src={img} alt="" loading="lazy" /></div>}
+  <h3 class="press-card__title">{item.title}</h3>
+  <div class="press-card__foot">
+    <hr />
+    <div class="meta">
+      {logo ? <span class="outlet-logo"><img src={logo} alt={item.logoName ?? item.venue ?? ""} loading="lazy" /></span> : item.venue ? <span>{item.venue}</span> : null}
+      {item.date && <span>{item.date}</span>}
+    </div>
+  </div>
+</Tag>
