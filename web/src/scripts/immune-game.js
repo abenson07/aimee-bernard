@@ -13,7 +13,8 @@ import { ART, KINDS, BAD, SELF } from './immune-art.js';
   if (!zone) return;
   const canvas = zone.querySelector('canvas');
   const ctx = canvas.getContext('2d');
-  const counterEl = zone.querySelector('[data-cleared]');
+  const counterEls = [...zone.querySelectorAll('[data-cleared]')];
+  const scoreEl = zone.querySelector('.cell-field-score');
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   // Art and kinds live in immune-art.js.
@@ -199,7 +200,8 @@ import { ART, KINDS, BAD, SELF } from './immune-art.js';
       cells.filter((o) => o.role === 'bad').forEach((o, i) => { o.tagged = 0.3 + i * 0.12; });
     } else {
       cleared += 1;
-      if (counterEl) counterEl.textContent = cleared;
+      counterEls.forEach((el) => { el.textContent = cleared; });
+      if (scoreEl) { scoreEl.classList.remove('is-pop'); void scoreEl.offsetWidth; scoreEl.classList.add('is-pop'); }
     }
     // A fresh germ drifts in from the side a little later.
     setTimeout(() => { if (cells.length < target()) add(pick(BAD), true); }, rand(1400, 3200));
