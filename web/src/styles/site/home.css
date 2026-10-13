@@ -247,16 +247,19 @@
       display: flex; flex-direction: column; align-items: center; gap: 10px; padding: 0; border: 0; background: none; cursor: pointer;
       color: var(--muted); -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; touch-action: manipulation; -webkit-tap-highlight-color: transparent;
     }
-    .cell-field-hold__dial { position: relative; width: 76px; height: 76px; display: grid; place-items: center; }
+    .cell-field-hold__dial { position: relative; width: 128px; height: 128px; display: grid; place-items: center; border-radius: 50%; background: var(--bg, #f2f1ee); box-shadow: 0 8px 28px rgba(28, 27, 26, 0.12); }
     .cell-field-hold__dial svg { position: absolute; inset: 0; width: 100%; height: 100%; transform: rotate(-90deg); }
-    .cell-field-hold__dial circle { fill: none; stroke-width: 3; }
+    .cell-field-hold__dial circle { fill: none; stroke-width: 3.2; }
     .cell-field-hold__dial .track { stroke: rgba(28, 27, 26, 0.14); }
     .cell-field-hold__dial .ring { stroke: var(--ink, #1c1b1a); stroke-linecap: round; stroke-dasharray: 213.6; stroke-dashoffset: 213.6; transition: stroke-dashoffset 0.2s ease; }
     .cell-field-hold.is-holding .ring { stroke-dashoffset: 0; transition: stroke-dashoffset 0.7s linear; }
-    .cell-field-hold__dial img { width: 38px; height: 38px; pointer-events: none; transition: transform 0.7s ease; }
+    .cell-field-hold__dial img { width: 64px; height: 64px; pointer-events: none; transition: transform 0.7s ease; }
     .cell-field-hold.is-holding .cell-field-hold__dial img { transform: scale(1.25) rotate(12deg); }
-    .cell-field-hold__label { font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; }
+    .cell-field-hold__label { font-size: 12px; font-weight: 600; color: var(--ink, #1c1b1a); letter-spacing: 0.08em; text-transform: uppercase; }
 
+    /* Until the game is open, the germs sit back and fade so the dial is what you reach for. */
+    .cell-field > canvas { transition: opacity 0.4s ease; }
+    .cell-field:not(.is-playing) > canvas { opacity: 0.32; }
     .cell-field.is-playing { position: fixed; inset: 0; z-index: 105; background: var(--bg, #f2f1ee); touch-action: none; overscroll-behavior: contain; animation: game-in 0.35s ease both; }
     .cell-field.is-playing.is-leaving { animation: game-out 0.3s ease both; }
     .cell-field.is-playing .cell-field-band { height: 100%; padding-bottom: calc(28px + env(safe-area-inset-bottom, 0px)); }
