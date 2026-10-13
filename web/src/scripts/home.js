@@ -26,7 +26,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
       const trigger = ScrollTrigger.create({
         trigger: '.stats-pin__pin-target',
-        start: 'top top',
+        start: 'top 14%',   // pinned just under the nav, not centred in the screen
         end: () => '+=' + Math.round(window.innerHeight * 1.1 * panels.length),
         pin: true,
         anticipatePin: 1,
