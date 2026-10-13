@@ -6,16 +6,19 @@ import "@/styles/site/nav.css";
 
 const links = [
   { href: "/", label: "Home" },
-  { href: "/educator", label: "Educator" },
-  { href: "/communicator", label: "Communicator" },
-  { href: "/immunology", label: "Immunologist" },
+  { href: "/educator", label: "Educator", persona: true },
+  { href: "/communicator", label: "Communicator", persona: true },
+  { href: "/immunology", label: "Immunologist", persona: true },
   { href: "/work", label: "Work" },
-  { href: "/community-outreach", label: "Outreach" },
+  { href: "/community-outreach", label: "Outreach", persona: true },
   { href: "/contact", label: "Contact" },
 ];
 
 const norm = (p: string) => p.replace(/\/+$/, "") || "/";
 const here = norm(Astro.url.pathname);
+// On phones the bottom pill only carries the persona pages, and only shows on them;
+// every page gets the full list from the top-right menu.
+const onPersonaPage = links.some((l) => l.persona && norm(l.href) === here);
 ---
 
 <div class="site-header">
@@ -30,7 +33,26 @@ const here = norm(Astro.url.pathname);
     </button>
   </div>
 </div>
-<nav class="pill-nav" id="pillNav" aria-label="Main">
+<button type="button" class="menu-btn" id="menuBtn" aria-label="Menu" aria-expanded="false" aria-controls="menuSheet">
+  <span class="menu-btn__bars" aria-hidden="true"></span>
+</button>
+<div class="menu-sheet" id="menuSheet" hidden>
+  <ul class="menu-sheet__list">
+    {
+      links.map((l) => {
+        const current = norm(l.href) === here;
+        return (
+          <li>
+            <a href={l.href} class:list={["menu-sheet__link", current && "is-current"]} aria-current={current ? "page" : undefined}>
+              {l.label}
+            </a>
+          </li>
+        );
+      })
+    }
+  </ul>
+</div>
+<nav class:list={["pill-nav", onPersonaPage && "pill-nav--persona"]} id="pillNav" aria-label="Main">
   <span class="pill-nav__pill pill-nav__pill--hover" aria-hidden="true"></span>
   <span class="pill-nav__pill pill-nav__pill--active" aria-hidden="true"></span>
   <ul class="pill-nav__list">
@@ -38,7 +60,7 @@ const here = norm(Astro.url.pathname);
       links.map((l) => {
         const current = l.href !== "#" && norm(l.href) === here;
         return (
-          <li>
+          <li class:list={[l.persona && "is-persona"]}>
             <a
               href={l.href}
               class:list={["pill-nav__link", current && "is-current"]}
@@ -52,3 +74,7 @@ const here = norm(Astro.url.pathname);
     }
   </ul>
 </nav>
+
+<script>
+  import "@/scripts/menu.js";
+</script>

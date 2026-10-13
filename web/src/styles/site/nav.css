@@ -78,8 +78,9 @@
   .pill-nav__list::-webkit-scrollbar { display: none; }
   .pill-nav__pill { top: 5px; bottom: 5px; }
   .pill-nav__link { padding: 7px 9px; font-size: 13px; }
-  /* Not enough room for everything on a phone: drop the not-yet-live pages. */
-  .pill-nav li:has(> .is-soon) { display: none; }
+  /* Phones: the bottom pill is just the persona pages (and only on them); the top-right menu has everything. */
+  .pill-nav:not(.pill-nav--persona) { display: none; }
+  .pill-nav li:not(.is-persona) { display: none; }
   .nav-mascot { width: 46px; height: 46px; }
 }
 @media (max-width: 400px) { .pill-nav__link { padding: 6px 7px; font-size: 12px; } }
@@ -88,6 +89,30 @@
 /* Phones: Contact drops out of the pill (the banner and footer both link to it)
    so the rest fit, and the page gets room under the bottom-docked nav. */
 @media (max-width: 767px) {
-  .pill-nav li:last-child { display: none; }
-  body { padding-bottom: 88px; }
+  body:has(.pill-nav--persona) { padding-bottom: 88px; }
+}
+
+/* Top-right menu, phones only. Fixed so it stays reachable; JS keeps it under the banner until that scrolls off. */
+.menu-btn, .menu-sheet { display: none; }
+@media (max-width: 767px) {
+  .menu-btn {
+    display: grid; place-items: center; position: fixed; right: 12px; top: var(--menu-top, 12px); z-index: 120;
+    width: 44px; height: 44px; padding: 0; border: 0; border-radius: 50%; cursor: pointer;
+    background: rgba(255, 255, 255, 0.7); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
+    box-shadow: 0 6px 24px rgba(13, 19, 48, 0.1); -webkit-tap-highlight-color: transparent;
+  }
+  .menu-btn__bars, .menu-btn__bars::before { content: ""; display: block; width: 18px; height: 2px; border-radius: 2px; background: var(--pill-ink); transition: transform 0.3s; }
+  .menu-btn__bars { position: relative; transform: translateY(-3px); }
+  .menu-btn__bars::before { position: absolute; left: 0; top: 6px; }
+  .menu-btn[aria-expanded="true"] .menu-btn__bars { transform: rotate(45deg); }
+  .menu-btn[aria-expanded="true"] .menu-btn__bars::before { top: 0; transform: rotate(-90deg); }
+  .menu-btn:focus-visible { outline: 2px solid var(--pill-hi); outline-offset: 2px; }
+  .menu-sheet:not([hidden]) {
+    display: flex; position: fixed; inset: 0; z-index: 110; padding: 96px 28px 40px; align-items: flex-start;
+    background: color-mix(in srgb, var(--bg, #f5f4f1) 96%, transparent); -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px);
+  }
+  .menu-sheet__list { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 4px; width: 100%; }
+  .menu-sheet__link { display: block; padding: 10px 0; font-family: var(--headline); font-weight: 600; font-size: 2.4rem; line-height: 1.1; letter-spacing: -0.01em; color: var(--pill-ink); }
+  .menu-sheet__link.is-current { color: var(--pill-hi); }
+  body.menu-open { overflow: hidden; }
 }
