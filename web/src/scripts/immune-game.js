@@ -78,13 +78,18 @@ import { ART, KINDS, BAD, SELF } from './immune-art.js';
       x = left ? -r * 1.5 : W + r * 1.5;
       y = rand(r * 1.4, H - r * 1.4);
     } else ({ x, y } = openSpot(r));
-    const heading = fromEdge ? (x < 0 ? rand(-0.5, 0.5) : Math.PI + rand(-0.5, 0.5)) : rand(0, Math.PI * 2);
-    const speed = (reduceMotion ? 4 : rand(10, 22)) * scale;
+    // Germs hunt across the field (fast, darting, turning every second or two);
+    // healthy cells cruise more calmly. Each keeps a left-or-right direction and
+    // wanders up to ~60 degrees either side of it.
+    const dir = fromEdge ? (x < 0 ? 1 : -1) : (Math.random() < 0.5 ? 1 : -1);
+    const heading = (dir > 0 ? 0 : Math.PI) + rand(-0.8, 0.8);
+    const base = k.role === 'self' ? rand(36, 60) : rand(90, 150);
+    const speed = (reduceMotion ? 4 : base) * scale;
     cells.push({
-      kind, role: k.role, r, x, y,
-      vx: Math.cos(heading) * speed, vy: Math.sin(heading) * speed * 0.5,
+      kind, role: k.role, r, x, y, dir, heading, turnT: rand(0.4, 1.8), dartT: rand(1.5, 4), dart: 0,
+      vx: Math.cos(heading) * speed, vy: Math.sin(heading) * speed,
       cruise: speed, rot: rand(-0.4, 0.4), spin: k.role === 'self' ? 0 : rand(-0.35, 0.35),
-      bob: rand(0, Math.PI * 2), bobAmp: rand(4, 9) * scale, age: 0, fadeIn: fromEdge ? 1 : 0,
+      bob: rand(0, Math.PI * 2), bobAmp: rand(1.2, 3) * scale, age: 0, fadeIn: fromEdge ? 1 : 0,
       tagged: 0, nudge: 0,
     });
   }
@@ -117,11 +122,15 @@ import { ART, KINDS, BAD, SELF } from './immune-art.js';
     lastPt = p;
     wake();
   }
+  // Where the cursor is (client coords), so germs can run from it. Touch has no hover, so no fleeing there.
+  let cursor = null;
   // Listen on the window (the canvas itself is pointer-events: none).
   window.addEventListener('pointermove', (e) => {
     if (e.pointerType === 'touch') return;
+    cursor = { x: e.clientX, y: e.clientY };
     track(e.clientX, e.clientY);
   }, { passive: true });
+  document.addEventListener('pointerleave', () => { cursor = null; });
   // Touch: slice along the finger while the page scrolls as usual.
   window.addEventListener('touchmove', (e) => { const t = e.touches[0]; if (t) track(t.clientX, t.clientY); }, { passive: true });
   window.addEventListener('touchend', () => { lastPt = null; }, { passive: true });
@@ -205,22 +214,47 @@ import { ART, KINDS, BAD, SELF } from './immune-art.js';
   }
 
   function update(dt) {
-    // Cells: gentle drift + bob, easing back to cruising speed after a nudge.
+    // Cursor in this canvas's coordinates (recomputed each frame so scrolling under a still cursor counts).
+    let fleeAt = null;
+    if (cursor && !reduceMotion) {
+      const r = canvas.getBoundingClientRect();
+      const x = cursor.x - r.left, y = cursor.y - r.top;
+      if (x > -120 && x < W + 120 && y > -120 && y < H + 120) fleeAt = { x, y };
+    }
+    // Cells: purposeful movement, easing back to cruising speed after a nudge.
     for (let i = cells.length - 1; i >= 0; i--) {
       const c = cells[i];
       c.age += dt;
-      c.bob += dt * 1.3;
+      c.bob += dt * 2.6;
       c.rot += c.spin * dt;
       c.fadeIn = Math.max(0, c.fadeIn - dt * 1.5);
       c.nudge = Math.max(0, c.nudge - dt);
-      const sp = Math.hypot(c.vx, c.vy) || 1;
-      const k = Math.min(1, dt * 1.6);
-      const want = sp + (c.cruise - sp) * k;
-      c.vx *= want / sp; c.vy *= want / sp;
-      // Keep them inside the band vertically: bounce off the top/bottom
+      // Pick a new heading every second or two, with the odd sprint.
+      c.turnT -= dt;
+      if (c.turnT <= 0) {
+        c.turnT = rand(0.5, 2);
+        c.heading = (c.dir > 0 ? 0 : Math.PI) + rand(-1.05, 1.05);
+      }
+      c.dartT -= dt;
+      if (c.dartT <= 0 && c.role === 'bad') { c.dart = 0.45; c.dartT = rand(2.5, 5); }
+      c.dart = Math.max(0, c.dart - dt);
+      const speed = c.cruise * (c.dart > 0 ? 1.9 : 1);
+      let wx = Math.cos(c.heading) * speed, wy = Math.sin(c.heading) * speed;
+      // Germs run from the cursor (but slower than a swipe, so they can still be cut).
+      if (fleeAt && c.role === 'bad') {
+        const dx = c.x - fleeAt.x, dy = c.y - fleeAt.y, d = Math.hypot(dx, dy) || 1, R = 240 * scale;
+        if (d < R) {
+          const push = Math.pow(1 - d / R, 1.2) * 280 * scale;
+          wx += (dx / d) * push; wy += (dy / d) * push;
+        }
+      }
+      // Steer toward that heading; a nudge from a swipe fades out as the velocity eases back.
+      const k = 1 - Math.exp(-dt * (c.dart > 0 ? 7 : 4));
+      c.vx += (wx - c.vx) * k; c.vy += (wy - c.vy) * k;
+      // Keep them inside the band vertically: turn away from the top/bottom
       // margins and ease back in if a nudge pushed them past.
       const top = c.r * 1.2 + c.bobAmp, bottom = H - c.r * 1.2 - c.bobAmp;
-      if ((c.y < top && c.vy < 0) || (c.y > bottom && c.vy > 0)) c.vy = -c.vy;
+      if ((c.y < top && c.vy < 0) || (c.y > bottom && c.vy > 0)) { c.vy = -c.vy; c.heading = -c.heading; }
       if (c.y < top) c.y += (top - c.y) * Math.min(1, dt * 3);
       if (c.y > bottom) c.y -= (c.y - bottom) * Math.min(1, dt * 3);
       c.x += c.vx * dt; c.y += c.vy * dt;
