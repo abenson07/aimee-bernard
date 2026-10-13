@@ -410,6 +410,7 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 .cpanel__scrim { position: absolute; inset: 0; background: rgba(18, 18, 18, 0.42); opacity: 0; transition: opacity 0.5s ease; }
 .cpanel.is-open .cpanel__scrim { opacity: 1; }
 .cpanel__sheet { position: absolute; left: 48px; right: 48px; top: 128px; bottom: 0; border-radius: 48px 48px 0 0; background: var(--paper); transform: translateY(105%); transition: transform 0.65s cubic-bezier(0.22, 0.8, 0.18, 1), visibility 0s linear 0.65s; overflow: hidden; visibility: hidden; }
+@media (min-width: 992px) { .ctile__name { font-size: clamp(1.15rem, 1.5vw, 1.4rem); } }
 .cpanel.is-open .cpanel__sheet { transform: none; visibility: visible; transition: transform 0.65s cubic-bezier(0.22, 0.8, 0.18, 1); }
 .cpanel__scroll { position: absolute; inset: 0; overflow-y: auto; overscroll-behavior: contain; }
 .cpanel__close { position: absolute; z-index: 6; top: 24px; right: 24px; width: 48px; height: 48px; border-radius: 50%; background: rgba(18, 18, 18, 0.85); color: #fff; display: flex; align-items: center; justify-content: center; transition: transform 0.3s var(--ease); }
