@@ -323,6 +323,8 @@
 .workon__info { display: flex; flex-direction: column; gap: 4px; }
 .workon__name { font-family: var(--headline); font-weight: 600; font-size: 24px; line-height: 1.1; letter-spacing: -0.01em; }
 .workon__role { font-size: 14px; line-height: 20px; color: var(--muted); }
+/* Hovering widens one card and narrows the rest, which re-wraps their text. Give the text block a fixed height (2-line title + 1-line role) so nothing below ever moves. */
+@media (min-width: 768px) { .workon__info { height: 77px; overflow: hidden; } .workon__name { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; } .workon__role { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; } }
 @media (hover: hover) and (min-width: 768px) { .workon__row:hover .workon__card { flex-grow: 1; } .workon__row .workon__card:hover { flex-grow: 2.2; } }
 @media (max-width: 991px) { .workon__media { height: 420px; } }
 @media (max-width: 767px) { #outreach-section { padding: 72px 20px; } .workon__row { flex-direction: column; } .workon__media { height: 300px; } }
