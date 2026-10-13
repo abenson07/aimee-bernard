@@ -10,7 +10,11 @@
     btn.setAttribute('aria-label', open ? 'Close menu' : 'Menu');
     document.body.classList.toggle('menu-open', open);
   };
-  btn.addEventListener('click', () => setOpen(sheet.hidden));
+  btn.addEventListener('click', () => {
+    // While the germ game is open (Home), this button is its close button.
+    if (document.body.classList.contains('game-open')) { document.dispatchEvent(new CustomEvent('game:close')); return; }
+    setOpen(sheet.hidden);
+  });
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape' && !sheet.hidden) { setOpen(false); btn.focus(); }
   });

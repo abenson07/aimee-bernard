@@ -38,6 +38,10 @@ import { ART, KINDS, BAD, SELF } from './immune-art.js';
 
 
 
+  // ---------- Phone game mode ----------
+  const phone = window.matchMedia('(max-width: 767px)');
+  let playing = false, placeholder = null;
+
   // ---------- Sizing ----------
   let W = 0, H = 0, scale = 1;
   function resize() {
@@ -47,7 +51,7 @@ import { ART, KINDS, BAD, SELF } from './immune-art.js';
     canvas.style.width = W + 'px';
     canvas.style.height = H + 'px';
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    scale = Math.max(0.5, Math.min(1.15, W / 1300));
+    scale = playing ? 0.8 : Math.max(0.5, Math.min(1.15, W / 1300)); // bigger germs for thumbs in the full-screen game
   }
 
   // ---------- Population ----------
@@ -55,7 +59,7 @@ import { ART, KINDS, BAD, SELF } from './immune-art.js';
   const pick = (arr) => arr[(Math.random() * arr.length) | 0];
   let cells = [], halves = [], particles = [], splats = [], rings = [];
   let cleared = 0, antibodyTimer = rand(8, 14);
-  const target = () => Math.round(Math.max(7, Math.min(16, (W * H) / 90000)));
+  const target = () => Math.round(Math.max(playing ? 10 : 7, Math.min(16, (W * H) / 90000)));
 
   // Spread cells out: try a few spots and keep the one farthest from the rest.
   function openSpot(r) {
@@ -131,9 +135,18 @@ import { ART, KINDS, BAD, SELF } from './immune-art.js';
     track(e.clientX, e.clientY);
   }, { passive: true });
   document.addEventListener('pointerleave', () => { cursor = null; });
-  // Touch: slice along the finger while the page scrolls as usual.
-  window.addEventListener('touchmove', (e) => { const t = e.touches[0]; if (t) track(t.clientX, t.clientY); }, { passive: true });
-  window.addEventListener('touchend', () => { lastPt = null; }, { passive: true });
+  // Touch: on phones the field is ambient until the full-screen game is open, so scrolling with a thumb never swipes it.
+  window.addEventListener('touchmove', (e) => {
+    if (phone.matches && !playing) return;
+    const t = e.touches[0];
+    if (!t) return;
+    if (playing) cursor = { x: t.clientX, y: t.clientY }; // germs shy away from the thumb too
+    track(t.clientX, t.clientY);
+  }, { passive: true });
+  window.addEventListener('touchend', () => { lastPt = null; cursor = null; }, { passive: true });
+  // In the game the page must not scroll under the finger.
+  zone.addEventListener('touchmove', (e) => { if (playing) e.preventDefault(); }, { passive: false });
+
   // Scrolling moves the canvas under a still cursor; drop the last point so
   // that doesn't register as a swipe.
   window.addEventListener('scroll', () => { lastPt = null; }, { passive: true });
@@ -423,6 +436,61 @@ import { ART, KINDS, BAD, SELF } from './immune-art.js';
       ctx.restore();
     }
     drawBlade();
+  }
+
+  // ---------- Press-and-hold to open the full-screen game (phones) ----------
+  const holdBtn = zone.querySelector('.cell-field-hold');
+  const menuBtn = document.getElementById('menuBtn');
+  const HOLD_MS = 700;
+
+  function setMenuBtn(open) {
+    if (!menuBtn) return;
+    menuBtn.setAttribute('aria-expanded', String(open));
+    menuBtn.setAttribute('aria-label', open ? 'Close game' : 'Menu');
+  }
+  function enterGame() {
+    if (playing) return;
+    playing = true;
+    // Hold the field's place in the page so nothing jumps while it's fixed to the screen.
+    placeholder = document.createElement('div');
+    placeholder.style.height = zone.offsetHeight + 'px';
+    zone.before(placeholder);
+    document.body.classList.add('game-open');
+    zone.classList.add('is-playing');
+    setMenuBtn(true);
+    resize(); populate(); wake();
+    if (navigator.vibrate) navigator.vibrate(12);
+  }
+  function exitGame() {
+    if (!playing || zone.classList.contains('is-leaving')) return;
+    zone.classList.add('is-leaving');
+    setTimeout(() => {
+      zone.classList.remove('is-playing', 'is-leaving');
+      if (placeholder) placeholder.remove();
+      placeholder = null;
+      document.body.classList.remove('game-open');
+      setMenuBtn(false);
+      playing = false;
+      lastPt = null; cursor = null;
+      resize(); populate();
+    }, 300);
+  }
+  document.addEventListener('game:close', exitGame);
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') exitGame(); });
+  phone.addEventListener('change', (e) => { if (!e.matches && playing) exitGame(); });
+
+  if (holdBtn) {
+    let timer = 0;
+    const cancel = () => { clearTimeout(timer); timer = 0; holdBtn.classList.remove('is-holding'); };
+    holdBtn.addEventListener('pointerdown', () => {
+      cancel();
+      holdBtn.classList.add('is-holding');
+      timer = setTimeout(() => { cancel(); enterGame(); }, HOLD_MS);
+    });
+    ['pointerup', 'pointercancel', 'pointerleave'].forEach((ev) => holdBtn.addEventListener(ev, cancel));
+    holdBtn.addEventListener('contextmenu', (e) => e.preventDefault());
+    // Keyboard / assistive tech can't hold, so Enter or Space opens it straight away.
+    holdBtn.addEventListener('click', (e) => { if (e.detail === 0) enterGame(); });
   }
 
   loadSprites.then(() => {
