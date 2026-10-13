@@ -5,6 +5,12 @@
   // back in — instead of cards abruptly popping in/out mid-view. ----
   const tiles = [...document.querySelectorAll('.kind-tile')];
   const cards = [...document.querySelectorAll('.work-card')];
+  // The dashboard hands items over in the order they were created, which is grouped by kind, so
+  // shuffle once per visit (Fisher-Yates). The mix stays put while filtering within the visit.
+  for (let i = cards.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [cards[i], cards[j]] = [cards[j], cards[i]];
+  }
   const countEl = document.getElementById('workCount');
   const workGrid = document.getElementById('workGrid');
   const reduceMotionWork = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
