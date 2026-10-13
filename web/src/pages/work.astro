@@ -179,6 +179,9 @@ const counts = items.reduce<Record<string, number>>((acc, i) => ((acc[i.kind] = 
   </div>
 </main>
 
+<!-- Phones only: appears once the kind tiles scroll away (see work.js). -->
+<nav class="filter-dock" id="filterDock" aria-label="Filter by kind"><div class="filter-dock__list" id="filterDockList"></div></nav>
+
 
 
 <script>

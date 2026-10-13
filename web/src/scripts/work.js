@@ -82,6 +82,7 @@
   function assignPals(list) {
     pals.forEach((p) => { p.el.remove(); palIO.unobserve(p.card); });
     pals = [];
+    if (window.matchMedia('(max-width: 767px)').matches) return; // phones: keep the cards plain
     let i = Math.floor(rand(1, 5));
     while (i < list.length) {
       const card = list[i];
@@ -177,21 +178,94 @@
     }, FADE_MS);
   }
 
-  tiles.forEach((tile) => {
-    tile.addEventListener('click', () => {
-      tiles.forEach((t) => {
-        const active = t === tile;
-        t.classList.toggle('is-active', active);
-        const existingCheck = t.querySelector('.tile-check');
-        if (active && !existingCheck) {
-          const check = document.createElement('span');
-          check.className = 'tile-check';
-          check.innerHTML = '&#10003;';
-          t.prepend(check);
-        } else if (!active && existingCheck) {
-          existingCheck.remove();
-        }
-      });
-      applyFilter(tile.dataset.filterValue);
+  // ---- Phones: the kind tiles are a swipe row, and once they scroll out of view a
+  // dock at the bottom (same look as the persona pages' pill nav) shows the same
+  // kinds as icon + name. Tapping one scrolls back up to the row, slides the row to
+  // that kind, and only then swaps the cards. ----
+  const phone = window.matchMedia('(max-width: 767px)');
+  const kindGrid = document.getElementById('kindGrid');
+  const filtersEl = document.querySelector('.work-filters');
+  const dock = document.getElementById('filterDock');
+  const dockList = document.getElementById('filterDockList');
+  const dockItems = new Map();
+  const behavior = () => (reduceMotionWork ? 'auto' : 'smooth');
+
+  function centerIn(row, el, smooth = true) {
+    const r = row.getBoundingClientRect(), e = el.getBoundingClientRect();
+    const left = row.scrollLeft + (e.left - r.left) - (row.clientWidth - e.width) / 2;
+    row.scrollTo({ left: Math.max(0, left), behavior: smooth ? behavior() : 'auto' });
+  }
+
+  // Resolves once the window has stopped at y (or stopped moving, or after a cap).
+  function scrollWindowTo(y) {
+    return new Promise((resolve) => {
+      if (Math.abs(window.scrollY - y) < 2) return resolve();
+      window.scrollTo({ top: y, behavior: behavior() });
+      const start = performance.now();
+      let last = window.scrollY, still = 0;
+      const tick = () => {
+        const now = window.scrollY;
+        still = now === last ? still + 1 : 0;
+        last = now;
+        if (Math.abs(now - y) < 2 || still > 6 || performance.now() - start > 1800) return resolve();
+        requestAnimationFrame(tick);
+      };
+      requestAnimationFrame(tick);
     });
-  });
+  }
+
+  function markActive(tile) {
+    tiles.forEach((t) => {
+      const active = t === tile;
+      t.classList.toggle('is-active', active);
+      const existingCheck = t.querySelector('.tile-check');
+      if (active && !existingCheck) {
+        const check = document.createElement('span');
+        check.className = 'tile-check';
+        check.innerHTML = '&#10003;';
+        t.prepend(check);
+      } else if (!active && existingCheck) {
+        existingCheck.remove();
+      }
+    });
+    dockItems.forEach((btn, t) => { btn.classList.toggle('is-active', t === tile); btn.setAttribute('aria-pressed', String(t === tile)); });
+  }
+
+  let busy = false;
+  async function choose(tile, fromDock) {
+    if (busy) return;
+    busy = true;
+    markActive(tile);
+    if (phone.matches) {
+      centerIn(kindGrid, tile);
+      if (fromDock) {
+        centerIn(dockList, dockItems.get(tile));
+        await scrollWindowTo(Math.max(0, filtersEl.getBoundingClientRect().top + window.scrollY - 72));
+      }
+    }
+    applyFilter(tile.dataset.filterValue);
+    busy = false;
+  }
+
+  if (dock && dockList) {
+    tiles.forEach((tile) => {
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'dock-item' + (tile.classList.contains('is-active') ? ' is-active' : '');
+      btn.setAttribute('aria-pressed', String(tile.classList.contains('is-active')));
+      const icon = tile.querySelector('.tile-icon');
+      if (icon) btn.append(icon.cloneNode(true));
+      const label = document.createElement('span');
+      label.textContent = tile.querySelector('.tile-label').textContent;
+      btn.append(label);
+      btn.addEventListener('click', () => choose(tile, true));
+      dockList.append(btn);
+      dockItems.set(tile, btn);
+    });
+    // Show the dock only once the tile row has scrolled off the top.
+    new IntersectionObserver(([e]) => {
+      dock.classList.toggle('is-on', !e.isIntersecting && e.boundingClientRect.bottom < 0);
+    }).observe(filtersEl);
+  }
+
+  tiles.forEach((tile) => tile.addEventListener('click', () => choose(tile, false)));
