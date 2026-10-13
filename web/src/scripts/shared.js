@@ -286,7 +286,7 @@
   });
 
   /* prefooter: icons drift with the cursor (translate, so it never fights rotate) */
-  document.querySelectorAll('.prefooter, .mission-sec').forEach((sec) => {
+  document.querySelectorAll('.prefooter').forEach((sec) => {
     if (reduce) return;
     const icons = [...sec.querySelectorAll('[data-mx]')];
     sec.addEventListener('mousemove', (e) => {
@@ -314,11 +314,38 @@
             w.appendChild(i); frag.appendChild(w);
           });
           c.replaceWith(frag);
-        } else if (c.nodeType === 1 && !c.classList.contains('m-el')) walk(c);
+        } else if (c.nodeType === 1 && c.classList.contains('m-el')) {
+          // Pop in just after the word before it has slid up (that word's delay is (n - 1) * 0.045s).
+          c.style.setProperty('--pd', (Math.max(0, n - 1) * 0.045 + 0.3).toFixed(3) + 's');
+        } else if (c.nodeType === 1) walk(c);
       });
     };
     walk(el);
     io.observe(el);
+
+    /* hover/tap: each icon plays one of a few little animations, never the same one twice in a row */
+    if (reduce) return;
+    const ease = 'cubic-bezier(0.3, 1.4, 0.5, 1)';
+    const tricks = [
+      // squiggle
+      () => [[{ transform: 'rotate(0)' }, { transform: 'rotate(-14deg)' }, { transform: 'rotate(12deg)' }, { transform: 'rotate(-8deg)' }, { transform: 'rotate(4deg)' }, { transform: 'rotate(0)' }], { duration: 650, easing: 'ease-in-out' }],
+      // spin
+      () => [[{ transform: 'rotate(0) scale(1)' }, { transform: 'rotate(360deg) scale(1.18)', offset: 0.7 }, { transform: 'rotate(360deg) scale(1)' }], { duration: 750, easing: ease }],
+      // grow and shrink
+      () => [[{ transform: 'scale(1)' }, { transform: 'scale(1.4)', offset: 0.35 }, { transform: 'scale(0.88)', offset: 0.7 }, { transform: 'scale(1)' }], { duration: 600, easing: ease }],
+    ];
+    el.querySelectorAll('.m-el').forEach((icon) => {
+      let last = -1, running = null;
+      const play = () => {
+        if (!el.classList.contains('is-in') || (running && running.playState === 'running')) return;
+        let i; do { i = Math.floor(Math.random() * tricks.length); } while (i === last);
+        last = i;
+        const [frames, opts] = tricks[i]();
+        running = icon.animate(frames, opts);
+      };
+      icon.addEventListener('pointerenter', play);
+      icon.addEventListener('click', play);
+    });
   });
 
   /* persona stack: earlier cards scale back and fade as the next slides over */
