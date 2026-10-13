@@ -209,6 +209,15 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 .pf-inner img { position: absolute; inset: 0; box-sizing: border-box; padding: var(--in, 0); width: 100%; height: 100%; max-width: none; object-fit: fill; }
 .prefooter__title { position: relative; z-index: 1; max-width: 1200px; margin: 0 auto; text-align: center; font-family: var(--headline); font-weight: 600; font-size: clamp(2.5rem, 4.4vw, 4rem); line-height: 1; letter-spacing: -0.01em; text-wrap: balance; }
 @media (max-width: 767px) { .prefooter { padding: 0 20px 80px; } .prefooter__icons { margin-bottom: 8px; aspect-ratio: 1312 / 560; } }
+/* Phones: the desktop layout is scaled to ~27% and leaves tiny, scattered cells. Re-place four of them larger in a tighter cluster (staph is dropped). */
+@media (max-width: 767px) {
+  .prefooter__icons { aspect-ratio: 350 / 190; margin-bottom: 24px; }
+  .pf-icon:nth-child(3) { display: none; }
+  .pf-icon:nth-child(2) { left: 0; top: 28%; width: 30%; }
+  .pf-icon:nth-child(1) { left: 24%; top: 0; width: 38%; }
+  .pf-icon:nth-child(4) { left: 55%; top: 42%; width: 26%; }
+  .pf-icon:nth-child(5) { left: 68%; top: -4%; width: 32%; }
+}
 
 /* ---------- Stats variant for pages with a shorter band ---------- */
 .stats-row.is-short { padding: 80px 64px; }
