@@ -118,11 +118,11 @@
   /* The pinned block is only as tall as its tallest panel (the panels are stacked in one grid cell),
      and every panel's content starts at the top, so the label and statement stay put when the panel swaps. */
   .stats-pin__pin-target { padding-block: 0; }
-  .stats-pin__viewport { position: relative; width: 100%; display: grid; }
+  .stats-pin__viewport { position: relative; width: 100%; display: grid; grid-template-columns: minmax(0, 1fr); } /* minmax(0, …): the logo marquee is max-content wide and would otherwise stretch every panel */
   .panel-label { margin: 0 0 20px; text-align: center; }
   .panel-title { margin: 0 auto 48px; max-width: 1200px; text-align: center; }
   .stats-pin__panel {
-    grid-area: 1 / 1; display: flex; flex-direction: column; justify-content: flex-start;
+    grid-area: 1 / 1; min-width: 0; display: flex; flex-direction: column; justify-content: flex-start;
     opacity: 0; visibility: hidden; transform: translateY(16px);
     transition: opacity 0.5s var(--ease-out), transform 0.5s var(--ease-out), visibility 0s linear 0.5s;
   }
