@@ -300,6 +300,7 @@
   });
 
   /* mission text: split into masked words, reveal on scroll */
+  let lastTrick = -1; // shared by every icon on the page, so two in a row never match
   document.querySelectorAll('[data-mission]').forEach((el) => {
     let n = 0;
     const walk = (node) => {
@@ -323,7 +324,7 @@
     walk(el);
     io.observe(el);
 
-    /* hover/tap: each icon plays one of a few little animations, never the same one twice in a row */
+    /* hover/tap: each icon plays one of a few little animations, never the same one as the one just played (on any icon) */
     if (reduce) return;
     const ease = 'cubic-bezier(0.3, 1.4, 0.5, 1)';
     const tricks = [
@@ -335,11 +336,11 @@
       () => [[{ transform: 'scale(1)' }, { transform: 'scale(1.4)', offset: 0.35 }, { transform: 'scale(0.88)', offset: 0.7 }, { transform: 'scale(1)' }], { duration: 600, easing: ease }],
     ];
     el.querySelectorAll('.m-el').forEach((icon) => {
-      let last = -1, running = null;
+      let running = null;
       const play = () => {
         if (!el.classList.contains('is-in') || (running && running.playState === 'running')) return;
-        let i; do { i = Math.floor(Math.random() * tricks.length); } while (i === last);
-        last = i;
+        let i; do { i = Math.floor(Math.random() * tricks.length); } while (i === lastTrick);
+        lastTrick = i;
         const [frames, opts] = tricks[i]();
         running = icon.animate(frames, opts);
       };
