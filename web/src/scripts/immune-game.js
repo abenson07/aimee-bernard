@@ -132,6 +132,8 @@ import { ART, KINDS, BAD, SELF } from './immune-art.js';
   // Listen on the window (the canvas itself is pointer-events: none).
   window.addEventListener('pointermove', (e) => {
     if (e.pointerType === 'touch') return;
+    // Phone-width layouts (including a narrow desktop window) are ambient until the full-screen game is open.
+    if (phone.matches && !playing) { cursor = null; lastPt = null; return; }
     cursor = { x: e.clientX, y: e.clientY };
     track(e.clientX, e.clientY);
   }, { passive: true });
