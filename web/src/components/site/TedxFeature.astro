@@ -24,7 +24,13 @@ const label = [item?.venue, item?.date].filter(Boolean).join(" · ");
                 {item.href ? <a href={item.href} target={external ? "_blank" : undefined} rel={external ? "noopener" : undefined}>{item.title}</a> : item.title}
               </h2>
             </div>
-            <div class="tedx__frame">{img && <img src={img} alt={item.title ?? ""} />}</div>
+            <div class="tedx__frame">
+              {img && (item.href ? (
+                <a href={item.href} target={external ? "_blank" : undefined} rel={external ? "noopener" : undefined} aria-label={`Watch: ${item.title}`}>
+                  <img src={img} alt="" />
+                </a>
+              ) : <img src={img} alt={item.title ?? ""} />)}
+            </div>
           </div>
         </div>
       </div>
