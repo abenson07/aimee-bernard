@@ -202,10 +202,6 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 .fade-to-prefooter { position: relative; }
 .fade-to-prefooter::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 240px; background: linear-gradient(180deg, transparent, color-mix(in srgb, var(--ink) 4.5%, transparent)); pointer-events: none; }
 .prefooter__circle { position: absolute; z-index: 0; left: -375px; top: -1143px; width: 2190px; height: 2190px; border-radius: 50%; background: rgba(18, 18, 18, 0.045); pointer-events: none; }
-/* The circle is taller than the section and gets flatly clipped by .prefooter's
-   overflow:hidden, which reads as a hard horizontal cut. This fades that clip
-   edge into the page background instead of letting it end abruptly. */
-.prefooter::before { content: ""; position: absolute; z-index: 1; top: 0; left: 0; right: 0; height: 200px; background: linear-gradient(180deg, var(--bg) 0%, transparent 100%); pointer-events: none; }
 .prefooter__inner { position: relative; z-index: 2; max-width: 1312px; margin: 0 auto; }
 .prefooter__icons { position: relative; z-index: 2; container-type: inline-size; aspect-ratio: 1312 / 487; width: 100%; margin-bottom: -13vw; }
 .pf-icon { position: absolute; left: calc(var(--l) / 1312 * 100cqw); top: calc(var(--t) / 1312 * 100cqw); width: calc(var(--w) / 1312 * 100cqw); aspect-ratio: 1; display: grid; place-items: center; transition: translate 0.5s var(--ease); }
@@ -559,7 +555,7 @@ body.panel-open #page { transform: scale(0.97); filter: brightness(0.9); }
 /* No background behind the prefooter: .page-main paints --bg only down to the prefooter's top (--prefooter-h is set in shared.js),
    and the canvas behind the page is the footer's black, so the corners under the circle's curve show the footer through. The circle is solid so it reads over the black. */
 body:has(.site-footer) { background: var(--ink); }
-.page-main:has(.prefooter) { background: linear-gradient(var(--bg), var(--bg)) top / 100% calc(100% - var(--prefooter-h, 0px)) no-repeat; }
+.page-main:has(.prefooter) { background: linear-gradient(var(--bg), var(--bg)) top / 100% calc(100% - var(--prefooter-h, 0px) + 2px) no-repeat; } /* +2px: the prefooter starts on a fractional pixel, and without the overlap the black page behind shows through as a hairline at the seam */
 .prefooter__circle { background: color-mix(in srgb, var(--ink) 4.5%, var(--bg)); }
 .site-footer { container-type: inline-size; position: fixed; left: 0; right: 0; bottom: 0; z-index: 0; background: var(--ink); color: var(--paper); overflow: hidden; }
 .site-footer__inner { padding: 96px 4.444vw 24px; display: flex; flex-direction: column; gap: 64px; will-change: transform; }
