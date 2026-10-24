@@ -39,7 +39,7 @@ Screenshots and candidate photos are saved in `audit-review/` (not committed; `s
 | 5 | Q11 optimize images, don't commit originals | RESOLVED: yes. Web-sized copies (desktop + phone sizes, about 200-600KB each), ALL converted to WebP including the HEIC. Originals stay local in `images/`, not committed |
 | 6 | Q12 germs: top-left cast only; interferon | RESOLVED: remove rhinovirus, staph and E. coli from the top-left cartoon only; footer game stays as is; interferon stays (she didn't mention it) |
 | 7 | Q14 "static" sections | RESOLVED (Alex): she means the numbers must be typed-in static numbers, not driven by the CMS. The pinned scroll-swap STAYS. Home stats are already typed in the page. Text edits built: "this" and "since 2011" removed. Org text "School of Medicine" is a Sanity change (the two 2023 awards say "CU School of Medicine"). Whether the awards section itself should be typed-in vs Sanity is settled in Q15 |
-| 8 | Q19 Communicator numbers: numbers only or Home look | queued |
+| 8 | Q19 Communicator numbers: numbers only or Home look | ASKED |
 | 9 | Q21 OK to edit Sanity directly | RESOLVED: yes, edit Sanity. Blocker: no Sanity write token on this machine. Alex to put `SANITY_API_WRITE_TOKEN` in `studio/.env.local` (gitignored); never paste it in chat |
 | 10 | Q26 CU Anschutz logo: chip only or everywhere | queued |
 | 11 | Q13 bot: books, which pages, phone placement | queued |
@@ -65,6 +65,7 @@ Rule from Alex (10/24): where she named a photo and the file is in `images/`, ju
 
 ## 0e. Build log (building happens as we go, per Alex 10/24)
 Built, checked in the browser, committed locally (not pushed):
+- B cell, dendritic cell and macrophage cartoons drawn and added to the header rotation with her exact lines (commit c8d71e4). Awaiting Alex's OK on the art.
 - Header cartoon: rhinovirus, staph, E. coli removed (both `nav.js` and `shared.js`); influenza line now says "flu vaccine". Commit c033697.
 - "See all" button on Home and Educator: new label, blue #6aa8ff, 76px tall with 24px text. Commit a35f911.
 - Home By the Numbers: 25+ (new label), 30+, 100+, and a fourth stat "Awards received 9+"; four columns on desktop. Commit after a35f911.
