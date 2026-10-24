@@ -144,6 +144,7 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 /* ---------- Stats row — Figma 80:16616 ---------- */
 .stats-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; padding: 176px 64px; width: 100%; }
 .stats-row.is-tight { padding: 0 64px; }
+@media (min-width: 768px) { .stats-row:has(> .stat:nth-child(4)) { grid-template-columns: repeat(4, 1fr); } }
 .stat { display: flex; flex-direction: column; align-items: center; gap: 32px; text-align: center; }
 .stat__num { font-family: var(--headline); font-weight: 600; font-variant-numeric: lining-nums; font-size: clamp(4.5rem, 8.9vw, 8rem); line-height: 0.9; letter-spacing: -0.01em; }
 .stat__desc { font-family: var(--mono); font-size: 14px; line-height: 20px; letter-spacing: -0.07px; color: var(--muted); max-width: 22ch; }
