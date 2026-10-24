@@ -1,6 +1,8 @@
 ---
 import SiteLayout from "@/layouts/SiteLayout.astro";
 import SiteHeader from "@/components/SiteHeader.astro";
+import Awards from "@/components/site/Awards.astro";
+import AwardsSkeleton from "@/components/site/AwardsSkeleton.astro";
 import PaperStats from "@/components/site/PaperStats.astro";
 import PaperStatsSkeleton from "@/components/site/PaperStatsSkeleton.astro";
 import Papers from "@/components/site/Papers.astro";
@@ -37,29 +39,13 @@ const tlasUrl = (await getImage({ src: tlasSrc, format: "webp", width: 1024 })).
   </div>
 </section>
 
-<!-- PLACEHOLDER: the three awards below are fake stand-ins (mentoring + two community-service awards for science outreach).
-     Replace the titles, years and granting organizations once Aimee confirms them. -->
 <section class="awards-row awards-row--recog" aria-label="Awards and recognition">
   <div class="awards-row__head fade">
     <span class="tag-chip">Recognition</span>
     <h2 class="awards-row__title">Mentoring and outreach, recognized.</h2>
   </div>
   <div class="award-grid fade">
-    <div class="award">
-      <div class="award-seal"><img class="award__wreath" src="/site/wreath.svg" alt="" /><span class="award-seal__year">20XX</span></div>
-      <p class="award__title">Placeholder Mentoring Award</p>
-      <p class="award__meta">Granting organization</p>
-    </div>
-    <div class="award">
-      <div class="award-seal"><img class="award__wreath" src="/site/wreath.svg" alt="" /><span class="award-seal__year">20XX</span></div>
-      <p class="award__title">Placeholder Community Service Award for Science Outreach</p>
-      <p class="award__meta">Granting organization</p>
-    </div>
-    <div class="award">
-      <div class="award-seal"><img class="award__wreath" src="/site/wreath.svg" alt="" /><span class="award-seal__year">20XX</span></div>
-      <p class="award__title">Placeholder Community Service Award for Science Outreach</p>
-      <p class="award__meta">Granting organization</p>
-    </div>
+    <Awards server:defer variant="educator" group="outreach"><AwardsSkeleton slot="fallback" variant="educator" count={4} /></Awards>
   </div>
 </section>
 

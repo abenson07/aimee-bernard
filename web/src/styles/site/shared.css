@@ -156,7 +156,7 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 .awards-row__title { font-family: var(--headline); font-weight: 600; font-size: clamp(2.5rem, 4.4vw, 4rem); line-height: 1; letter-spacing: -0.01em; text-align: center; }
 .awards-row--recog { padding-top: 40px; }
 .awards-row__head { display: flex; flex-direction: column; align-items: center; gap: 20px; }
-.awards-row--recog .award-grid { grid-template-columns: repeat(3, 1fr); max-width: 960px; margin: 0 auto; gap: 56px 32px; }
+.awards-row--recog .award-grid { grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); max-width: 1100px; margin: 0 auto; gap: 56px 32px; }
 @media (max-width: 767px) { .awards-row--recog .award-grid { grid-template-columns: 1fr; gap: 48px; } }
 .award-grid { width: 100%; display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 40px 24px; }
 .award { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 16px; }

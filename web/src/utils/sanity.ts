@@ -124,13 +124,21 @@ export function yearOf(date: string | null | undefined): number {
 }
 
 /** Awards, newest year first. */
-export function getAwards(): Promise<CardItem[]> {
+export type AwardGroup = "teaching" | "outreach";
+
+/** Awards for one section, most recent first, at most six. Awards without a group count as teaching awards. */
+export function getAwards(group: AwardGroup = "teaching"): Promise<CardItem[]> {
+  const newestSix = (items: CardItem[]) => items.sort((a, b) => yearOf(b.date) - yearOf(a.date)).slice(0, 6);
   return withSnapshot(
     async () => {
-      const items: CardItem[] = await sanityClient.fetch(`*[_type == "contentItem" && kind == "award"]{ ${CARD_FIELDS} }`);
-      return items.sort((a, b) => yearOf(b.date) - yearOf(a.date));
+      const items: CardItem[] = await sanityClient.fetch(
+        `*[_type == "contentItem" && kind == "award" && coalesce(awardGroup, "teaching") == $group]{ ${CARD_FIELDS} }`,
+        { group },
+      );
+      return newestSix(items);
     },
-    (rows) => rows.filter((r) => r.kind === "award").sort((a, b) => yearOf(b.date) - yearOf(a.date)),
+    // The saved copy only has the original teaching awards.
+    (rows) => (group === "teaching" ? newestSix(rows.filter((r) => r.kind === "award") as any) : []),
   );
 }
 
