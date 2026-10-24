@@ -83,7 +83,9 @@ Also built: Home headings ("this" and "since 2011" removed), commit 06b4790.
 
 - Contact page: "Let's connect.", her paragraph, her portrait (WebP), TEDx card removed. Commit after 6467580.
 
-Still to build from approved items: Educator hero photo swap, mission-sentence flu icon, awards/course spacing, Home hover photos and card photos/links, Communicator changes, Outreach page, Contact, bottom half-circle, "Ask me a Q?" bot.
+- Educator: flu virus removed from the mission sentence; award rows closer together (row gap 56 to 24px) and less space before the courses. Commit f36c96d.
+
+Still to build from approved items: Educator hero photo (asking Alex: Antibody or Thymus), Home hover photos and card photos/links, Communicator changes, Outreach page, Contact, bottom half-circle, "Ask me a Q?" bot.
 
 ## 1. Changes by page
 
