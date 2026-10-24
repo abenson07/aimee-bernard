@@ -333,6 +333,8 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 .hero-split__media > div:first-child { flex: 1 1 0; min-width: 0; }
 .hero-split__media > div:last-child { flex: none; width: 448px; }
 .hero-split__media img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+/* Communicator: the narrow photo sits on the left on desktop. In the page order the wide photo stays first, so phones (which show only the first photo) show the wide one. */
+@media (min-width: 768px) { .hero-split__media--small-first > div:last-child { order: -1; } }
 @media (max-width: 991px) { .hero-split__media > div:last-child { width: 34%; } .hero-split__side.is-info { width: 100%; } }
 @media (max-width: 767px) { .hero-split { padding: 160px 16px 56px; } .hero-split__media { flex-direction: column; height: auto; } .hero-split__media > div, .hero-split__media > div:first-child { flex: none; height: 300px; } .hero-split__media > div:last-child { display: none; } }
 .fade-into { background: linear-gradient(180deg, #f5f4f1 0%, var(--bg) 260px); }
