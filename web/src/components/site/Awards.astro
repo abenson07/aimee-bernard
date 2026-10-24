@@ -1,15 +1,17 @@
 ---
 // The six laurel-wreath awards, from the `award` items. Home and Educator
 // style the same list differently.
-import { getAwards, yearOf } from "@/utils/sanity.ts";
+import { getAwards, yearOf, type AwardGroup } from "@/utils/sanity.ts";
 import { ISLAND_CACHE } from "./cacheHeaders.ts";
 
 interface Props {
   variant: "home" | "educator";
+  /** Which awards section: teaching awards (default) or outreach & mentoring awards. */
+  group?: AwardGroup;
 }
-const { variant } = Astro.props;
+const { variant, group = "teaching" } = Astro.props;
 
-const awards = await getAwards();
+const awards = await getAwards(group);
 Astro.response.headers.set("Cache-Control", ISLAND_CACHE);
 ---
 

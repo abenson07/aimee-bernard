@@ -35,6 +35,19 @@ export const contentItem = defineType({
       validation: (rule) => rule.required(),
     }),
     defineField({
+      name: "awardGroup",
+      title: "Award group",
+      description: "Which awards section this award appears in. Each section shows the six most recent.",
+      type: "string",
+      options: {
+        list: [
+          { title: "Teaching awards", value: "teaching" },
+          { title: "Outreach & mentoring awards", value: "outreach" },
+        ],
+      },
+      hidden: ({ document }) => document?.kind !== "award",
+    }),
+    defineField({
       name: "featuredOnCommunicator",
       title: "Feature on Communicator page",
       description:
