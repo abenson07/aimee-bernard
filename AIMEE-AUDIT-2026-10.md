@@ -49,7 +49,7 @@ Screenshots and candidate photos are saved in `audit-review/` (not committed; `s
 | 15 | Q25 Contact TEDx card; form destination | RESOLVED + BUILT: heading "Let's connect.", her paragraph, her portrait; TEDx card removed (Alex: the call was right). Form messages go to aepbernard@gmail.com (Alex, 10/24). The service that sends them (BEN-1704) is the next question |
 | 16 | Q24 Outreach details | queued |
 | 17 | Q6 Communicator hero photos | RESOLVED + BUILT (Alex: C, "obviously the TEDx one"): small b/w TEDx photo left, TEDx front stage right; phones show the big photo only. Upscale list in `PHOTOS-TO-UPSCALE.md` (the front stage file is low-res) |
-| 18 | Q7 "contributes to" cards (photo waits on Aimee's originals) | queued |
+| 18 | Q7 "contributes to" cards (photo waits on Aimee's originals) | ASKED |
 | 19 | Q8 "Read now" feature | queued |
 | 20 | Q9, Q10 photos | queued |
 | 21 | Q5 CCTSI slide | queued |
