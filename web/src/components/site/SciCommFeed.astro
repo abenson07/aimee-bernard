@@ -6,11 +6,16 @@ import PressCard from "./PressCard.astro";
 import { ISLAND_CACHE, photo } from "./cacheHeaders.ts";
 
 const items = await getSciCommItems(7);
-const [feature, ...rest] = items;
+const [first, ...rest] = items;
+// Aimee: the "Read now" block should show a nice TEDx photo and link to her Science Crosstalk post about the talk.
+const SUBSTACK_POST = "https://aimeepughbernard.substack.com/p/confessions-of-a-scientist";
+const feature = first && /^confessions of a scientist/i.test(first.title ?? "")
+  ? { ...first, href: SUBSTACK_POST, image: null }
+  : first;
 Astro.response.headers.set("Cache-Control", ISLAND_CACHE);
 
 const KIND: Record<string, string> = { talk: "Talk", podcast: "Podcast", "press-mentions": "Press", article: "Article" };
-const img = photo(feature?.image, 1200);
+const img = feature && feature !== first ? "/site/photos/tedx-scientist-1200.webp" : photo(feature?.image, 1200);
 const external = !!feature?.href && /^https?:/.test(feature.href);
 const Tag = feature?.href ? "a" : "div";
 ---
@@ -22,7 +27,7 @@ const Tag = feature?.href ? "a" : "div";
         <div><h3 class="press-feature__title">{feature.title}</h3>{feature.venue && <p class="press-feature__sub">{feature.venue}</p>}</div>
         <div class="press-feature__foot"><hr /><div class="press-feature__meta"><div class="meta"><span>{KIND[feature.kind ?? ""] ?? ""}</span>{feature.date && <span>{feature.date}</span>}</div>{feature.href && <span class="glass-btn"><span class="button-text-mask"><span class="button-text t1">Read now</span><span class="button-text t2">Read now</span></span></span>}</div></div>
       </div>
-      <div class="press-feature__img">{img && <img src={img} alt="" loading="lazy" />}</div>
+      <div class="press-feature__img">{img && <img src={img} alt="" loading="lazy" style={feature !== first ? "object-position:50% 62%" : undefined} />}</div>
     </Tag>
   )
 }
