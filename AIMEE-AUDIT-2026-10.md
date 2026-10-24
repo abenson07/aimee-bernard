@@ -43,7 +43,7 @@ Screenshots and candidate photos are saved in `audit-review/` (not committed; `s
 | 9 | Q21 OK to edit Sanity directly | RESOLVED: yes, edit Sanity. Blocker: no Sanity write token on this machine. Alex to put `SANITY_API_WRITE_TOKEN` in `studio/.env.local` (gitignored); never paste it in chat |
 | 10 | Q26 CU Anschutz logo: chip only or everywhere | RESOLVED (Alex): everywhere. Built: Educator chip removed, Work-card mapping and Home strip fallback removed, logo files deleted, logo cleared from the Sanity "CU Anschutz" publication (backup in `audit-review/`). A scan of all 7 pages finds no CU Anschutz image. The CU Denver logo is a different logo and was left. Open: the CCTSI slide (Q5) contains the Anschutz logo |
 | 11 | Q13 bot: books, which pages, phone placement | queued |
-| 12 | Q15 outreach awards (Sanity, placeholders, "CU", label) | queued |
+| 12 | Q15 outreach awards (Sanity or typed in, placeholders, "CU", label) | ASKED (part 1: Sanity vs typed in). Merged: PR #3 (round 1) |
 | 13 | Q20 bottom half circle | queued |
 | 14 | Q18 Communicator big text | RESOLVED + BUILT: her new text at today's type size (6 lines desktop, 10 on a phone), immune cell and antibody kept. (Q13 bot is on hold at Alex's request) |
 | 15 | Q25 Contact TEDx card; form destination | RESOLVED + BUILT: heading "Let's connect.", her paragraph, her portrait; TEDx card removed (Alex: the call was right). Form messages go to aepbernard@gmail.com (Alex, 10/24). The service that sends them (BEN-1704) is the next question |
