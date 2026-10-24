@@ -111,6 +111,24 @@
         'I tag germs so other cells know what to eat.',
         'Vaccines teach your body to make more of me.',
       ] },
+      { file: 'b-cell', name: 'B cell', lines: [
+        'Hi! I\u2019m a B cell. I make antibodies.',
+        'B cells mature in the bone marrow',
+        'Each B cell recognizes one specific antigen',
+        'Some of us turn into memory cells and stick around for years',
+      ] },
+      { file: 'dendritic-cell', name: 'dendritic cell', lines: [
+        'Hi! I\u2019m a DC. I capture germs to sound the alarm.',
+        'I patrol the body looking for invading pathogens',
+        'I chop invading germs to bits and show them off to my friends',
+        'My show-and-tell helps my friends join an immune response',
+      ] },
+      { file: 'macrophage', name: 'macrophage', lines: [
+        'Hi! I\u2019m a macrophage. My name means \u2018big eater\u2019',
+        'I\u2019m a phagocytic cell \u2013 that means I eat germs for a living.',
+        'I chop invading germs to bits and show them off to my friends',
+        'My show-and-tell helps my friends join an immune response',
+      ] },
       { file: 'interferon', name: 'interferon', lines: [
         'Interferon! I\u2019m a warning signal between cells.',
         'I tell nearby cells: \u201cVirus around, lock it down!\u201d',
