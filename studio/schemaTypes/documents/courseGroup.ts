@@ -7,6 +7,8 @@ const ICON_OPTIONS = [
   { title: "Tooth", value: "tooth" },
   { title: "Microscope", value: "microscope" },
   { title: "Vaccine", value: "vaccine" },
+  { title: "Medical bag", value: "medical-bag" },
+  { title: "Vaccine with heart", value: "vaccine-heart" },
   { title: "T cell with graduation cap", value: "t-cell-grad" },
 ];
 

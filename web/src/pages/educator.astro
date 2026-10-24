@@ -9,8 +9,8 @@ import Awards from "@/components/site/Awards.astro";
 import AwardsSkeleton from "@/components/site/AwardsSkeleton.astro";
 import CourseGroups from "@/components/site/CourseGroups.astro";
 import CourseTilesSkeleton from "@/components/site/CourseTilesSkeleton.astro";
-// Courses taught since 2007. Edit by hand; Aimee to confirm the final count.
-const coursesTaught = 18;
+// Courses taught since 2007. Typed in by hand (Aimee: "30+"), not counted from the dashboard.
+const coursesTaught = "30+";
 const bwUrl = (await getImage({ src: bwSrc, format: "webp", width: 520 })).src;
 ---
 
@@ -23,7 +23,7 @@ const bwUrl = (await getImage({ src: bwSrc, format: "webp", width: 520 })).src;
   <div class="wrap" style="padding:0">
     <div class="hero-split__head">
       <h1 class="display hero-split__title">Teaching immunology so it sticks</h1>
-      <div class="hero-split__side is-info"><p>Since 2007, Aimee has taught {coursesTaught} courses, from first-year medical students to PhD trainees.</p><a class="hero-split__chip" href="https://medschool.cuanschutz.edu/" target="_blank" rel="noopener"><span>Teaching at</span><img src="/site/set-d/logo-cu-chip.png" alt="CU Anschutz" style="width:auto;height:22px"></a></div>
+      <div class="hero-split__side is-info"><p>Since 2007, Aimee has taught {coursesTaught} courses, from first-year medical students and PhD trainees to faculty and community members.</p></div>
     </div>
     <div class="hero-split__media"><div><img src="/site/educator.webp" alt=""></div><div><img src={bwUrl} alt=""></div></div>
   </div>
@@ -61,7 +61,7 @@ const bwUrl = (await getImage({ src: bwSrc, format: "webp", width: 520 })).src;
       </a>
     </div>
     <a class="outreach-all" href="/work">
-      All work
+      See all
       <span class="outreach-all__icon" aria-hidden="true">
         <svg viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </span>

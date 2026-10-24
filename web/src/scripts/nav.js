@@ -111,6 +111,24 @@
         'I tag germs so other cells know what to eat.',
         'Vaccines teach your body to make more of me.',
       ] },
+      { file: 'b-cell', name: 'B cell', lines: [
+        'Hi! I\u2019m a B cell. I make antibodies.',
+        'B cells mature in the bone marrow',
+        'Each B cell recognizes one specific antigen',
+        'Some of us turn into memory cells and stick around for years',
+      ] },
+      { file: 'dendritic-cell', name: 'dendritic cell', lines: [
+        'Hi! I\u2019m a DC. I capture germs to sound the alarm.',
+        'I patrol the body looking for invading pathogens',
+        'I chop invading germs to bits and show them off to my friends',
+        'My show-and-tell helps my friends join an immune response',
+      ] },
+      { file: 'macrophage', name: 'macrophage', lines: [
+        'Hi! I\u2019m a macrophage. My name means \u2018big eater\u2019',
+        'I\u2019m a phagocytic cell \u2013 that means I eat germs for a living.',
+        'I chop invading germs to bits and show them off to my friends',
+        'My show-and-tell helps my friends join an immune response',
+      ] },
       { file: 'interferon', name: 'interferon', lines: [
         'Interferon! I\u2019m a warning signal between cells.',
         'I tell nearby cells: \u201cVirus around, lock it down!\u201d',
@@ -121,30 +139,15 @@
         'I show your immune system a harmless preview of a germ.',
         'Then your memory cells are ready for the real thing.',
       ] },
-      { file: 'rhinovirus', name: 'rhinovirus', lines: [
-        'Uh oh. Rhinovirus. I cause most common colds.',
-        'There are over 160 kinds of me. Good luck.',
-        'I like the cooler air inside your nose.',
-      ] },
       { file: 'influenza', name: 'influenza virus', lines: [
         'Influenza here. The flu, that\u2019s me.',
         'I change my coat a little every year.',
-        'That\u2019s why there\u2019s a new flu shot each fall.',
+        'That\u2019s why there\u2019s a new flu vaccine each fall.',
       ] },
       { file: 'coronavirus', name: 'coronavirus', lines: [
         'Coronavirus. Named for my crown of spikes.',
         'My spike proteins unlock the doors to your cells.',
         'Some of my cousins just cause ordinary colds.',
-      ] },
-      { file: 'e-coli', name: 'E. coli', lines: [
-        'E. coli! Most of us are harmless gut residents.',
-        'I swim by spinning my tail, called a flagellum.',
-        'A few strains are trouble. Wash your veggies!',
-      ] },
-      { file: 'staph', name: 'staph', lines: [
-        'Staph! We grow in grape-like clusters.',
-        'Lots of people carry us on their skin or in their nose.',
-        'Through a cut, we can cause an infection.',
       ] },
     ];
     const src = (c) => `/site/cells/${c.file}.svg`;
