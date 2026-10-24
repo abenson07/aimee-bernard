@@ -33,10 +33,10 @@ Screenshots and candidate photos are saved in `audit-review/` (not committed; `s
 | # | Question | Status |
 |---|---|---|
 | 1 | Q23 Graduate School: rename the second pill to "Introduction to Science Communication" | RESOLVED: yes, rename it; her nine topics fill the empty list; photo 'EDU THC Antibody' applied (file in hand) |
-| 2 | Q22 Fun-Size: "Immunotherapy" as a group heading (four groups) | queued |
+| 2 | Q22 Fun-Size: "Immunotherapy" as a group heading (four groups) | ASKED |
 | 3 | Q16 Awards stat "9+" as written | RESOLVED: all four approved: label "Years as an Educator, Immunologist & Communicator" 25+, Courses taught 30+, Talks given 100+, new fourth stat Awards received 9+ |
 | 4 | Q17 "All work" blue shade | RESOLVED: option B, #6aa8ff (T cell cartoon blue), text and arrow bigger. Applies to BOTH "All work" buttons: Home (`index.astro`) and Educator (`educator.astro`); a color scan of all 7 pages found no other yellow-green element. CSS in `home.css` and `educator.css` |
-| 5 | Q11 optimize images, don't commit originals | ASKED |
+| 5 | Q11 optimize images, don't commit originals | RESOLVED: yes. Web-sized copies (desktop + phone sizes, about 200-600KB each), ALL converted to WebP including the HEIC. Originals stay local in `images/`, not committed |
 | 6 | Q12 germs: top-left cast only; interferon | queued |
 | 7 | Q14 "static" sections = stack, no pinned swap | queued |
 | 8 | Q19 Communicator numbers: numbers only or Home look | queued |
@@ -55,7 +55,7 @@ Screenshots and candidate photos are saved in `audit-review/` (not committed; `s
 | 21 | Q5 CCTSI slide | queued |
 | 22 | Q27 Immunologist and Work audits | queued |
 
-Resolved so far: Q1, Q2, Q3, Q4, Q16, Q17, Q23 (see log above).
+Resolved so far: Q1, Q2, Q3, Q4, Q11, Q16, Q17, Q23 (see log above).
 
 Rule from Alex (10/24): where she named a photo and the file is in `images/`, just apply it; don't ask again. Applies to: Medical School, Graduate School = 'EDU THC Antibody'; PA, Dental = 'EDU THC Thymus'; Human Immunology = fun-size bag; Home cards TLaS / FUNSIZE IG / TTP / SUBSTACK; Home Communicator hover = 'SCI COMM TEDx scientist'; Contact portrait; Teacher Training = 'TTP Aimee'; CU Denver = DMRSEF.
 
@@ -84,7 +84,7 @@ Hero portrait hover:
 - [ ] Fun Size Immuninja: link to Instagram (https://www.instagram.com/funsizeimmuninja/); photo 'FUNSIZE IG collage' (file received)
 - [ ] Teacher Training Program: link becomes https://medschool.cuanschutz.edu/immunology-and-microbiology/dept-resources/teaching-resources/teacher-training-program (today's ends in `/overview`); photo 'TTP Aimee' (file received)
 - [ ] "World of Autoimmunity" becomes "Science Crosstalk", link https://aimeepughbernard.substack.com/, subheading "Where Science and Communication Collide", photo 'SUBSTACK collage' (file received)
-- [ ] "All work": blue (#6aa8ff) square around the arrow, bigger text and arrow. Same change on the Educator page's "All work" button. [Q17, resolved]
+- [ ] "All work": blue (#6aa8ff) square around the arrow, bigger text and arrow. Same change on the Educator page's "All work" button. Button text also changes from "All work" to "See all" (Alex, 10/24), on both. [Q17, resolved]
 
 By the Numbers:
 - [ ] [CODE] Labels and numbers: "Years as an Educator, Immunologist & Communicator" 25+ (the label changes from "educator, scientist"), Courses taught **30+**, Talks given **100+**, new fourth stat **Awards received 9+**. [Q16]
