@@ -50,7 +50,7 @@ Screenshots and candidate photos are saved in `audit-review/` (not committed; `s
 | 16 | Q24 Outreach details | queued |
 | 17 | Q6 Communicator hero photos | RESOLVED + BUILT (Alex: C, "obviously the TEDx one"): small b/w TEDx photo left, TEDx front stage right; phones show the big photo only. Upscale list in `PHOTOS-TO-UPSCALE.md` (the front stage file is low-res) |
 | 18 | Q7 "contributes to" cards | RESOLVED + BUILT (Alex: "looks great"): four cards, her links, hover movement kept. Photos: Science Crosstalk = SUBSTACK collage, Unbiased Science = b/w TEDx portrait, @funsizeimmuninja = FUNSIZE IG collage. Immunology Explained shows its logo on a soft tile; role line left blank (Alex). **WAITING ON AIMEE: her lab-coat photos (laughing or tubes); when they arrive, put ONE on the Immunology Explained card** |
-| 19 | Q8 "Read now" feature | queued |
+| 19 | Q8 "Read now" feature | RESOLVED + BUILT (Alex: Option A): TEDx scientist photo and link to https://aimeepughbernard.substack.com/p/confessions-of-a-scientist; applied in code to the item titled "Confessions of a Scientist…" |
 | 20 | Q9, Q10 photos | queued |
 | 21 | Q5 CCTSI slide | queued |
 | 22 | Q27 Immunologist and Work audits | queued |
