@@ -62,6 +62,15 @@ Rule from Alex (10/24): where she named a photo and the file is in `images/`, ju
 ## 0d. Questions to ask Aimee (collected as we go)
 1. **Fun-Size workshop details layout (from Q22).** We're building Option A: her four groups as labeled blocks in the right-hand list of the one "Fun-Size Immunology Workshop" section. Option B: the four groups as purple-circle items on the left, each with its own section, like Graduate School. Which does she prefer? Screenshots (preview mocks): `audit-review/screenshots/q22-optionA-groups-in-right-list.png` and `q22-optionB-groups-as-left-items.png`. Her third group is written as a bullet ("IMMUNOTHERAPY Harnessing the Immune System"); we're treating it as a group heading.
 
+
+## 0e. Build log (building happens as we go, per Alex 10/24)
+Built, checked in the browser, committed locally (not pushed):
+- Header cartoon: rhinovirus, staph, E. coli removed (both `nav.js` and `shared.js`); influenza line now says "flu vaccine". Commit c033697.
+- "See all" button on Home and Educator: new label, blue #6aa8ff, 76px tall with 24px text. Commit a35f911.
+- Home By the Numbers: 25+ (new label), 30+, 100+, and a fourth stat "Awards received 9+"; four columns on desktop. Commit after a35f911.
+
+Approved but not built yet (waiting on Sanity permission, Q21, or art): Graduate School pill and nine topics, Fun-Size four groups, panel photos, B cell / dendritic cell / macrophage cartoons, WebP image pipeline.
+
 ## 1. Changes by page
 
 ### Home
