@@ -37,7 +37,7 @@ Screenshots and candidate photos are saved in `audit-review/` (not committed; `s
 | 3 | Q16 Awards stat "9+" as written | RESOLVED: all four approved: label "Years as an Educator, Immunologist & Communicator" 25+, Courses taught 30+, Talks given 100+, new fourth stat Awards received 9+ |
 | 4 | Q17 "All work" blue shade | RESOLVED: option B, #6aa8ff (T cell cartoon blue), text and arrow bigger. Applies to BOTH "All work" buttons: Home (`index.astro`) and Educator (`educator.astro`); a color scan of all 7 pages found no other yellow-green element. CSS in `home.css` and `educator.css` |
 | 5 | Q11 optimize images, don't commit originals | RESOLVED: yes. Web-sized copies (desktop + phone sizes, about 200-600KB each), ALL converted to WebP including the HEIC. Originals stay local in `images/`, not committed |
-| 6 | Q12 germs: top-left cast only; interferon | queued |
+| 6 | Q12 germs: top-left cast only; interferon | RESOLVED: remove rhinovirus, staph and E. coli from the top-left cartoon only; footer game stays as is; interferon stays (she didn't mention it) |
 | 7 | Q14 "static" sections = stack, no pinned swap | queued |
 | 8 | Q19 Communicator numbers: numbers only or Home look | queued |
 | 9 | Q21 OK to edit Sanity directly | queued |
@@ -55,7 +55,7 @@ Screenshots and candidate photos are saved in `audit-review/` (not committed; `s
 | 21 | Q5 CCTSI slide | queued |
 | 22 | Q27 Immunologist and Work audits | queued |
 
-Resolved so far: Q1, Q2, Q3, Q4, Q11, Q16, Q17, Q22, Q23 (see log above).
+Resolved so far: Q1, Q2, Q3, Q4, Q11, Q12, Q16, Q17, Q22, Q23 (see log above).
 
 Rule from Alex (10/24): where she named a photo and the file is in `images/`, just apply it; don't ask again. Applies to: Medical School, Graduate School = 'EDU THC Antibody'; PA, Dental = 'EDU THC Thymus'; Human Immunology = fun-size bag; Home cards TLaS / FUNSIZE IG / TTP / SUBSTACK; Home Communicator hover = 'SCI COMM TEDx scientist'; Contact portrait; Teacher Training = 'TTP Aimee'; CU Denver = DMRSEF.
 
@@ -69,9 +69,9 @@ Header cartoon (top-left mascot):
 - [ ] [ART] Add **B cell**: "Hi! I'm a B cell. I make antibodies." / "B cells mature in the bone marrow" / "Each B cell recognizes one specific antigen" / "Some of us turn into memory cells and stick around for years"
 - [ ] [ART] Add **dendritic cell**: "Hi! I'm a DC. I capture germs to sound the alarm." / "I patrol the body looking for invading pathogens" / "I chop invading germs to bits and show them off to my friends" / "My show-and-tell helps my friends join an immune response"
 - [ ] [ART] Add **macrophage**: "Hi! I'm a macrophage. My name means 'big eater'" / "I'm a phagocytic cell – that means I eat germs for a living." / plus the same last two lines as the DC
-- [ ] [CODE] Remove rhinovirus, staph, E. coli from the cast. Keep coronavirus. [Q12]
+- [ ] [CODE] Remove rhinovirus, staph, E. coli from the top-left cast only (the footer game keeps them). Keep coronavirus. [Q12, resolved]
 - [ ] [CODE] Influenza line: "flu shot" becomes "flu vaccine"
-- [ ] [Q12] Interferon is in the cast today but she didn't mention it.
+- Interferon stays: it's in the cast today and she didn't mention it. [Q12, resolved]
 
 Top right:
 - [ ] [CODE] "Ask me a Q?" scripted bot: a B cell holding a sign, preprogrammed Q&A to help explore the site ("books, awards, writing…"). Needs a question set. Related: BEN-1684, BEN-1697, BEN-1698. [Q13]
