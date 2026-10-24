@@ -1,8 +1,6 @@
 ---
 import SiteLayout from "@/layouts/SiteLayout.astro";
 import SiteHeader from "@/components/SiteHeader.astro";
-import ContactTalk from "@/components/site/ContactTalk.astro";
-import ContactTalkSkeleton from "@/components/site/ContactTalkSkeleton.astro";
 import "@/styles/site/shared.css";
 import "@/styles/site/contact.css";
 ---
@@ -15,16 +13,14 @@ import "@/styles/site/contact.css";
 <section class="contact" aria-label="Contact">
   <div class="contact__grid">
     <aside class="contact__panel fade">
-      <img class="contact__photo" src="/site/communicator.webp" alt="" />
-      <div class="contact__shade" aria-hidden="true"></div>
-      <ContactTalk server:defer><ContactTalkSkeleton slot="fallback" /></ContactTalk>
+      <img class="contact__photo" src="/site/photos/contact-portrait-1110.webp" srcset="/site/photos/contact-portrait-700.webp 700w, /site/photos/contact-portrait-1110.webp 1110w" sizes="(max-width: 900px) 100vw, 680px" alt="Aimee Pugh-Bernard" />
     </aside>
 
     <div class="contact__form-side fade">
       <form class="contact__form" id="contactForm" method="post" action="#">
         <div class="contact__intro">
-          <h1 class="display contact__title">Get in touch</h1>
-          <p class="contact__lede">Tell Aimee a little about what you have in mind, and she’ll get back to you.</p>
+          <h1 class="display contact__title">Let’s connect.</h1>
+          <p class="contact__lede">Have a talk, workshop, or collaboration in mind? Want to talk about teaching, science communication, or outreach? I’d love to hear from you. Send me a note and let’s explore how we can share the wonder of science together.</p>
         </div>
         <hr />
         <div class="contact__fields">
