@@ -110,16 +110,16 @@ No audit received. [Q27]
 ## 2. Open questions (write your answer under each)
 
 ### Photos
-**Q1 [RESOLVED].**  Educator hero left photo and Home Educator hover.** She says "'EDU THC Antibody' or 'EDU THC Thymus'" for both. Her panel assignments are Antibody for Medical School and Graduate School, Thymus for PA and Dental. With the hero as well, the same two photos appear five times on one page. Which one for the hero and the Home hover, and is the repetition OK?
+**Q1 [RESOLVED]. Educator hero left photo and Home Educator hover.** She says "'EDU THC Antibody' or 'EDU THC Thymus'" for both. Her panel assignments are Antibody for Medical School and Graduate School, Thymus for PA and Dental. With the hero as well, the same two photos appear five times on one page. Which one for the hero and the Home hover, and is the repetition OK?
 Answer:
 
-**Q2 [RESOLVED, see log].**  Immunologist hover photo ('need to curate').** Her 10/16 email says she still needs to pose "in a lab coat in a lab doing something cool." The Communicator document has a photo of her in a lab coat holding a tube. Is that the one, or is a new photo coming? Unplaced candidates in the folder: `EDU Aimee Immune Textbook2.JPG`, `EDU THC Cells.jpg`.
+**Q2 [RESOLVED, see log]. Immunologist hover photo ('need to curate').** Her 10/16 email says she still needs to pose "in a lab coat in a lab doing something cool." The Communicator document has a photo of her in a lab coat holding a tube. Is that the one, or is a new photo coming? Unplaced candidates in the folder: `EDU Aimee Immune Textbook2.JPG`, `EDU THC Cells.jpg`.
 Answer:
 
-**Q3 [RESOLVED].**  CU Denver panel photo.** "Swap out photo – which one?" `SCI COMM DMRSEF Aimee.jpg` was taken at a University of Colorado Denver podium. Use it?
+**Q3 [RESOLVED]. CU Denver panel photo.** "Swap out photo – which one?" `SCI COMM DMRSEF Aimee.jpg` was taken at a University of Colorado Denver podium. Use it?
 Answer:
 
-**Q4 [RESOLVED].**  Teacher Training card (Educator).** "Swap out photo," no name. Use 'TTP Aimee' as on Home?
+**Q4 [RESOLVED]. Teacher Training card (Educator).** "Swap out photo," no name. Use 'TTP Aimee' as on Home?
 Answer:
 
 **Q5. CCTSI photo.** The file is the whole workshop slide: Anschutz logo plus a second person (Wendy Meyer). Use as is, crop to Aimee, or use another photo? (She asked to drop the Anschutz logo elsewhere, see Q26.)
