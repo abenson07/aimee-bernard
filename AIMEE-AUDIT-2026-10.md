@@ -38,9 +38,9 @@ Screenshots and candidate photos are saved in `audit-review/` (not committed; `s
 | 4 | Q17 "All work" blue shade | RESOLVED: option B, #6aa8ff (T cell cartoon blue), text and arrow bigger. Applies to BOTH "All work" buttons: Home (`index.astro`) and Educator (`educator.astro`); a color scan of all 7 pages found no other yellow-green element. CSS in `home.css` and `educator.css` |
 | 5 | Q11 optimize images, don't commit originals | RESOLVED: yes. Web-sized copies (desktop + phone sizes, about 200-600KB each), ALL converted to WebP including the HEIC. Originals stay local in `images/`, not committed |
 | 6 | Q12 germs: top-left cast only; interferon | RESOLVED: remove rhinovirus, staph and E. coli from the top-left cartoon only; footer game stays as is; interferon stays (she didn't mention it) |
-| 7 | Q14 "static" sections = stack, no pinned swap | queued |
+| 7 | Q14 "static" sections | RESOLVED (Alex): she means the numbers must be typed-in static numbers, not driven by the CMS. The pinned scroll-swap STAYS. Home stats are already typed in the page. Text edits built: "this" and "since 2011" removed. Org text "School of Medicine" is a Sanity change (the two 2023 awards say "CU School of Medicine"). Whether the awards section itself should be typed-in vs Sanity is settled in Q15 |
 | 8 | Q19 Communicator numbers: numbers only or Home look | queued |
-| 9 | Q21 OK to edit Sanity directly | queued |
+| 9 | Q21 OK to edit Sanity directly | RESOLVED: yes, edit Sanity. Blocker: no Sanity write token on this machine. Alex to put `SANITY_API_WRITE_TOKEN` in `studio/.env.local` (gitignored); never paste it in chat |
 | 10 | Q26 CU Anschutz logo: chip only or everywhere | queued |
 | 11 | Q13 bot: books, which pages, phone placement | queued |
 | 12 | Q15 outreach awards (Sanity, placeholders, "CU", label) | queued |
@@ -55,7 +55,7 @@ Screenshots and candidate photos are saved in `audit-review/` (not committed; `s
 | 21 | Q5 CCTSI slide | queued |
 | 22 | Q27 Immunologist and Work audits | queued |
 
-Resolved so far: Q1, Q2, Q3, Q4, Q11, Q12, Q16, Q17, Q22, Q23 (see log above).
+Resolved so far: Q1, Q2, Q3, Q4, Q11, Q12, Q14, Q16, Q17, Q21, Q22, Q23 (see log above).
 
 Rule from Alex (10/24): where she named a photo and the file is in `images/`, just apply it; don't ask again. Applies to: Medical School, Graduate School = 'EDU THC Antibody'; PA, Dental = 'EDU THC Thymus'; Human Immunology = fun-size bag; Home cards TLaS / FUNSIZE IG / TTP / SUBSTACK; Home Communicator hover = 'SCI COMM TEDx scientist'; Contact portrait; Teacher Training = 'TTP Aimee'; CU Denver = DMRSEF.
 
@@ -69,7 +69,9 @@ Built, checked in the browser, committed locally (not pushed):
 - "See all" button on Home and Educator: new label, blue #6aa8ff, 76px tall with 24px text. Commit a35f911.
 - Home By the Numbers: 25+ (new label), 30+, 100+, and a fourth stat "Awards received 9+"; four columns on desktop. Commit after a35f911.
 
-Approved but not built yet (waiting on Sanity permission, Q21, or art): Graduate School pill and nine topics, Fun-Size four groups, panel photos, B cell / dendritic cell / macrophage cartoons, WebP image pipeline.
+Also built: Home headings ("this" and "since 2011" removed), commit 06b4790.
+
+Approved but not built yet (waiting on the Sanity write token, or art): Graduate School pill and nine topics, Fun-Size four groups, panel photos, B cell / dendritic cell / macrophage cartoons, WebP image pipeline.
 
 ## 1. Changes by page
 
@@ -102,7 +104,7 @@ By the Numbers:
 - [ ] [CODE] Labels and numbers: "Years as an Educator, Immunologist & Communicator" 25+ (the label changes from "educator, scientist"), Courses taught **30+**, Talks given **100+**, new fourth stat **Awards received 9+**. [Q16]
 - [ ] [CODE] "Trusted by / appeared with" section: delete the word "this" ("I've shared science in classrooms…")
 - [ ] [CODE] Awards section heading: delete "since 2011"
-- [ ] [CODE] Make the sections static under By the Numbers, i.e. stop the pinned scroll-swap and stack them. [Q14]
+- [x] [CODE] "Static" = numbers typed by hand, not from the CMS (already true on Home). Pinned scroll-swap stays. [Q14, resolved]
 - [ ] [CODE/DB] 2023–2026 awards: every organization line reads "School of Medicine" (today a mix of "SCHOOL OF MEDICINE" and "CU SCHOOL OF MEDICINE")
 - [ ] [CODE+DB] New awards section "Outreach and mentoring that makes a difference.", styled like the teaching awards, one wreath each with the year in the center: 2026 Community Partner Spotlight Award, Aurora Public Schools; 2024 CU Women in STEM Mentorship Award, CU Anschutz; 2023 CU Women in STEM Community Service Award, CU Anschutz; 2022 Chase Faculty Community Service Award, CU. [Q15]
 
