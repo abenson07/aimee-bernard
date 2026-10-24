@@ -121,30 +121,15 @@
         'I show your immune system a harmless preview of a germ.',
         'Then your memory cells are ready for the real thing.',
       ] },
-      { file: 'rhinovirus', name: 'rhinovirus', lines: [
-        'Uh oh. Rhinovirus. I cause most common colds.',
-        'There are over 160 kinds of me. Good luck.',
-        'I like the cooler air inside your nose.',
-      ] },
       { file: 'influenza', name: 'influenza virus', lines: [
         'Influenza here. The flu, that\u2019s me.',
         'I change my coat a little every year.',
-        'That\u2019s why there\u2019s a new flu shot each fall.',
+        'That\u2019s why there\u2019s a new flu vaccine each fall.',
       ] },
       { file: 'coronavirus', name: 'coronavirus', lines: [
         'Coronavirus. Named for my crown of spikes.',
         'My spike proteins unlock the doors to your cells.',
         'Some of my cousins just cause ordinary colds.',
-      ] },
-      { file: 'e-coli', name: 'E. coli', lines: [
-        'E. coli! Most of us are harmless gut residents.',
-        'I swim by spinning my tail, called a flagellum.',
-        'A few strains are trouble. Wash your veggies!',
-      ] },
-      { file: 'staph', name: 'staph', lines: [
-        'Staph! We grow in grape-like clusters.',
-        'Lots of people carry us on their skin or in their nose.',
-        'Through a cut, we can cause an infection.',
       ] },
     ];
     const src = (c) => `/site/cells/${c.file}.svg`;
