@@ -88,6 +88,8 @@ Also built: Home headings ("this" and "since 2011" removed), commit 06b4790.
 - Educator hero left photo: 'EDU THC Antibody' (Alex chose A). Commit after 289cf5f.
 - Educator awards/course spacing: BUILT as option 3 (Alex): row gap 36px, 40px under the awards, 80px above the courses. (Was open:) Educator awards/course spacing. It IS in her notes ("can we space the top 3 closer to the bottom 3? Love the spacing between the 3 on each row so please maintain" / "Decrease spacing between awards and 'Courses Aimee directs and teaches'") but she gave no amounts; mine (row gap 24px, less space before courses) was a guess and Alex isn't a fan. Three options screenshot: `audit-review/screenshots/educator-spacing-options.png`.
 
+- Home portrait hover: Educator = EDU THC Antibody photo; Communicator = TEDx photo + her new text; Immunologist = her new text (photo waiting on Alex's lab-coat composite). Commit after e17cca9.
+
 Still to build from approved items: Home hover photos (Educator = same EDU THC Antibody as the hero, Alex chose A), Home hover photos and card photos/links, Communicator changes, Outreach page, Contact, bottom half-circle, "Ask me a Q?" bot.
 
 ## 1. Changes by page
