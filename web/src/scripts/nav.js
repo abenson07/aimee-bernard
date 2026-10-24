@@ -1,3 +1,4 @@
+import './smooth-scroll.js';
 /* Notch nav + cell mascot behavior (extracted from shared.js for pages that do not load it). */
 (() => {
   const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;

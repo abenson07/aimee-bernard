@@ -43,14 +43,14 @@ Screenshots and candidate photos are saved in `audit-review/` (not committed; `s
 | 9 | Q21 OK to edit Sanity directly | RESOLVED: yes, edit Sanity. Blocker: no Sanity write token on this machine. Alex to put `SANITY_API_WRITE_TOKEN` in `studio/.env.local` (gitignored); never paste it in chat |
 | 10 | Q26 CU Anschutz logo: chip only or everywhere | RESOLVED (Alex): everywhere. Built: Educator chip removed, Work-card mapping and Home strip fallback removed, logo files deleted, logo cleared from the Sanity "CU Anschutz" publication (backup in `audit-review/`). A scan of all 7 pages finds no CU Anschutz image. The CU Denver logo is a different logo and was left. Open: the CCTSI slide (Q5) contains the Anschutz logo |
 | 11 | Q13 bot: books, which pages, phone placement | queued |
-| 12 | Q15 outreach awards (Sanity, placeholders, "CU", label) | queued |
-| 13 | Q20 bottom half circle | queued |
+| 12 | Q15 outreach awards | RESOLVED + BUILT (Alex): awards live in Sanity with a new "Award group" (teaching / outreach & mentoring); each section shows the six most recent, newest first from the left. Four outreach awards created in Sanity (venue for the last is just "CU", as she wrote it). Home: new fourth panel in the pinned sequence, no eyebrow label (Alex: removed the eyebrow on both awards panels; heading height kept level with the other panels). Immunologist: placeholders replaced by the real outreach awards (closes BEN-1703). Work page Award filter now 10. PR #3 (round 1) was merged before this |
+| 13 | Q20 bottom half circle | RESOLVED + BUILT (Alex): cartoons removed completely; instead of a shorter curve, copy the humaan.com footer transition: page body gets rounded bottom corners (60px; 32px phone) and over the last ~350px of scroll scales back to 95% (anchored at its bottom edge) while the dark footer content drops down into place. Eased smooth scrolling (Lenis, desktop mouse/trackpad only; touch stays native). Applies to Educator, Communicator, Immunologist. Home's footer unchanged |
 | 14 | Q18 Communicator big text | RESOLVED + BUILT: her new text at today's type size (6 lines desktop, 10 on a phone), immune cell and antibody kept. (Q13 bot is on hold at Alex's request) |
 | 15 | Q25 Contact TEDx card; form destination | RESOLVED + BUILT: heading "Let's connect.", her paragraph, her portrait; TEDx card removed (Alex: the call was right). Form messages go to aepbernard@gmail.com (Alex, 10/24). The service that sends them (BEN-1704) is the next question |
 | 16 | Q24 Outreach details | queued |
-| 17 | Q6 Communicator hero photos | queued |
-| 18 | Q7 "contributes to" cards (photo waits on Aimee's originals) | queued |
-| 19 | Q8 "Read now" feature | queued |
+| 17 | Q6 Communicator hero photos | RESOLVED + BUILT (Alex: C, "obviously the TEDx one"): small b/w TEDx photo left, TEDx front stage right; phones show the big photo only. Upscale list in `PHOTOS-TO-UPSCALE.md` (the front stage file is low-res) |
+| 18 | Q7 "contributes to" cards | RESOLVED + BUILT (Alex: "looks great"): four cards, her links, hover movement kept. Photos: Science Crosstalk = SUBSTACK collage, Unbiased Science = b/w TEDx portrait, @funsizeimmuninja = FUNSIZE IG collage. Immunology Explained shows its logo on a soft tile; role line left blank (Alex). **WAITING ON AIMEE: her lab-coat photos (laughing or tubes); when they arrive, put ONE on the Immunology Explained card** |
+| 19 | Q8 "Read now" feature | RESOLVED + BUILT (Alex: Option A): TEDx scientist photo and link to https://aimeepughbernard.substack.com/p/confessions-of-a-scientist; applied in code to the item titled "Confessions of a Scientist…" |
 | 20 | Q9, Q10 photos | queued |
 | 21 | Q5 CCTSI slide | queued |
 | 22 | Q27 Immunologist and Work audits | queued |
@@ -62,6 +62,12 @@ Rule from Alex (10/24): where she named a photo and the file is in `images/`, ju
 ## 0d. Questions to ask Aimee (collected as we go)
 1. **Fun-Size workshop details layout (from Q22).** We're building Option A: her four groups as labeled blocks in the right-hand list of the one "Fun-Size Immunology Workshop" section. Option B: the four groups as purple-circle items on the left, each with its own section, like Graduate School. Which does she prefer? Screenshots (preview mocks): `audit-review/screenshots/q22-optionA-groups-in-right-list.png` and `q22-optionB-groups-as-left-items.png`. Her third group is written as a bullet ("IMMUNOTHERAPY Harnessing the Immune System"); we're treating it as a group heading.
 
+
+## WAITING ON (Alex is getting these from Aimee)
+1. Lab-coat photos from her Communicator doc (laughing / tubes): place ONE on the Communicator "Immunology Explained" card, replacing its logo tile.
+2. A new lab-coat photo or Alex's composite for the Immunologist: Home hover and Immunologist hero.
+3. Upscaled versions of the photos in `PHOTOS-TO-UPSCALE.md`.
+4. Her Immunologist and Work audits (Q27), if still coming.
 
 ## 0e. Build log (building happens as we go, per Alex 10/24)
 Built, checked in the browser, committed locally (not pushed):
@@ -83,7 +89,16 @@ Also built: Home headings ("this" and "since 2011" removed), commit 06b4790.
 
 - Contact page: "Let's connect.", her paragraph, her portrait (WebP), TEDx card removed. Commit after 6467580.
 
-Still to build from approved items: Educator hero photo swap, mission-sentence flu icon, awards/course spacing, Home hover photos and card photos/links, Communicator changes, Outreach page, Contact, bottom half-circle, "Ask me a Q?" bot.
+- Educator: flu virus removed from the mission sentence; award rows closer together (row gap 56 to 24px) and less space before the courses. Commit f36c96d.
+
+- Educator hero left photo: 'EDU THC Antibody' (Alex chose A). Commit after 289cf5f.
+- Educator awards/course spacing: BUILT as option 3 (Alex): row gap 36px, 40px under the awards, 80px above the courses. (Was open:) Educator awards/course spacing. It IS in her notes ("can we space the top 3 closer to the bottom 3? Love the spacing between the 3 on each row so please maintain" / "Decrease spacing between awards and 'Courses Aimee directs and teaches'") but she gave no amounts; mine (row gap 24px, less space before courses) was a guess and Alex isn't a fan. Three options screenshot: `audit-review/screenshots/educator-spacing-options.png`.
+
+- Home portrait hover: Educator = EDU THC Antibody photo; Communicator = TEDx photo + her new text; Immunologist = her new text (photo waiting on Alex's lab-coat composite). Commit after e17cca9.
+
+- Home "What Aimee's Working On": heading, her four photos, Science Crosstalk card (Substack), Teacher Training link without /overview. TLaS photo crop: center (Alex, "she is in the center there"). Commit c739b15.
+
+Still to build from approved items: Home hover photos (Educator = same EDU THC Antibody as the hero, Alex chose A), Home hover photos and card photos/links, Communicator changes, Outreach page, Contact, bottom half-circle, "Ask me a Q?" bot.
 
 ## 1. Changes by page
 

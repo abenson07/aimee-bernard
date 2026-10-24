@@ -156,7 +156,7 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 .awards-row__title { font-family: var(--headline); font-weight: 600; font-size: clamp(2.5rem, 4.4vw, 4rem); line-height: 1; letter-spacing: -0.01em; text-align: center; }
 .awards-row--recog { padding-top: 40px; }
 .awards-row__head { display: flex; flex-direction: column; align-items: center; gap: 20px; }
-.awards-row--recog .award-grid { grid-template-columns: repeat(3, 1fr); max-width: 960px; margin: 0 auto; gap: 56px 32px; }
+.awards-row--recog .award-grid { grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); max-width: 1100px; margin: 0 auto; gap: 56px 32px; }
 @media (max-width: 767px) { .awards-row--recog .award-grid { grid-template-columns: 1fr; gap: 48px; } }
 .award-grid { width: 100%; display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 40px 24px; }
 .award { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 16px; }
@@ -333,6 +333,8 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 .hero-split__media > div:first-child { flex: 1 1 0; min-width: 0; }
 .hero-split__media > div:last-child { flex: none; width: 448px; }
 .hero-split__media img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+/* Communicator: the narrow photo sits on the left on desktop. In the page order the wide photo stays first, so phones (which show only the first photo) show the wide one. */
+@media (min-width: 768px) { .hero-split__media--small-first > div:last-child { order: -1; } }
 @media (max-width: 991px) { .hero-split__media > div:last-child { width: 34%; } .hero-split__side.is-info { width: 100%; } }
 @media (max-width: 767px) { .hero-split { padding: 160px 16px 56px; } .hero-split__media { flex-direction: column; height: auto; } .hero-split__media > div, .hero-split__media > div:first-child { flex: none; height: 300px; } .hero-split__media > div:last-child { display: none; } }
 .fade-into { background: linear-gradient(180deg, #f5f4f1 0%, var(--bg) 260px); }
@@ -354,6 +356,9 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 .contrib__card { flex: 1 1 0; min-width: 0; display: flex; flex-direction: column; gap: 16px; transition: flex-grow 0.7s cubic-bezier(0.22, 0.8, 0.18, 1); }
 .contrib__media { position: relative; height: 620px; border-radius: 16px; overflow: hidden; background: var(--line); }
 .contrib__media img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+/* No photo yet: show the outlet's logo on a soft tile instead of an empty box. */
+.contrib__media--logo { display: grid; place-items: center; background: color-mix(in srgb, var(--ink) 5%, var(--bg)); }
+.contrib__media--logo img { position: static; width: min(70%, 320px); height: auto; object-fit: contain; filter: grayscale(1); opacity: 0.8; }
 .contrib__info { display: flex; flex-direction: column; gap: 4px; overflow: hidden; white-space: nowrap; }
 .contrib__name { font-family: var(--headline); font-weight: 600; font-size: 24px; line-height: 1.1; letter-spacing: -0.01em; }
 .contrib__role { font-family: var(--mono); font-size: 14px; line-height: 20px; letter-spacing: -0.07px; color: var(--muted); }
@@ -401,6 +406,10 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 .mission-sec .awards-row { padding: 0; width: 100%; }
 .mission-sec .award-grid { grid-template-columns: repeat(3, 1fr); max-width: 960px; margin: 0 auto; gap: 56px 32px; }
 @media (max-width: 560px) { .mission-sec .award-grid { grid-template-columns: repeat(2, 1fr); gap: 40px 16px; } }
+/* Educator: the two rows of awards sit closer together (column spacing unchanged), and the courses follow sooner */
+.mission-sec:has(.awards-row) .award-grid { row-gap: 36px; }
+.mission-sec:has(.awards-row) { padding-bottom: 40px; }
+.mission-sec:has(.awards-row) + .courses { padding-top: 80px; }
 
 /* ---------- Courses (program tiles) — Figma 80:11791 ---------- */
 .courses { padding: 120px 0; }
@@ -555,6 +564,10 @@ body.panel-open #page { transform: scale(0.97); filter: brightness(0.9); }
 
 /* ---------- Footer: fixed behind the page and uncovered as the page scrolls off; content rises into place as it is revealed ---------- */
 .page-main { position: relative; z-index: 1; background: var(--bg); margin-bottom: var(--footer-h, 500px); }
+/* Pages with the dark footer: the page body ends in rounded bottom corners and, over the last stretch of scroll, scales back
+   and settles as the footer rises into place (shared.js "Footer reveal"). */
+.page-main:has(~ .site-footer) { border-radius: 0 0 60px 60px; padding-bottom: 96px; transform-origin: 50% 100%; }
+@media (max-width: 767px) { .page-main:has(~ .site-footer) { border-radius: 0 0 32px 32px; padding-bottom: 64px; } }
 /* No background behind the prefooter: .page-main paints --bg only down to the prefooter's top (--prefooter-h is set in shared.js),
    and the canvas behind the page is the footer's black, so the corners under the circle's curve show the footer through. The circle is solid so it reads over the black. */
 body:has(.site-footer) { background: var(--ink); }

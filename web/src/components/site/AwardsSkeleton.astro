@@ -1,14 +1,15 @@
 ---
 interface Props {
   variant: "home" | "educator";
+  count?: number;
 }
-const { variant } = Astro.props;
+const { variant, count = 6 } = Astro.props;
 const t = variant === "home" ? "award-title" : "award__title";
 const m = variant === "home" ? "award-meta" : "award__meta";
 ---
 
 {
-  Array.from({ length: 6 }).map(() => (
+  Array.from({ length: count }).map(() => (
     <div class="award">
       <div class="award-seal"><span class="sk sk--round" style="width:100%;aspect-ratio:1280/1222"></span></div>
       <p class={t} style="width:100%;display:flex;flex-direction:column;align-items:center;gap:8px"><span class="sk sk--line" style="width:80%"></span><span class="sk sk--line" style="width:55%"></span></p>

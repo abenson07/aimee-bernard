@@ -15,8 +15,8 @@ const bwUrl = (await getImage({ src: bwSrc, format: "webp", width: 520 })).src;
 ---
 
 <SiteLayout title="Educator">
-<div class="page-main" id="pageMain">
 <SiteHeader />
+<div class="page-main" id="pageMain">
 
 <main id="page">
 <section class="hero-split">
@@ -25,12 +25,12 @@ const bwUrl = (await getImage({ src: bwSrc, format: "webp", width: 520 })).src;
       <h1 class="display hero-split__title">Teaching immunology so it sticks</h1>
       <div class="hero-split__side is-info"><p>Since 2007, Aimee has taught {coursesTaught} courses, from first-year medical students and PhD trainees to faculty and community members.</p></div>
     </div>
-    <div class="hero-split__media"><div><img src="/site/educator.webp" alt=""></div><div><img src={bwUrl} alt=""></div></div>
+    <div class="hero-split__media"><div><img src="/site/photos/edu-thc-antibody-1600.webp" srcset="/site/photos/edu-thc-antibody-800.webp 800w, /site/photos/edu-thc-antibody-1600.webp 1600w" sizes="(max-width: 767px) 100vw, 60vw" alt="Aimee presenting to an audience, a slide about B cells and antibodies behind her" style="object-position:50% 40%"></div><div><img src={bwUrl} alt=""></div></div>
   </div>
 </section>
 
 <section class="mission-sec has-stats" aria-label="Mission and awards">
-  <p class="mission" data-mission>The immune system is endlessly fascinating <span class="m-el m-cell" data-mx="14" data-my="10"><img src="/site/cells/t-cell.svg" alt=""></span> and my job, across teaching, communication and outreach <span class="m-el m-cell m-cell--bad" data-mx="10" data-my="14"><img src="/site/cells/influenza.svg" alt=""></span> is to inspire you <span class="m-el m-cell" data-mx="12" data-my="9"><img src="/site/cells/antibody.svg" alt=""></span> to think so too.</p>
+  <p class="mission" data-mission>The immune system is endlessly fascinating <span class="m-el m-cell" data-mx="14" data-my="10"><img src="/site/cells/t-cell.svg" alt=""></span> and my job, across teaching, communication and outreach is to inspire you <span class="m-el m-cell" data-mx="12" data-my="9"><img src="/site/cells/antibody.svg" alt=""></span> to think so too.</p>
   <section class="awards-row no-title" aria-label="Awards">
     <div class="award-grid">
       <Awards server:defer variant="educator"><AwardsSkeleton slot="fallback" variant="educator" /></Awards>
@@ -47,7 +47,7 @@ const bwUrl = (await getImage({ src: bwSrc, format: "webp", width: 520 })).src;
   </div>
 </section>
 
-<section class="feature-pair wrap fade-to-prefooter" aria-label="Programs">
+<section class="feature-pair wrap" aria-label="Programs">
   <div class="feature-pair__head fade"><span class="tag-chip">Programs</span><h2 class="feature-pair__title">Building the next generation of teachers</h2></div>
   <div class="workon">
     <div class="workon__row">
@@ -69,22 +69,10 @@ const bwUrl = (await getImage({ src: bwSrc, format: "webp", width: 520 })).src;
   </div>
 </section>
 
-<section class="prefooter" aria-label="Closing statement">
-  <div class="prefooter__circle" aria-hidden="true"></div>
-  <div class="prefooter__inner">
-    <div class="prefooter__icons" aria-hidden="true">
-      <span class="pf-icon" data-mx="50" data-my="30" style="--l:350;--t:22;--w:293.939;--i:240;--r:15deg"><span class="pf-inner"><img src="/site/cells/t-cell.svg" alt="" style="--in:0"></span></span>
-      <span class="pf-icon" data-mx="-40" data-my="-20" style="--l:0;--t:26;--w:255.754;--i:187.225;--r:-30deg"><span class="pf-inner"><img src="/site/cells/neutrophil.svg" alt="" style="--in:0"></span></span>
-      <span class="pf-icon" data-mx="30" data-my="20" style="--l:27;--t:305;--w:132.668;--i:97.12;--r:-30deg"><span class="pf-inner"><img src="/site/cells/staph.svg" alt="" style="--in:0"></span></span>
-      <span class="pf-icon" data-mx="20" data-my="-30" style="--l:719;--t:0;--w:239.054;--i:175;--r:30deg"><span class="pf-inner"><img src="/site/cells/red-blood-cell.svg" alt="" style="--in:0"></span></span>
-      <span class="pf-icon" data-mx="-40" data-my="20" style="--l:1010;--t:-80;--w:413.438;--i:302.657;--r:30deg"><span class="pf-inner"><img src="/site/cells/coronavirus.svg" alt="" style="--in:0"></span></span>
-    </div>
-  </div>
-</section>
 </main>
-
-<CourseGroups server:defer part="panels" />
 </div>
+<!-- Outside the page body: these are position: fixed, and the body is transformed (scaled) at the end of the page. -->
+<CourseGroups server:defer part="panels" />
 <footer class="site-footer" id="siteFooter">
 <div class="site-footer__inner">
   <div class="site-footer__top">
