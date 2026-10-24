@@ -46,7 +46,7 @@ Screenshots and candidate photos are saved in `audit-review/` (not committed; `s
 | 12 | Q15 outreach awards (Sanity, placeholders, "CU", label) | queued |
 | 13 | Q20 bottom half circle | queued |
 | 14 | Q18 Communicator big text | RESOLVED + BUILT: her new text at today's type size (6 lines desktop, 10 on a phone), immune cell and antibody kept. (Q13 bot is on hold at Alex's request) |
-| 15 | Q25 Contact TEDx card; form destination | queued |
+| 15 | Q25 Contact TEDx card; form destination | BUILT (Alex: "just do it"): heading "Let's connect.", her paragraph, her portrait; TEDx card removed per my recommendation. Form destination (BEN-1704) still open |
 | 16 | Q24 Outreach details | queued |
 | 17 | Q6 Communicator hero photos | queued |
 | 18 | Q7 "contributes to" cards (photo waits on Aimee's originals) | queued |
@@ -80,6 +80,8 @@ Also built: Home headings ("this" and "since 2011" removed), commit 06b4790.
 - CU Anschutz logo removed everywhere; Educator top text now "Since 2007, Aimee has taught 30+ courses, from first-year medical students and PhD trainees to faculty and community members." (typed in). Commit after 5dcbac3.
 
 - Communicator big text replaced ("Science belongs to everyone…") with the immune cell and antibody. Commit after d2cd191.
+
+- Contact page: "Let's connect.", her paragraph, her portrait (WebP), TEDx card removed. Commit after 6467580.
 
 Still to build from approved items: Educator hero photo swap, mission-sentence flu icon, awards/course spacing, Home hover photos and card photos/links, Communicator changes, Outreach page, Contact, bottom half-circle, "Ask me a Q?" bot.
 
