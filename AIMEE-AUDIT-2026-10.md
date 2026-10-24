@@ -45,7 +45,7 @@ Screenshots and candidate photos are saved in `audit-review/` (not committed; `s
 | 11 | Q13 bot: books, which pages, phone placement | queued |
 | 12 | Q15 outreach awards (Sanity, placeholders, "CU", label) | queued |
 | 13 | Q20 bottom half circle | queued |
-| 14 | Q18 Communicator big text | ASKED (11 Q13 bot is on hold at Alex's request) |
+| 14 | Q18 Communicator big text | RESOLVED + BUILT: her new text at today's type size (6 lines desktop, 10 on a phone), immune cell and antibody kept. (Q13 bot is on hold at Alex's request) |
 | 15 | Q25 Contact TEDx card; form destination | queued |
 | 16 | Q24 Outreach details | queued |
 | 17 | Q6 Communicator hero photos | queued |
@@ -55,7 +55,7 @@ Screenshots and candidate photos are saved in `audit-review/` (not committed; `s
 | 21 | Q5 CCTSI slide | queued |
 | 22 | Q27 Immunologist and Work audits | queued |
 
-Resolved so far: Q1, Q2, Q3, Q4, Q11, Q12, Q14, Q16, Q17, Q19, Q21, Q22, Q23, Q26 (see log above).
+Resolved so far: Q1, Q2, Q3, Q4, Q11, Q12, Q14, Q16, Q17, Q18, Q19, Q21, Q22, Q23, Q26 (see log above).
 
 Rule from Alex (10/24): where she named a photo and the file is in `images/`, just apply it; don't ask again. Applies to: Medical School, Graduate School = 'EDU THC Antibody'; PA, Dental = 'EDU THC Thymus'; Human Immunology = fun-size bag; Home cards TLaS / FUNSIZE IG / TTP / SUBSTACK; Home Communicator hover = 'SCI COMM TEDx scientist'; Contact portrait; Teacher Training = 'TTP Aimee'; CU Denver = DMRSEF.
 
@@ -78,6 +78,8 @@ Also built: Home headings ("this" and "since 2011" removed), commit 06b4790.
 - **Sanity edits applied** (10/24, via `studio/scripts/apply-audit-edits.ts`; backup of the 11 changed documents in `audit-review/sanity-backup-*.json`): 2023 award venues now "School of Medicine"; course tile order Med, PA, Grad, HI3, Dental, Denver; icons (Med = stethoscope, PA = medical bag, HI3 = vaccine with heart); panel photos (Med and Grad = EDU THC Antibody, PA and Dental = EDU THC Thymus, HI3 = fun-size bag, Denver = DMRSEF); Graduate School second pill renamed and its nine topics added; Fun-Size four headed groups; Scientific Thinking ten topics. Group headings in topic lists ("# " prefix) supported in `CourseGroups.astro`. Verified on /educator: order, icons, photos, pills, topics, no errors.
 
 - CU Anschutz logo removed everywhere; Educator top text now "Since 2007, Aimee has taught 30+ courses, from first-year medical students and PhD trainees to faculty and community members." (typed in). Commit after 5dcbac3.
+
+- Communicator big text replaced ("Science belongs to everyone…") with the immune cell and antibody. Commit after d2cd191.
 
 Still to build from approved items: Educator hero photo swap, mission-sentence flu icon, awards/course spacing, Home hover photos and card photos/links, Communicator changes, Outreach page, Contact, bottom half-circle, "Ask me a Q?" bot.
 
