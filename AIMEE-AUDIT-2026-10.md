@@ -22,8 +22,40 @@ Tags: **[CODE]** change in the site code. **[DB]** content in the Sanity dashboa
 - Q4: resolved. Use 'TTP Aimee'.
 - Q5: reframed. She did ask for it: Educator, "Communicating Your Science to the Public" card, "Swap out photo to 'CCTSI' below". Still open whether the whole slide (logo, second person) is acceptable.
 - Q6: reframed as two separate asks (reorder, and replace the large photo). Needs a screenshot to decide.
-- Q7(a): Alex will get the laughing and tube originals from Aimee directly.
+- Q7(a): the two lab-coat photos she mentions in the Communicator doc are not in hand. Alex is getting the originals from Aimee directly. Not shown again until they arrive.
 - Q6 to Q27 were re-asked with screenshots and her exact quotes.
+
+
+## 0c. Working queue (one question at a time)
+Alex asked for one question at a time, easiest first. Update the status here as each is answered.
+Screenshots and candidate photos are saved in `audit-review/` (not committed; `screenshots/`, `candidate-photos/`, `from-her-docs/`).
+
+| # | Question | Status |
+|---|---|---|
+| 1 | Q23 Graduate School: rename the second pill to "Introduction to Science Communication" | ASKED |
+| 2 | Q22 Fun-Size: "Immunotherapy" as a group heading (four groups) | queued |
+| 3 | Q16 Awards stat "9+" as written | queued |
+| 4 | Q17 "All work" blue shade | queued |
+| 5 | Q11 optimize images, don't commit originals | queued |
+| 6 | Q12 germs: top-left cast only; interferon | queued |
+| 7 | Q14 "static" sections = stack, no pinned swap | queued |
+| 8 | Q19 Communicator numbers: numbers only or Home look | queued |
+| 9 | Q21 OK to edit Sanity directly | queued |
+| 10 | Q26 CU Anschutz logo: chip only or everywhere | queued |
+| 11 | Q13 bot: books, which pages, phone placement | queued |
+| 12 | Q15 outreach awards (Sanity, placeholders, "CU", label) | queued |
+| 13 | Q20 bottom half circle | queued |
+| 14 | Q18 Communicator big text | queued |
+| 15 | Q25 Contact TEDx card; form destination | queued |
+| 16 | Q24 Outreach details | queued |
+| 17 | Q6 Communicator hero photos | queued |
+| 18 | Q7 "contributes to" cards (photo waits on Aimee's originals) | queued |
+| 19 | Q8 "Read now" feature | queued |
+| 20 | Q9, Q10 photos | queued |
+| 21 | Q5 CCTSI slide | queued |
+| 22 | Q27 Immunologist and Work audits | queued |
+
+Resolved so far: Q1, Q2, Q3, Q4 (see log above).
 
 ## 1. Changes by page
 
@@ -86,7 +118,7 @@ Kept as is (she loves them): hero-portrait hover concept, the cell/germ "fruit n
 - [ ] [CODE] Hero photos: small TEDx photo on the left, same size; larger photo on the right, same size, a TEDx photo or an EDU THC photo. [Q6]
 - [ ] [CODE] Big text below the photos becomes: "Science belongs to everyone. Through teaching, communication, and outreach, my goal is the same: to empower my audience to use science and evidence to make everyday decisions that positively impact their lives and their communities." She asks "Sound okay?" [Q18]
 - [ ] [CODE] "By the Numbers" matches Home [Q19]
-- [ ] [CODE] "Aimee regularly contributes to": four cards, keep the hover movement she loves: Immunology Explained (https://immunologyexplained.aai.org/); Science Crosstalk, her Substack (https://aimeepughbernard.substack.com/); Unbiased Science (https://www.unbiasedscience.com/the-team); @funsizeimmuninja, her Instagram (https://www.instagram.com/funsizeimmuninja/). Photo: "Use this photo of me laughing? (I prefer) Or petite me looking at tubes?" [Q7]. Closes BEN-1706.
+- [ ] [CODE] "Aimee regularly contributes to": four cards, keep the hover movement she loves: Immunology Explained (https://immunologyexplained.aai.org/); Science Crosstalk, her Substack (https://aimeepughbernard.substack.com/); Unbiased Science (https://www.unbiasedscience.com/the-team); @funsizeimmuninja, her Instagram (https://www.instagram.com/funsizeimmuninja/). Photo for one card: she offers two lab-coat photos, originals coming from Aimee via Alex [Q7]. Closes BEN-1706.
 - [ ] [DB/CODE] TEDx feature stays. The "Read now" feature: a nice TEDx photo and a link to her Substack post https://aimeepughbernard.substack.com/p/confessions-of-a-scientist [Q8]
 - [ ] [CODE] Bottom: same as Educator, with the alternative "maybe just have the blue immune cell and yellow antibody" [Q20]
 
@@ -128,7 +160,7 @@ Answer:
 **Q6. Communicator hero photos.** Her words: "put small TEDx photo on the left and keep it same size. Please change larger photo to one of my TEDx photos (or EDU THC photos) and keep it same size and move it to the right." The small slot is portrait (448×640) and the large slot is landscape. Candidates: `SCI COMM TEDx scientist.heic` (portrait, 3548×5449), `SCI COMM TEDx front stage.jpg` (a lower-resolution version of the same shot), and the two landscape EDU THC photos. Which goes where? On phones only the first photo shows, so which one should that be?
 Answer:
 
-**Q7. "Contributes to" cards.** (a) The laughing and tube photos are only inside her Word file; the laughing one is sideways. I need upright originals. (b) Which card gets which photo, and what photos for the other two? (c) Her four cards replace today's three. Are "The Immunology Podcast" and "The Conversation" dropped? (d) What role line under each name (today "Immunology Expert", "Guest Expert", "Contributing Author")?
+**Q7. "Contributes to" cards.** (a) [Waiting on originals from Aimee via Alex; photos not shown.] (b) Which card gets the lab-coat photo, and what photos for the other three? (c) Her four cards replace today's three. Are "The Immunology Podcast" and "The Conversation" dropped? (d) What role line under each name (today "Immunology Expert", "Guest Expert", "Contributing Author")?
 Answer:
 
 **Q8. "Read now" feature (Communicator).** Her words: "please change this to a nice photo from my TEDx talk and a link to my Science Crosstalk Substack about my TEDx talk." Is it the dark feature block under the TEDx section? It shows the most recently updated Science Communicator item today. Wire it to one Sanity item, or hard-code it? Which TEDx photo?
@@ -206,7 +238,7 @@ Photos she's sending can come to us; we put them in. Nothing needs adding by her
 
 ## 4. Photo inventory (`images/`)
 Matched to her names: EDU THC Antibody, EDU THC Thymus, SCI COMM TEDx scientist (HEIC), TLaS Aimee Ask a Q, TTP Aimee, FUNSIZE IG collage, SUBSTACK collage, CCTSI, HI3 fun size candy bag (984×692), Aimee Pugh Bernard-444 (Contact portrait).
-Unplaced: see Q10. Still missing from the folder: the laughing and tube photos (Q7) and the new Immunologist photo (Q2).
+Unplaced: see Q10. Still missing: the two lab-coat photos for Q7 (Alex getting them from Aimee) and the new Immunologist photo (Q2, Alex is making a composite).
 
 ## 5. Assumptions I'll act on unless told otherwise
 - "Aime" in the Educator text is "Aimee".
