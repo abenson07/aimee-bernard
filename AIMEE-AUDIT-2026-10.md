@@ -39,7 +39,7 @@ Screenshots and candidate photos are saved in `audit-review/` (not committed; `s
 | 5 | Q11 optimize images, don't commit originals | RESOLVED: yes. Web-sized copies (desktop + phone sizes, about 200-600KB each), ALL converted to WebP including the HEIC. Originals stay local in `images/`, not committed |
 | 6 | Q12 germs: top-left cast only; interferon | RESOLVED: remove rhinovirus, staph and E. coli from the top-left cartoon only; footer game stays as is; interferon stays (she didn't mention it) |
 | 7 | Q14 "static" sections | RESOLVED (Alex): she means the numbers must be typed-in static numbers, not driven by the CMS. The pinned scroll-swap STAYS. Home stats are already typed in the page. Text edits built: "this" and "since 2011" removed. Org text "School of Medicine" is a Sanity change (the two 2023 awards say "CU School of Medicine"). Whether the awards section itself should be typed-in vs Sanity is settled in Q15 |
-| 8 | Q19 Communicator numbers: numbers only or Home look | ASKED |
+| 8 | Q19 Communicator numbers: numbers only or Home look | RESOLVED (Alex): numbers only. Built: same four figures and labels, Communicator keeps its own smaller style |
 | 9 | Q21 OK to edit Sanity directly | RESOLVED: yes, edit Sanity. Blocker: no Sanity write token on this machine. Alex to put `SANITY_API_WRITE_TOKEN` in `studio/.env.local` (gitignored); never paste it in chat |
 | 10 | Q26 CU Anschutz logo: chip only or everywhere | queued |
 | 11 | Q13 bot: books, which pages, phone placement | queued |
@@ -55,7 +55,7 @@ Screenshots and candidate photos are saved in `audit-review/` (not committed; `s
 | 21 | Q5 CCTSI slide | queued |
 | 22 | Q27 Immunologist and Work audits | queued |
 
-Resolved so far: Q1, Q2, Q3, Q4, Q11, Q12, Q14, Q16, Q17, Q21, Q22, Q23 (see log above).
+Resolved so far: Q1, Q2, Q3, Q4, Q11, Q12, Q14, Q16, Q17, Q19, Q21, Q22, Q23 (see log above).
 
 Rule from Alex (10/24): where she named a photo and the file is in `images/`, just apply it; don't ask again. Applies to: Medical School, Graduate School = 'EDU THC Antibody'; PA, Dental = 'EDU THC Thymus'; Human Immunology = fun-size bag; Home cards TLaS / FUNSIZE IG / TTP / SUBSTACK; Home Communicator hover = 'SCI COMM TEDx scientist'; Contact portrait; Teacher Training = 'TTP Aimee'; CU Denver = DMRSEF.
 
@@ -72,7 +72,12 @@ Built, checked in the browser, committed locally (not pushed):
 
 Also built: Home headings ("this" and "since 2011" removed), commit 06b4790.
 
-Approved but not built yet (waiting on the Sanity write token, or art): Graduate School pill and nine topics, Fun-Size four groups, panel photos, B cell / dendritic cell / macrophage cartoons, WebP image pipeline.
+- Communicator numbers match Home (25+, 30+, 100+, 9+ awards), typed in; Communicator stats kept in its own style (Alex: "just the numbers"). Commit 69c36f1. Note: `communicator.astro` still has Alex's uncommitted Sanity-page work in the working tree; only the stats hunk was committed.
+- Course tile icons: medical bag (PA Program) and vaccine with heart (Human Immunology) drawn; Studio options added. Commit 2b2f651.
+- Photos converted to WebP in `web/public/site/photos/` (desktop and phone sizes, 1.9MB total for the 10 in use).
+- **Sanity edits applied** (10/24, via `studio/scripts/apply-audit-edits.ts`; backup of the 11 changed documents in `audit-review/sanity-backup-*.json`): 2023 award venues now "School of Medicine"; course tile order Med, PA, Grad, HI3, Dental, Denver; icons (Med = stethoscope, PA = medical bag, HI3 = vaccine with heart); panel photos (Med and Grad = EDU THC Antibody, PA and Dental = EDU THC Thymus, HI3 = fun-size bag, Denver = DMRSEF); Graduate School second pill renamed and its nine topics added; Fun-Size four headed groups; Scientific Thinking ten topics. Group headings in topic lists ("# " prefix) supported in `CourseGroups.astro`. Verified on /educator: order, icons, photos, pills, topics, no errors.
+
+Still to build from approved items: Educator top text and photo swaps, mission-sentence flu icon, awards/course spacing, Home hover photos and card photos/links, Communicator changes, Outreach page, Contact, bottom half-circle, "Ask me a Q?" bot.
 
 ## 1. Changes by page
 
