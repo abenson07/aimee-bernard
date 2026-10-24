@@ -45,7 +45,7 @@ Screenshots and candidate photos are saved in `audit-review/` (not committed; `s
 | 11 | Q13 bot: books, which pages, phone placement | queued |
 | 12 | Q15 outreach awards (Sanity, placeholders, "CU", label) | queued |
 | 13 | Q20 bottom half circle | queued |
-| 14 | Q18 Communicator big text | queued |
+| 14 | Q18 Communicator big text | ASKED (11 Q13 bot is on hold at Alex's request) |
 | 15 | Q25 Contact TEDx card; form destination | queued |
 | 16 | Q24 Outreach details | queued |
 | 17 | Q6 Communicator hero photos | queued |
