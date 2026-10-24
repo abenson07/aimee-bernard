@@ -34,8 +34,8 @@ Screenshots and candidate photos are saved in `audit-review/` (not committed; `s
 |---|---|---|
 | 1 | Q23 Graduate School: rename the second pill to "Introduction to Science Communication" | RESOLVED: yes, rename it; her nine topics fill the empty list; photo 'EDU THC Antibody' applied (file in hand) |
 | 2 | Q22 Fun-Size: "Immunotherapy" as a group heading (four groups) | queued |
-| 3 | Q16 Awards stat "9+" as written | ASKED |
-| 4 | Q17 "All work" blue shade | queued |
+| 3 | Q16 Awards stat "9+" as written | RESOLVED: all four approved: label "Years as an Educator, Immunologist & Communicator" 25+, Courses taught 30+, Talks given 100+, new fourth stat Awards received 9+ |
+| 4 | Q17 "All work" blue shade | ASKED |
 | 5 | Q11 optimize images, don't commit originals | queued |
 | 6 | Q12 germs: top-left cast only; interferon | queued |
 | 7 | Q14 "static" sections = stack, no pinned swap | queued |
@@ -55,7 +55,7 @@ Screenshots and candidate photos are saved in `audit-review/` (not committed; `s
 | 21 | Q5 CCTSI slide | queued |
 | 22 | Q27 Immunologist and Work audits | queued |
 
-Resolved so far: Q1, Q2, Q3, Q4, Q23 (see log above).
+Resolved so far: Q1, Q2, Q3, Q4, Q16, Q23 (see log above).
 
 Rule from Alex (10/24): where she named a photo and the file is in `images/`, just apply it; don't ask again. Applies to: Medical School, Graduate School = 'EDU THC Antibody'; PA, Dental = 'EDU THC Thymus'; Human Immunology = fun-size bag; Home cards TLaS / FUNSIZE IG / TTP / SUBSTACK; Home Communicator hover = 'SCI COMM TEDx scientist'; Contact portrait; Teacher Training = 'TTP Aimee'; CU Denver = DMRSEF.
 
