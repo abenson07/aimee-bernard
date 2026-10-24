@@ -401,6 +401,10 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 .mission-sec .awards-row { padding: 0; width: 100%; }
 .mission-sec .award-grid { grid-template-columns: repeat(3, 1fr); max-width: 960px; margin: 0 auto; gap: 56px 32px; }
 @media (max-width: 560px) { .mission-sec .award-grid { grid-template-columns: repeat(2, 1fr); gap: 40px 16px; } }
+/* Educator: the two rows of awards sit closer together (column spacing unchanged), and the courses follow sooner */
+.mission-sec:has(.awards-row) .award-grid { row-gap: 24px; }
+.mission-sec:has(.awards-row) { padding-bottom: 8px; }
+.mission-sec:has(.awards-row) + .courses { padding-top: 56px; }
 
 /* ---------- Courses (program tiles) — Figma 80:11791 ---------- */
 .courses { padding: 120px 0; }
