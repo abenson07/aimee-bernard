@@ -52,9 +52,10 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
   identityWords.forEach((word) => { const img = new Image(); img.src = word.dataset.bg; });
 
   let activeLayer = 0;
-  function showRoleBg(url) {
+  function showRoleBg(url, pos) {
     const incoming = roleBgLayers[1 - activeLayer];
     const outgoing = roleBgLayers[activeLayer];
+    incoming.style.backgroundPosition = pos || 'center';
     incoming.style.backgroundImage = `linear-gradient(180deg, rgba(0,0,0,.15), rgba(0,0,0,.55)), url('${url}')`;
     incoming.style.opacity = '1';
     outgoing.style.opacity = '0';
@@ -87,7 +88,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
   identityWords.forEach((word) => {
     word.addEventListener('mouseenter', (e) => {
       heroEl.classList.add('role-hover');
-      showRoleBg(word.dataset.bg);
+      showRoleBg(word.dataset.bg, word.dataset.pos);
       gsap.set(mascot, { x: e.clientX, y: e.clientY });
       showMascot(word.dataset.text);
       followingCursor = true;
