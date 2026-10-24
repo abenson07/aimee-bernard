@@ -48,7 +48,7 @@ Screenshots and candidate photos are saved in `audit-review/` (not committed; `s
 | 14 | Q18 Communicator big text | RESOLVED + BUILT: her new text at today's type size (6 lines desktop, 10 on a phone), immune cell and antibody kept. (Q13 bot is on hold at Alex's request) |
 | 15 | Q25 Contact TEDx card; form destination | RESOLVED + BUILT: heading "Let's connect.", her paragraph, her portrait; TEDx card removed (Alex: the call was right). Form messages go to aepbernard@gmail.com (Alex, 10/24). The service that sends them (BEN-1704) is the next question |
 | 16 | Q24 Outreach details | queued |
-| 17 | Q6 Communicator hero photos | queued |
+| 17 | Q6 Communicator hero photos | ASKED |
 | 18 | Q7 "contributes to" cards (photo waits on Aimee's originals) | queued |
 | 19 | Q8 "Read now" feature | queued |
 | 20 | Q9, Q10 photos | queued |
@@ -89,6 +89,8 @@ Also built: Home headings ("this" and "since 2011" removed), commit 06b4790.
 - Educator awards/course spacing: BUILT as option 3 (Alex): row gap 36px, 40px under the awards, 80px above the courses. (Was open:) Educator awards/course spacing. It IS in her notes ("can we space the top 3 closer to the bottom 3? Love the spacing between the 3 on each row so please maintain" / "Decrease spacing between awards and 'Courses Aimee directs and teaches'") but she gave no amounts; mine (row gap 24px, less space before courses) was a guess and Alex isn't a fan. Three options screenshot: `audit-review/screenshots/educator-spacing-options.png`.
 
 - Home portrait hover: Educator = EDU THC Antibody photo; Communicator = TEDx photo + her new text; Immunologist = her new text (photo waiting on Alex's lab-coat composite). Commit after e17cca9.
+
+- Home "What Aimee's Working On": heading, her four photos, Science Crosstalk card (Substack), Teacher Training link without /overview. TLaS photo crop: center (Alex, "she is in the center there"). Commit c739b15.
 
 Still to build from approved items: Home hover photos (Educator = same EDU THC Antibody as the hero, Alex chose A), Home hover photos and card photos/links, Communicator changes, Outreach page, Contact, bottom half-circle, "Ask me a Q?" bot.
 
