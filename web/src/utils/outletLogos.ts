@@ -12,7 +12,6 @@ const RULES: Array<[RegExp, string]> = [
   [/\bkoa\b/i, "koa.png"],
   [/rochester/i, "rochester.svg"],
   [/^cu denver/i, "cu-denver.png"],
-  [/^cu\b|^school of medicine|anschutz/i, "cu-anschutz.png"],
 ];
 
 export function outletLogo(venue: string | null | undefined, title?: string | null): string | null {
