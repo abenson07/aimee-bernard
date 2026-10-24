@@ -206,7 +206,8 @@
   function scrollWindowTo(y) {
     return new Promise((resolve) => {
       if (Math.abs(window.scrollY - y) < 2) return resolve();
-      window.scrollTo({ top: y, behavior: behavior() });
+      if (window.__lenis && !reduceMotionWork) window.__lenis.scrollTo(y, { duration: 0.9 });
+      else window.scrollTo({ top: y, behavior: behavior() });
       const start = performance.now();
       let last = window.scrollY, still = 0;
       const tick = () => {

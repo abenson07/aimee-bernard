@@ -1,3 +1,4 @@
+import './smooth-scroll.js';
 /* Set D (round 3) — shared behavior. No libraries. Modules key off data-* attributes. */
 (() => {
   const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -583,21 +584,28 @@
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(size);
 })();
 
-/* Footer reveal: the page's bottom margin matches the footer height; the footer content rises into place as the page scrolls off it */
+/* Footer reveal (after humaan.com): the page body ends in rounded corners and sits above a fixed footer. Over the last
+   ~350px of scroll the body scales back to 95% (anchored at its bottom edge) while the footer content drops down into place. */
 (() => {
   const footer = document.getElementById('siteFooter');
   const main = document.getElementById('pageMain');
   const inner = footer && footer.querySelector('.site-footer__inner');
   if (!inner || !main || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const RAMP = 350, SCALE = 0.05, LIFT = 250;
   const size = () => document.documentElement.style.setProperty('--footer-h', footer.offsetHeight + 'px');
   const update = () => {
-    const h = footer.offsetHeight;
-    const visible = Math.min(h, Math.max(0, innerHeight - main.getBoundingClientRect().bottom));
-    inner.style.transform = `translateY(${((h - visible) * 0.35).toFixed(1)}px)`;
+    const toBottom = Math.max(0, document.documentElement.scrollHeight - innerHeight - scrollY);
+    const p = Math.min(1, Math.max(0, (RAMP - toBottom) / RAMP));
+    inner.style.transform = `translateY(${(-LIFT * (1 - p)).toFixed(1)}px)`;
+    // A transform would pin the course panels (position: fixed inside the page) to the page, so skip it while one is open.
+    const panelOpen = document.querySelector('.cpanel.is-open');
+    main.style.transform = p > 0 && !panelOpen ? `scale(${(1 - SCALE * p).toFixed(5)})` : '';
   };
   size(); update();
   addEventListener('scroll', update, { passive: true });
+  if (window.__lenis) window.__lenis.on('scroll', update);
   addEventListener('resize', () => { size(); update(); });
-  if (window.ResizeObserver) new ResizeObserver(() => { size(); update(); }).observe(footer);
+  // The page grows as the course islands load; re-measure whenever the page or footer changes size.
+  if (window.ResizeObserver) { const ro = new ResizeObserver(() => { size(); update(); }); ro.observe(footer); ro.observe(main); }
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => { size(); update(); });
 })();

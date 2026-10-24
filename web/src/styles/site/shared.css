@@ -555,6 +555,10 @@ body.panel-open #page { transform: scale(0.97); filter: brightness(0.9); }
 
 /* ---------- Footer: fixed behind the page and uncovered as the page scrolls off; content rises into place as it is revealed ---------- */
 .page-main { position: relative; z-index: 1; background: var(--bg); margin-bottom: var(--footer-h, 500px); }
+/* Pages with the dark footer: the page body ends in rounded bottom corners and, over the last stretch of scroll, scales back
+   and settles as the footer rises into place (shared.js "Footer reveal"). */
+.page-main:has(~ .site-footer) { border-radius: 0 0 60px 60px; padding-bottom: 96px; transform-origin: 50% 100%; }
+@media (max-width: 767px) { .page-main:has(~ .site-footer) { border-radius: 0 0 32px 32px; padding-bottom: 64px; } }
 /* No background behind the prefooter: .page-main paints --bg only down to the prefooter's top (--prefooter-h is set in shared.js),
    and the canvas behind the page is the footer's black, so the corners under the circle's curve show the footer through. The circle is solid so it reads over the black. */
 body:has(.site-footer) { background: var(--ink); }
