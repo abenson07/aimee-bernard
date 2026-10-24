@@ -11,6 +11,20 @@ Tags: **[CODE]** change in the site code. **[DB]** content in the Sanity dashboa
 - Photo still owed by Aimee: her 10/16 email says "I am missing one photo for the 'Immunologist' opening. I need to pose in a lab coat in a lab doing something cool and get a photo. I can do this next week!" See Q2.
 - Decisions already made by Alex: draw the B cell, dendritic cell and macrophage cartoons (approved); build the "Ask me a Q?" bot and write demo scripts (approved); every photo needs review before it goes live.
 
+
+## 0b. Decisions log (2026-10-24, from Alex)
+- H1, H2, H3: Alex asked whether the cartoon lines are Aimee's own words. They are, verbatim from her Opening document. Drawing the three cartoons is approved.
+- H4, H5: approved ("That sounds good"). Footer game germs still pending in Q12.
+- H6: approved. Plan drafted in [PLAN-ask-me-a-q-bot.md](PLAN-ask-me-a-q-bot.md).
+- Q1: resolved. Use her stated choices; repetition is fine, she'll correct it herself when she sees it.
+- Q2: resolved differently. Alex will make a composite of her in a lab coat. A base photo and an image prompt were provided in chat.
+- Q3: resolved. Use `SCI COMM DMRSEF Aimee.jpg` for the CU Denver panel.
+- Q4: resolved. Use 'TTP Aimee'.
+- Q5: reframed. She did ask for it: Educator, "Communicating Your Science to the Public" card, "Swap out photo to 'CCTSI' below". Still open whether the whole slide (logo, second person) is acceptable.
+- Q6: reframed as two separate asks (reorder, and replace the large photo). Needs a screenshot to decide.
+- Q7(a): Alex will get the laughing and tube originals from Aimee directly.
+- Q6 to Q27 were re-asked with screenshots and her exact quotes.
+
 ## 1. Changes by page
 
 ### Home
@@ -96,16 +110,16 @@ No audit received. [Q27]
 ## 2. Open questions (write your answer under each)
 
 ### Photos
-**Q1. Educator hero left photo and Home Educator hover.** She says "'EDU THC Antibody' or 'EDU THC Thymus'" for both. Her panel assignments are Antibody for Medical School and Graduate School, Thymus for PA and Dental. With the hero as well, the same two photos appear five times on one page. Which one for the hero and the Home hover, and is the repetition OK?
+**Q1 [RESOLVED].**  Educator hero left photo and Home Educator hover.** She says "'EDU THC Antibody' or 'EDU THC Thymus'" for both. Her panel assignments are Antibody for Medical School and Graduate School, Thymus for PA and Dental. With the hero as well, the same two photos appear five times on one page. Which one for the hero and the Home hover, and is the repetition OK?
 Answer:
 
-**Q2. Immunologist hover photo ('need to curate').** Her 10/16 email says she still needs to pose "in a lab coat in a lab doing something cool." The Communicator document has a photo of her in a lab coat holding a tube. Is that the one, or is a new photo coming? Unplaced candidates in the folder: `EDU Aimee Immune Textbook2.JPG`, `EDU THC Cells.jpg`.
+**Q2 [RESOLVED, see log].**  Immunologist hover photo ('need to curate').** Her 10/16 email says she still needs to pose "in a lab coat in a lab doing something cool." The Communicator document has a photo of her in a lab coat holding a tube. Is that the one, or is a new photo coming? Unplaced candidates in the folder: `EDU Aimee Immune Textbook2.JPG`, `EDU THC Cells.jpg`.
 Answer:
 
-**Q3. CU Denver panel photo.** "Swap out photo – which one?" `SCI COMM DMRSEF Aimee.jpg` was taken at a University of Colorado Denver podium. Use it?
+**Q3 [RESOLVED].**  CU Denver panel photo.** "Swap out photo – which one?" `SCI COMM DMRSEF Aimee.jpg` was taken at a University of Colorado Denver podium. Use it?
 Answer:
 
-**Q4. Teacher Training card (Educator).** "Swap out photo," no name. Use 'TTP Aimee' as on Home?
+**Q4 [RESOLVED].**  Teacher Training card (Educator).** "Swap out photo," no name. Use 'TTP Aimee' as on Home?
 Answer:
 
 **Q5. CCTSI photo.** The file is the whole workshop slide: Anschutz logo plus a second person (Wendy Meyer). Use as is, crop to Aimee, or use another photo? (She asked to drop the Anschutz logo elsewhere, see Q26.)
