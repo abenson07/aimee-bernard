@@ -168,29 +168,29 @@
   .outreach-all {
     display: inline-flex;
     align-items: center;
-    gap: 12px;
-    height: 56px;
-    padding: 0 8px 0 20px;
-    border-radius: 20px;
+    gap: 14px;
+    height: 76px;
+    padding: 0 9px 0 26px;
+    border-radius: 24px;
     background: #f3f5ee;
     color: var(--ink);
-    font-size: 16px;
+    font-size: 24px;
     font-weight: 600;
-    line-height: 24px;
+    line-height: 1;
     letter-spacing: 0;
   }
   .outreach-all__icon {
-    width: 40px;
-    height: 40px;
-    border-radius: 16px;
-    background: #e3f21a;
+    width: 58px;
+    height: 58px;
+    border-radius: 20px;
+    background: #6aa8ff;
     color: var(--ink);
     display: flex;
     align-items: center;
     justify-content: center;
     flex: none;
   }
-  .outreach-all__icon svg { width: 16px; height: 16px; display: block; }
+  .outreach-all__icon svg { width: 26px; height: 26px; display: block; }
   @media (max-width: 800px) {
           }
 
