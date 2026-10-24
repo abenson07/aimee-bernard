@@ -46,7 +46,7 @@ Screenshots and candidate photos are saved in `audit-review/` (not committed; `s
 | 12 | Q15 outreach awards (Sanity, placeholders, "CU", label) | queued |
 | 13 | Q20 bottom half circle | queued |
 | 14 | Q18 Communicator big text | RESOLVED + BUILT: her new text at today's type size (6 lines desktop, 10 on a phone), immune cell and antibody kept. (Q13 bot is on hold at Alex's request) |
-| 15 | Q25 Contact TEDx card; form destination | BUILT (Alex: "just do it"): heading "Let's connect.", her paragraph, her portrait; TEDx card removed per my recommendation. Form destination (BEN-1704) still open |
+| 15 | Q25 Contact TEDx card; form destination | RESOLVED + BUILT: heading "Let's connect.", her paragraph, her portrait; TEDx card removed (Alex: the call was right). Form messages go to aepbernard@gmail.com (Alex, 10/24). The service that sends them (BEN-1704) is the next question |
 | 16 | Q24 Outreach details | queued |
 | 17 | Q6 Communicator hero photos | queued |
 | 18 | Q7 "contributes to" cards (photo waits on Aimee's originals) | queued |
