@@ -1,5 +1,131 @@
 ---
-import ComingSoon from "@/components/ComingSoon.astro";
+import SiteLayout from "@/layouts/SiteLayout.astro";
+import SiteHeader from "@/components/SiteHeader.astro";
+import "@/styles/site/shared.css";
+import "@/styles/site/immunology.css";
+import "@/styles/site/outreach.css";
+import { getImage } from "astro:assets";
+import tlasSrc from "@/assets/site/tlas-students-working-at-tables.jpg";
+
+const tlasUrl = (await getImage({ src: tlasSrc, format: "webp", width: 1024 })).src;
+
+// Text and links are Aimee's, from her Outreach audit. Link names come from her notes; the two article titles
+// that she didn't give (ECHO, START) are taken from the article addresses.
+type Link = { label: string; href: string };
+const programs: {
+  tag: string;
+  title: string;
+  text: string;
+  image?: string;
+  alt?: string;
+  links: Link[];
+}[] = [
+  {
+    tag: "TLaS",
+    title: "Think Like a Scientist",
+    text: "Think Like a Scientist (TLaS) is a free after-school science program where CU Anschutz volunteer scientists and students lead elementary students through hands-on experiments that show science is fun and that anyone can be a scientist.",
+    image: tlasUrl,
+    alt: "Students working at tables in a Think Like a Scientist session",
+    links: [
+      { label: "Website", href: "https://tlasprogram.wordpress.com/" },
+      { label: "YouTube: Science at Home", href: "https://www.youtube.com/@tlasthinklikeascientist2621/featured" },
+      { label: "Curriculum on MERLOT", href: "https://www.merlot.org/merlot/viewMaterial.htm?id=773470786" },
+      { label: "Article: Making science cool and fun", href: "https://news.cuanschutz.edu/news-stories/making-science-cool-and-fun" },
+      { label: "Article: Increasing Elementary Schooler’s Access to Science", href: "https://news.cuanschutz.edu/medicine/increasing-access-to-science" },
+      { label: "Article: Science Communicators Strategize How to Demystify Science", href: "https://news.cuanschutz.edu/news-stories/science-communicators-strategize-how-to-demystify-science" },
+    ],
+  },
+  {
+    tag: "REACH",
+    title: "Raising Environmental Awareness for Community Health",
+    text: "Raising Environmental Awareness for Community Health (REACH) is a five-week program for elementary and middle school students that explores how the environment affects human health, from air pollution to climate change, aimed at inspiring the next generation to be the change needed to protect the Earth.",
+    links: [
+      { label: "YouTube: Solar Oven Pizza Box", href: "https://www.youtube.com/watch?v=MQywKKl7aRk&list=PLgEJUjPvTME_6vaaeFvpLzVHsYGP4MT-7&index=18&t=1s" },
+      { label: "Curriculum on MERLOT", href: "https://www.merlot.org/merlot/viewMaterial.htm?id=773469511" },
+    ],
+  },
+  {
+    tag: "ECHO",
+    title: "Exploring Careers in Healthcare and Onward",
+    text: "Exploring Careers in Healthcare and Onward (ECHO) is a career exploration program that introduces elementary and middle school students to the human body and to healthcare professions through interactive, hands-on activities, aimed at inspiring the next generation into a career in healthcare.",
+    links: [
+      { label: "YouTube playlist", href: "https://www.youtube.com/playlist?list=PLnQGYTnpUcVfL_My4bjWZox2kaQX3utfq" },
+      { label: "YouTube: The Lungs. Build a Model of the Lungs", href: "https://www.youtube.com/watch?v=JeCcHll-LO4" },
+      { label: "YouTube: The Heart. Build Your Own Stethoscope", href: "https://www.youtube.com/watch?v=19ZUjebrKcE" },
+      { label: "YouTube: Surgery. Make Your Own Surgeon’s Knot Bracelet", href: "https://www.youtube.com/watch?v=svvj-4E66Yk" },
+      { label: "YouTube: The Brain. Learn All About Reflexes", href: "https://www.youtube.com/watch?v=PHuxzpYRYhE" },
+      { label: "Curriculum on MERLOT", href: "https://www.merlot.org/merlot/viewMaterial.htm?id=773475218" },
+      { label: "Article: From ice rinks to clinics, Ariel Davydov finds her path in medicine and education", href: "https://news.cuanschutz.edu/campus-community/from-ice-rinks-to-clinics-ariel-davydov-finds-her-path-in-medicine-and-education" },
+    ],
+  },
+  {
+    tag: "START",
+    title: "Students and Teachers Achieving Cancer Research Experiences Together",
+    text: "Students and Teachers Achieving Cancer Research Experiences Together (START) is a cancer research education program that offers summer science camps and mentored lab experiences for local students, along with research experiences for high school teachers and events that engage families and the community.",
+    links: [
+      { label: "Website", href: "https://medschool.cuanschutz.edu/colorado-cancer-center/education/k-12-training-education-opportunities/start-program" },
+      { label: "Article: Start to learn about cancer research", href: "https://news.cuanschutz.edu/cancer-center/start-to-learn-about-cancer-research" },
+      { label: "Core Concepts in Cancer Biology curriculum on MERLOT", href: "https://www.merlot.org/merlot/viewMaterial.htm?id=824239760" },
+    ],
+  },
+];
 ---
 
-<ComingSoon title="Community Outreach" />
+<SiteLayout title="Outreach">
+<SiteHeader />
+<div class="page-main" id="pageMain">
+
+<main id="page">
+<section class="outreach-intro wrap" aria-label="Outreach">
+  <h1 class="display outreach-intro__title">Outreach</h1>
+  <div class="outreach-intro__text fade">
+    <p>Science belongs to everyone, and curiosity starts early. Aimee has helped create several outreach programs that bring hands-on science to students from elementary school through high school, and to the teachers and families who support them. Together, they help young people see themselves as scientists, explore careers in healthcare and research, and understand how science connects to their health and their communities.</p>
+    <p>Each program is built on the belief that anyone can become a scientist.</p>
+  </div>
+</section>
+
+{
+  programs.map((pr) => (
+    <section class="tlas-sec wrap" aria-label={pr.title}>
+      <div class="tlas">
+        <div class:list={["tlas__grid", !pr.image && "tlas__grid--text"]}>
+          {pr.image && <div class="tlas__media fade"><img src={pr.image} alt={pr.alt ?? ""} loading="lazy" /></div>}
+          <div class="tlas__content">
+            <div class="tlas__copy">
+              <span class="tlas__label fade">{pr.tag}</span>
+              <h2 class:list={["tlas__title fade", pr.title.length > 30 && "tlas__title--long"]}>{pr.title}</h2>
+              <p class="tlas__sub fade">{pr.text}</p>
+            </div>
+            <ul class="tlas__links fade">
+              {pr.links.map((l) => (
+                <li><a class="tlas__link" href={l.href} target="_blank" rel="noopener">{l.label} <span aria-hidden="true">↗</span></a></li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+  ))
+}
+</main>
+</div>
+<footer class="site-footer" id="siteFooter">
+<div class="site-footer__inner">
+  <div class="site-footer__top">
+    <p class="site-footer__big">Anyone can become a scientist.</p>
+    <nav class="site-footer__links" aria-label="Footer">
+      <a href="/">Home</a>
+      <a href="/educator">Educator</a>
+      <a href="/communicator">Communicator</a>
+      <a href="/work">Work</a>
+      <a href="/contact">Contact</a>
+    </nav>
+  </div>
+  <div class="footer-word" aria-hidden="true"><span class="footer-word__first">Aimee</span><span class="footer-word__last">Pugh-Bernard</span></div>
+  <div class="site-footer__bottom"><span>© Aimee Pugh-Bernard</span></div>
+</div>
+</footer>
+<script>
+  import "@/scripts/shared.js";
+</script>
+</SiteLayout>

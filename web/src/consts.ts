@@ -16,7 +16,6 @@ export const SITE_LOCALE = "en-US";
 export const NOINDEX_ROUTES: string[] = [
   "/404",
   "/immunology",
-  "/community-outreach",
   "/programs/think-like-a-scientist",
   "/programs/teacher-training-program",
 ];
