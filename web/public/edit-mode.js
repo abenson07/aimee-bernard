@@ -42,6 +42,7 @@
     const original = el.innerText.trim();
     el.setAttribute('contenteditable', 'plaintext-only');
     el.focus();
+    const range = document.createRange(); range.selectNodeContents(el); const sel = window.getSelection(); sel.removeAllRanges(); sel.addRange(range); // start with everything selected, so typing replaces it
     const done = () => finishText(el, original);
     el.addEventListener('blur', done, { once: true });
     el.addEventListener('keydown', (k) => {

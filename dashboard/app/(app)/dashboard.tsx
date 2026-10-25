@@ -82,6 +82,9 @@ export function Dashboard({
               Sign out
             </button>
           </form>
+          <Link href="/site" className="btn-secondary">
+            Edit site
+          </Link>
           <Link href="/questionnaire" className="btn-secondary">
             Voice &amp; Tone Questionnaire
           </Link>
