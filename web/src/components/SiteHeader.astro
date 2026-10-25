@@ -3,6 +3,7 @@
 // pill nav (fixed). Behavior lives in src/scripts/nav.js, which the page
 // loads (shared.js on Educator/Science Communication already includes it).
 import "@/styles/site/nav.css";
+import "@/styles/site/ask.css";
 
 const links = [
   { href: "/", label: "Home" },
@@ -31,8 +32,30 @@ const onPersonaPage = links.some((l) => l.persona && norm(l.href) === here);
       <span class="nav-mascot__body"><img src="/site/cells/t-cell.svg" alt="" draggable="false" /></span>
       <span class="nav-mascot__bubble" aria-hidden="true"></span>
     </button>
+    <button type="button" class="ask-btn" id="askBtn" aria-label="Ask the B cell a question" aria-expanded="false" aria-controls="askPanel">
+      <span class="ask-btn__sign" aria-hidden="true">Ask me<br />a Q?</span>
+      <img src="/site/cells/b-cell.svg" alt="" width="56" height="56" draggable="false" />
+    </button>
   </div>
 </div>
+<section class="ask-panel" id="askPanel" role="dialog" aria-label="Ask the B cell" hidden>
+  <header class="ask-panel__head">
+    <img src="/site/cells/b-cell.svg" alt="" width="28" height="28" />
+    <span>Ask the B cell</span>
+    <button type="button" class="ask-panel__close" id="askClose" aria-label="Close">&times;</button>
+  </header>
+  <div class="ask-panel__log" id="askLog" aria-live="polite"></div>
+  <div class="ask-panel__chips" id="askChips"></div>
+  <form class="ask-panel__form" id="askForm" autocomplete="off">
+    <input id="askInput" type="text" maxlength="120" placeholder="Try &ldquo;podcasts&rdquo; or &ldquo;talks 2024&rdquo;" aria-label="Your question" enterkeyhint="send" />
+    <button type="submit">Ask</button>
+  </form>
+  <footer class="ask-panel__demo" id="askDemo">
+    <span>Demo:</span>
+    <button type="button" data-mode="search">Search</button>
+    <button type="button" data-mode="chat">Chat</button>
+  </footer>
+</section>
 <button type="button" class="menu-btn" id="menuBtn" aria-label="Menu" aria-expanded="false" aria-controls="menuSheet">
   <span class="menu-btn__bars" aria-hidden="true"></span>
 </button>
@@ -77,4 +100,5 @@ const onPersonaPage = links.some((l) => l.persona && norm(l.href) === here);
 
 <script>
   import "@/scripts/menu.js";
+  import "@/scripts/ask-bot.js";
 </script>
