@@ -4,6 +4,7 @@ import SiteHeader from "@/components/SiteHeader.astro";
 import "@/styles/site/shared.css";
 import "@/styles/site/educator.css";
 import { getImage } from "astro:assets";
+import { getSitePage } from "@/lib/siteContent";
 import bwSrc from "@/assets/site/aimee-bw.png";
 import Awards from "@/components/site/Awards.astro";
 import AwardsSkeleton from "@/components/site/AwardsSkeleton.astro";
@@ -11,6 +12,13 @@ import CourseGroups from "@/components/site/CourseGroups.astro";
 import CourseTilesSkeleton from "@/components/site/CourseTilesSkeleton.astro";
 // Courses taught since 2007. Typed in by hand (Aimee: "30+"), not counted from the dashboard.
 const coursesTaught = "30+";
+// Photos and headings below are editable in the dashboard's Site editor; the values here are the fallbacks.
+export const prerender = false;
+const site = await getSitePage("site-page-educator", Astro.request);
+site.applyCaching(Astro.response);
+const heroPhoto = site.image("hero-photo", { src: "/site/photos/edu-thc-antibody-1600.webp", srcset: "/site/photos/edu-thc-antibody-800.webp 800w, /site/photos/edu-thc-antibody-1600.webp 1600w", pos: "50% 40%", alt: "Aimee presenting to an audience, a slide about B cells and antibodies behind her" });
+const prog1 = site.image("program-1-photo", { src: "/site/photos/ttp-aimee-1600.webp", srcset: "/site/photos/ttp-aimee-800.webp 800w, /site/photos/ttp-aimee-1600.webp 1600w", pos: "50% 50%", alt: "Aimee presenting the Teacher Training Program" });
+const prog2 = site.image("program-2-photo", { src: "/site/photos/cctsi-slide-swapped-nologo-1600.webp", pos: "0% 50%", alt: "Communicating Your Science to the Public workshop series, Session 1, with Aimee Pugh Bernard and Wendy S. Meyer" });
 const bwUrl = (await getImage({ src: bwSrc, format: "webp", width: 936 })).src;
 ---
 
@@ -22,10 +30,10 @@ const bwUrl = (await getImage({ src: bwSrc, format: "webp", width: 936 })).src;
 <section class="hero-split">
   <div class="wrap" style="padding:0">
     <div class="hero-split__head">
-      <h1 class="display hero-split__title">Teaching immunology so it sticks</h1>
-      <div class="hero-split__side is-info"><p>Since 2007, Aimee has taught {coursesTaught} courses, from first-year medical students and PhD trainees to faculty and community members.</p></div>
+      <h1 class="display hero-split__title" {...site.edit("hero-title")}>{site.text("hero-title", "Teaching immunology so it sticks")}</h1>
+      <div class="hero-split__side is-info"><p {...site.edit("hero-blurb")}>{site.text("hero-blurb", `Since 2007, Aimee has taught ${coursesTaught} courses, from first-year medical students and PhD trainees to faculty and community members.`)}</p></div>
     </div>
-    <div class="hero-split__media"><div><img src="/site/photos/edu-thc-antibody-1600.webp" srcset="/site/photos/edu-thc-antibody-800.webp 800w, /site/photos/edu-thc-antibody-1600.webp 1600w" sizes="(max-width: 767px) 100vw, 60vw" alt="Aimee presenting to an audience, a slide about B cells and antibodies behind her" style="object-position:50% 40%"></div><div><img src={bwUrl} alt=""></div></div>
+    <div class="hero-split__media"><div {...site.edit("hero-photo", "image")}><img src={heroPhoto.src} srcset={heroPhoto.srcset} sizes="(max-width: 767px) 100vw, 60vw" alt={heroPhoto.alt} style={`object-position:${heroPhoto.pos}`}></div><div><img src={bwUrl} alt=""></div></div>
   </div>
 </section>
 
@@ -48,16 +56,16 @@ const bwUrl = (await getImage({ src: bwSrc, format: "webp", width: 936 })).src;
 </section>
 
 <section class="feature-pair wrap" aria-label="Programs">
-  <div class="feature-pair__head fade"><span class="tag-chip">Programs</span><h2 class="feature-pair__title">Building the next generation of teachers</h2></div>
+  <div class="feature-pair__head fade"><span class="tag-chip">Programs</span><h2 class="feature-pair__title" {...site.edit("programs-heading")}>{site.text("programs-heading", "Building the next generation of teachers")}</h2></div>
   <div class="workon">
     <div class="workon__row">
       <a class="workon__card fade" href="https://medschool.cuanschutz.edu/immunology-and-microbiology/dept-resources/teaching-resources/teacher-training-program/overview" target="_blank" rel="noopener">
-        <div class="workon__media"><img src="/site/photos/ttp-aimee-1600.webp" srcset="/site/photos/ttp-aimee-800.webp 800w, /site/photos/ttp-aimee-1600.webp 1600w" sizes="(max-width: 767px) 100vw, 45vw" alt="Aimee presenting the Teacher Training Program" style="object-position:50% 50%" loading="lazy"></div>
-        <div class="workon__info"><h3 class="workon__name">Teacher Training Program</h3><p class="workon__role">2018&ndash;present</p></div>
+        <div class="workon__media" {...site.edit("program-1-photo", "image")}><img src={prog1.src} srcset={prog1.srcset} sizes="(max-width: 767px) 100vw, 45vw" alt={prog1.alt} style={`object-position:${prog1.pos}`} loading="lazy"></div>
+        <div class="workon__info"><h3 class="workon__name" {...site.edit("program-1-name")}>{site.text("program-1-name", "Teacher Training Program")}</h3><p class="workon__role" {...site.edit("program-1-sub")}>{site.text("program-1-sub", "2018–present")}</p></div>
       </a>
       <a class="workon__card fade" href="https://cctsi.cuanschutz.edu/training/communicating#ac-workshop-3-2" target="_blank" rel="noopener">
-        <div class="workon__media"><img src="/site/photos/cctsi-slide-swapped-nologo-1600.webp" alt="Communicating Your Science to the Public workshop series, Session 1, with Aimee Pugh Bernard and Wendy S. Meyer" style="object-position:0% 50%" loading="lazy"></div>
-        <div class="workon__info"><h3 class="workon__name">Communicating Your Science to the Public</h3><p class="workon__role">2023&ndash;present</p></div>
+        <div class="workon__media" {...site.edit("program-2-photo", "image")}><img src={prog2.src} srcset={prog2.srcset} sizes="(max-width: 767px) 100vw, 45vw" alt={prog2.alt} style={`object-position:${prog2.pos}`} loading="lazy"></div>
+        <div class="workon__info"><h3 class="workon__name" {...site.edit("program-2-name")}>{site.text("program-2-name", "Communicating Your Science to the Public")}</h3><p class="workon__role" {...site.edit("program-2-sub")}>{site.text("program-2-sub", "2023–present")}</p></div>
       </a>
     </div>
     <a class="outreach-all" href="/work">
@@ -92,4 +100,5 @@ const bwUrl = (await getImage({ src: bwSrc, format: "webp", width: 936 })).src;
 <script>
   import "@/scripts/shared.js";
 </script>
+{site.preview && <script is:inline src="/edit-mode.js" data-origin={site.dashboardOrigin}></script>}
 </SiteLayout>

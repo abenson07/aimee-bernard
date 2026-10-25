@@ -3,6 +3,7 @@ import SiteLayout from "@/layouts/SiteLayout.astro";
 import SiteHeader from "@/components/SiteHeader.astro";
 import "@/styles/site/home.css";
 import { getImage } from "astro:assets";
+import { getSitePage } from "@/lib/siteContent";
 import heroSrc from "@/assets/site/aimee-hero.png";
 import LogoStrip from "@/components/site/LogoStrip.astro";
 import LogoStripSkeleton from "@/components/site/LogoStripSkeleton.astro";
@@ -11,6 +12,28 @@ import AwardsSkeleton from "@/components/site/AwardsSkeleton.astro";
 import PressCards from "@/components/site/PressCards.astro";
 import PressCardSkeleton from "@/components/site/PressCardSkeleton.astro";
 const heroUrl = (await getImage({ src: heroSrc, format: "webp", width: 1040 })).src;
+// Photos, speech bubbles and the "working on" cards are editable in the dashboard's Site editor;
+// the values here are the fallbacks.
+export const prerender = false;
+const site = await getSitePage("site-page-home", Astro.request);
+site.applyCaching(Astro.response);
+const ph = (file: string, pos: string, alt = "") => ({ src: `/site/photos/${file}`, pos, alt });
+const hover = {
+  educator: { photo: site.wideImage("hover-educator-photo", ph("edu-thc-antibody-2400.webp", "50% 45%")), text: site.text("hover-educator-text", "Class is in session! Aimee’s been teaching since 2007!") },
+  immunologist: { photo: site.wideImage("hover-immunologist-photo", ph("immu-lab-tubes-2400.webp", "60% 40%")), text: site.text("hover-immunologist-text", "Meet a published immunologist! Aimee studied B cell development and autoimmunity for her PhD") },
+  communicator: { photo: site.wideImage("hover-communicator-photo", ph("tedx-scientist-2400.webp", "50% 64%")), text: site.text("hover-communicator-text", "Aimee is passionate about making all science, especially immunology, accessible for everyone!") },
+};
+const workCards = [
+  { n: 1, href: "https://tlasprogram.wordpress.com/", file: "tlas-ask-a-q", w: [700, 1148], pos: "50% 40%", name: "Think Like a Scientist", sub: "Science outreach program" },
+  { n: 2, href: "https://www.instagram.com/funsizeimmuninja/?hl=en", file: "funsize-ig-collage", w: [800, 1600], pos: "50% 50%", name: "Fun Size Immuninja", sub: "Immunology on Instagram" },
+  { n: 3, href: "https://medschool.cuanschutz.edu/immunology-and-microbiology/dept-resources/teaching-resources/teacher-training-program", file: "ttp-aimee", w: [800, 1600], pos: "50% 50%", name: "Teacher Training Program", sub: "Mentoring PhD students and postdocs" },
+  { n: 4, href: "https://aimeepughbernard.substack.com/", file: "substack-collage", w: [800, 1600], pos: "50% 50%", name: "Science Crosstalk", sub: "Where Science and Communication Collide" },
+].map((c) => ({
+  ...c,
+  photo: site.image(`working-${c.n}-photo`, { src: `/site/photos/${c.file}-${c.w[1]}.webp`, srcset: `/site/photos/${c.file}-${c.w[0]}.webp ${c.w[0]}w, /site/photos/${c.file}-${c.w[1]}.webp ${c.w[1]}w`, pos: c.pos, alt: "" }),
+  name: site.text(`working-${c.n}-name`, c.name),
+  sub: site.text(`working-${c.n}-sub`, c.sub),
+}));
 ---
 
 <SiteLayout title="Home">
@@ -24,9 +47,9 @@ const heroUrl = (await getImage({ src: heroSrc, format: "webp", width: 1040 })).
   <div>
     <h1 class="display hero-name">Aimee <span class="surname">Pugh-Bernard</span></h1>
     <ul class="identity-words" id="identityWords">
-      <li><a href="/educator" class="identity-word" data-bg="/site/photos/edu-thc-antibody-2400.webp" data-pos="50% 45%" data-text="Class is in session! Aimee’s been teaching since 2007!">Educator</a></li>
-      <li><a href="/immunology" class="identity-word" data-bg="/site/photos/immu-lab-tubes-2400.webp" data-pos="60% 40%" data-text="Meet a published immunologist! Aimee studied B cell development and autoimmunity for her PhD">Immunologist</a></li>
-      <li><a href="/communicator" class="identity-word" data-bg="/site/photos/tedx-scientist-2400.webp" data-pos="50% 64%" data-text="Aimee is passionate about making all science, especially immunology, accessible for everyone!">Communicator</a></li>
+      <li><a href="/educator" class="identity-word" data-bg={hover.educator.photo.src} data-pos={hover.educator.photo.pos} data-text={hover.educator.text}>Educator</a></li>
+      <li><a href="/immunology" class="identity-word" data-bg={hover.immunologist.photo.src} data-pos={hover.immunologist.photo.pos} data-text={hover.immunologist.text}>Immunologist</a></li>
+      <li><a href="/communicator" class="identity-word" data-bg={hover.communicator.photo.src} data-pos={hover.communicator.photo.pos} data-text={hover.communicator.text}>Communicator</a></li>
     </ul>
   </div>
 
@@ -73,24 +96,14 @@ const heroUrl = (await getImage({ src: heroSrc, format: "webp", width: 1040 })).
 
 <section class="section" id="outreach-section" aria-label="What Aimee's working on">
   <div class="workon">
-    <div class="workon__head"><h2 class="workon__title">What Aimee's Working On</h2></div>
+    <div class="workon__head"><h2 class="workon__title" {...site.edit("working-heading")}>{site.text("working-heading", "What Aimee's Working On")}</h2></div>
     <div class="workon__row">
-      <a class="workon__card" href="https://tlasprogram.wordpress.com/" target="_blank" rel="noopener">
-        <div class="workon__media"><img src="/site/photos/tlas-ask-a-q-1148.webp" srcset="/site/photos/tlas-ask-a-q-700.webp 700w, /site/photos/tlas-ask-a-q-1148.webp 1148w" sizes="(max-width: 767px) 100vw, 30vw" alt="" style="object-position:50% 40%" loading="lazy"></div>
-        <div class="workon__info"><h3 class="workon__name">Think Like a Scientist</h3><p class="workon__role">Science outreach program</p></div>
-      </a>
-      <a class="workon__card" href="https://www.instagram.com/funsizeimmuninja/?hl=en" target="_blank" rel="noopener">
-        <div class="workon__media"><img src="/site/photos/funsize-ig-collage-1600.webp" srcset="/site/photos/funsize-ig-collage-800.webp 800w, /site/photos/funsize-ig-collage-1600.webp 1600w" sizes="(max-width: 767px) 100vw, 30vw" alt="" style="object-position:50% 50%" loading="lazy"></div>
-        <div class="workon__info"><h3 class="workon__name">Fun Size Immuninja</h3><p class="workon__role">Immunology on Instagram</p></div>
-      </a>
-      <a class="workon__card" href="https://medschool.cuanschutz.edu/immunology-and-microbiology/dept-resources/teaching-resources/teacher-training-program" target="_blank" rel="noopener">
-        <div class="workon__media"><img src="/site/photos/ttp-aimee-1600.webp" srcset="/site/photos/ttp-aimee-800.webp 800w, /site/photos/ttp-aimee-1600.webp 1600w" sizes="(max-width: 767px) 100vw, 30vw" alt="" style="object-position:50% 50%" loading="lazy"></div>
-        <div class="workon__info"><h3 class="workon__name">Teacher Training Program</h3><p class="workon__role">Mentoring PhD students and postdocs</p></div>
-      </a>
-      <a class="workon__card" href="https://aimeepughbernard.substack.com/" target="_blank" rel="noopener">
-        <div class="workon__media"><img src="/site/photos/substack-collage-1600.webp" srcset="/site/photos/substack-collage-800.webp 800w, /site/photos/substack-collage-1600.webp 1600w" sizes="(max-width: 767px) 100vw, 30vw" alt="" style="object-position:50% 50%" loading="lazy"></div>
-        <div class="workon__info"><h3 class="workon__name">Science Crosstalk</h3><p class="workon__role">Where Science and Communication Collide</p></div>
-      </a>
+      {workCards.map((c) => (
+        <a class="workon__card" href={c.href} target="_blank" rel="noopener">
+          <div class="workon__media" {...site.edit(`working-${c.n}-photo`, "image")}><img src={c.photo.src} srcset={c.photo.srcset} sizes="(max-width: 767px) 100vw, 30vw" alt={c.photo.alt} style={`object-position:${c.photo.pos}`} loading="lazy"></div>
+          <div class="workon__info"><h3 class="workon__name" {...site.edit(`working-${c.n}-name`)}>{c.name}</h3><p class="workon__role" {...site.edit(`working-${c.n}-sub`)}>{c.sub}</p></div>
+        </a>
+      ))}
     </div>
     <a class="outreach-all" href="/work">
       See all
@@ -361,4 +374,5 @@ l-6 30 23 -22 c22 -19 27 -20 61 -9 93 33 242 180 306 304 122 236 167 543
   import "@/scripts/immune-game.js";
   import "@/scripts/immune-swipe.js";
 </script>
+{site.preview && <script is:inline src="/edit-mode.js" data-origin={site.dashboardOrigin}></script>}
 </SiteLayout>
