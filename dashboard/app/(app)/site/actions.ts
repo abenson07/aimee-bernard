@@ -1,7 +1,9 @@
 "use server";
 
 import { verifySession } from "@/lib/dal";
+import { CONTENT_ITEM_FIELDS } from "@/lib/queries";
 import { sanityClient } from "@/lib/sanity";
+import type { ContentItem } from "@/lib/types";
 import { isSitePageId, isSlotKey } from "@/lib/site";
 
 export type SlotValue = {
@@ -15,6 +17,13 @@ export type SlotValue = {
 export type PageState = { id: string; title: string; hasDraft: boolean; slots: SlotValue[] };
 export type Result = { ok: true } | { ok: false; error: string };
 export type Photo = { id: string; url: string; width: number; height: number; name: string };
+export type CourseGroupFields = { name: string; tileMeta: string[]; pill: string; dates: string; intro: string; body: string; tags: string[] };
+export type PublicationFields = { name: string; url: string; stripOrder: number | null };
+/** A Sanity item clicked on the page (award, press card, course tile, logo). */
+export type SiteDoc =
+  | { type: "contentItem"; item: ContentItem }
+  | { type: "courseGroup"; id: string; fields: CourseGroupFields }
+  | { type: "publication"; id: string; logo: string | null; fields: PublicationFields };
 
 const draftId = (id: string) => `drafts.${id}`;
 
@@ -40,15 +49,22 @@ async function ensureDraft(id: string) {
   await sanityClient.createIfNotExists({ ...published, _id: draftId(id) });
 }
 
-export async function saveText(id: string, key: string, text: string): Promise<Result> {
+/** Saves text to the draft. Text the page has never had edited before gets its slot added here
+ *  (the page code holds the original wording as the fallback), so every heading can be edited
+ *  without listing it in the seed catalog first. */
+export async function saveText(id: string, key: string, text: string, label = ""): Promise<Result> {
   await verifySession();
   if (!isSitePageId(id) || !isSlotKey(key)) return { ok: false, error: "Unknown page or field." };
   const value = text.replace(/\r\n/g, "\n").trim();
-  if (!value) return { ok: false, error: "A heading or paragraph can’t be empty. Use Discard to go back." };
+  if (!value) return { ok: false, error: "Text can’t be empty. Use Discard to go back." };
   if (value.length > 1000) return { ok: false, error: "That’s too long." };
   try {
     await ensureDraft(id);
-    await sanityClient.patch(draftId(id)).set({ [`slots[_key=="${key}"].text`]: value }).commit();
+    const exists = await sanityClient.fetch(`defined(*[_id == $id][0].slots[_key == $key][0])`, { id: draftId(id), key }, { perspective: "raw" });
+    const patch = sanityClient.patch(draftId(id));
+    if (exists) patch.set({ [`slots[_key=="${key}"].text`]: value });
+    else patch.setIfMissing({ slots: [] }).append("slots", [{ _key: key, _type: "siteSlot", label: label.slice(0, 120) || key, kind: value.includes("\n") || value.length > 140 ? "longtext" : "text", text: value }]);
+    await patch.commit();
     return { ok: true };
   } catch (e) {
     return { ok: false, error: e instanceof Error ? e.message : "Could not save." };
@@ -126,5 +142,68 @@ export async function discardDraft(id: string): Promise<Result> {
     return { ok: true };
   } catch (e) {
     return { ok: false, error: e instanceof Error ? e.message : "Could not discard." };
+  }
+}
+
+const isDocId = (id: unknown): id is string => typeof id === "string" && /^[A-Za-z0-9_-][A-Za-z0-9._-]{0,99}$/.test(id) && !id.startsWith("drafts.");
+
+/** Loads a Sanity item clicked on the page, for its edit window. */
+export async function loadDoc(id: string, type: string): Promise<SiteDoc | null> {
+  await verifySession();
+  if (!isDocId(id)) return null;
+  if (type === "contentItem") {
+    const item = await sanityClient.fetch<ContentItem | null>(`*[_type == "contentItem" && _id == $id][0]{ ${CONTENT_ITEM_FIELDS} }`, { id });
+    return item ? { type, item } : null;
+  }
+  if (type === "courseGroup") {
+    const g = await sanityClient.fetch(`*[_type == "courseGroup" && _id == $id][0]{ name, tileMeta, pill, dates, intro, body, tags }`, { id });
+    if (!g) return null;
+    return { type, id, fields: { name: g.name ?? "", tileMeta: g.tileMeta ?? [], pill: g.pill ?? "", dates: g.dates ?? "", intro: g.intro ?? "", body: g.body ?? "", tags: g.tags ?? [] } };
+  }
+  if (type === "publication") {
+    const p = await sanityClient.fetch(`*[_type == "publication" && _id == $id][0]{ name, url, stripOrder, "logo": logo.asset->url }`, { id });
+    if (!p) return null;
+    return { type, id, logo: p.logo ?? null, fields: { name: p.name ?? "", url: p.url ?? "", stripOrder: typeof p.stripOrder === "number" ? p.stripOrder : null } };
+  }
+  return null;
+}
+
+const clean = (s: unknown, max = 2000) => String(s ?? "").replace(/\r\n/g, "\n").trim().slice(0, max);
+const cleanList = (list: unknown) => (Array.isArray(list) ? list.map((x) => clean(x, 300)).filter(Boolean).slice(0, 30) : []);
+
+/** Course tiles go live straight away, like every item in the content log. */
+export async function saveCourseGroup(id: string, f: CourseGroupFields): Promise<Result> {
+  await verifySession();
+  if (!isDocId(id)) return { ok: false, error: "Unknown course tile." };
+  const name = clean(f.name, 200);
+  if (!name) return { ok: false, error: "The tile needs a name." };
+  try {
+    await sanityClient
+      .patch(id)
+      .set({ name, tileMeta: cleanList(f.tileMeta), pill: clean(f.pill, 200), dates: clean(f.dates, 200), intro: clean(f.intro), body: clean(f.body), tags: cleanList(f.tags) })
+      .commit();
+    return { ok: true };
+  } catch (e) {
+    return { ok: false, error: e instanceof Error ? e.message : "Could not save." };
+  }
+}
+
+export async function savePublication(id: string, f: PublicationFields): Promise<Result> {
+  await verifySession();
+  if (!isDocId(id)) return { ok: false, error: "Unknown logo." };
+  const name = clean(f.name, 200);
+  if (!name) return { ok: false, error: "The outlet needs a name." };
+  const url = clean(f.url, 500);
+  if (url && !/^https?:\/\//.test(url)) return { ok: false, error: "The website should start with https://" };
+  try {
+    const patch = sanityClient.patch(id).set({ name });
+    if (url) patch.set({ url });
+    else patch.unset(["url"]);
+    if (f.stripOrder === null || !Number.isFinite(f.stripOrder)) patch.unset(["stripOrder"]);
+    else patch.set({ stripOrder: f.stripOrder });
+    await patch.commit();
+    return { ok: true };
+  } catch (e) {
+    return { ok: false, error: e instanceof Error ? e.message : "Could not save." };
   }
 }

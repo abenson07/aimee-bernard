@@ -34,22 +34,36 @@ const workCards = [
   name: site.text(`working-${c.n}-name`, c.name),
   sub: site.text(`working-${c.n}-sub`, c.sub),
 }));
+// Every other heading, paragraph and label in the page body (not the nav, banner or footer).
+const t = site.text;
+const e = site.edit;
+const word = (n: "educator" | "immunologist" | "communicator", label: string) => ({
+  text: t(`word-${n}`, label),
+  attrs: e(`word-${n}`, "text", [`hover-${n}-text`, `hover-${n}-photo`]),
+});
+const words = { educator: word("educator", "Educator"), immunologist: word("immunologist", "Immunologist"), communicator: word("communicator", "Communicator") };
+const stats = [
+  { n: 1, num: "25+", label: "Years as an Educator,\nImmunologist & Communicator" },
+  { n: 2, num: "30+", label: "Courses taught" },
+  { n: 3, num: "100+", label: "Talks given" },
+  { n: 4, num: "9+", label: "Awards received" },
+];
 ---
 
 <SiteLayout title="Home">
 <!-- structure + style: Direction 2 (first pass) -->
 <SiteHeader />
 
-<section class="hero" id="hero-section">
+<section class="hero" id="hero-section" aria-label="Intro">
   <div class="hero-role-bg" aria-hidden="true"></div>
   <div class="hero-role-bg" aria-hidden="true"></div>
 
   <div>
-    <h1 class="display hero-name">Aimee <span class="surname">Pugh-Bernard</span></h1>
+    <h1 class="display hero-name"><span {...e("hero-first")}>{t("hero-first", "Aimee")}</span> <span class="surname" {...e("hero-surname")}>{t("hero-surname", "Pugh-Bernard")}</span></h1>
     <ul class="identity-words" id="identityWords">
-      <li><a href="/educator" class="identity-word" data-bg={hover.educator.photo.src} data-pos={hover.educator.photo.pos} data-text={hover.educator.text}>Educator</a></li>
-      <li><a href="/immunology" class="identity-word" data-bg={hover.immunologist.photo.src} data-pos={hover.immunologist.photo.pos} data-text={hover.immunologist.text}>Immunologist</a></li>
-      <li><a href="/communicator" class="identity-word" data-bg={hover.communicator.photo.src} data-pos={hover.communicator.photo.pos} data-text={hover.communicator.text}>Communicator</a></li>
+      <li><a href="/educator" class="identity-word" data-bg={hover.educator.photo.src} data-pos={hover.educator.photo.pos} data-text={hover.educator.text} {...words.educator.attrs}>{words.educator.text}</a></li>
+      <li><a href="/immunology" class="identity-word" data-bg={hover.immunologist.photo.src} data-pos={hover.immunologist.photo.pos} data-text={hover.immunologist.text} {...words.immunologist.attrs}>{words.immunologist.text}</a></li>
+      <li><a href="/communicator" class="identity-word" data-bg={hover.communicator.photo.src} data-pos={hover.communicator.photo.pos} data-text={hover.communicator.text} {...words.communicator.attrs}>{words.communicator.text}</a></li>
     </ul>
   </div>
 
@@ -71,25 +85,25 @@ const workCards = [
     <section class="byq-gem--inline-media-text-01" aria-label="Mission statement">
       <h2 class="byq-gem--inline-media-text-01__line">
         <span class="byq-gem--inline-media-text-01__row">
-          <span class="byq-gem--inline-media-text-01__seg">The immune system is</span>
-          <span class="byq-gem--inline-media-text-01__seg">endlessly fascinating<span class="ninja__slot" aria-hidden="true"></span>,</span>
+          <span class="byq-gem--inline-media-text-01__seg"><span {...e("mission-1")}>{t("mission-1", "The immune system is")}</span></span>
+          <span class="byq-gem--inline-media-text-01__seg"><span {...e("mission-2")}>{t("mission-2", "endlessly fascinating")}</span><span class="ninja__slot" aria-hidden="true"></span>,</span>
         </span>
         <span class="byq-gem--inline-media-text-01__row">
-          <span class="byq-gem--inline-media-text-01__seg">and my job &mdash;</span>
-          <span class="byq-gem--inline-media-text-01__seg">across teaching<span class="ninja__slot" aria-hidden="true"></span>,</span>
+          <span class="byq-gem--inline-media-text-01__seg"><span {...e("mission-3")}>{t("mission-3", "and my job —")}</span></span>
+          <span class="byq-gem--inline-media-text-01__seg"><span {...e("mission-4")}>{t("mission-4", "across teaching")}</span><span class="ninja__slot" aria-hidden="true"></span>,</span>
         </span>
         <span class="byq-gem--inline-media-text-01__row">
-          <span class="byq-gem--inline-media-text-01__seg">communication<span class="ninja__slot" aria-hidden="true"></span>,</span>
-          <span class="byq-gem--inline-media-text-01__seg">and outreach &mdash;</span>
+          <span class="byq-gem--inline-media-text-01__seg"><span {...e("mission-5")}>{t("mission-5", "communication")}</span><span class="ninja__slot" aria-hidden="true"></span>,</span>
+          <span class="byq-gem--inline-media-text-01__seg"><span {...e("mission-6")}>{t("mission-6", "and outreach —")}</span></span>
         </span>
         <span class="byq-gem--inline-media-text-01__row">
-          <span class="byq-gem--inline-media-text-01__seg">is to inspire you</span>
-          <span class="byq-gem--inline-media-text-01__seg">to think so too!<span class="ninja__slot" aria-hidden="true"></span></span>
+          <span class="byq-gem--inline-media-text-01__seg"><span {...e("mission-7")}>{t("mission-7", "is to inspire you")}</span></span>
+          <span class="byq-gem--inline-media-text-01__seg"><span {...e("mission-8")}>{t("mission-8", "to think so too!")}</span><span class="ninja__slot" aria-hidden="true"></span></span>
         </span>
       </h2>
     </section>
     <canvas aria-hidden="true"></canvas>
-    <p class="ninja__hint">Swipe the germs &middot; cells just shake it off &middot; <span data-popped>0</span> popped</p>
+    <p class="ninja__hint"><span {...e("ninja-hint")}>{t("ninja-hint", "Swipe the germs · cells just shake it off ·")}</span> <span data-popped>0</span> <span {...e("ninja-hint-count")}>{t("ninja-hint-count", "popped")}</span></p>
     </div>
   </div>
 </section>
@@ -106,7 +120,7 @@ const workCards = [
       ))}
     </div>
     <a class="outreach-all" href="/work">
-      See all
+      <span {...e("working-see-all")}>{t("working-see-all", "See all")}</span>
       <span class="outreach-all__icon" aria-hidden="true">
         <svg viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </span>
@@ -119,31 +133,21 @@ const workCards = [
     <div class="stats-pin__pin-target">
       <div class="stats-pin__viewport">
         <div class="stats-pin__panel is-active" data-panel-index="0" aria-label="By the numbers">
-          <div class="panel-label label">By the numbers</div>
-          <p class="panel-title display display-md">Twenty-five years in, my goal hasn&rsquo;t changed: make immunology make sense to the people in front of me.</p>
+          <div class="panel-label label" {...e("numbers-label")}>{t("numbers-label", "By the numbers")}</div>
+          <p class="panel-title display display-md" {...e("numbers-title")}>{t("numbers-title", "Twenty-five years in, my goal hasn’t changed: make immunology make sense to the people in front of me.")}</p>
           <div class="stats-thirds">
-            <div class="stat">
-              <div class="mask" data-reveal><div class="display stat-num slide">25+</div></div>
-              <div class="label muted">Years as an Educator,<br>Immunologist &amp; Communicator</div>
-            </div>
-            <div class="stat">
-              <div class="mask" data-reveal><div class="display stat-num slide">30+</div></div>
-              <div class="label muted">Courses taught</div>
-            </div>
-            <div class="stat">
-              <div class="mask" data-reveal><div class="display stat-num slide">100+</div></div>
-              <div class="label muted">Talks given</div>
-            </div>
-            <div class="stat">
-              <div class="mask" data-reveal><div class="display stat-num slide">9+</div></div>
-              <div class="label muted">Awards received</div>
-            </div>
+            {stats.map((st) => (
+              <div class="stat">
+                <div class="mask" data-reveal><div class="display stat-num slide" {...e(`stat-${st.n}-num`)}>{t(`stat-${st.n}-num`, st.num)}</div></div>
+                <div class="label muted" {...e(`stat-${st.n}-label`)}>{site.lines(`stat-${st.n}-label`, st.label).map((line, i) => <>{i > 0 && <br />}{line}</>)}</div>
+              </div>
+            ))}
           </div>
         </div>
 
         <div class="stats-pin__panel" data-panel-index="1" aria-label="Trusted by / appeared with">
-          <div class="panel-label label">Trusted by / appeared with</div>
-          <p class="panel-title display display-md">I&rsquo;ve shared science in classrooms, at conferences, and in newsrooms, from TEDx to The Conversation.</p>
+          <div class="panel-label label" {...e("trusted-label")}>{t("trusted-label", "Trusted by / appeared with")}</div>
+          <p class="panel-title display display-md" {...e("trusted-title")}>{t("trusted-title", "I’ve shared science in classrooms, at conferences, and in newsrooms, from TEDx to The Conversation.")}</p>
           <div class="cred-marquee" aria-hidden="true">
             <div class="cred-track">
               <LogoStrip server:defer variant="home"><LogoStripSkeleton slot="fallback" variant="home" /></LogoStrip>
@@ -153,7 +157,7 @@ const workCards = [
 
         <div class="stats-pin__panel" data-panel-index="2" aria-label="Award-winning educator">
           <div class="awards-panel">
-          <p class="panel-title display display-md">The explaining works. Teaching awards.</p>
+          <p class="panel-title display display-md" {...e("teaching-awards-title")}>{t("teaching-awards-title", "The explaining works. Teaching awards.")}</p>
             <svg width="0" height="0" style="position: absolute" aria-hidden="true">
               <defs>
                 <symbol id="wreath" viewBox="0 0 1280 1222">
@@ -295,7 +299,7 @@ l-6 30 23 -22 c22 -19 27 -20 61 -9 93 33 242 180 306 304 122 236 167 543
 
         <div class="stats-pin__panel" data-panel-index="3" aria-label="Outreach and mentoring awards">
           <div class="awards-panel">
-            <p class="panel-title display display-md">Outreach and mentoring that makes a difference.</p>
+            <p class="panel-title display display-md" {...e("outreach-awards-title")}>{t("outreach-awards-title", "Outreach and mentoring that makes a difference.")}</p>
             <div class="award-grid">
               <Awards server:defer variant="home" group="outreach"><AwardsSkeleton slot="fallback" variant="home" count={4} /></Awards>
             </div>
@@ -309,7 +313,7 @@ l-6 30 23 -22 c22 -19 27 -20 61 -9 93 33 242 180 306 304 122 236 167 543
 <section id="press-section" aria-label="Press">
   <div class="press-inner">
     <div class="press-head fade" data-reveal>
-      <h2>In the press</h2>
+      <h2 {...e("press-heading")}>{t("press-heading", "In the press")}</h2>
     </div>
     <div class="press-grid fade" data-reveal>
       <PressCards server:defer><PressCardSkeleton slot="fallback" count={6} /></PressCards>
@@ -320,7 +324,7 @@ l-6 30 23 -22 c22 -19 27 -20 61 -9 93 33 242 180 306 304 122 236 167 543
 <div class="cell-field" id="cellField">
   <canvas aria-hidden="true"></canvas>
 
-  <div class="cell-field-score" aria-live="polite"><span class="cell-field-score__num" data-cleared>0</span><span class="cell-field-score__label">cleared</span></div>
+  <div class="cell-field-score" aria-live="polite"><span class="cell-field-score__num" data-cleared>0</span><span class="cell-field-score__label" {...e("game-score-label")}>{t("game-score-label", "cleared")}</span></div>
 
   <div class="cell-field-band">
     <button type="button" class="cell-field-hold" aria-label="Press and hold to play the germ game">
@@ -328,9 +332,9 @@ l-6 30 23 -22 c22 -19 27 -20 61 -9 93 33 242 180 306 304 122 236 167 543
         <svg viewBox="0 0 76 76" aria-hidden="true"><circle class="track" cx="38" cy="38" r="34"></circle><circle class="ring" cx="38" cy="38" r="34"></circle></svg>
         <img src="/site/cells/coronavirus.svg" alt="" draggable="false" />
       </span>
-      <span class="cell-field-hold__label">Hold to play</span>
+      <span class="cell-field-hold__label" {...e("game-hold")}>{t("game-hold", "Hold to play")}</span>
     </button>
-    <p class="cell-field-hint">Swipe fast to clear the germs &middot; spare your own cells &middot; <span data-cleared>0</span> cleared</p>
+    <p class="cell-field-hint"><span {...e("game-hint")}>{t("game-hint", "Swipe fast to clear the germs · spare your own cells ·")}</span> <span data-cleared>0</span> <span {...e("game-hint-count")}>{t("game-hint-count", "cleared")}</span></p>
   </div>
 </div>
 

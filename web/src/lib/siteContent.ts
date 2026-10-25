@@ -87,9 +87,17 @@ export async function getSitePage(id: string, request: Request) {
       const p = this.image(key, fallback);
       return p === fallback ? fallback : { ...p, src: p.src.replace("w=1600", "w=2400") };
     },
-    /** Attributes that let the Site editor find a slot. Empty for visitors. */
-    edit(key: string, type: "text" | "image" = "text"): Record<string, string> {
-      return preview ? { "data-edit": `${id}:${key}`, "data-edit-type": type } : {};
+    /** Attributes that let the Site editor find a slot. Empty for visitors. `extras` are other slots
+     *  shown with it in the editor (a hover photo and speech bubble that belong to a word, say). */
+    edit(key: string, type: "text" | "image" = "text", extras: string[] = []): Record<string, string> {
+      if (!preview) return {};
+      const attrs: Record<string, string> = { "data-edit": `${id}:${key}`, "data-edit-type": type };
+      if (extras.length) attrs["data-edit-extra"] = extras.join(" ");
+      return attrs;
+    },
+    /** Text slot with line breaks: split on "\n" so the page can put a <br> between lines. */
+    lines(key: string, fallback: string): string[] {
+      return this.text(key, fallback).split("\n");
     },
     /** Visitors: cached a minute at the edge. Editor preview: never cached. */
     applyCaching(response: Response) {
