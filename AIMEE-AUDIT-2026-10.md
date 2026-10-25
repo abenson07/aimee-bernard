@@ -52,7 +52,7 @@ Screenshots and candidate photos are saved in `audit-review/` (not committed; `s
 | 18 | Q7 "contributes to" cards | RESOLVED + BUILT (Alex: "looks great"): four cards, her links, hover movement kept. Photos: Science Crosstalk = SUBSTACK collage, Unbiased Science = b/w TEDx portrait, @funsizeimmuninja = FUNSIZE IG collage. Immunology Explained shows its logo on a soft tile; role line left blank (Alex). **WAITING ON AIMEE: her lab-coat photos (laughing or tubes); when they arrive, put ONE on the Immunology Explained card** |
 | 19 | Q8 "Read now" feature | RESOLVED + BUILT (Alex: Option A): TEDx scientist photo and link to https://aimeepughbernard.substack.com/p/confessions-of-a-scientist; applied in code to the item titled "Confessions of a Scientist…" |
 | 20 | Q9, Q10 photos | queued |
-| 21 | Q5 CCTSI slide | ASKED. Built meanwhile: Teacher Training card photo = TTP Aimee (Q4); "Communicating Your Science" card now links to her CCTSI URL (photo waits on Q5) |
+| 21 | Q5 CCTSI slide | RESOLVED + BUILT (Alex: Option 2): her CCTSI slide with Aimee and Wendy's photos swapped so Aimee is on the left, the Anschutz/CCTSI header strip painted out, aligned left in the card; card links to her CCTSI URL. NOTE: these are edits to her slide that she did not ask for; tell her. Teacher Training card = TTP Aimee |
 | 22 | Q27 Immunologist and Work audits | queued |
 
 Resolved so far: Q1, Q2, Q3, Q4, Q11, Q12, Q14, Q16, Q17, Q18, Q19, Q21, Q22, Q23, Q26 (see log above).
