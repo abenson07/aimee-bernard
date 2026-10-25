@@ -56,6 +56,27 @@ export const contentItem = defineType({
       initialValue: false,
     }),
     defineField({
+      name: "featuredInSearch",
+      title: "Feature in search",
+      description:
+        "Turn this on to show this item first when someone asks the B cell on the site. Keep it to three or fewer: if everything is featured, nothing stands out.",
+      type: "boolean",
+      initialValue: false,
+      validation: (rule) =>
+        rule
+          .custom(async (value, context) => {
+            if (!value) return true;
+            const client = context.getClient({ apiVersion: "2024-01-01" });
+            const id = (context.document?._id ?? "").replace(/^drafts\./, "");
+            const others: number = await client.fetch(
+              `count(*[_type == "contentItem" && featuredInSearch == true && !(_id in [$id, "drafts." + $id])])`,
+              { id },
+            );
+            return others >= 3 ? "Three other items are already featured. Turn one of them off so this one stands out." : true;
+          })
+          .warning(),
+    }),
+    defineField({
       name: "uncertain",
       title: "Uncertain",
       description: "Check this if the kind above is a best guess, not a clear fit.",
