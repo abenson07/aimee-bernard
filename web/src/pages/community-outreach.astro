@@ -2,30 +2,24 @@
 import SiteLayout from "@/layouts/SiteLayout.astro";
 import SiteHeader from "@/components/SiteHeader.astro";
 import "@/styles/site/shared.css";
-import "@/styles/site/immunology.css";
 import "@/styles/site/outreach.css";
 import { getImage } from "astro:assets";
-import tlasSrc from "@/assets/site/tlas-students-working-at-tables.jpg";
+import tlasTablesSrc from "@/assets/site/tlas-students-working-at-tables.jpg";
+import tlasJellySrc from "@/assets/site/tlas-jellybean-experiment1.jpg";
 
-const tlasUrl = (await getImage({ src: tlasSrc, format: "webp", width: 1024 })).src;
+const tlasTables = (await getImage({ src: tlasTablesSrc, format: "webp", width: 1400 })).src;
+const tlasJelly = (await getImage({ src: tlasJellySrc, format: "webp", width: 900 })).src;
 
-// Text and links are Aimee's, from her Outreach audit. Link names come from her notes; the two article titles
-// that she didn't give (ECHO, START) are taken from the article addresses.
+// All text and links below are Aimee's, from her Outreach audit. Link names come from her notes; the two article
+// titles she didn't give (ECHO, START) are taken from the article addresses.
 type Link = { label: string; href: string };
-const programs: {
-  tag: string;
-  title: string;
-  text: string;
-  image?: string;
-  alt?: string;
-  links: Link[];
-}[] = [
-  {
+const programs = {
+  tlas: {
     tag: "TLaS",
     title: "Think Like a Scientist",
+    role: "Free after-school program",
     text: "Think Like a Scientist (TLaS) is a free after-school science program where CU Anschutz volunteer scientists and students lead elementary students through hands-on experiments that show science is fun and that anyone can be a scientist.",
-    image: tlasUrl,
-    alt: "Students working at tables in a Think Like a Scientist session",
+    note: ["Who leads it", "CU Anschutz volunteer scientists and students lead elementary students through hands-on experiments."],
     links: [
       { label: "Website", href: "https://tlasprogram.wordpress.com/" },
       { label: "YouTube: Science at Home", href: "https://www.youtube.com/@tlasthinklikeascientist2621/featured" },
@@ -33,41 +27,64 @@ const programs: {
       { label: "Article: Making science cool and fun", href: "https://news.cuanschutz.edu/news-stories/making-science-cool-and-fun" },
       { label: "Article: Increasing Elementary Schooler’s Access to Science", href: "https://news.cuanschutz.edu/medicine/increasing-access-to-science" },
       { label: "Article: Science Communicators Strategize How to Demystify Science", href: "https://news.cuanschutz.edu/news-stories/science-communicators-strategize-how-to-demystify-science" },
-    ],
+    ] as Link[],
   },
-  {
+  reach: {
     tag: "REACH",
     title: "Raising Environmental Awareness for Community Health",
+    role: "Five-week environment and health program",
     text: "Raising Environmental Awareness for Community Health (REACH) is a five-week program for elementary and middle school students that explores how the environment affects human health, from air pollution to climate change, aimed at inspiring the next generation to be the change needed to protect the Earth.",
     links: [
       { label: "YouTube: Solar Oven Pizza Box", href: "https://www.youtube.com/watch?v=MQywKKl7aRk&list=PLgEJUjPvTME_6vaaeFvpLzVHsYGP4MT-7&index=18&t=1s" },
       { label: "Curriculum on MERLOT", href: "https://www.merlot.org/merlot/viewMaterial.htm?id=773469511" },
-    ],
+    ] as Link[],
   },
-  {
+  echo: {
     tag: "ECHO",
     title: "Exploring Careers in Healthcare and Onward",
+    role: "Career exploration in healthcare",
     text: "Exploring Careers in Healthcare and Onward (ECHO) is a career exploration program that introduces elementary and middle school students to the human body and to healthcare professions through interactive, hands-on activities, aimed at inspiring the next generation into a career in healthcare.",
-    links: [
-      { label: "YouTube playlist", href: "https://www.youtube.com/playlist?list=PLnQGYTnpUcVfL_My4bjWZox2kaQX3utfq" },
-      { label: "YouTube: The Lungs. Build a Model of the Lungs", href: "https://www.youtube.com/watch?v=JeCcHll-LO4" },
-      { label: "YouTube: The Heart. Build Your Own Stethoscope", href: "https://www.youtube.com/watch?v=19ZUjebrKcE" },
-      { label: "YouTube: Surgery. Make Your Own Surgeon’s Knot Bracelet", href: "https://www.youtube.com/watch?v=svvj-4E66Yk" },
-      { label: "YouTube: The Brain. Learn All About Reflexes", href: "https://www.youtube.com/watch?v=PHuxzpYRYhE" },
-      { label: "Curriculum on MERLOT", href: "https://www.merlot.org/merlot/viewMaterial.htm?id=773475218" },
-      { label: "Article: From ice rinks to clinics, Ariel Davydov finds her path in medicine and education", href: "https://news.cuanschutz.edu/campus-community/from-ice-rinks-to-clinics-ariel-davydov-finds-her-path-in-medicine-and-education" },
-    ],
+    groups: [
+      {
+        name: "Watch",
+        blurb: "Hands-on activities on video.",
+        links: [
+          { label: "YouTube playlist", href: "https://www.youtube.com/playlist?list=PLnQGYTnpUcVfL_My4bjWZox2kaQX3utfq" },
+          { label: "YouTube: The Lungs. Build a Model of the Lungs", href: "https://www.youtube.com/watch?v=JeCcHll-LO4" },
+          { label: "YouTube: The Heart. Build Your Own Stethoscope", href: "https://www.youtube.com/watch?v=19ZUjebrKcE" },
+          { label: "YouTube: Surgery. Make Your Own Surgeon’s Knot Bracelet", href: "https://www.youtube.com/watch?v=svvj-4E66Yk" },
+          { label: "YouTube: The Brain. Learn All About Reflexes", href: "https://www.youtube.com/watch?v=PHuxzpYRYhE" },
+        ],
+      },
+      { name: "Curriculum", blurb: "The ECHO lessons, free for teachers.", links: [{ label: "Curriculum on MERLOT", href: "https://www.merlot.org/merlot/viewMaterial.htm?id=773475218" }] },
+      { name: "Read", blurb: "A story from the program.", links: [{ label: "Article: From ice rinks to clinics, Ariel Davydov finds her path in medicine and education", href: "https://news.cuanschutz.edu/campus-community/from-ice-rinks-to-clinics-ariel-davydov-finds-her-path-in-medicine-and-education" }] },
+    ] as { name: string; blurb: string; links: Link[] }[],
   },
-  {
+  start: {
     tag: "START",
     title: "Students and Teachers Achieving Cancer Research Experiences Together",
+    role: "Cancer research education",
     text: "Students and Teachers Achieving Cancer Research Experiences Together (START) is a cancer research education program that offers summer science camps and mentored lab experiences for local students, along with research experiences for high school teachers and events that engage families and the community.",
+    note: ["Who it’s for", "Local students, high school teachers, families and the community."],
     links: [
       { label: "Website", href: "https://medschool.cuanschutz.edu/colorado-cancer-center/education/k-12-training-education-opportunities/start-program" },
       { label: "Article: Start to learn about cancer research", href: "https://news.cuanschutz.edu/cancer-center/start-to-learn-about-cancer-research" },
       { label: "Core Concepts in Cancer Biology curriculum on MERLOT", href: "https://www.merlot.org/merlot/viewMaterial.htm?id=824239760" },
-    ],
+    ] as Link[],
   },
+};
+
+// "Article: Title" -> small type label + title; everything else is shown as is.
+const parts = (label: string) => {
+  const i = label.indexOf(": ");
+  return i > 0 ? { type: label.slice(0, i), title: label.slice(i + 2) } : { type: "", title: label };
+};
+
+const cards = [
+  { id: "tlas", ...programs.tlas, img: "/site/photos/tlas-ask-a-q-1148.webp", pos: "50% 40%" },
+  { id: "reach", ...programs.reach },
+  { id: "echo", ...programs.echo },
+  { id: "start", ...programs.start },
 ];
 ---
 
@@ -76,37 +93,105 @@ const programs: {
 <div class="page-main" id="pageMain">
 
 <main id="page">
-<section class="outreach-intro wrap" aria-label="Outreach">
-  <h1 class="display outreach-intro__title">Outreach</h1>
-  <div class="outreach-intro__text fade">
-    <p>Science belongs to everyone, and curiosity starts early. Aimee has helped create several outreach programs that bring hands-on science to students from elementary school through high school, and to the teachers and families who support them. Together, they help young people see themselves as scientists, explore careers in healthcare and research, and understand how science connects to their health and their communities.</p>
-    <p>Each program is built on the belief that anyone can become a scientist.</p>
+
+<section class="o-hero wrap" aria-label="Aimee with students and teachers">
+  <div class="o-hero__row">
+    <div class="o-hero__a fade"><img src="/site/photos/tlas-ask-a-q-1148.webp" alt="Aimee in a classroom with students raising their hands" style="object-position:50% 40%"></div>
+    <div class="o-hero__b fade"><img src="/site/photos/ttp-aimee-1600.webp" alt="Aimee presenting to a room of teachers" style="object-position:62% 50%"></div>
   </div>
 </section>
 
-{
-  programs.map((pr) => (
-    <section class="tlas-sec wrap" aria-label={pr.title}>
-      <div class="tlas">
-        <div class:list={["tlas__grid", !pr.image && "tlas__grid--text"]}>
-          {pr.image && <div class="tlas__media fade"><img src={pr.image} alt={pr.alt ?? ""} loading="lazy" /></div>}
-          <div class="tlas__content">
-            <div class="tlas__copy">
-              <span class="tlas__label fade">{pr.tag}</span>
-              <h2 class:list={["tlas__title fade", pr.title.length > 30 && "tlas__title--long"]}>{pr.title}</h2>
-              <p class="tlas__sub fade">{pr.text}</p>
-            </div>
-            <ul class="tlas__links fade">
-              {pr.links.map((l) => (
-                <li><a class="tlas__link" href={l.href} target="_blank" rel="noopener">{l.label} <span aria-hidden="true">↗</span></a></li>
-              ))}
+<section class="o-programs wrap" aria-label="Aimee's outreach programs">
+  <div class="o-head o-head--wide fade">
+    <span class="label">Outreach</span>
+    <h1 class="o-head__title">Science belongs to everyone, and curiosity starts early.</h1>
+    <div class="o-head__text">
+      <p>Aimee has helped create several outreach programs that bring hands-on science to students from elementary school through high school, and to the teachers and families who support them. Together, they help young people see themselves as scientists, explore careers in healthcare and research, and understand how science connects to their health and their communities.</p>
+      <p class="o-head__strong">Each program is built on the belief that anyone can become a scientist.</p>
+    </div>
+  </div>
+  <div class="workon__row o-cards">
+    {
+      cards.map((c) => (
+        <a class="workon__card fade" href={`#${c.id}`}>
+          <div class="workon__media">
+            {c.img ? <img src={c.img} alt="" style={`object-position:${c.pos}`} loading="lazy" /> : <div class="photo-soon"><span>Photo coming</span></div>}
+          </div>
+          <div class="workon__info"><h3 class="workon__name">{c.title.length > 34 ? c.tag : c.title}</h3><p class="workon__role">{c.role}</p></div>
+        </a>
+      ))
+    }
+  </div>
+</section>
+
+<!-- TLaS: story layout -->
+<section class="o-story wrap" id="tlas" aria-label={programs.tlas.title}>
+  <div class="o-story__grid">
+    <div class="o-story__copy">
+      <div class="o-head fade"><span class="label">{programs.tlas.tag}</span><h2 class="o-head__title">{programs.tlas.title}</h2></div>
+      <p class="o-story__text fade">{programs.tlas.text}</p>
+      <ul class="o-links fade">
+        {programs.tlas.links.map((l) => { const p = parts(l.label); return <li><a href={l.href} target="_blank" rel="noopener"><span class="o-links__type">{p.type}</span><span class="o-links__title">{p.title}</span><span aria-hidden="true">↗</span></a></li>; })}
+      </ul>
+    </div>
+    <div class="o-story__a fade"><img src={tlasTables} alt="Students working at tables in a Think Like a Scientist session" loading="lazy" /></div>
+    <div class="o-story__b fade"><img src={tlasJelly} alt="A hands-on experiment in a Think Like a Scientist session" loading="lazy" /></div>
+    <div class="o-story__note fade"><span class="label">{programs.tlas.note[0]}</span><p>{programs.tlas.note[1]}</p></div>
+  </div>
+</section>
+
+<!-- REACH: dark editorial layout -->
+<section class="o-dark-sec wrap" id="reach" aria-label={programs.reach.title}>
+  <div class="o-dark">
+    <div class="o-dark__media fade"><div class="photo-soon photo-soon--dark"><span>Photo coming</span></div></div>
+    <div class="o-dark__body">
+      <div class="o-head o-head--dark fade"><span class="label">{programs.reach.tag}</span><h2 class="o-head__title">{programs.reach.title}</h2></div>
+      <p class="o-dark__text fade">{programs.reach.text}</p>
+      <ul class="o-links o-links--dark fade">
+        {programs.reach.links.map((l) => { const p = parts(l.label); return <li><a href={l.href} target="_blank" rel="noopener"><span class="o-links__type">{p.type}</span><span class="o-links__title">{p.title}</span><span aria-hidden="true">↗</span></a></li>; })}
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ECHO: approach cards layout -->
+<section class="o-approach wrap" id="echo" aria-label={programs.echo.title}>
+  <div class="o-head o-head--wide fade"><span class="label">{programs.echo.tag}</span><h2 class="o-head__title">{programs.echo.title}</h2><div class="o-head__text"><p>{programs.echo.text}</p></div></div>
+  <div class="o-approach__grid">
+    {
+      programs.echo.groups.map((g, i) => (
+        <article class="o-acard fade">
+          <div class="o-acard__ph" aria-hidden="true"><div class="photo-soon photo-soon--dark"><span>Photo coming</span></div></div>
+          <span class="label o-acard__num">/ 0{i + 1}</span>
+          <div class="o-acard__body">
+            <h3 class="o-acard__title">{g.name}</h3>
+            <p class="o-acard__blurb">{g.blurb}</p>
+            <ul class="o-links o-links--card">
+              {g.links.map((l) => { const p = parts(l.label); return <li><a href={l.href} target="_blank" rel="noopener"><span class="o-links__type">{p.type}</span><span class="o-links__title">{p.title}</span><span aria-hidden="true">↗</span></a></li>; })}
             </ul>
           </div>
-        </div>
-      </div>
-    </section>
-  ))
-}
+        </article>
+      ))
+    }
+  </div>
+</section>
+
+<!-- START: story layout again -->
+<section class="o-story o-story--last wrap" id="start" aria-label={programs.start.title}>
+  <div class="o-story__grid">
+    <div class="o-story__copy">
+      <div class="o-head fade"><span class="label">{programs.start.tag}</span><h2 class="o-head__title">{programs.start.title}</h2></div>
+      <p class="o-story__text fade">{programs.start.text}</p>
+      <ul class="o-links fade">
+        {programs.start.links.map((l) => { const p = parts(l.label); return <li><a href={l.href} target="_blank" rel="noopener"><span class="o-links__type">{p.type}</span><span class="o-links__title">{p.title}</span><span aria-hidden="true">↗</span></a></li>; })}
+      </ul>
+    </div>
+    <div class="o-story__a fade"><div class="photo-soon"><span>Photo coming</span></div></div>
+    <div class="o-story__b fade"><div class="photo-soon"><span>Photo coming</span></div></div>
+    <div class="o-story__note fade"><span class="label">{programs.start.note[0]}</span><p>{programs.start.note[1]}</p></div>
+  </div>
+</section>
+
 </main>
 </div>
 <footer class="site-footer" id="siteFooter">
