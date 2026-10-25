@@ -17,7 +17,7 @@ Tags: **[CODE]** change in the site code. **[DB]** content in the Sanity dashboa
 - H4, H5: approved ("That sounds good"). Footer game germs still pending in Q12.
 - H6: approved. Plan drafted in [PLAN-ask-me-a-q-bot.md](PLAN-ask-me-a-q-bot.md).
 - Q1: resolved. Use her stated choices; repetition is fine, she'll correct it herself when she sees it.
-- Q2: resolved differently. Alex will make a composite of her in a lab coat. A base photo and an image prompt were provided in chat.
+- Q2: resolved differently. A composite was discussed and then dropped (Alex, 10/24): waiting for her real lab-coat photo instead.
 - Q3: resolved. Use `SCI COMM DMRSEF Aimee.jpg` for the CU Denver panel.
 - Q4: resolved. Use 'TTP Aimee'.
 - Q5: reframed. She did ask for it: Educator, "Communicating Your Science to the Public" card, "Swap out photo to 'CCTSI' below". Still open whether the whole slide (logo, second person) is acceptable.
@@ -47,12 +47,12 @@ Screenshots and candidate photos are saved in `audit-review/` (not committed; `s
 | 13 | Q20 bottom half circle | RESOLVED + BUILT (Alex): cartoons removed completely; instead of a shorter curve, copy the humaan.com footer transition: page body gets rounded bottom corners (60px; 32px phone) and over the last ~350px of scroll scales back to 95% (anchored at its bottom edge) while the dark footer content drops down into place. Eased smooth scrolling (Lenis, desktop mouse/trackpad only; touch stays native). Applies to Educator, Communicator, Immunologist. Home's footer unchanged |
 | 14 | Q18 Communicator big text | RESOLVED + BUILT: her new text at today's type size (6 lines desktop, 10 on a phone), immune cell and antibody kept. (Q13 bot is on hold at Alex's request) |
 | 15 | Q25 Contact TEDx card; form destination | RESOLVED + BUILT: heading "Let's connect.", her paragraph, her portrait; TEDx card removed (Alex: the call was right). Form messages go to aepbernard@gmail.com (Alex, 10/24). The service that sends them (BEN-1704) is the next question |
-| 16 | Q24 Outreach details | queued |
+| 16 | Q24 Outreach details | BUILT but Alex is NOT happy with the layout ("I'll come up with a better layout for the outreach page"). Committed as 8d365d5 (page with her intro, four dark boxes, link buttons; TLaS box removed from Immunologist). **WAITING ON ALEX'S LAYOUT.** Her text and links are in `web/src/pages/community-outreach.astro` and can be reused. |
 | 17 | Q6 Communicator hero photos | RESOLVED + BUILT (Alex: C, "obviously the TEDx one"): small b/w TEDx photo left, TEDx front stage right; phones show the big photo only. Upscale list in `PHOTOS-TO-UPSCALE.md` (the front stage file is low-res) |
 | 18 | Q7 "contributes to" cards | RESOLVED + BUILT (Alex: "looks great"): four cards, her links, hover movement kept. Photos: Science Crosstalk = SUBSTACK collage, Unbiased Science = b/w TEDx portrait, @funsizeimmuninja = FUNSIZE IG collage. Immunology Explained shows its logo on a soft tile; role line left blank (Alex). **WAITING ON AIMEE: her lab-coat photos (laughing or tubes); when they arrive, put ONE on the Immunology Explained card** |
 | 19 | Q8 "Read now" feature | RESOLVED + BUILT (Alex: Option A): TEDx scientist photo and link to https://aimeepughbernard.substack.com/p/confessions-of-a-scientist; applied in code to the item titled "Confessions of a Scientist…" |
 | 20 | Q9, Q10 photos | queued |
-| 21 | Q5 CCTSI slide | queued |
+| 21 | Q5 CCTSI slide | RESOLVED + BUILT (Alex: Option 2): her CCTSI slide with Aimee and Wendy's photos swapped so Aimee is on the left, the Anschutz/CCTSI header strip painted out, aligned left in the card; card links to her CCTSI URL. NOTE: these are edits to her slide that she did not ask for; tell her. Teacher Training card = TTP Aimee |
 | 22 | Q27 Immunologist and Work audits | queued |
 
 Resolved so far: Q1, Q2, Q3, Q4, Q11, Q12, Q14, Q16, Q17, Q18, Q19, Q21, Q22, Q23, Q26 (see log above).
@@ -63,11 +63,12 @@ Rule from Alex (10/24): where she named a photo and the file is in `images/`, ju
 1. **Fun-Size workshop details layout (from Q22).** We're building Option A: her four groups as labeled blocks in the right-hand list of the one "Fun-Size Immunology Workshop" section. Option B: the four groups as purple-circle items on the left, each with its own section, like Graduate School. Which does she prefer? Screenshots (preview mocks): `audit-review/screenshots/q22-optionA-groups-in-right-list.png` and `q22-optionB-groups-as-left-items.png`. Her third group is written as a bullet ("IMMUNOTHERAPY Harnessing the Immune System"); we're treating it as a group heading.
 
 
-## WAITING ON (Alex is getting these from Aimee)
-1. Lab-coat photos from her Communicator doc (laughing / tubes): place ONE on the Communicator "Immunology Explained" card, replacing its logo tile.
-2. A new lab-coat photo or Alex's composite for the Immunologist: Home hover and Immunologist hero.
-3. Upscaled versions of the photos in `PHOTOS-TO-UPSCALE.md`.
-4. Her Immunologist and Work audits (Q27), if still coming.
+## WAITING ON
+1. (Done 10/24) Upscaled photos are in place; see `PHOTOS-TO-UPSCALE.md`. Still on the list for later: the two stock photos (`immunologist.webp`, `educator.webp`) still used elsewhere, if any remain.
+2. Her Immunologist and Work audits (Q27), if still coming.
+3. Alex's layout for the Outreach page (a first version was built as commit 8d365d5 but is not merged).
+
+**Her real lab-coat photos arrived (Alex, 10/24) and are placed:** `IMMU Lab 3 tubes` = Immunologist hero (big left photo) and Home hover on "Immunologist"; `IMMU Hall 3 smile` = Communicator "Immunology Explained" card. `IMMU Lab 1 body` (same scene as tubes, full-length, portrait) is not used anywhere yet. All three are .heic in `images/` (not committed; web versions in `web/public/site/photos/`).
 
 ## 0e. Build log (building happens as we go, per Alex 10/24)
 Built, checked in the browser, committed locally (not pushed):

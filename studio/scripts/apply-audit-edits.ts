@@ -46,7 +46,7 @@ const photos = join(here, "../../web/public/site/photos");
 const PHOTO = {
   antibody: join(photos, "edu-thc-antibody-1600.webp"),
   thymus: join(photos, "edu-thc-thymus-1600.webp"),
-  bag: join(photos, "fun-size-bag-984.webp"),
+  bag: join(photos, "fun-size-bag-1328.webp"),
   dmrsef: join(photos, "dmrsef-panel-1600.webp"),
 };
 

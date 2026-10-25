@@ -1,3 +1,7 @@
+# Photos upscaled (done 10/24)
+
+All five photos on the old list were upscaled by Alex and are in place: `SCI COMM TEDx front stage.jpg` (2088 wide), `aimee-bw.png` (936, transparency kept), `tedx-talk.jpg` (1906; also re-uploaded to the TEDx talk item in Sanity), `HI3 fun size candy bag.png` (1328; re-uploaded to the Human Immunology group in Sanity), `Aimee Pugh Bernard-444.png` (1388). New WebP versions were regenerated and pages updated to use them. The table below is the original list, kept for reference.
+
 # Photos to upscale (for the AI upscaler later)
 
 Rule used: a photo needs upscaling when its source width is below **2x the width it is shown at** on a 1440px desktop (sharp on retina screens). "Target" is the width to upscale to. Originals live in `images/` (not committed); site assets are in `web/`.
