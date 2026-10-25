@@ -68,7 +68,7 @@ Rule from Alex (10/24): where she named a photo and the file is in `images/`, ju
 2. Her Immunologist and Work audits (Q27), if still coming.
 3. Alex's layout for the Outreach page (a first version was built as commit 8d365d5 but is not merged).
 
-**Her real lab-coat photos arrived (Alex, 10/24) and are placed:** `IMMU Lab 3 tubes` = Immunologist hero (big left photo) and Home hover on "Immunologist"; `IMMU Hall 3 smile` = Communicator "Immunology Explained" card. `IMMU Lab 1 body` (same scene as tubes, full-length, portrait) is not used anywhere yet. All three are .heic in the repo root (not committed; web versions in `web/public/site/photos/`).
+**Her real lab-coat photos arrived (Alex, 10/24) and are placed:** `IMMU Lab 3 tubes` = Immunologist hero (big left photo) and Home hover on "Immunologist"; `IMMU Hall 3 smile` = Communicator "Immunology Explained" card. `IMMU Lab 1 body` (same scene as tubes, full-length, portrait) is not used anywhere yet. All three are .heic in `images/` (not committed; web versions in `web/public/site/photos/`).
 
 ## 0e. Build log (building happens as we go, per Alex 10/24)
 Built, checked in the browser, committed locally (not pushed):
