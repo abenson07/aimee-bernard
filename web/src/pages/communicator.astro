@@ -11,7 +11,7 @@ import TedxFeature from "@/components/site/TedxFeature.astro";
 import TedxFeatureSkeleton from "@/components/site/TedxFeatureSkeleton.astro";
 import SciCommFeed from "@/components/site/SciCommFeed.astro";
 import SciCommFeedSkeleton from "@/components/site/SciCommFeedSkeleton.astro";
-const bwUrl = (await getImage({ src: bwSrc, format: "webp", width: 520 })).src;
+const bwUrl = (await getImage({ src: bwSrc, format: "webp", width: 936 })).src;
 ---
 
 <SiteLayout title="Science Communication">
@@ -24,7 +24,7 @@ const bwUrl = (await getImage({ src: bwSrc, format: "webp", width: 520 })).src;
       <h1 class="display hero-split__title">Talking about science so people listen</h1>
       <div class="hero-split__side is-info"><p>Talks, keynotes, and workshops on making immunology clear, honest, and human.</p></div>
     </div>
-    <div class="hero-split__media hero-split__media--small-first"><div><img src="/site/photos/tedx-front-stage-1200.webp" alt="Aimee on stage at TEDxCU" style="object-position:50% 58%"></div><div><img src={bwUrl} alt=""></div></div>
+    <div class="hero-split__media hero-split__media--small-first"><div><img src="/site/photos/tedx-front-stage-1200.webp" srcset="/site/photos/tedx-front-stage-1200.webp 1200w, /site/photos/tedx-front-stage-1900.webp 1900w" sizes="(max-width: 767px) 100vw, 912px" alt="Aimee on stage at TEDxCU" style="object-position:50% 58%"></div><div><img src={bwUrl} alt=""></div></div>
   </div>
 </section>
 
