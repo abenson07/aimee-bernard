@@ -17,7 +17,7 @@ Tags: **[CODE]** change in the site code. **[DB]** content in the Sanity dashboa
 - H4, H5: approved ("That sounds good"). Footer game germs still pending in Q12.
 - H6: approved. Plan drafted in [PLAN-ask-me-a-q-bot.md](PLAN-ask-me-a-q-bot.md).
 - Q1: resolved. Use her stated choices; repetition is fine, she'll correct it herself when she sees it.
-- Q2: resolved differently. Alex will make a composite of her in a lab coat. A base photo and an image prompt were provided in chat.
+- Q2: resolved differently. A composite was discussed and then dropped (Alex, 10/24): waiting for her real lab-coat photo instead.
 - Q3: resolved. Use `SCI COMM DMRSEF Aimee.jpg` for the CU Denver panel.
 - Q4: resolved. Use 'TTP Aimee'.
 - Q5: reframed. She did ask for it: Educator, "Communicating Your Science to the Public" card, "Swap out photo to 'CCTSI' below". Still open whether the whole slide (logo, second person) is acceptable.
@@ -63,11 +63,14 @@ Rule from Alex (10/24): where she named a photo and the file is in `images/`, ju
 1. **Fun-Size workshop details layout (from Q22).** We're building Option A: her four groups as labeled blocks in the right-hand list of the one "Fun-Size Immunology Workshop" section. Option B: the four groups as purple-circle items on the left, each with its own section, like Graduate School. Which does she prefer? Screenshots (preview mocks): `audit-review/screenshots/q22-optionA-groups-in-right-list.png` and `q22-optionB-groups-as-left-items.png`. Her third group is written as a bullet ("IMMUNOTHERAPY Harnessing the Immune System"); we're treating it as a group heading.
 
 
-## WAITING ON (Alex is getting these from Aimee)
-1. Lab-coat photos from her Communicator doc (laughing / tubes): place ONE on the Communicator "Immunology Explained" card, replacing its logo tile.
-2. A new lab-coat photo or Alex's composite for the Immunologist: Home hover and Immunologist hero.
-3. Upscaled versions of the photos in `PHOTOS-TO-UPSCALE.md`.
-4. Her Immunologist and Work audits (Q27), if still coming.
+## WAITING ON (from Aimee; no composite will be made)
+1. **Her real lab-coat photo(s)** (Alex is waiting on her). When they arrive, use them everywhere a lab-coat shot is needed:
+   - Home portrait hover, "Immunologist" (replaces the stock lab photo; new text already built)
+   - Immunologist page hero, big left photo (still a stock photo of someone else)
+   - Communicator "contributes to" cards: ONE photo on the "Immunology Explained" card (replaces its logo tile)
+   Her Communicator doc offered two: laughing (she prefers) or "petite me looking at tubes". Make them large from the start (hero width, 2880px wide).
+2. Upscaled versions of the photos in `PHOTOS-TO-UPSCALE.md`.
+3. Her Immunologist and Work audits (Q27), if still coming.
 
 ## 0e. Build log (building happens as we go, per Alex 10/24)
 Built, checked in the browser, committed locally (not pushed):
