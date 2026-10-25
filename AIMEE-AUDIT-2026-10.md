@@ -63,14 +63,12 @@ Rule from Alex (10/24): where she named a photo and the file is in `images/`, ju
 1. **Fun-Size workshop details layout (from Q22).** We're building Option A: her four groups as labeled blocks in the right-hand list of the one "Fun-Size Immunology Workshop" section. Option B: the four groups as purple-circle items on the left, each with its own section, like Graduate School. Which does she prefer? Screenshots (preview mocks): `audit-review/screenshots/q22-optionA-groups-in-right-list.png` and `q22-optionB-groups-as-left-items.png`. Her third group is written as a bullet ("IMMUNOTHERAPY Harnessing the Immune System"); we're treating it as a group heading.
 
 
-## WAITING ON (from Aimee; no composite will be made)
-1. **Her real lab-coat photo(s)** (Alex is waiting on her). When they arrive, use them everywhere a lab-coat shot is needed:
-   - Home portrait hover, "Immunologist" (replaces the stock lab photo; new text already built)
-   - Immunologist page hero, big left photo (still a stock photo of someone else)
-   - Communicator "contributes to" cards: ONE photo on the "Immunology Explained" card (replaces its logo tile)
-   Her Communicator doc offered two: laughing (she prefers) or "petite me looking at tubes". Make them large from the start (hero width, 2880px wide).
-2. Upscaled versions of the photos in `PHOTOS-TO-UPSCALE.md`.
-3. Her Immunologist and Work audits (Q27), if still coming.
+## WAITING ON
+1. Upscaled versions of the photos in `to-upscale/` (see its README). When they come back, drop them in the same folder and tell Claude.
+2. Her Immunologist and Work audits (Q27), if still coming.
+3. Alex's layout for the Outreach page (a first version was built as commit 8d365d5 but is not merged).
+
+**Her real lab-coat photos arrived (Alex, 10/24) and are placed:** `IMMU Lab 3 tubes` = Immunologist hero (big left photo) and Home hover on "Immunologist"; `IMMU Hall 3 smile` = Communicator "Immunology Explained" card. `IMMU Lab 1 body` (same scene as tubes, full-length, portrait) is not used anywhere yet. All three are .heic in the repo root (not committed; web versions in `web/public/site/photos/`).
 
 ## 0e. Build log (building happens as we go, per Alex 10/24)
 Built, checked in the browser, committed locally (not pushed):
