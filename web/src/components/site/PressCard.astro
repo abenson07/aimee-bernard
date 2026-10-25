@@ -17,6 +17,9 @@ const external = !!item.href && /^https?:/.test(item.href);
 
 <Tag
   class:list={["press-card", { "has-photo": !!img }]}
+  data-doc={item._id}
+  data-doc-type="contentItem"
+  data-doc-label="Press item"
   href={item.href ?? undefined}
   target={external ? "_blank" : undefined}
   rel={external ? "noopener" : undefined}

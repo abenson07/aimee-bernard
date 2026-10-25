@@ -23,7 +23,7 @@ const external = (u: string) => /^https?:/.test(u);
 {
   part === "tiles" &&
     groups.map((g) => (
-      <button type="button" class="ctile fade" data-panel={`panel-${g._id}`} aria-haspopup="dialog">
+      <button type="button" class="ctile fade" data-panel={`panel-${g._id}`} aria-haspopup="dialog" data-doc={g._id} data-doc-type="courseGroup" data-doc-label="Course tile">
         <img class="ctile__logo" style={g.icon === "t-cell-grad" ? "width:56px;height:56px" : undefined} src={`/site/icons/${g.icon ?? "lab-coat"}.svg`} alt="" />
         <span class="ctile__name">{g.name}</span>
         <span class="ctile__meta">{(g.tileMeta ?? []).map((line, i) => <>{i > 0 && <br />}{line}</>)}</span>

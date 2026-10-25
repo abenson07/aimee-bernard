@@ -28,12 +28,12 @@ Astro.response.headers.set("Cache-Control", ISLAND_CACHE);
 {
   variant === "home"
     ? [...logos, ...logos].map((l) => (
-        <span class="cred-logo"><img src={l.logo} alt={l.name} loading="lazy" /></span>
+        <span class="cred-logo" data-doc={"_id" in l ? l._id : undefined} data-doc-type="publication" data-doc-label="Logo"><img src={l.logo} alt={l.name} loading="lazy" /></span>
       ))
     : [0, 1].map(() => (
         <div class="marquee__set">
           {logos.map((l) => (
-            <span class="marquee__logo"><img src={l.logo} alt={l.name} loading="lazy" /></span>
+            <span class="marquee__logo" data-doc={"_id" in l ? l._id : undefined} data-doc-type="publication" data-doc-label="Logo"><img src={l.logo} alt={l.name} loading="lazy" /></span>
           ))}
         </div>
       ))

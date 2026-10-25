@@ -19,6 +19,8 @@ site.applyCaching(Astro.response);
 const heroPhoto = site.image("hero-photo", { src: "/site/photos/edu-thc-antibody-1600.webp", srcset: "/site/photos/edu-thc-antibody-800.webp 800w, /site/photos/edu-thc-antibody-1600.webp 1600w", pos: "50% 40%", alt: "Aimee presenting to an audience, a slide about B cells and antibodies behind her" });
 const prog1 = site.image("program-1-photo", { src: "/site/photos/ttp-aimee-1600.webp", srcset: "/site/photos/ttp-aimee-800.webp 800w, /site/photos/ttp-aimee-1600.webp 1600w", pos: "50% 50%", alt: "Aimee presenting the Teacher Training Program" });
 const prog2 = site.image("program-2-photo", { src: "/site/photos/cctsi-slide-swapped-nologo-1600.webp", pos: "0% 50%", alt: "Communicating Your Science to the Public workshop series, Session 1, with Aimee Pugh Bernard and Wendy S. Meyer" });
+const t = site.text;
+const e = site.edit;
 const bwUrl = (await getImage({ src: bwSrc, format: "webp", width: 936 })).src;
 ---
 
@@ -38,7 +40,7 @@ const bwUrl = (await getImage({ src: bwSrc, format: "webp", width: 936 })).src;
 </section>
 
 <section class="mission-sec has-stats" aria-label="Mission and awards">
-  <p class="mission" data-mission>The immune system is endlessly fascinating <span class="m-el m-cell" data-mx="14" data-my="10"><img src="/site/cells/t-cell.svg" alt=""></span> and my job, across teaching, communication and outreach is to inspire you <span class="m-el m-cell" data-mx="12" data-my="9"><img src="/site/cells/antibody.svg" alt=""></span> to think so too.</p>
+  <p class="mission" data-mission><span {...e("mission-1")}>{t("mission-1", "The immune system is endlessly fascinating")}</span> <span class="m-el m-cell" data-mx="14" data-my="10"><img src="/site/cells/t-cell.svg" alt=""></span> <span {...e("mission-2")}>{t("mission-2", "and my job, across teaching, communication and outreach is to inspire you")}</span> <span class="m-el m-cell" data-mx="12" data-my="9"><img src="/site/cells/antibody.svg" alt=""></span> <span {...e("mission-3")}>{t("mission-3", "to think so too.")}</span></p>
   <section class="awards-row no-title" aria-label="Awards">
     <div class="award-grid">
       <Awards server:defer variant="educator"><AwardsSkeleton slot="fallback" variant="educator" /></Awards>
@@ -48,7 +50,7 @@ const bwUrl = (await getImage({ src: bwSrc, format: "webp", width: 936 })).src;
 
 <section class="courses" aria-label="Courses">
   <div class="wrap">
-    <h2 class="courses__title fade">Courses Aimee directs and teaches</h2>
+    <h2 class="courses__title fade" {...e("courses-heading")}>{t("courses-heading", "Courses Aimee directs and teaches")}</h2>
     <div class="courses__grid">
       <CourseGroups server:defer part="tiles"><CourseTilesSkeleton slot="fallback" /></CourseGroups>
     </div>
@@ -56,7 +58,7 @@ const bwUrl = (await getImage({ src: bwSrc, format: "webp", width: 936 })).src;
 </section>
 
 <section class="feature-pair wrap" aria-label="Programs">
-  <div class="feature-pair__head fade"><span class="tag-chip">Programs</span><h2 class="feature-pair__title" {...site.edit("programs-heading")}>{site.text("programs-heading", "Building the next generation of teachers")}</h2></div>
+  <div class="feature-pair__head fade"><span class="tag-chip" {...e("programs-tag")}>{t("programs-tag", "Programs")}</span><h2 class="feature-pair__title" {...site.edit("programs-heading")}>{site.text("programs-heading", "Building the next generation of teachers")}</h2></div>
   <div class="workon">
     <div class="workon__row">
       <a class="workon__card fade" href="https://medschool.cuanschutz.edu/immunology-and-microbiology/dept-resources/teaching-resources/teacher-training-program/overview" target="_blank" rel="noopener">
@@ -69,7 +71,7 @@ const bwUrl = (await getImage({ src: bwSrc, format: "webp", width: 936 })).src;
       </a>
     </div>
     <a class="outreach-all" href="/work">
-      See all
+      <span {...e("programs-see-all")}>{t("programs-see-all", "See all")}</span>
       <span class="outreach-all__icon" aria-hidden="true">
         <svg viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </span>
