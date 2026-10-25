@@ -63,12 +63,13 @@ Rule from Alex (10/24): where she named a photo and the file is in `images/`, ju
 1. **Fun-Size workshop details layout (from Q22).** We're building Option A: her four groups as labeled blocks in the right-hand list of the one "Fun-Size Immunology Workshop" section. Option B: the four groups as purple-circle items on the left, each with its own section, like Graduate School. Which does she prefer? Screenshots (preview mocks): `audit-review/screenshots/q22-optionA-groups-in-right-list.png` and `q22-optionB-groups-as-left-items.png`. Her third group is written as a bullet ("IMMUNOTHERAPY Harnessing the Immune System"); we're treating it as a group heading.
 
 
-## WAITING ON
-1. (Done 10/24) Upscaled photos are in place; see `PHOTOS-TO-UPSCALE.md`. Still on the list for later: the two stock photos (`immunologist.webp`, `educator.webp`) still used elsewhere, if any remain.
-2. Her Immunologist and Work audits (Q27), if still coming.
-3. Alex's layout for the Outreach page (a first version was built as commit 8d365d5 but is not merged).
-
-**Her real lab-coat photos arrived (Alex, 10/24) and are placed:** `IMMU Lab 3 tubes` = Immunologist hero (big left photo) and Home hover on "Immunologist"; `IMMU Hall 3 smile` = Communicator "Immunology Explained" card. `IMMU Lab 1 body` (same scene as tubes, full-length, portrait) is not used anywhere yet. All three are .heic in `images/` (not committed; web versions in `web/public/site/photos/`).
+## WAITING ON / DECISIONS (updated 10/25)
+- **Her Immunologist and Work audits:** she says she's working on them. **Check back Tuesday 10/27.**
+- **Ask Aimee:** (1) Fun-Size workshop layout, Option A (built) vs Option B: `audit-review/screenshots/q22-optionA-groups-in-right-list.png` and `q22-optionB-groups-as-left-items.png`. (2) A role line for the "Immunology Explained" card (she gave none; blank for now).
+- **Tell Aimee (not a question):** the CCTSI slide card. Photos swapped so she's on the left and the Anschutz header removed, because the cards grow on hover and the original slide either looked odd shrunk or cut off the title when grown. Open to re-laying out the slide if she had something else in mind.
+- **Resolved by Alex 10/25:** Awards stat stays 9+ (stop asking). Fourth outreach award stays "CU" (University of Colorado; no logo). Lab-coat photo guesses are fine (smile = Communicator card; tubes = hero and hover); she'll say if not.
+- **Alex:** Outreach page layout (his to design; her text and links are in `community-outreach.astro`, commit 8d365d5, not in the PR). Contact form service (five options sent 10/25). "Ask me a Q?" bot: planning 10/25 (see `PLAN-ask-me-a-q-bot.md`). How Aimee swaps images in Sanity (discussed 10/25).
+- Upscaled photos: done 10/24.
 
 ## 0e. Build log (building happens as we go, per Alex 10/24)
 Built, checked in the browser, committed locally (not pushed):
