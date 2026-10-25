@@ -64,7 +64,7 @@ Rule from Alex (10/24): where she named a photo and the file is in `images/`, ju
 
 
 ## WAITING ON
-1. Upscaled versions of the photos in `to-upscale/` (see its README). When they come back, drop them in the same folder and tell Claude.
+1. (Done 10/24) Upscaled photos are in place; see `PHOTOS-TO-UPSCALE.md`. Still on the list for later: the two stock photos (`immunologist.webp`, `educator.webp`) still used elsewhere, if any remain.
 2. Her Immunologist and Work audits (Q27), if still coming.
 3. Alex's layout for the Outreach page (a first version was built as commit 8d365d5 but is not merged).
 
