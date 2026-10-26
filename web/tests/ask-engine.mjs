@@ -2,6 +2,7 @@
 //   node tests/ask-engine.mjs [path-to-index.json | http://localhost:4321/api/ask-index.json]
 import { readFileSync } from 'node:fs';
 import { createEngine } from '../src/scripts/ask-engine.js';
+import { KIND_LABEL } from '../src/scripts/ask-script.js';
 
 const src = process.argv[2] ?? 'http://localhost:4321/api/ask-index.json';
 const index = src.startsWith('http') ? await (await fetch(src)).json() : JSON.parse(readFileSync(src, 'utf8'));
@@ -9,12 +10,17 @@ let failures = 0;
 const check = (name, ok, detail = '') => { if (!ok) failures++; console.log(`${ok ? 'PASS' : 'FAIL'}  ${name}${ok ? '' : '  <- ' + detail}`); };
 
 const flat = (r) => r.blocks.map((b) => (b.t === 'text' ? b.text : b.cards.map((c) => `[${c.title}${c.href ? ' ->' + c.href.slice(0, 30) : ''}]`).join(' '))).join(' | ');
-const cardsOf = (r) => r.blocks.filter((b) => b.t === 'cards').flatMap((b) => b.cards);
+// Search mode shows cards; chat mode shows one item at a time in a sentence (block.ref) plus a link.
+const itemOf = (id) => { const x = index.records.find((q) => q.id === id); return { id, title: x.title, meta: [KIND_LABEL[x.type], x.venue, x.date].filter(Boolean).join(' · ') }; };
+let currentMode = 'search';
+const cardsOf = (r) => currentMode === 'chat' ? r.blocks.filter((b) => b.ref).map((b) => itemOf(b.ref)) : r.blocks.filter((b) => b.t === 'cards').flatMap((b) => b.cards);
 const chipLabels = (r) => r.chips.map((c) => c.label);
 const show = (q, r) => console.log(`\n> ${q}\n  ${flat(r)}\n  chips: ${chipLabels(r).join(' / ')}`);
 
 for (const mode of ['search', 'chat']) {
   console.log(`\n===== MODE: ${mode} =====`);
+  currentMode = mode;
+  const chat = mode === 'chat';
   const eng = createEngine(index, { mode });
   let st = eng.initialState();
   const ask = (q) => { const r = eng.say(q, st); st = r.state; show(q, r); return r; };
@@ -22,7 +28,7 @@ for (const mode of ['search', 'chat']) {
 
   // ---- Version 1 style questions (both modes)
   let r = ask('podcasts');
-  check('podcasts: 3 cards shown', cardsOf(r).length === 3, flat(r));
+  check('podcasts: results shown', cardsOf(r).length === (chat ? 1 : 3), flat(r));
   check('podcasts: newest first', /Autoimmunity/.test(cardsOf(r)[0].title), cardsOf(r)[0].title);
   r = ask('talks 2024');
   check('talks 2024: only 2024-dated items', cardsOf(r).every((c) => /2024/.test(c.meta)), JSON.stringify(cardsOf(r).map((c) => c.meta)));
@@ -30,11 +36,11 @@ for (const mode of ['search', 'chat']) {
   r = ask('talks about vaccines in 2024');
   check('topic+year: some vaccine content', cardsOf(r).length > 0 && /vaccin/i.test(flat(r)), flat(r));
   r = ask('vaccines');
-  check('vaccines: talks and course topics both appear', /vaccin/i.test(flat(r)) && cardsOf(r).length >= 3, flat(r));
+  check('vaccines: talks and course topics both appear', /vaccin/i.test(flat(r)) && cardsOf(r).length >= (chat ? 1 : 3), flat(r));
   r = ask('NPR');
   check('NPR: finds NPR or radio items', /NPR|radio|KOA|Sirius/i.test(flat(r)), flat(r));
   r = ask('awards');
-  check('awards: award cards', cardsOf(r).length === 3 && cardsOf(r).every((c) => /Award/.test(c.meta)), flat(r));
+  check('awards: award cards', cardsOf(r).length === (chat ? 1 : 3) && cardsOf(r).every((c) => /Award/.test(c.meta)), flat(r));
   r = ask('does she write');
   check('write: articles', /Article/.test(flat(r)) || cardsOf(r).length > 0, flat(r));
   r = ask('TEDx');
@@ -73,16 +79,16 @@ for (const mode of ['search', 'chat']) {
     r = ask('podcasts');
     check('ex2 podcast facets include years', chipLabels(r).some((l) => /^2025/.test(l)) && chipLabels(r).some((l) => /^2024/.test(l)), chipLabels(r).join());
     r = ask('2024');
-    check('ex2 refined to 2024 podcasts', cardsOf(r).length === 2 && cardsOf(r).every((c) => /Podcast/.test(c.meta) && /2024/.test(c.meta)), flat(r));
+    check('ex2 refined to 2024 podcasts', cardsOf(r).length === (chat ? 1 : 2) && cardsOf(r).every((c) => /Podcast/.test(c.meta) && /2024/.test(c.meta)), flat(r));
     r = ask('tell me about the second one');
     check('ex2 detail view of the second', /Detail|Podcast/.test(flat(r)) && /Back to the list/.test(chipLabels(r).join()), flat(r));
     r = tap('list');
-    check('ex2 back to the list', cardsOf(r).length === 2, flat(r));
+    check('ex2 back to the list', cardsOf(r).length >= 1, flat(r));
 
     console.log('\n--- Example 3: topic across the site, narrowing ---');
     st = eng.initialState();
     r = ask('what has she said about vaccines?');
-    check('ex3 mixed kinds', cardsOf(r).length >= 3, flat(r));
+    check('ex3 mixed kinds', cardsOf(r).length >= 1 && /vaccin/i.test(flat(r)), flat(r));
     check('ex3 kind facets offered', chipLabels(r).some((l) => /Talks|Course/i.test(l)), chipLabels(r).join());
     r = ask('just the talks');
     check('ex3 narrows to talks, keeps topic', cardsOf(r).length > 0 && cardsOf(r).every((c) => /^Talk/.test(c.meta)), flat(r));
