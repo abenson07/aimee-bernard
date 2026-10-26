@@ -4,7 +4,6 @@
 export const NAME = 'B cell';
 
 export const GREETING = [
-  'Hi! I’m a B cell. I make antibodies.',
   'Ask me about Aimee: her talks, podcasts, writing, awards, teaching or outreach.',
 ];
 

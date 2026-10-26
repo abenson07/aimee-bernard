@@ -3,11 +3,13 @@
 .ask-btn img { width: 56px; height: 56px; transition: transform 0.4s cubic-bezier(0.3, 1.6, 0.5, 1); animation: ask-bob 3.4s ease-in-out infinite; }
 .ask-btn:hover img, .ask-btn:focus-visible img { transform: rotate(8deg) scale(1.08); }
 .ask-btn:focus-visible { outline: 2px solid #8ec0ff; outline-offset: 4px; border-radius: 12px; }
-.ask-btn__sign { background: #fff; border: 3px solid #1d1a2e; border-radius: 10px; padding: 5px 9px; font: 700 13px/1.15 var(--body, system-ui); color: #1d1a2e; transform: rotate(-6deg); box-shadow: 3px 3px 0 #1d1a2e; text-align: center; white-space: nowrap; }
+.ask-btn__sign { background: #fff; border: 3px solid #1d1a2e; border-radius: 10px; padding: 5px 9px; font: 700 13px/1.15 var(--body, system-ui); color: #1d1a2e; transform: rotate(-6deg); box-shadow: 3px 3px 0 #1d1a2e; text-align: center; white-space: nowrap; transform-origin: 100% 60%; transition: opacity 0.2s ease, transform 0.25s ease; animation: ask-pop 0.55s cubic-bezier(0.3, 1.6, 0.5, 1) 2.5s both; }
+.ask-btn:hover .ask-btn__sign, .ask-btn:focus-visible .ask-btn__sign, .ask-btn[aria-expanded="true"] .ask-btn__sign { animation: none; opacity: 0; transform: rotate(-6deg) scale(0.6); pointer-events: none; }
+@keyframes ask-pop { 0% { opacity: 0; transform: rotate(-6deg) scale(0); } 100% { opacity: 1; transform: rotate(-6deg) scale(1); } }
 @keyframes ask-bob { 0%, 100% { translate: 0 0; } 50% { translate: 0 -4px; } }
-@media (prefers-reduced-motion: reduce) { .ask-btn img { animation: none; } }
+@media (prefers-reduced-motion: reduce) { .ask-btn img, .ask-btn__sign { animation: none; } }
 
-.ask-panel { position: fixed; top: 112px; right: 24px; z-index: 130; width: 380px; max-height: calc(100vh - 140px); display: flex; flex-direction: column; background: #fff; color: #1c1b1a; border-radius: 20px; box-shadow: 0 18px 50px rgba(0, 0, 0, 0.25); overflow: hidden; font-family: var(--body, system-ui); }
+.ask-panel { position: fixed; top: 112px; right: 24px; z-index: 130; width: 420px; max-height: calc(100vh - 140px); display: flex; flex-direction: column; background: #fff; color: #1c1b1a; border-radius: 20px; box-shadow: 0 18px 50px rgba(0, 0, 0, 0.25); overflow: hidden; font-family: var(--body, system-ui); }
 .ask-panel[hidden] { display: none; }
 .ask-panel__head { display: flex; align-items: center; gap: 10px; padding: 12px 14px; border-bottom: 1px solid rgba(28, 27, 26, 0.1); font-weight: 700; font-size: 15px; }
 .ask-panel__head span { flex: 1; }
@@ -28,9 +30,9 @@ a.ask-card:hover, a.ask-card:focus-visible { border-color: #1d1a2e; background: 
 .ask-panel__chips { display: flex; flex-wrap: wrap; gap: 6px; padding: 4px 14px 10px; }
 .ask-chip { padding: 7px 12px; border: 1.5px solid #1d1a2e; border-radius: 999px; background: #fff; font: 600 13px var(--body, system-ui); color: #1d1a2e; cursor: pointer; text-decoration: none; }
 .ask-chip:hover, .ask-chip:focus-visible { background: #1d1a2e; color: #fff; }
-.ask-panel__form { display: flex; gap: 8px; padding: 10px 14px 12px; border-top: 1px solid rgba(28, 27, 26, 0.1); }
-.ask-panel__form input { flex: 1; min-width: 0; padding: 10px 14px; border: 1.5px solid rgba(28, 27, 26, 0.25); border-radius: 999px; font: 500 16px var(--body, system-ui); }
-.ask-panel__form button { padding: 0 18px; border: 0; border-radius: 999px; background: #1d1a2e; color: #fff; font: 700 14px var(--body, system-ui); cursor: pointer; }
+.ask-panel__form { display: flex; gap: 10px; padding: 16px 14px 14px; border-bottom: 1px solid rgba(28, 27, 26, 0.1); }
+.ask-panel__form input { flex: 1; min-width: 0; padding: 16px 20px; border: 2px solid #1d1a2e; border-radius: 999px; font: 500 18px var(--body, system-ui); }
+.ask-panel__form button { padding: 0 24px; border: 0; border-radius: 999px; background: #1d1a2e; color: #fff; font: 700 16px var(--body, system-ui); cursor: pointer; }
 .ask-panel__demo { display: flex; align-items: center; gap: 6px; padding: 6px 14px 10px; font-size: 11.5px; color: rgba(28, 27, 26, 0.55); }
 .ask-panel__demo button { padding: 3px 9px; border: 1px solid rgba(28, 27, 26, 0.3); border-radius: 999px; background: none; font: 600 11.5px var(--body, system-ui); cursor: pointer; color: inherit; }
 .ask-panel__demo button[aria-pressed="true"] { background: #1d1a2e; color: #fff; border-color: #1d1a2e; }
