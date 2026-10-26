@@ -142,7 +142,7 @@ export const KIND_WORDS = {
   course: ['course', 'class', 'curriculum', 'teach', 'taught', 'teaching', 'syllabus'],
   'educational-content': ['video', 'educational', 'resource', 'explainer'],
   position: ['position', 'role', 'job', 'appointment', 'worked'],
-  social: ['instagram', 'tiktok', 'bluesky', 'social'],
+  social: ['instagram', 'tiktok', 'bluesky', 'social', 'social media', 'follow'],
 };
 
 /* Words that mean the same thing when matching topics. */
