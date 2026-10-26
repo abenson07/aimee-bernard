@@ -294,7 +294,10 @@ export function createEngine(index, { mode = 'chat' } = {}) {
     const remaining = order.length - 1;
     const chips = [];
     if (remaining > 0) chips.push(act(`Another one (${remaining})`, 'more'));
-    chips.push(...facetChips(prep, f, all, memory));
+    // Chat shows one short row of buttons: the best kind and the best year (or outlet) rather than three of one sort.
+    const fc = facetChips(prep, f, all, memory);
+    const picks = ['kind:', 'year:', 'venue:'].map((p) => fc.find((c) => c.act?.startsWith(p))).filter(Boolean).slice(0, 2);
+    chips.push(...picks);
     if (f.kinds.length || f.terms.length || f.year) chips.push(act('Start over', 'reset'));
     return finish(state, blocks, chips, { f, ids: order, shown: 1, cards: [first.rec.id], view: 'results' });
   }
