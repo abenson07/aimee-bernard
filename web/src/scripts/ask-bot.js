@@ -149,6 +149,11 @@ import { createEngine } from './ask-engine.js';
     btn.focus({ preventScroll: true });
   }
 
+  // First pop is quick (0.8s after load); after a hover or a close it waits 2.5s before popping back.
+  const slowPop = () => btn.style.setProperty('--ask-delay', '2.5s');
+  btn.addEventListener('mouseenter', slowPop);
+  btn.addEventListener('focus', slowPop);
+  btn.addEventListener('click', slowPop);
   btn.addEventListener('click', () => (panel.hidden ? open() : close()));
   closeBtn.addEventListener('click', close);
   document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !panel.hidden) close(); });
