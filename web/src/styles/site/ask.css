@@ -9,11 +9,12 @@
 @keyframes ask-bob { 0%, 100% { translate: 0 0; } 50% { translate: 0 -4px; } }
 @media (prefers-reduced-motion: reduce) { .ask-btn img, .ask-btn__sign { animation: none; } }
 
-.ask-panel { position: fixed; top: 112px; right: 24px; z-index: 130; width: 420px; max-height: calc(100vh - 140px); display: flex; flex-direction: column; background: #fff; color: #1c1b1a; border-radius: 20px; box-shadow: 0 18px 50px rgba(0, 0, 0, 0.25); overflow: hidden; font-family: var(--body, system-ui); }
+.ask-panel { position: fixed; top: 112px; right: 24px; z-index: 130; width: 420px; min-height: min(620px, calc(100vh - 140px)); max-height: calc(100vh - 140px); display: flex; flex-direction: column; background: #fff; color: #1c1b1a; border-radius: 20px; box-shadow: 0 18px 50px rgba(0, 0, 0, 0.25); overflow: hidden; font-family: var(--body, system-ui); }
 .ask-panel[hidden] { display: none; }
 .ask-panel__head { display: flex; align-items: center; gap: 10px; padding: 12px 14px; border-bottom: 1px solid rgba(28, 27, 26, 0.1); font-weight: 700; font-size: 15px; }
 .ask-panel__head span { flex: 1; }
 .ask-panel__close { width: 32px; height: 32px; border: 0; border-radius: 50%; background: rgba(28, 27, 26, 0.07); font-size: 22px; line-height: 1; cursor: pointer; color: inherit; }
+.ask-panel__log:empty { display: none; }
 .ask-panel__log { flex: 1; min-height: 120px; overflow-y: auto; padding: 14px; display: flex; flex-direction: column; gap: 8px; overscroll-behavior: contain; }
 .ask-msg { max-width: 92%; padding: 9px 12px; border-radius: 14px; font-size: 15px; line-height: 1.4; }
 .ask-msg--bot { align-self: flex-start; background: #f0efe9; border-bottom-left-radius: 4px; }
@@ -27,13 +28,13 @@ a.ask-card:hover, a.ask-card:focus-visible { border-color: #1d1a2e; background: 
 .ask-card__go { float: right; margin-left: 8px; opacity: 0.6; }
 .ask-card__more { margin-top: 6px; padding: 0; border: 0; background: none; font: 600 12.5px var(--body, system-ui); color: #2f6fe4; text-decoration: underline; cursor: pointer; }
 .ask-card--link { padding: 8px 12px; }
-.ask-panel__chips { display: flex; flex-wrap: wrap; gap: 6px; padding: 4px 14px 10px; }
+.ask-panel__chips { display: flex; flex-wrap: wrap; gap: 6px; padding: 14px 14px 10px; }
 .ask-chip { padding: 7px 12px; border: 1.5px solid #1d1a2e; border-radius: 999px; background: #fff; font: 600 13px var(--body, system-ui); color: #1d1a2e; cursor: pointer; text-decoration: none; }
 .ask-chip:hover, .ask-chip:focus-visible { background: #1d1a2e; color: #fff; }
 .ask-panel__form { display: flex; gap: 10px; padding: 16px 14px 14px; border-bottom: 1px solid rgba(28, 27, 26, 0.1); }
 .ask-panel__form input { flex: 1; min-width: 0; padding: 16px 20px; border: 2px solid #1d1a2e; border-radius: 999px; font: 500 18px var(--body, system-ui); }
 .ask-panel__form button { padding: 0 24px; border: 0; border-radius: 999px; background: #1d1a2e; color: #fff; font: 700 16px var(--body, system-ui); cursor: pointer; }
-.ask-panel__demo { display: flex; align-items: center; gap: 6px; padding: 6px 14px 10px; font-size: 11.5px; color: rgba(28, 27, 26, 0.55); }
+.ask-panel__demo { margin-top: auto; display: flex; align-items: center; gap: 6px; padding: 6px 14px 10px; font-size: 11.5px; color: rgba(28, 27, 26, 0.55); }
 .ask-panel__demo button { padding: 3px 9px; border: 1px solid rgba(28, 27, 26, 0.3); border-radius: 999px; background: none; font: 600 11.5px var(--body, system-ui); cursor: pointer; color: inherit; }
 .ask-panel__demo button[aria-pressed="true"] { background: #1d1a2e; color: #fff; border-color: #1d1a2e; }
 .ask-typing { align-self: flex-start; font-size: 22px; letter-spacing: 3px; color: rgba(28, 27, 26, 0.4); }
@@ -43,6 +44,6 @@ body.game-open .ask-btn, body.menu-open .ask-btn { display: none; }
   .ask-btn { position: fixed; top: var(--menu-top, 12px); right: 64px; z-index: 125; margin: 0; }
   .ask-btn img { width: 44px; height: 44px; }
   .ask-btn__sign { font-size: 11px; padding: 3px 7px; box-shadow: 2px 2px 0 #1d1a2e; }
-  .ask-panel { left: 0; right: 0; top: auto; bottom: 0; width: auto; max-height: min(78vh, 640px); border-radius: 20px 20px 0 0; padding-bottom: env(safe-area-inset-bottom, 0px); }
+  .ask-panel { left: 0; right: 0; top: auto; bottom: 0; width: auto; min-height: min(70vh, 560px); max-height: min(78vh, 640px); border-radius: 20px 20px 0 0; padding-bottom: env(safe-area-inset-bottom, 0px); }
   body.ask-open { overflow: hidden; }
 }
