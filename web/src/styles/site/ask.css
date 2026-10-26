@@ -18,6 +18,7 @@
 .ask-panel__log { flex: 1; min-height: 120px; overflow-y: auto; padding: 14px; display: flex; flex-direction: column; gap: 8px; overscroll-behavior: contain; }
 .ask-msg { max-width: 92%; padding: 9px 12px; border-radius: 14px; font-size: 15px; line-height: 1.4; }
 .ask-msg--bot { align-self: flex-start; background: #f0efe9; border-bottom-left-radius: 4px; }
+.ask-msg__link { color: #2f6fe4; font-weight: 600; text-decoration: underline; text-underline-offset: 2px; }
 .ask-msg--me { align-self: flex-end; background: #1d1a2e; color: #fff; border-bottom-right-radius: 4px; }
 .ask-cards { display: flex; flex-direction: column; gap: 8px; align-self: stretch; }
 .ask-card { display: block; padding: 10px 12px; border: 1.5px solid rgba(28, 27, 26, 0.16); border-radius: 12px; background: #fff; color: inherit; text-decoration: none; }

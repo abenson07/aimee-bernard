@@ -66,7 +66,14 @@ import { createEngine } from './ask-engine.js';
 
   function renderReply(reply) {
     reply.blocks.forEach((b) => {
-      if (b.t === 'text') {
+      if (b.t === 'text' && b.link) {
+        const msg = el('div', 'ask-msg ask-msg--bot');
+        const a = el('a', 'ask-msg__link', b.link.title);
+        a.href = b.link.href;
+        if (/^https?:/.test(b.link.href)) { a.target = '_blank'; a.rel = 'noopener'; }
+        msg.append(b.link.before, a, b.link.after);
+        log.append(msg);
+      } else if (b.t === 'text') {
         log.append(el('div', 'ask-msg ask-msg--bot', b.text));
       } else {
         const wrap = el('div', 'ask-cards');
