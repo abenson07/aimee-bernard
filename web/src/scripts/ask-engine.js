@@ -19,7 +19,7 @@ export function stem(w) {
 const stemAll = (s) => normalize(s).split(' ').filter(Boolean).map(stem);
 
 const STOP = new Set(
-  ('a an the and or of in on at to for from with by about as is are was were be been being do does did can could would should will what whats which who whom how when where why that this these those it its i me my you your we our they their he she her his him aimee aimees dr some any all other please tell show give find look looking want need like got have has had there here just only really also anything something things thing stuff item one ones lot much many few new newest latest recent hers some get see know ask question about into out up down over under again then than so very too if but not no yes ok okay hmm').split(' ')
+  ('a an the and or of in on at to for from with by about as is are was were be been being do does did can could would should will what whats which who whom how when where why that this these those it its i me my you your we our they their he she her his him aimee aimees dr some any all other please tell show give find look looking want need like got have has had there here just only really also anything something things thing stuff item one ones lot much many few new newest latest recent hers some get see know ask question about into out up down over under again then than so very too if but not no yes ok okay hmm said say says').split(' ')
 );
 
 const hash = (s) => { let h = 0; for (let i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) >>> 0; return h; };
@@ -32,7 +32,8 @@ const pick = (arr, seed) => arr[seed % arr.length];
 export function oneLiner(desc, max = 150) {
   if (!desc) return '';
   const t = String(desc).replace(/\s+/g, ' ').trim();
-  const m = t.match(/^(.+?[.!?])(\s|$)/);
+  // First sentence, without stopping at "Dr.", "Prof." and the like.
+  const m = t.match(/^((?:.*?\b(?:Dr|Mr|Ms|Mrs|Prof|St|vs|e\.g|i\.e)\.\s?)*.*?[.!?])(\s|$)/);
   let first = m ? m[1] : t;
   if (first.length > max) first = first.slice(0, max - 1).replace(/\s+\S*$/, '') + '…';
   return first;
@@ -265,10 +266,44 @@ export function createEngine(index, { mode = 'chat' } = {}) {
     return { blocks: [], chips: starterChips(), state: blank() };
   }
 
+  /* Chat mode answers in sentences: one item at a time, with its one-line description and a link to it. */
+  function chatItem(rec, intro) {
+    const meta = [rec.venue, rec.date].filter(Boolean).join(', ');
+    const blocks = [{ ...text(`${intro} “${rec.title}”${meta ? ` (${meta})` : ''}.`.trim()), ref: rec.id }];
+    const d = rec.type === 'topic' ? rec.desc : oneLiner(rec.desc, 240);
+    if (d) blocks.push(text(d));
+    if (rec.href) blocks.push(cards([{ id: rec.id, title: rec.href.startsWith('/') ? 'See it on the site' : 'Open it', meta: '', desc: '', href: rec.href }], { link: true }));
+    return blocks;
+  }
+
+  function chatResults(state, f, primary, secondary, all, seed) {
+    const first = primary[0] ?? secondary[0];
+    const n = all.length;
+    const kindWord = f.kinds.length === 1 ? S.KIND_PLURAL[f.kinds[0]] ?? 'things' : 'things';
+    const about = f.terms.length ? ` about “${topicWords(f)}”` : '';
+    const when = f.year ? ` from ${f.year}` : '';
+    let intro;
+    if (!primary.length && f.year) intro = `I don’t have anything from ${f.year} on “${topicWords(f)}”, but here’s something close:`;
+    else if (n === 1) intro = `I found one${about}:`;
+    else intro = `I found ${n} ${kindWord}${about}${when}. A good place to start is`;
+    const blocks = [];
+    const fact = topicFact(f);
+    if (fact) blocks.push(text(fact));
+    blocks.push(...chatItem(first.rec, intro));
+    const order = all.map((x) => x.rec.id);
+    const remaining = order.length - 1;
+    const chips = [];
+    if (remaining > 0) chips.push(act(`Another one (${remaining})`, 'more'));
+    chips.push(...facetChips(prep, f, all, memory));
+    if (f.kinds.length || f.terms.length || f.year) chips.push(act('Start over', 'reset'));
+    return finish(state, blocks, chips, { f, ids: order, shown: 1, cards: [first.rec.id], view: 'results' });
+  }
+
   function resultsReply(state, f, seedBase) {
     const { primary, secondary } = runSearch(prep, f);
     const all = [...primary, ...secondary];
     if (!all.length) return fallback(state, f);
+    if (memory) return chatResults(state, f, primary, secondary, all, hash(seedBase) + state.turn);
     const blocks = [];
     const seed = hash(seedBase) + state.turn;
     const shownPrimary = primary.slice(0, PER);
@@ -306,6 +341,14 @@ export function createEngine(index, { mode = 'chat' } = {}) {
     if (!state.ids.length || state.shown >= state.ids.length) {
       return finish(state, [text('That’s everything I have on that!')], [act('Start over', 'reset'), ...starterChips(3)], {});
     }
+    if (memory) {
+      const rec = prep.byId.get(state.ids[state.shown]);
+      const left = state.ids.length - state.shown - 1;
+      const chips = [];
+      if (left > 0) chips.push(act(`Another one (${left})`, 'more'));
+      chips.push(act('Start over', 'reset'));
+      return finish(state, chatItem(rec, 'Another one:'), chips, { shown: state.shown + 1, cards: [rec.id], view: 'results' });
+    }
     const slice = state.ids.slice(state.shown, state.shown + PER).map((id) => prep.byId.get(id)).filter(Boolean);
     const shown = state.shown + slice.length;
     const remaining = state.ids.length - shown;
@@ -332,6 +375,13 @@ export function createEngine(index, { mode = 'chat' } = {}) {
 
   function relist(state) {
     if (!state.ids.length) return greetAgain(state);
+    if (memory) {
+      const rec = prep.byId.get(state.ids[0]);
+      const chips = [];
+      if (state.ids.length > 1) chips.push(act(`Another one (${state.ids.length - 1})`, 'more'));
+      chips.push(act('Start over', 'reset'));
+      return finish(state, chatItem(rec, 'Back to the top of the list:'), chips, { shown: 1, view: 'results', cards: [rec.id] });
+    }
     const slice = state.ids.slice(0, Math.max(PER, Math.min(state.shown, state.ids.length))).map((id) => prep.byId.get(id)).filter(Boolean);
     return finish(state, [text('Back to the list:'), cards(slice.map(card))], [act('Start over', 'reset')], { view: 'results', cards: slice.map((r) => r.id) });
   }
@@ -447,11 +497,12 @@ export function createEngine(index, { mode = 'chat' } = {}) {
     if (memory && RE.more.test(n)) return more(state);
 
     // "tell me about the second one"
-    if (memory && state.cards.length && words.length <= 8) {
+    const refs = state.ids.length ? state.ids : state.cards;
+    if (memory && refs.length && words.length <= 8) {
       for (const [re, idx] of ORD) {
         if (re.test(n)) {
-          const i = idx < 0 ? state.cards.length - 1 : idx;
-          if (state.cards[i]) return detail(state, state.cards[i]);
+          const i = idx < 0 ? refs.length - 1 : idx;
+          if (refs[i]) return detail(state, refs[i]);
         }
       }
     }

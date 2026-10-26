@@ -123,6 +123,7 @@ import { createEngine } from './ask-engine.js';
   }
 
   function markMode() {
+    panel.dataset.mode = mode;
     demo.querySelectorAll('button').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.mode === mode)));
     input.placeholder = mode === 'chat' ? 'Ask, or tap a button…' : 'Try “podcasts” or “talks 2024”';
   }
