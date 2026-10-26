@@ -44,12 +44,12 @@ const onPersonaPage = links.some((l) => l.persona && norm(l.href) === here);
     <span>Ask the B cell</span>
     <button type="button" class="ask-panel__close" id="askClose" aria-label="Close">&times;</button>
   </header>
-  <div class="ask-panel__log" id="askLog" aria-live="polite"></div>
-  <div class="ask-panel__chips" id="askChips"></div>
   <form class="ask-panel__form" id="askForm" autocomplete="off">
     <input id="askInput" type="text" maxlength="120" placeholder="Try &ldquo;podcasts&rdquo; or &ldquo;talks 2024&rdquo;" aria-label="Your question" enterkeyhint="send" />
     <button type="submit">Ask</button>
   </form>
+  <div class="ask-panel__log" id="askLog" aria-live="polite"></div>
+  <div class="ask-panel__chips" id="askChips"></div>
   <footer class="ask-panel__demo" id="askDemo">
     <span>Demo:</span>
     <button type="button" data-mode="search">Search</button>
