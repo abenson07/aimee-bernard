@@ -262,7 +262,7 @@ export function createEngine(index, { mode = 'chat' } = {}) {
   const snapshot = (s) => ({ ...s, history: [] });
 
   function greet() {
-    return { blocks: S.GREETING.map(text), chips: starterChips(), state: blank() };
+    return { blocks: [], chips: starterChips(), state: blank() };
   }
 
   function resultsReply(state, f, seedBase) {
