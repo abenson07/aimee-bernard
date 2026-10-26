@@ -269,10 +269,13 @@ export function createEngine(index, { mode = 'chat' } = {}) {
   /* Chat mode answers in sentences: one item at a time, with its one-line description and a link to it. */
   function chatItem(rec, intro) {
     const meta = [rec.venue, rec.date].filter(Boolean).join(', ');
-    const blocks = [{ ...text(`${intro} “${rec.title}”${meta ? ` (${meta})` : ''}.`.trim()), ref: rec.id }];
+    const after = `${meta ? ` (${meta})` : ''}.`;
+    const head = { ...text(`${intro} “${rec.title}”${after}`.trim()), ref: rec.id };
+    // When the item has a link, the title itself is the link (the UI underlines it).
+    if (rec.href) head.link = { before: intro ? `${intro} “` : '“', title: rec.title, after: `”${after}`, href: rec.href };
+    const blocks = [head];
     const d = rec.type === 'topic' ? rec.desc : oneLiner(rec.desc, 240);
     if (d) blocks.push(text(d));
-    if (rec.href) blocks.push(cards([{ id: rec.id, title: rec.href.startsWith('/') ? 'See it on the site' : 'Open it', meta: '', desc: '', href: rec.href }], { link: true }));
     return blocks;
   }
 
