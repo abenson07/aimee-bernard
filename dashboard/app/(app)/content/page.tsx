@@ -2,7 +2,7 @@ import { categorizationEnabled } from "@/lib/flags";
 import { CATEGORIES_QUERY, ITEMS_QUERY } from "@/lib/queries";
 import { sanityClient } from "@/lib/sanity";
 import type { Category, ContentItem, RefinementQuestion } from "@/lib/types";
-import { Dashboard } from "./dashboard";
+import { Dashboard } from "../dashboard";
 
 type CategoryRow = Omit<Category, "pending"> & { refinementQA?: RefinementQuestion[] };
 

@@ -583,7 +583,7 @@ function AccountMenu() {
       </button>
       {open && (
         <div className="st-menu" role="menu">
-          <Link className="st-menu-item" href="/" role="menuitem">
+          <Link className="st-menu-item" href="/content" role="menuitem">
             Content log (full page)
           </Link>
           <Link className="st-menu-item" href="/questionnaire" role="menuitem">

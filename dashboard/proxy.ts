@@ -10,8 +10,9 @@ export default async function proxy(request: NextRequest) {
     return NextResponse.redirect(new URL("/login", request.nextUrl));
   }
 
-  if (isAuthenticated && isLoginRoute) {
-    return NextResponse.redirect(new URL("/", request.nextUrl));
+  // The Site editor is home: signing in, and the bare address, land there.
+  if (isAuthenticated && (isLoginRoute || request.nextUrl.pathname === "/")) {
+    return NextResponse.redirect(new URL("/site", request.nextUrl));
   }
 
   return NextResponse.next();
