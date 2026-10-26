@@ -99,13 +99,16 @@ import { createEngine } from './ask-engine.js';
   }
 
   function run(reply, userText) {
-    if (userText) log.append(el('div', 'ask-msg ask-msg--me', userText));
+    // Search mode behaves like a search page: each search replaces the last, and the question isn't echoed back.
+    if (mode === 'search') log.replaceChildren();
+    else if (userText) log.append(el('div', 'ask-msg ask-msg--me', userText));
     state = reply.state;
     renderReply(reply);
   }
 
   function ask(text, shown) {
     if (!engine) return;
+    if (mode === 'search') input.value = shown ?? text;
     run(engine.say(text, state), shown ?? text);
   }
 
@@ -163,7 +166,7 @@ import { createEngine } from './ask-engine.js';
     e.preventDefault();
     const v = input.value.trim();
     if (!v || !engine) return;
-    input.value = '';
+    if (mode !== 'search') input.value = '';
     ask(v);
   });
   demo.querySelectorAll('button').forEach((b) =>
