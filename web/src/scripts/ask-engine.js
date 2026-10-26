@@ -19,7 +19,7 @@ export function stem(w) {
 const stemAll = (s) => normalize(s).split(' ').filter(Boolean).map(stem);
 
 const STOP = new Set(
-  ('a an the and or of in on at to for from with by about as is are was were be been being do does did can could would should will what whats which who whom how when where why that this these those it its i me my you your we our they their he she her his him aimee aimees dr some any all other please tell show give find look looking want need like got have has had there here just only really also anything something things thing stuff item one ones lot much many few new newest latest recent hers some get see know ask question about into out up down over under again then than so very too if but not no yes ok okay hmm said say says').split(' ')
+  ('a an the and or of in on at to for from with by about as is are was were be been being do does did can could would should will what whats which who whom how when where why that this these those it its i me my you your we our they their he she her his him aimee aimees dr some any all other please tell show give find look looking want need like got have has had there here just only really also anything something things thing stuff item one ones lot much many few new newest latest recent hers some get see know ask question about into out up down over under again then than so very too if but not no yes ok okay hmm said say says does doe doing done them they those these himself herself').split(' ')
 );
 
 const hash = (s) => { let h = 0; for (let i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) >>> 0; return h; };
@@ -123,9 +123,9 @@ export function parse(text) {
   for (const w of q.split(' ').filter(Boolean)) {
     if (STOP.has(w)) continue;
     const s = stem(w);
-    if (STOP.has(s)) continue;
     const kind = KIND_STEM.get(s);
     if (kind) { kinds.add(kind); continue; }
+    if (STOP.has(s)) continue;
     out.terms.push(termFor(w));
   }
   out.kinds = [...kinds];
@@ -246,10 +246,47 @@ function facetChips(prep, f, all, memory) {
 const starterChips = (n = 6) => S.STARTERS.slice(0, n).map((s) => say(s.label, s.say));
 const contactChip = () => ({ label: 'Contact Aimee', href: '/contact' });
 
+/* One-edit spelling fixes for words that match nothing ("vacines", "podcats"). */
+function edits1(w) {
+  const out = new Set();
+  const a = 'abcdefghijklmnopqrstuvwxyz';
+  for (let i = 0; i <= w.length; i++) {
+    if (i < w.length) out.add(w.slice(0, i) + w.slice(i + 1));
+    if (i < w.length - 1) out.add(w.slice(0, i) + w[i + 1] + w[i] + w.slice(i + 2));
+    for (const c of a) {
+      if (i < w.length) out.add(w.slice(0, i) + c + w.slice(i + 1));
+      out.add(w.slice(0, i) + c + w.slice(i));
+    }
+  }
+  return out;
+}
+
 /* ---------- the engine ---------- */
 export function createEngine(index, { mode = 'chat' } = {}) {
   const prep = prepare(index);
   const memory = mode === 'chat';
+  // Every word the content uses, with how often, so a misspelling can be pulled back to a real word.
+  const vocab = new Map();
+  for (const r of prep.recs) for (const set of [r._t, r._v, r._d]) for (const w of set) vocab.set(w, (vocab.get(w) ?? 0) + 1);
+  for (const k of KIND_STEM.keys()) vocab.set(k, (vocab.get(k) ?? 0) + 50);
+  const known = (t) => t.alts.some((a) => vocab.has(a)) || t.phrases.length > 0;
+  function correct(parsed) {
+    const terms = [];
+    let changed = false;
+    for (const t of parsed.terms) {
+      if (known(t) || t.word.length < 4 || t.word.includes(' ')) { terms.push(t); continue; }
+      let best = null;
+      for (const c of edits1(stem(t.word))) {
+        if (c.length >= 3 && vocab.has(c) && (!best || vocab.get(c) > vocab.get(best))) best = c;
+      }
+      if (best && !STOP.has(best)) {
+        const kind = KIND_STEM.get(best);
+        if (kind) { if (!parsed.kinds.includes(kind)) parsed.kinds.push(kind); changed = true; continue; }
+        terms.push(termFor(best)); changed = true;
+      } else terms.push(t);
+    }
+    return changed ? { ...parsed, terms } : parsed;
+  }
   const PER = 3;
   const hasResults = (f) => { const r = runSearch(prep, f); return r.primary.length + r.secondary.length > 0; };
 
@@ -434,6 +471,12 @@ export function createEngine(index, { mode = 'chat' } = {}) {
     return finish(state, [text(S.HATS_LEAD)], chips, { view: 'hats' });
   }
 
+  function allHats(state) {
+    const ps = S.PERSONAS.filter((p) => p.id !== 'outreach');
+    const blocks = [text('Here they are:'), ...ps.map((p) => text(`${p.label}: ${p.blurb}`)), text(`Community Outreach: ${S.PROGRAMS_LEAD[0]}`)];
+    return finish(state, blocks, [...S.PERSONAS.map((p) => act(p.label, `persona:${p.id}`))], { view: 'hats' });
+  }
+
   function persona(state, id) {
     const p = S.PERSONAS.find((x) => x.id === id);
     if (!p) return hats(state);
@@ -503,7 +546,7 @@ export function createEngine(index, { mode = 'chat' } = {}) {
     safety: /\b(should i (take|get|have|worry)|my (symptoms?|doctor|child|baby|kid|health)|diagnos|prescrib|dosage|am i (sick|immune|allergic)|do i have|is it safe|side effects?|treat my|cure for|medical advice)\b/,
     books: /\b(her book|a book|books|written a book|any book)\b/,
     book: /\b(book (her|aimee|a speaker)|booking|hire|invite|availab|engage|speaker for|speak (at|for) (my|our)|contact|email|e-mail|get in touch|reach out|consult|collaborat)\b/,
-    who: /\b(who is|who are you|about aimee|about her|what does aimee do|what do you do|what does she do|bio|biograph|introduce|what s aimee|whats aimee|what is aimee)\b/,
+    who: /\b(who is|who are you|about aimee|about her|what does aimee do|what do you do|what does she do|what does she doe|what do she do|what does aimee doe|bio|biograph|introduce|what s aimee|whats aimee|what is aimee)\b/,
     help: /\b(help|what can you|what do you know|how do (i|you) use|options|what can i ask)\b/,
     hi: /^(hi|hello|hey|hiya|yo|howdy|good (morning|afternoon|evening))\b/,
     thanks: /\b(thanks|thank you|thx|cheers)\b/,
@@ -554,6 +597,8 @@ export function createEngine(index, { mode = 'chat' } = {}) {
       if (intent) return itemAnswer(state, rec, intent);
     }
 
+    if (memory && state.view === 'hats' && words.length <= 5 && (/\b(them|all|each|everything|both|every)\b/.test(n) || /^(yes|yeah|yep|sure|ok|okay|please)$/.test(n))) return allHats(state);
+    if (/\b(her phd|phd on|doctorate|what does she research|her research|research focus|what did she study)\b/.test(n)) return persona(state, 'immunologist');
     if (RE.help.test(n) && words.length <= 8) return finish(state, S.HELP.map(text), starterChips(), { view: 'home' });
     if (RE.books.test(n)) {
       const r = resultsReply(state, { kinds: ['article'], year: 0, terms: [], venue: '' }, 'books');
@@ -578,7 +623,7 @@ export function createEngine(index, { mode = 'chat' } = {}) {
       if (ex) return explainer(state, ex.lines);
     }
 
-    const parsed = parse(raw);
+    const parsed = correct(parse(raw));
 
     // A hat on its own: "educator", "immunologist"
     if (!parsed.terms.length && !parsed.kinds.length && !parsed.year) {
@@ -594,10 +639,11 @@ export function createEngine(index, { mode = 'chat' } = {}) {
     let merged = false;
     if (memory && state.view === 'results') {
       const prior = state.f;
-      if (!parsed.terms.length && (parsed.year || parsed.kinds.length)) {
+      // Only short follow-ups ("2024", "just the talks") keep the last topic; a full question starts fresh.
+      if (!parsed.terms.length && (parsed.year || parsed.kinds.length) && words.length <= 3) {
         f = { kinds: parsed.kinds.length ? parsed.kinds : prior.kinds, year: parsed.year || prior.year, terms: prior.terms, venue: prior.venue };
         merged = true;
-      } else if (parsed.terms.length && !parsed.kinds.length && prior.kinds.length && !prior.terms.length) {
+      } else if (parsed.terms.length && !parsed.kinds.length && prior.kinds.length && !prior.terms.length && words.length <= 4) {
         f = { kinds: prior.kinds, year: parsed.year || prior.year, terms: dedupeTerms(parsed.terms), venue: '' };
         merged = true;
       }
