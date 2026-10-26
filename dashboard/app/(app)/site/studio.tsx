@@ -306,19 +306,7 @@ export function Studio({
       <header className="st-titlebar">
         <AccountMenu />
         <span className="st-spacer" />
-        <a
-          className="st-url"
-          href={`${siteOrigin}${current.path}`}
-          target="_blank"
-          rel="noreferrer"
-          title="Open the live page"
-        >
-          <span className={`st-dot ${page?.hasDraft ? "draft" : "live"}`} />
-          {new URL(siteOrigin).host}
-          {current.path}
-          <ExternalIcon size={12} />
-        </a>
-        <span className="st-spacer" />
+        <span className={`st-dot ${page?.hasDraft ? "draft" : "live"}`} aria-hidden="true" />
         <span
           className={`st-status ${error ? "error" : ""}`}
           aria-live="polite"
@@ -439,14 +427,15 @@ export function Studio({
             <div className="st-toolbar">
               <div className="st-crumbs">
                 <PageSwitcher pages={pages} current={current} />
-                {selection && (
-                  <>
-                    <ChevronRightIcon size={12} />
-                    <span className="st-crumb">{selection.section}</span>
-                    <ChevronRightIcon size={12} />
-                    <span className="st-crumb last">{selection.name}</span>
-                  </>
-                )}
+                <a
+                  className="st-icon-btn"
+                  href={`${siteOrigin}${current.path}`}
+                  target="_blank"
+                  rel="noreferrer"
+                  title="View the live page in a new tab"
+                >
+                  <ExternalIcon size={13} />
+                </a>
               </div>
               <div className="st-devices" role="group" aria-label="Screen size">
                 {DEVICES.map(({ id, title, Icon }) => (

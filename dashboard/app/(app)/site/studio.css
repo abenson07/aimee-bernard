@@ -74,23 +74,6 @@
 .st-title svg,
 .st-page-switch svg:last-child { color: var(--st-faint); }
 
-.st-url {
-  display: inline-flex;
-  align-items: center;
-  gap: 7px;
-  width: min(380px, 32vw);
-  justify-content: center;
-  padding: 5px 12px;
-  border-radius: 8px;
-  background: var(--st-input);
-  color: var(--st-dim);
-  font-size: 12px;
-  text-decoration: none;
-  white-space: nowrap;
-  overflow: hidden;
-}
-.st-url:hover { color: var(--st-text); }
-.st-url svg { color: var(--st-faint); }
 .st-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
 .st-dot.live { background: var(--st-green); box-shadow: 0 0 6px rgba(48, 193, 88, 0.5); }
 .st-dot.draft { background: var(--st-amber); }
@@ -302,8 +285,6 @@
   border-bottom: 1px solid var(--st-line);
 }
 .st-crumbs { flex: 1; min-width: 0; display: flex; align-items: center; gap: 2px; color: var(--st-faint); }
-.st-crumb { padding: 3px 6px; border-radius: 5px; font-size: 12px; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.st-crumb.last { color: var(--st-text); }
 .st-crumbs .st-page-switch { color: var(--st-text); }
 .st-devices { display: flex; gap: 2px; padding: 2px; border-radius: 8px; background: var(--st-input); }
 .st-devices button { display: grid; place-items: center; padding: 4px 9px; border: 0; border-radius: 6px; background: transparent; color: var(--st-faint); }
