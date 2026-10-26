@@ -339,6 +339,39 @@ export function createEngine(index, { mode = 'chat' } = {}) {
     return finish(state, blocks, chips, { f, ids: order, shown: shownCount, cards: shownIds, view: 'results' });
   }
 
+  const ITEM_WORDS = new Set('link url watch listen read happen happened air aired publish published record recorded date year month place venue outlet host hosted show podcast episode summary describe description details detail mean'.split(' '));
+  /* Which question is being asked about the current item, if the message is only that question. */
+  function itemQuestion(n) {
+    const left = n.split(' ').filter((w) => w && !STOP.has(w) && !ITEM_WORDS.has(w));
+    if (left.length) return '';
+    if (/\b(link|url|watch|listen|read|find it|see it)\b/.test(n)) return 'link';
+    if (/\b(when|date|year|month|how long ago)\b/.test(n)) return 'when';
+    if (/\b(where|venue|outlet|host|hosted|show|place)\b/.test(n)) return 'where';
+    if (/\b(about|summary|describe|description|details?|mean|happen|happened|more)\b/.test(n)) return 'about';
+    return '';
+  }
+
+  function itemAnswer(state, rec, intent) {
+    const t = `“${rec.title}”`;
+    let blocks;
+    if (intent === 'when') blocks = [text(rec.date ? `${t} was ${rec.date}.` : `I don’t have a date for ${t}.`)];
+    else if (intent === 'where') blocks = [text(rec.venue ? `${t} is from ${rec.venue}.` : `I don’t have a venue or outlet for ${t}.`)];
+    else if (intent === 'link') {
+      blocks = rec.href
+        ? [{ ...text(`Here it is: ${rec.title}.`), link: { before: 'Here it is: ', title: rec.title, after: '.', href: rec.href } }]
+        : [text(`I don’t have a link for ${t} yet. If you’d like to find it, Aimee’s contact page is the best way to ask.`)];
+    } else {
+      const d = rec.desc ? String(rec.desc).replace(/\s+/g, ' ').trim().slice(0, 600) : '';
+      blocks = [text(d || `I only have the title for ${t}.`)];
+    }
+    const chips = [];
+    if (state.shown < state.ids.length) chips.push(act(`Another one (${state.ids.length - state.shown})`, 'more'));
+    if (intent !== 'link' && rec.href) chips.push(say('Link', 'link'));
+    if (intent !== 'when' && rec.date) chips.push(say('When?', 'when was it'));
+    chips.push(act('Start over', 'reset'));
+    return finish(state, blocks, chips, {});
+  }
+
   function fallback(state, f) {
     return finish(state, [text(S.FALLBACK[0]), text(S.FALLBACK[1])], [...starterChips(4), contactChip()], { view: 'home', cards: [] });
   }
@@ -513,6 +546,13 @@ export function createEngine(index, { mode = 'chat' } = {}) {
       }
     }
     if (memory && state.view === 'detail' && /^(tell me more|more about it|more about that|go on|and)$/.test(n) && state.cards[0]) return detail(state, state.cards[0]);
+
+    // Questions about the item on screen: "when was it?", "where", "what's it about", "is there a link"
+    if (memory && state.cards.length === 1 && (state.view === 'results' || state.view === 'detail') && words.length <= 8) {
+      const rec = prep.byId.get(state.cards[0]);
+      const intent = rec && itemQuestion(n);
+      if (intent) return itemAnswer(state, rec, intent);
+    }
 
     if (RE.help.test(n) && words.length <= 8) return finish(state, S.HELP.map(text), starterChips(), { view: 'home' });
     if (RE.books.test(n)) {
