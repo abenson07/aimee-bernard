@@ -2,7 +2,11 @@
 
 Aimee clicks any text or photo on the live site, from inside the dashboard, and changes it. Changes save to a **draft**; **Publish** makes them live (within about a minute).
 
-**Layout:** pages on the left (folds away); the site in the middle; on the right, whatever she clicked (its text, or its photo with Change photo, plus anything that belongs with it, such as the hover photo and speech bubble behind a Home hero word). Text can be typed straight onto the page (Enter or click away saves; Esc cancels) or in the right panel.
+**Layout** (copied from Stacki's editor, https://github.com/flowtricks/stacki, MIT; light, in Aimee's blue #6aa8ff; `dashboard/app/(app)/site/studio.tsx` + `studio.css`, icons in `site/icons.tsx`):
+- Title bar: account menu (full-page content log, questionnaire, sign out), page switcher, link to the live page (green dot = live, amber = draft changes), Discard and Publish.
+- Icon rail with four panels (click the open one to fold it away): **Pages**; **Navigator** (every section of the page and the editable things in it; hover or click a row to find it on the page); **Content log** (the dashboard's item list covers the page, filtered by kind); **Photos** (the library; select a photo on the page, then pick one here to swap it in).
+- The page in the middle, with breadcrumbs and Desktop / Tablet / Phone widths. Hover and selection boxes with a name tag are drawn by `web/public/edit-mode.js`.
+- Right panel: whatever is selected, as labelled fields (text; or photo, Change photo and description), plus anything that belongs with it (the hover photo and speech bubble behind a Home hero word). Text can also be typed straight onto the page (Enter or click away saves; Esc cancels).
 
 **Items from the content log** (awards, press cards, course tiles, logos; purple outline) open in a window instead: awards and press use the content log's own item window, course tiles and logos have their own (`site/doc-modals.tsx`). These save straight to the live site, like everything in the content log. A course tile's years and courses are still edited in Studio.
 

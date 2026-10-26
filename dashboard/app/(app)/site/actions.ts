@@ -96,6 +96,19 @@ export async function savePhoto(id: string, key: string, assetId: string, focus:
   }
 }
 
+/** Just the description of a photo, read aloud to people who can't see it. */
+export async function saveAlt(id: string, key: string, alt: string): Promise<Result> {
+  await verifySession();
+  if (!isSitePageId(id) || !isSlotKey(key)) return { ok: false, error: "Unknown page or field." };
+  try {
+    await ensureDraft(id);
+    await sanityClient.patch(draftId(id)).set({ [`slots[_key=="${key}"].alt`]: alt.trim().slice(0, 200) }).commit();
+    return { ok: true };
+  } catch (e) {
+    return { ok: false, error: e instanceof Error ? e.message : "Could not save." };
+  }
+}
+
 /** Upload a new photo into the shared library. */
 export async function uploadPhoto(formData: FormData): Promise<{ ok: true; photo: Photo } | { ok: false; error: string }> {
   await verifySession();
