@@ -1,5 +1,5 @@
 /* "Ask me a Q?" B cell: a sign-holding button in the header and a small chat panel. */
-.ask-btn { margin-left: auto; display: flex; align-items: center; gap: 4px; padding: 0; border: 0; background: none; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+.ask-btn { position: fixed; top: 44px; right: 24px; z-index: 125; display: flex; align-items: center; gap: 4px; padding: 0; border: 0; background: none; cursor: pointer; -webkit-tap-highlight-color: transparent; }
 .ask-btn img { width: 56px; height: 56px; transition: transform 0.4s cubic-bezier(0.3, 1.6, 0.5, 1); animation: ask-bob 3.4s ease-in-out infinite; }
 .ask-btn:hover img, .ask-btn:focus-visible img { transform: rotate(8deg) scale(1.08); }
 .ask-btn:focus-visible { outline: 2px solid #8ec0ff; outline-offset: 4px; border-radius: 12px; }
