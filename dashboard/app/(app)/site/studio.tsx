@@ -306,7 +306,6 @@ export function Studio({
       <header className="st-titlebar">
         <AccountMenu />
         <span className="st-spacer" />
-        <PageSwitcher pages={pages} current={current} />
         <a
           className="st-url"
           href={`${siteOrigin}${current.path}`}
@@ -439,7 +438,7 @@ export function Studio({
           <div className="st-canvas" hidden={showingContent}>
             <div className="st-toolbar">
               <div className="st-crumbs">
-                <span className="st-crumb">{current.title}</span>
+                <PageSwitcher pages={pages} current={current} />
                 {selection && (
                   <>
                     <ChevronRightIcon size={12} />
@@ -636,7 +635,7 @@ function PageSwitcher({
         <ChevronDownIcon size={12} />
       </button>
       {open && (
-        <div className="st-menu center" role="menu">
+        <div className="st-menu" role="menu">
           {pages.map((p) => (
             <Link
               key={p.id}

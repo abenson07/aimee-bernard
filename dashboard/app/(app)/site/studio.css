@@ -69,7 +69,7 @@
 .st-title { margin-left: -4px; }
 .st-title:hover,
 .st-page-switch:hover { background: var(--st-hover); }
-.st-page-switch { font-weight: 500; }
+.st-page-switch { font-weight: 500; font-size: 12.5px; padding: 4px 8px; margin-left: -6px; }
 .st-page-switch svg:first-child { color: var(--st-dim); }
 .st-title svg,
 .st-page-switch svg:last-child { color: var(--st-faint); }
@@ -304,6 +304,7 @@
 .st-crumbs { flex: 1; min-width: 0; display: flex; align-items: center; gap: 2px; color: var(--st-faint); }
 .st-crumb { padding: 3px 6px; border-radius: 5px; font-size: 12px; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .st-crumb.last { color: var(--st-text); }
+.st-crumbs .st-page-switch { color: var(--st-text); }
 .st-devices { display: flex; gap: 2px; padding: 2px; border-radius: 8px; background: var(--st-input); }
 .st-devices button { display: grid; place-items: center; padding: 4px 9px; border: 0; border-radius: 6px; background: transparent; color: var(--st-faint); }
 .st-devices button:hover { color: var(--st-text); }
@@ -327,10 +328,19 @@
   transition: width 0.3s cubic-bezier(0.3, 0.7, 0.3, 1);
 }
 
-/* The content log, covering the canvas (as Stacki's CMS does) */
-.st-content { flex: 1; min-height: 0; overflow-y: auto; }
-.st-content .page-embedded { padding: 20px 24px 48px; max-width: none; }
-.st-content .log-head .search { margin-left: auto; }
+/* The content log, covering the canvas (as Stacki's CMS does): edge to edge, its header in the
+   same 40px bar as the page's breadcrumbs. */
+.st-content { flex: 1; min-height: 0; overflow-y: auto; background: var(--st-panel); }
+.st-content .page-embedded { padding: 0; max-width: none; margin: 0; }
+.st-content .log { margin: 0; border-radius: 0; overflow: visible; }
+.st-content .log-head.st-toolbar { position: sticky; top: 0; z-index: 2; padding: 0 12px 0 16px; gap: 8px; }
+.st-content .log-title { gap: 8px; }
+.st-content .log-title h2 { margin: 0; font-size: 12.5px; font-weight: 600; }
+.st-content .log-count { font-size: 12px; color: var(--st-faint); }
+.st-search { margin-left: auto; width: 220px; padding: 5px 10px; border: 0; border-radius: 8px; background: var(--st-input); color: var(--st-faint); }
+.st-search input { font-size: 12.5px; }
+.st-content .log th { padding: 8px 16px; border-top: 0; }
+.st-content .log td > .cell { padding: 12px 16px; }
 
 /* ---- Inspector ---- */
 .st-inspector-head {

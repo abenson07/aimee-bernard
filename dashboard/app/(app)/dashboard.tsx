@@ -177,14 +177,14 @@ export function Dashboard({
         )}
 
         <section className="log">
-          <div className="log-head">
+          <div className={embedded ? "log-head st-toolbar" : "log-head"}>
             <div className="log-title">
               <h2>{heading}</h2>
               <span className="log-count">
                 {items.length} {items.length === 1 ? "item" : "items"}
               </span>
             </div>
-            <label className="search">
+            <label className={embedded ? "search st-search" : "search"}>
               <SearchIcon />
               <input
                 type="search"
@@ -195,7 +195,7 @@ export function Dashboard({
               />
             </label>
             {embedded && (
-              <button type="button" className="btn-primary" onClick={() => setModal({ kind: "upload", categoryId: null })}>
+              <button type="button" className="st-btn primary" onClick={() => setModal({ kind: "upload", categoryId: null })}>
                 <UploadIcon />
                 Upload
               </button>
