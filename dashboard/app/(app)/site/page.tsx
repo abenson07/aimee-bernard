@@ -1,11 +1,11 @@
-import Link from "next/link";
 import { categorizationEnabled } from "@/lib/flags";
-import { CATEGORIES_QUERY } from "@/lib/queries";
+import { CATEGORIES_QUERY, ITEMS_QUERY } from "@/lib/queries";
 import { sanityClient } from "@/lib/sanity";
 import { SITE_PAGES, signPreviewToken, siteUrl } from "@/lib/site";
-import type { Category, RefinementQuestion } from "@/lib/types";
+import type { Category, ContentItem, RefinementQuestion } from "@/lib/types";
 import { loadPage } from "./actions";
-import { SiteEditor } from "./site-editor";
+import { Studio } from "./studio";
+import "./studio.css";
 
 export const metadata = { title: "Site editor" };
 
@@ -24,10 +24,11 @@ export default async function SitePage({ searchParams }: { searchParams: Promise
     );
   }
 
-  // Categories are only needed by the window that opens when an award or press card is clicked.
-  const [state, categoryRows] = await Promise.all([
+  // The content log lives in the editor too (the Content rail tab), so its items load here as well.
+  const [state, categoryRows, items] = await Promise.all([
     loadPage(current.id),
     categorizationEnabled ? sanityClient.fetch<CategoryRow[]>(CATEGORIES_QUERY) : Promise.resolve([]),
+    sanityClient.fetch<ContentItem[]>(ITEMS_QUERY),
   ]);
   const categories: Category[] = categoryRows.map((row) => ({
     _id: row._id,
@@ -37,24 +38,16 @@ export default async function SitePage({ searchParams }: { searchParams: Promise
   }));
 
   return (
-    <>
-      <header className="topbar">
-        <div className="wordmark">Aimee Pugh Bernard</div>
-        <div className="topbar-actions">
-          <Link href="/" className="btn-secondary">
-            ← Content log
-          </Link>
-        </div>
-      </header>
-      <SiteEditor
-        pages={SITE_PAGES.map((p) => ({ id: p.id, title: p.title, slug: p.id.replace("site-page-", ""), path: p.path }))}
-        currentId={current.id}
-        initial={state}
-        iframeBase={siteUrl(current.path, signPreviewToken())}
-        siteOrigin={new URL(base).origin}
-        categories={categories}
-        categorizationEnabled={categorizationEnabled}
-      />
-    </>
+    <Studio
+      key={current.id}
+      pages={SITE_PAGES.map((p) => ({ id: p.id, title: p.title, slug: p.id.replace("site-page-", ""), path: p.path }))}
+      currentId={current.id}
+      initial={state}
+      iframeBase={siteUrl(current.path, signPreviewToken())}
+      siteOrigin={new URL(base).origin}
+      categories={categories}
+      items={items}
+      categorizationEnabled={categorizationEnabled}
+    />
   );
 }

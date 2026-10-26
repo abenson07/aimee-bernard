@@ -1,12 +1,10 @@
 import { categorizationEnabled } from "@/lib/flags";
-import { CATEGORIES_QUERY, CONTENT_ITEM_FIELDS } from "@/lib/queries";
+import { CATEGORIES_QUERY, ITEMS_QUERY } from "@/lib/queries";
 import { sanityClient } from "@/lib/sanity";
 import type { Category, ContentItem, RefinementQuestion } from "@/lib/types";
 import { Dashboard } from "./dashboard";
 
 type CategoryRow = Omit<Category, "pending"> & { refinementQA?: RefinementQuestion[] };
-
-const ITEMS_QUERY = `*[_type == "contentItem"] | order(_createdAt desc){ ${CONTENT_ITEM_FIELDS} }`;
 
 export default async function DashboardPage() {
   const [categoryRows, items] = await Promise.all([

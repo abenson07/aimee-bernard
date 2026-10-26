@@ -1,7 +1,8 @@
 /* Site editor hooks. Loaded only on a page opened inside the dashboard's Site editor (a request
-   carrying a valid preview token); visitors never get this file. It outlines what can be edited,
-   lets text be typed into directly, and talks to the dashboard (the parent window) by postMessage.
-   Messages are only sent to, and accepted from, the dashboard's own origin.
+   carrying a valid preview token); visitors never get this file. It draws the hover and selection
+   boxes, lets text be typed into directly, reports the page's sections for the editor's Navigator,
+   and talks to the dashboard (the parent window) by postMessage. Messages are only sent to, and
+   accepted from, the dashboard's own origin.
 
    [data-edit="<page>:<key>"]  text or a photo written in the page (saved to the page's draft)
    [data-doc="<id>"]           an item from Sanity (award, press card, course tile, logo): opens a window
@@ -12,39 +13,162 @@
   if (!ORIGIN || window.parent === window) return;
   const send = (msg) => window.parent.postMessage({ source: 'site-editor', ...msg }, ORIGIN);
 
+  const BLUE = '#6aa8ff';
+  const PURPLE = '#8b5cf6';
+  const PICK = '[data-edit], [data-doc]';
+
   const style = document.createElement('style');
   style.textContent = `
-    [data-edit], [data-doc] { cursor: pointer; outline: 2px dashed transparent; outline-offset: 4px; transition: outline-color .15s; }
-    [data-edit]:hover { outline-color: #3b82f6; }
-    [data-doc]:hover { outline-color: #a855f7; }
-    [data-edit].se-selected { outline: 2px solid #3b82f6; }
-    [data-edit][contenteditable] { outline: 2px solid #3b82f6; cursor: text; background: rgba(59,130,246,.08); }
-    [data-edit].se-flash { outline: 3px solid #f59e0b !important; }
-    [data-edit-type="image"] { position: relative; }
-    [data-edit-type="image"]:hover::after, [data-doc]:hover::after { position: absolute; left: 8px; top: 8px; z-index: 50; color: #fff; font: 600 12px/1 system-ui; padding: 6px 10px; border-radius: 999px; pointer-events: none; white-space: nowrap; }
-    [data-edit-type="image"]:hover::after { content: "Change photo"; background: #1d4ed8; }
-    [data-doc] { position: relative; }
-    [data-doc]:hover::after { content: "Edit " attr(data-doc-label); background: #7e22ce; }
+    [data-edit], [data-doc] { cursor: pointer; }
+    [data-edit][contenteditable] { cursor: text; outline: none; caret-color: ${BLUE}; }
+    #se-layer { position: fixed; inset: 0; pointer-events: none; z-index: 2147483000; }
+    #se-layer .se-box { position: absolute; display: none; outline: 1px solid ${BLUE}; outline-offset: -1px; }
+    #se-layer .se-box.sel { outline-width: 2px; }
+    #se-layer .se-box.doc { outline-color: ${PURPLE}; }
+    #se-layer .se-tag { position: absolute; left: 0; top: 0; transform: translateY(-100%); background: ${BLUE}; color: #0b1b33; font: 600 11px/1 -apple-system, BlinkMacSystemFont, "Inter", system-ui, sans-serif; padding: 3px 6px 4px; border-radius: 4px 4px 4px 0; white-space: nowrap; }
+    #se-layer .se-box.doc .se-tag { background: ${PURPLE}; color: #fff; }
+    #se-layer .se-tag.inside { transform: none; border-radius: 0 0 4px 0; }
+    #se-layer .se-box.hover .se-tag { background: transparent; color: ${BLUE}; padding-left: 0; }
+    #se-layer .se-box.hover.doc .se-tag { color: ${PURPLE}; }
+    #se-layer .se-box.flash { outline: 3px solid #f59e0b; }
   `;
   document.head.appendChild(style);
 
-  const TAGS = { H1: 'Heading', H2: 'Heading', H3: 'Heading', H4: 'Heading', P: 'Paragraph', A: 'Link text', BUTTON: 'Button text' };
-  /** "Programs · Heading": the section it sits in, then what kind of text it is. */
-  const labelOf = (el) => {
-    const section = el.closest('[aria-label]');
-    const kind = el.dataset.editType === 'image' ? 'Photo' : TAGS[el.tagName] || (el.closest('a') ? 'Link text' : 'Text');
-    return [section && section !== el ? section.getAttribute('aria-label') : '', kind].filter(Boolean).join(' · ');
+  const layer = document.createElement('div');
+  layer.id = 'se-layer';
+  const makeBox = (cls) => {
+    const box = document.createElement('div');
+    box.className = `se-box ${cls}`;
+    const tag = document.createElement('span');
+    tag.className = 'se-tag';
+    box.appendChild(tag);
+    layer.appendChild(box);
+    return box;
   };
-  const keyOf = (el) => el.dataset.edit.split(':')[1];
+  const hoverBox = makeBox('hover');
+  const selBox = makeBox('sel');
+  document.body.appendChild(layer);
+
+  /* ---- What each editable thing is called ---- */
+  const TAGS = { H1: 'Heading', H2: 'Heading', H3: 'Heading', H4: 'Heading', P: 'Paragraph' };
+  const kindOf = (el) => (el.dataset.doc !== undefined ? 'doc' : el.dataset.editType === 'image' ? 'image' : 'text');
+  const nameOf = (el) => {
+    const kind = kindOf(el);
+    if (kind === 'doc') return el.dataset.docLabel || 'Item';
+    if (kind === 'image') return 'Photo';
+    if (TAGS[el.tagName]) return TAGS[el.tagName];
+    return el.closest('a, button') ? 'Button text' : 'Text';
+  };
+  /** The outermost labelled section an element sits in: the Navigator's top level. */
+  const sectionOf = (el) => {
+    let found = null;
+    for (let n = el.parentElement; n && n !== document.body; n = n.parentElement) {
+      if (n.matches('section[aria-label], [data-se-section]')) found = n;
+    }
+    return found;
+  };
+  const sectionName = (s) => (s ? s.getAttribute('aria-label') || s.dataset.seSection : 'Page');
+  const keyOf = (el) => (el.dataset.edit || '').split(':')[1] || '';
   const textOf = (el) => el.innerText.replace(/\s+\n/g, '\n').trim();
-
-  let selected = null;
-  const select = (el) => {
-    if (selected && selected !== el) selected.classList.remove('se-selected');
-    selected = el;
-    if (el) el.classList.add('se-selected');
+  const preview = (el) => {
+    const kind = kindOf(el);
+    if (kind === 'image') return (el.querySelector('img') || {}).alt || '';
+    return textOf(el).replace(/\s+/g, ' ').slice(0, 70);
   };
 
+  /* ---- The list of editable things, for the Navigator ---- */
+  let items = [];
+  const scan = () => {
+    // Logo strips repeat each logo to loop; only the first copy is listed.
+    const seen = new Set();
+    items = [...document.querySelectorAll(PICK)].filter((el) => {
+      if (el.closest('#se-layer')) return false;
+      const id = el.dataset.edit || `doc:${el.dataset.doc}`;
+      if (!el.dataset.edit && !el.dataset.doc) return false;
+      if (seen.has(id)) return false;
+      seen.add(id);
+      return true;
+    });
+    const groups = [];
+    const bySection = new Map();
+    items.forEach((el, ref) => {
+      el.dataset.seRef = String(ref);
+      const s = sectionOf(el);
+      if (!bySection.has(s)) {
+        const g = { name: sectionName(s), items: [] };
+        bySection.set(s, g);
+        groups.push(g);
+      }
+      bySection.get(s).items.push({ ref, kind: kindOf(el), name: nameOf(el), text: preview(el), key: keyOf(el) });
+    });
+    send({ type: 'structure', sections: groups });
+  };
+  let scanTimer = 0;
+  let lastCount = -1;
+  new MutationObserver(() => {
+    clearTimeout(scanTimer);
+    scanTimer = setTimeout(() => {
+      // Server islands (awards, press, courses) arrive after the page; rescan when they do.
+      const count = document.querySelectorAll(PICK).length;
+      if (count !== lastCount) { lastCount = count; scan(); }
+    }, 250);
+  }).observe(document.body, { childList: true, subtree: true });
+
+  /* ---- Hover and selection boxes ---- */
+  let hovered = null;
+  let selected = null;
+  const place = (box, el) => {
+    if (!el || !el.isConnected) { box.style.display = 'none'; return; }
+    const r = el.getBoundingClientRect();
+    if (!r.width && !r.height) { box.style.display = 'none'; return; }
+    box.style.display = 'block';
+    box.style.left = `${r.left}px`;
+    box.style.top = `${r.top}px`;
+    box.style.width = `${r.width}px`;
+    box.style.height = `${r.height}px`;
+    box.classList.toggle('doc', kindOf(el) === 'doc');
+    const tag = box.firstChild;
+    tag.textContent = nameOf(el);
+    tag.classList.toggle('inside', r.top < 20);
+  };
+  // Pages here scroll smoothly and animate, so the boxes follow every frame while shown.
+  const tick = () => {
+    place(selBox, selected);
+    place(hoverBox, hovered && hovered !== selected ? hovered : null);
+    requestAnimationFrame(tick);
+  };
+  requestAnimationFrame(tick);
+
+  document.addEventListener('mouseover', (e) => {
+    const el = e.target.closest && e.target.closest(PICK);
+    if (el !== hovered) {
+      hovered = el;
+      send({ type: 'hover', ref: el ? Number(el.dataset.seRef) : null });
+    }
+  });
+  document.addEventListener('mouseleave', () => { hovered = null; send({ type: 'hover', ref: null }); });
+
+  const selectMsg = (el) => ({
+    type: 'select',
+    ref: Number(el.dataset.seRef),
+    key: keyOf(el),
+    kind: kindOf(el) === 'image' ? 'image' : 'text',
+    name: nameOf(el),
+    section: sectionName(sectionOf(el)),
+    value: kindOf(el) === 'image' ? '' : textOf(el),
+    src: (() => { const img = el.querySelector('img'); return img ? img.currentSrc || img.src : ''; })(),
+    alt: (el.querySelector('img') || {}).alt || '',
+    extras: (el.dataset.editExtra || '').split(' ').filter(Boolean),
+  });
+  const docMsg = (el) => ({ type: 'doc', ref: Number(el.dataset.seRef), id: el.dataset.doc, docType: el.dataset.docType, label: el.dataset.docLabel });
+
+  const choose = (el) => {
+    selected = el;
+    if (!el) { send({ type: 'deselect' }); return; }
+    send(kindOf(el) === 'doc' ? docMsg(el) : selectMsg(el));
+  };
+
+  /* ---- Typing straight onto the page ---- */
   const startTyping = (el) => {
     const original = textOf(el);
     el.setAttribute('contenteditable', 'plaintext-only');
@@ -55,78 +179,79 @@
     const onInput = () => send({ type: 'typing', key: keyOf(el), value: textOf(el) });
     const finish = () => {
       el.removeEventListener('input', onInput);
+      el.removeEventListener('keydown', onKey);
       el.removeAttribute('contenteditable');
       const value = textOf(el);
-      if (value && value !== original) send({ type: 'text', key: keyOf(el), value, label: labelOf(el) });
+      if (value && value !== original) send({ type: 'text', key: keyOf(el), value, label: `${sectionName(sectionOf(el))} · ${nameOf(el)}` });
       else { el.textContent = original; send({ type: 'typing', key: keyOf(el), value: original }); }
     };
-    el.addEventListener('input', onInput);
-    el.addEventListener('blur', finish, { once: true });
-    el.addEventListener('keydown', function onKey(k) {
+    const onKey = (k) => {
       if (k.key === 'Enter' && !k.shiftKey) { k.preventDefault(); el.blur(); }
       if (k.key === 'Escape') { k.stopPropagation(); el.textContent = original; el.blur(); }
-      if (!el.hasAttribute('contenteditable')) el.removeEventListener('keydown', onKey);
-    });
+    };
+    el.addEventListener('input', onInput);
+    el.addEventListener('keydown', onKey);
+    el.addEventListener('blur', finish, { once: true });
   };
 
   // Links and buttons stay put while editing, so the page never navigates or opens a panel.
   document.addEventListener('click', (e) => {
     const target = e.target.closest ? e.target : e.target.parentElement;
-    const el = target.closest('[data-edit]');
-    const doc = !el && target.closest('[data-doc]');
-    if (target.closest('a, button') || el || doc) { e.preventDefault(); e.stopPropagation(); }
-    if (doc) {
-      if (doc.dataset.doc) send({ type: 'doc', id: doc.dataset.doc, docType: doc.dataset.docType, label: doc.dataset.docLabel });
-      return;
-    }
-    if (!el) { if (!target.closest('[data-edit][contenteditable]')) { select(null); send({ type: 'deselect' }); } return; }
-    if (el.hasAttribute('contenteditable')) return;
-    select(el);
-    const kind = el.dataset.editType;
-    const img = kind === 'image' && el.querySelector('img');
-    send({
-      type: 'select',
-      key: keyOf(el),
-      kind,
-      label: labelOf(el),
-      value: kind === 'image' ? '' : textOf(el),
-      src: img ? img.currentSrc || img.src : '',
-      extras: (el.dataset.editExtra || '').split(' ').filter(Boolean),
-    });
-    if (kind !== 'image') startTyping(el);
+    const el = target.closest(PICK);
+    if (target.closest('a, button') || el) { e.preventDefault(); e.stopPropagation(); }
+    if (el && el.hasAttribute('contenteditable')) return;
+    choose(el);
+    if (el && kindOf(el) === 'text') startTyping(el);
   }, true);
 
   document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && !document.querySelector('[data-edit][contenteditable]')) { select(null); send({ type: 'deselect' }); }
+    if (e.key === 'Escape' && !document.querySelector('[data-edit][contenteditable]')) choose(null);
   });
 
-  const find = (key) => document.querySelector(`[data-edit$=":${CSS.escape(key)}"]`);
+  /* ---- Messages from the editor ---- */
+  const byKey = (key) => document.querySelector(`[data-edit$=":${CSS.escape(key)}"]`);
+  const byRef = (ref) => items[Number(ref)];
 
   window.addEventListener('message', (e) => {
     if (e.origin !== ORIGIN || !e.data || e.data.source !== 'site-editor-parent') return;
-    const { type, key } = e.data;
-    if (type === 'scroll-to') window.scrollTo(0, Number(e.data.y) || 0);
-    const el = key && find(key);
-    if (!el) return;
-    if (type === 'focus') {
+    const d = e.data;
+    if (d.type === 'scroll-to') window.scrollTo(0, Number(d.y) || 0);
+    // Picked in the Navigator: show it and select it (text is then edited in the side panel).
+    if (d.type === 'select-ref') {
+      const el = byRef(d.ref);
+      if (!el) return;
       el.scrollIntoView({ block: 'center', behavior: 'smooth' });
-      el.classList.add('se-flash');
-      setTimeout(() => el.classList.remove('se-flash'), 1400);
+      choose(el);
+    }
+    if (d.type === 'hover-ref') hovered = d.ref === null ? null : byRef(d.ref) || null;
+    if (d.type === 'deselect') selected = null;
+    const el = d.key && byKey(d.key);
+    if (!el) return;
+    if (d.type === 'focus') {
+      el.scrollIntoView({ block: 'center', behavior: 'smooth' });
+      selBox.classList.add('flash');
+      setTimeout(() => selBox.classList.remove('flash'), 1200);
     }
     // Typed in the editor's side panel: show it on the page straight away.
-    if (type === 'set-text' && !el.hasAttribute('contenteditable')) {
-      const lines = String(e.data.value).split('\n');
+    if (d.type === 'set-text' && !el.hasAttribute('contenteditable')) {
+      const lines = String(d.value).split('\n');
       el.replaceChildren(...lines.flatMap((l, i) => (i ? [document.createElement('br'), l] : [l])));
     }
-    if (type === 'set-image') {
+    if (d.type === 'set-image') {
       const img = el.querySelector('img');
-      if (img) { img.removeAttribute('srcset'); img.src = e.data.src; img.style.objectPosition = e.data.pos; }
+      if (img) {
+        if (d.src) { img.removeAttribute('srcset'); img.src = d.src; }
+        if (d.pos) img.style.objectPosition = d.pos;
+        if (typeof d.alt === 'string') img.alt = d.alt;
+      }
     }
   });
 
   // The editor reloads the page after some changes; it uses this to put the scroll back where it was.
-  let t = 0;
-  window.addEventListener('scroll', () => { clearTimeout(t); t = setTimeout(() => send({ type: 'scroll', y: window.scrollY }), 150); }, { passive: true });
+  let scrollTimer = 0;
+  window.addEventListener('scroll', () => { clearTimeout(scrollTimer); scrollTimer = setTimeout(() => send({ type: 'scroll', y: window.scrollY }), 150); }, { passive: true });
 
+  lastCount = document.querySelectorAll(PICK).length;
+  scan();
   send({ type: 'ready' });
 })();

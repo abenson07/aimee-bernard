@@ -35,6 +35,8 @@ export const CONTENT_ITEM_FIELDS = `
   )
 `;
 
+export const ITEMS_QUERY = `*[_type == "contentItem"] | order(_createdAt desc){ ${CONTENT_ITEM_FIELDS} }`;
+
 /* count is scoped to the live primary category specifically — a bare
    references() check would also match categorySecondary/categorySuggested/
    categorySuggestedSecondary now that those exist, inflating the count. */
