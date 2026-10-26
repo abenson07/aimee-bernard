@@ -85,6 +85,20 @@ for (const mode of ['search', 'chat']) {
     r = tap('list');
     check('ex2 back to the list', cardsOf(r).length >= 1, flat(r));
 
+    console.log('\n--- Follow-up questions about the item on screen ---');
+    st = eng.initialState();
+    r = ask('podcasts');
+    r = ask('when was it?');
+    check('followup when', /April 2025/.test(flat(r)), flat(r));
+    r = ask('where');
+    check('followup where', /Unbiased Science/.test(flat(r)), flat(r));
+    r = ask('what is it about?');
+    check('followup about', /autoimmunity/i.test(flat(r)), flat(r));
+    r = ask('is there a link?');
+    check('followup link honest when none', /don.t have a link/.test(flat(r)), flat(r));
+    r = ask('when');
+    check('followup bare when', /April 2025/.test(flat(r)), flat(r));
+
     console.log('\n--- Example 3: topic across the site, narrowing ---');
     st = eng.initialState();
     r = ask('what has she said about vaccines?');
