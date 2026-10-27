@@ -19,7 +19,7 @@ export function stem(w) {
 const stemAll = (s) => normalize(s).split(' ').filter(Boolean).map(stem);
 
 const STOP = new Set(
-  ('a an the and or of in on at to for from with by about as is are was were be been being do does did can could would should will what whats which who whom how when where why that this these those it its i me my you your we our they their he she her his him aimee aimees dr some any all other please tell show give find look looking want need like got have has had there here just only really also anything something things thing stuff item one ones lot much many few new newest latest recent hers some get see know ask question about into out up down over under again then than so very too if but not no yes ok okay hmm said say says does doe doing done them they those these himself herself').split(' ')
+  ('a an the and or of in on at to for from with by about as is are was were be been being do does did can could would should will what whats which who whom how when where why that this these those it its i me my you your we our they their he she her his him aimee aimees dr some any all other please tell show give find look looking want need like got have has had there here just only really also anything something things thing stuff item one ones lot much many few new newest latest recent hers some get see know ask question about into out up down over under again then than so very too if but not no yes ok okay hmm said say says does doe doing done them they those these himself herself hosted host hosts coverage still ever always even anymore long ago actually maybe sometimes popular most good great read watch first thing').split(' ')
 );
 
 const hash = (s) => { let h = 0; for (let i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) >>> 0; return h; };
@@ -79,7 +79,11 @@ export function prepare(index) {
   }));
   const byId = new Map(recs.map((r) => [r.id, r]));
   const programs = index.programs ?? [];
-  return { recs, byId, programs };
+  // Every word the content uses, with how often, so a misspelling can be pulled back to a real word.
+  const vocab = new Map();
+  for (const r of recs) for (const set of [r._t, r._v, r._d]) for (const w of set) vocab.set(w, (vocab.get(w) ?? 0) + 1);
+  for (const k of KIND_STEM.keys()) vocab.set(k, (vocab.get(k) ?? 0) + 50);
+  return { recs, byId, programs, vocab };
 }
 
 const has = (set, t) => {
@@ -107,12 +111,22 @@ function scoreTerm(rec, term) {
   return best;
 }
 
+const NETWORK_WORDS = new Set(['instagram', 'tiktok', 'bluesky', 'substack'].map(stem));
+
 /* ---------- parsing ---------- */
 export function parse(text) {
   let q = normalize(text);
   const out = { raw: text, norm: q, year: 0, kinds: [], terms: [] };
+  const thisYear = new Date().getFullYear();
+  if (/\blast year\b/.test(q)) { out.year = thisYear - 1; q = q.replace('last year', ' '); }
+  else if (/\bthis year\b/.test(q)) { out.year = thisYear; q = q.replace('this year', ' '); }
+  if (/\b(oldest|earliest|very first|first ever|her first)\b/.test(q)) { out.oldest = true; q = q.replace(/\b(oldest|earliest|very first|first ever|her first)\b/, ' '); }
+  if (/\b(latest|newest|most recent|recent|just added|whats new|what s new|anything new)\b/.test(q)) { out.recent = true; q = q.replace(/\b(latest|newest|most recent|recent|just added|whats new|what s new|anything new)\b/, ' '); }
+  const years = q.match(/\b(19|20)\d{2}\b/g) ?? [];
+  if (years.length > 1) out.manyYears = [...new Set(years.map(Number))];
   const ym = q.match(/\b(19|20)\d{2}\b/);
-  if (ym) { out.year = Number(ym[0]); q = q.replace(ym[0], ' '); }
+  if (ym && !out.year) { out.year = Number(ym[0]); }
+  if (ym) q = q.replace(/\b(19|20)\d{2}\b/g, ' ');
   const kinds = new Set();
   for (const [p, kind] of KIND_PHRASES) if (q.includes(p)) { kinds.add(kind); q = q.replace(p, ' '); }
   for (const g of GROUPS) {
@@ -121,13 +135,21 @@ export function parse(text) {
     }
   }
   for (const w of q.split(' ').filter(Boolean)) {
+    if (w.length < 2 && !/\d/.test(w)) continue;
     if (STOP.has(w)) continue;
     const s = stem(w);
     const kind = KIND_STEM.get(s);
-    if (kind) { kinds.add(kind); continue; }
+    if (kind) {
+      kinds.add(kind);
+      // A named network or outlet ("tiktok", "substack") is also something to match, not only a kind of item.
+      if (NETWORK_WORDS.has(s)) out.terms.push(termFor(w));
+      continue;
+    }
     if (STOP.has(s)) continue;
     out.terms.push(termFor(w));
   }
+  // "teaching award" means awards about teaching, not awards plus courses.
+  if (kinds.has('award') && kinds.has('course')) { kinds.delete('course'); out.terms.push(termFor('teaching')); }
   out.kinds = [...kinds];
   return out;
 }
@@ -148,6 +170,7 @@ function runSearch(prep, f) {
   for (const rec of prep.recs) {
     if (!kindOk(rec, f.kinds, hasTerms)) continue;
     if (f.venue && !rec._text.includes(f.venue)) continue;
+    if ((f.recent || f.oldest) && !rec.ts) continue;
     let score = 1;
     if (hasTerms) {
       let matched = 0, sum = 0;
@@ -157,8 +180,9 @@ function runSearch(prep, f) {
     }
     scored.push({ rec, score });
   }
-  if (!scored.length && f.terms.length > 1) {
-    // Nothing matched every word; accept any one of them.
+  const knownTerm = (t) => t.alts.some((a) => prep.vocab.has(a)) || t.phrases.length > 0;
+  if (!scored.length && f.terms.length > 1 && f.terms.every(knownTerm)) {
+    // Nothing matched every word; accept any one of them (only when every word is one the content uses).
     for (const rec of prep.recs) {
       if (!kindOk(rec, f.kinds, true)) continue;
       if (f.venue && !rec._text.includes(f.venue)) continue;
@@ -167,8 +191,14 @@ function runSearch(prep, f) {
       if (sum > 0) scored.push({ rec, score: sum });
     }
   }
+  if (f.terms.length >= 3 && !scored.some((x) => f.terms.some((t) => scoreTerm(x.rec, t) >= 2))) scored.length = 0;
   const byTitle = new Set();
-  const rank = (a, b) => (b.rec.featured - a.rec.featured) || (b.score - a.score) || (b.rec.ts - a.rec.ts) || a.rec.title.localeCompare(b.rec.title);
+  const dated = (x) => (x.rec.ts ? 0 : 1);
+  const rank = f.oldest
+    ? (a, b) => dated(a) - dated(b) || a.rec.ts - b.rec.ts || b.score - a.score || a.rec.title.localeCompare(b.rec.title)
+    : f.recent
+      ? (a, b) => (b.score - a.score) || (b.rec.ts - a.rec.ts) || a.rec.title.localeCompare(b.rec.title)
+      : (a, b) => (b.rec.featured - a.rec.featured) || (b.score - a.score) || (b.rec.ts - a.rec.ts) || a.rec.title.localeCompare(b.rec.title);
   const unique = (list) => list.sort(rank).filter(({ rec }) => { const k = normalize(rec.title) + '|' + rec.year; if (byTitle.has(k)) return false; byTitle.add(k); return true; });
   let primary, secondary = [];
   if (f.year) {
@@ -265,17 +295,15 @@ function edits1(w) {
 export function createEngine(index, { mode = 'chat' } = {}) {
   const prep = prepare(index);
   const memory = mode === 'chat';
-  // Every word the content uses, with how often, so a misspelling can be pulled back to a real word.
-  const vocab = new Map();
-  for (const r of prep.recs) for (const set of [r._t, r._v, r._d]) for (const w of set) vocab.set(w, (vocab.get(w) ?? 0) + 1);
-  for (const k of KIND_STEM.keys()) vocab.set(k, (vocab.get(k) ?? 0) + 50);
+  const vocab = prep.vocab;
   const known = (t) => t.alts.some((a) => vocab.has(a)) || t.phrases.length > 0;
   function correct(parsed) {
     const terms = [];
     let changed = false;
     for (const t of parsed.terms) {
-      if (known(t) || t.word.length < 4 || t.word.includes(' ')) { terms.push(t); continue; }
+      if (known(t) || t.word.length < 6 || t.word.includes(' ')) { terms.push(t); continue; }
       let best = null;
+      if (stem(t.word).length < 5) { terms.push(t); continue; }
       for (const c of edits1(stem(t.word))) {
         if (c.length >= 3 && vocab.has(c) && (!best || vocab.get(c) > vocab.get(best))) best = c;
       }
@@ -290,7 +318,7 @@ export function createEngine(index, { mode = 'chat' } = {}) {
   const PER = 3;
   const hasResults = (f) => { const r = runSearch(prep, f); return r.primary.length + r.secondary.length > 0; };
 
-  const blank = () => ({ f: { kinds: [], year: 0, terms: [], venue: '' }, ids: [], shown: 0, cards: [], view: 'home', turn: 0, history: [], secondaryFrom: 0 });
+  const blank = () => ({ f: { kinds: [], year: 0, terms: [], venue: '' }, ids: [], shown: 0, cards: [], view: 'home', turn: 0, history: [], secondaryFrom: 0, programId: '' });
 
   function finish(state, blocks, chips, patch = {}) {
     const next = { ...state, ...patch, turn: state.turn + 1 };
@@ -325,6 +353,8 @@ export function createEngine(index, { mode = 'chat' } = {}) {
     let intro;
     if (!primary.length && f.year) intro = `I don’t have anything from ${f.year} on “${topicWords(f)}”, but here’s something close:`;
     else if (n === 1) intro = `I found one${about}:`;
+    else if (f.recent) intro = `The newest ${f.kinds.length === 1 ? (S.KIND_LABEL[f.kinds[0]] ?? 'thing').toLowerCase() : 'thing'}${about} I have is`;
+    else if (f.oldest) intro = `The oldest dated ${f.kinds.length === 1 ? (S.KIND_LABEL[f.kinds[0]] ?? 'thing').toLowerCase() : 'thing'}${about} I have is`;
     else intro = `I found ${n} ${kindWord}${about}${when}. A good place to start is`;
     const blocks = [];
     const fact = topicFact(f);
@@ -409,8 +439,121 @@ export function createEngine(index, { mode = 'chat' } = {}) {
     return finish(state, blocks, chips, {});
   }
 
+  /* Everyday things a visitor says that aren't searches. Returns a reply, or null to carry on. */
+  const RE2 = {
+    identity: /\b(are you (a |an )?(robot|bot|ai|chatgpt|gpt|real|human|person|alive|computer)|what are you|who (made|built|created|programmed) you|do you use ai|is this ai|are you an? ai)\b/,
+    bye: /^(bye|goodbye|see you|see ya|cya|later|good night|goodnight)\b/,
+    ack: /^(ok|okay|k|cool|nice|great|awesome|lol|haha|wow|yes|yeah|yep|no|nope|sure|maybe|hmm|hm|oh|interesting|neat)$/,
+    personal: /\b(how old|her age|birthday|born|married|husband|wife|boyfriend|girlfriend|does she have (kids|children)|her (kids|children|family|husband)|hometown|where (is|was) she (from|born)|where does she live|home address|phone number|salary|net worth)\b/,
+    price: /\b(how much|price|pricing|cost|costs|fee|fees|rate|rates|charge|honorarium|free)\b/,
+    signup: /\b(sign up|signup|register|enrol|enroll|join|apply|participate|volunteer|get involved)\b/,
+    job: /\b(where does she work|her job|what is her (job|title|role|position)|job title|her employer|(what|which) (university|school)|is she a (professor|doctor|scientist)|her role)\b/,
+    recommend: /\b(best|favou?rite|top pick|most popular|recommend|where (should|do) i start|start with|highlights?|must (see|read|watch)|good place to start|what should i (watch|read|listen to|see)|show me something|surprise me|random|anything fun|something fun|pick one for me)\b/,
+    story: /\b(her story|how do i become|how to become|career advice|how do i get into|how did she (become|get into|start|end up)|why did she (become|choose|decide|go into)|what inspired her|her journey|her background|career path|how she got)\b/,
+    injection: /\b(ignore (all |the )?(previous|above|prior|your)|system prompt|you are now|jailbreak|pretend (to be|you)|act as (a|an)|developer mode|your instructions)\b/,
+    rude: /\b(fuck|shit|suck|stupid|dumb|idiot|hate you|shut up|bitch|asshole)\b/,
+    foreign: /\b(hola|bonjour|gracias|merci|hallo|danke|ciao|obrigado|que hace|qu hace)\b/,
+    offtopic: /\b(joke|sing|song|weather|president|meaning of life|essay|translate|poem|recipe|lyrics|bitcoin|love you|are you single|date me|marry me|homework|code|capital of|who won|score|news today)\b/,
+    contact: /\b(shadow|mentor me|take students|accept students|work with her|work with aimee|interview her|journalist|reporter|press kit|headshot|photo of|her photo|logo|cv|curriculum vitae|resume|resum|media inquir|for media|speaker bio)\b/,
+    network: /\b(twitter|facebook|linkedin|threads|snapchat|youtube channel)\b/,
+    booking2: /\b(does she (do|give|offer) (keynotes?|workshops?|talks?|speaking|consulting)|can she (speak|give|come)|speaker|speaking engagement|(is|are) (she|you) (available|booking))\b/,
+  };
+  const PICKS = [/tedx/i, /immunology explained/i, /substack/i];
+
+  function smallIntent(state, n, words, raw = '') {
+    if (RE2.injection.test(n)) return finish(state, S.INJECTION.map(text), starterChips(4), { view: 'home' });
+    if (RE2.rude.test(n)) return finish(state, S.RUDE.map(text), starterChips(4), { view: 'home' });
+    if (/[<>{}]|--|;/.test(raw)) return finish(state, S.INJECTION.map(text), starterChips(4), { view: 'home' });
+    if (/[^\x00-\x7F]/.test(raw) && !/[a-z]{3,}/i.test(raw.replace(/[^\x00-\x7F]/g, ''))) {
+      // Emoji or symbols on their own: just say hello back.
+      if (!/\p{L}/u.test(raw)) return finish(state, S.HI.map(text), starterChips(4), { view: 'home' });
+    }
+    if (/[\u00c0-\u024f]/.test(raw) || RE2.foreign.test(n)) return finish(state, S.ENGLISH.map(text), starterChips(4), { view: 'home' });
+    if (RE2.offtopic.test(n) || /^[\d\s]*[+\-*/=^x][\d\s+\-*/=?^().x]*$/.test(raw) || /^what is \d/.test(n)) return finish(state, S.OFFTOPIC.map(text), starterChips(4), { view: 'home' });
+    if (RE2.identity.test(n)) return finish(state, S.IDENTITY.map(text), starterChips(4), { view: 'home' });
+    if (RE2.bye.test(n)) return finish(state, S.BYE.map(text), starterChips(3), { view: 'home' });
+    if (words.length <= 2 && RE2.ack.test(n)) {
+      const chips = state.shown < state.ids.length ? [act(`Another one (${state.ids.length - state.shown})`, 'more'), ...starterChips(3)] : starterChips();
+      return finish(state, S.ACK.map(text), chips, {});
+    }
+    if (RE2.personal.test(n)) return finish(state, [...S.PERSONAL.map(text)], [contactChip(), ...starterChips(3)], { view: 'home' });
+    if (RE2.booking2.test(n) || /\b(how much|price|pricing|cost|fee|fees|charge|honorarium)\b/.test(n) && !/\b(program|camp|class|course)\b/.test(n) && state.view !== 'program') {
+      if (RE2.booking2.test(n)) return booking(state);
+      return finish(state, [...S.NOPRICE.map(text), cards([S.BOOKING_CARD], { link: true })], starterChips(3), { view: 'home' });
+    }
+    if (RE2.price.test(n) && words.length <= 6 && state.view === 'program' && state.programId) {
+      const p = prep.programs.find((x) => x.id === state.programId);
+      const sentence = p && String(p.text).split(/(?<=[.!?])\s+/).find((x) => /\b(free|cost|fee|\$)/i.test(x));
+      return finish(state, [text(sentence ?? 'I don’t see a price listed for that program. Its page will have the details.')], [act('Sign up', 'program:' + state.programId), act('Other hats', 'hats')], {});
+    }
+    if (RE2.signup.test(n) && words.length <= 8) {
+      if (state.programId && state.view === 'program') return program(state, state.programId);
+      const r = programsList(state);
+      return { ...r, blocks: [text(S.SIGNUP_LEAD)] };
+    }
+    if (RE2.job.test(n)) {
+      const rec = prep.recs.find((r) => r.type === 'position' && /professor/i.test(r.title));
+      if (rec) {
+        const blocks = chatItem(rec, 'Aimee’s main role is');
+        return finish(state, blocks, [say('Her other positions', 'positions'), say('Courses she teaches', 'courses'), contactChip()], { view: 'results', ids: [rec.id], shown: 1, cards: [rec.id] });
+      }
+      return persona(state, 'educator');
+    }
+    if (RE2.story.test(n)) {
+      const rec = prep.recs.find((r) => r.type === 'podcast' && /career path/i.test(r.desc ?? '')) ?? prep.recs.find((r) => r.type === 'podcast');
+      if (rec) return finish(state, chatItem(rec, 'Aimee tells her own story on a podcast:'), [act('Immunologist', 'persona:immunologist'), act('Educator', 'persona:educator'), act('Start over', 'reset')], { view: 'results', ids: [rec.id], shown: 1, cards: [rec.id] });
+    }
+    if (RE2.contact.test(n)) return finish(state, [...S.CONTACT.map(text), cards([S.BOOKING_CARD], { link: true })], starterChips(3), { view: 'home' });
+    if (RE2.network.test(n)) {
+      const r = resultsReply(state, { kinds: ['social'], year: 0, terms: [], venue: '' }, 'network');
+      return { ...r, blocks: [text(S.NETWORKS), ...r.blocks] };
+    }
+    if (RE2.recommend.test(n) && !/\b(kind|type)\b/.test(n)) {
+      let picks = prep.recs.filter((r) => r.featured && r.type !== 'topic');
+      if (!picks.length) picks = PICKS.map((re) => prep.recs.find((r) => re.test(r.title) && r.type !== 'topic')).filter(Boolean);
+      if (/\b(surprise|random|fun|something)\b/.test(n) || !picks.length) {
+        const pool = prep.recs.filter((r) => r.desc && ['talk', 'podcast', 'press-mentions', 'article', 'educational-content'].includes(r.type));
+        const r = pool[Math.floor(Math.random() * pool.length)];
+        picks = [r, ...picks.filter((x) => x !== r)];
+      }
+      const first = picks[0];
+      const chips = [];
+      if (picks.length > 1) chips.push(act(`Another one (${picks.length - 1})`, 'more'));
+      chips.push(act('Start over', 'reset'));
+      return finish(state, chatItem(first, /\b(surprise|random|fun)\b/.test(n) ? 'How about' : 'If you only look at one thing, try'), chips, { view: 'results', ids: picks.map((x) => x.id), shown: 1, cards: [first.id] });
+    }
+    return null;
+  }
+
   function fallback(state, f) {
-    return finish(state, [text(S.FALLBACK[0]), text(S.FALLBACK[1])], [...starterChips(4), contactChip()], { view: 'home', cards: [] });
+    const chips = [...starterChips(4), contactChip()];
+    // A year with nothing in it: say so, and offer the years that do have something.
+    if (f.year && !f.terms.length) {
+      const years = new Map();
+      for (const r of prep.recs) if (r.year && (!f.kinds.length || f.kinds.includes(r.type))) years.set(r.year, (years.get(r.year) ?? 0) + 1);
+      const top = [...years].sort((a, b) => b[1] - a[1] || b[0] - a[0]).slice(0, 4);
+      const what = f.kinds.length === 1 ? S.KIND_PLURAL[f.kinds[0]] ?? 'things' : 'things';
+      const none = f.kinds.length === 1 ? `any ${what}` : 'anything';
+      const msg = top.length ? `I don’t have ${none} dated ${f.year}. These years have some:` : `I don’t have ${none} dated ${f.year}.`;
+      return finish(state, [text(msg)], top.length ? top.map(([y, c]) => act(`${y} (${c})`, `year:${y}`)) : chips, { view: 'home', cards: [] });
+    }
+    if (f.terms.length) {
+      const w = topicWords(f);
+      if (f.kinds.length) {
+        const retry = { ...f, terms: [] };
+        if (hasResults(retry)) {
+          const r = resultsReply(state, retry, 'retry');
+          return { ...r, blocks: [text(`I didn’t find “${w}” specifically, but here is what I have:`), ...r.blocks] };
+        }
+      }
+      return finish(state, [text(`I couldn’t find anything about “${w}”.`), text(S.FALLBACK[1])], chips, { view: 'home', cards: [] });
+    }
+    return finish(state, [text(S.FALLBACK[0]), text(S.FALLBACK[1])], chips, { view: 'home', cards: [] });
+  }
+
+  function yearsHelp(state, parsed) {
+    const ys = parsed.manyYears.sort();
+    return finish(state, [text('I can look at one year at a time. Which one?')], ys.slice(0, 4).map((y) => say(String(y), `${parsed.kinds.map((k) => S.KIND_PLURAL[k] ?? '').join(' ')} ${y}`.trim())), { view: 'home' });
   }
 
   function more(state) {
@@ -500,7 +643,7 @@ export function createEngine(index, { mode = 'chat' } = {}) {
     if (!p) return programsList(state);
     const blocks = [text(`${p.title} (${p.tag})`), text(p.text), cards(p.links.map((l) => ({ id: p.id + l.label, title: l.label, meta: '', desc: '', href: l.href })), { link: true })];
     const chips = memory ? [act('Another program', 'programs'), act('Other hats', 'hats')] : starterChips(4);
-    return finish(state, blocks, chips, { view: 'program', cards: [] });
+    return finish(state, blocks, chips, { view: 'program', cards: [], programId: id });
   }
 
   function explainer(state, lines) {
@@ -543,16 +686,16 @@ export function createEngine(index, { mode = 'chat' } = {}) {
   }
 
   const RE = {
-    safety: /\b(should i (take|get|have|worry)|my (symptoms?|doctor|child|baby|kid|health)|diagnos|prescrib|dosage|am i (sick|immune|allergic)|do i have|is it safe|side effects?|treat my|cure for|medical advice)\b/,
+    safety: /\b(i have (cancer|covid|lupus|an? (fever|cough|rash|disease|condition|infection)|symptoms|been diagnosed)|i ve got (cancer|covid|lupus|a (fever|cough|rash|cold))|i was diagnosed|i feel (sick|ill)|i m (sick|ill|scared|worried)|what should i do|diagnose me|can you diagnose|my (daughter|son|mom|dad|mother|father|wife|husband|friend|baby) (has|have|is sick|got)|(is|are|was|were) .{0,25}\b(vaccines?|shots?|boosters?)\b.{0,15}\b(safe|dangerous|harmful|effective|worth it)|(cause|causes|link) (autism|cancer)|should i (take|get|have|worry)|my (symptoms?|doctor|baby|health)|my (child|kid) (has|have|is sick|got)|(are|is) (the )?(vaccines?|shots?|boosters?|it|they) (safe|dangerous|harmful|effective|worth it)|diagnos|prescrib|dosage|am i (sick|immune|allergic)|do i have|is it safe|side effects?|treat my|cure for|medical advice)\b/,
     books: /\b(her book|a book|books|written a book|any book)\b/,
     book: /\b(book (her|aimee|a speaker)|booking|hire|invite|availab|engage|speaker for|speak (at|for) (my|our)|contact|email|e-mail|get in touch|reach out|consult|collaborat)\b/,
-    who: /\b(who is|who are you|about aimee|about her|what does aimee do|what do you do|what does she do|what does she doe|what do she do|what does aimee doe|bio|biograph|introduce|what s aimee|whats aimee|what is aimee)\b/,
+    who: /\b(who is (aimee|she|this|dr)|who are you|^(tell me )?(more )?about her$|what does aimee do|what do you do|what does she do|what does she doe|what do she do|what does aimee doe|bio|biograph|introduce|what s aimee|whats aimee|what is aimee)\b/,
     help: /\b(help|what can you|what do you know|how do (i|you) use|options|what can i ask)\b/,
     hi: /^(hi|hello|hey|hiya|yo|howdy|good (morning|afternoon|evening))\b/,
     thanks: /\b(thanks|thank you|thx|cheers)\b/,
     reset: /\b(start over|restart|reset|begin again|new search)\b/,
     back: /^(back|go back|previous|undo)$/,
-    more: /^(more|another|another one|next|show more|others|more please|keep going|next one|more results)$|\b(show me more|any more|anything else|something else|other ones)\b/,
+    more: /^(more|another|another one|next|show more|others|more please|keep going|next one|more results)$|\b(show me more|any more|any others?|any other ones?|anything else|something else|other ones|what else|more like (this|that)|similar)\b/,
     explain: /\b(what (is|are|s) (a |an |the )?)(.+)/,
     outreach: /\b(outreach|kids|children|elementary|k-?12|young people|programs?)\b/,
   };
@@ -572,9 +715,11 @@ export function createEngine(index, { mode = 'chat' } = {}) {
     const words = n.split(' ').filter(Boolean);
 
     if (RE.reset.test(n)) return greetAgain(state);
-    if (RE.hi.test(n) && words.length <= 3) return finish(state, S.GREETING.map(text), starterChips(), { view: 'home' });
+    if (RE.hi.test(n) && words.length <= 3) return finish(state, S.HI.map(text), starterChips(), { view: 'home' });
     if (RE.thanks.test(n) && words.length <= 5) return finish(state, [text(pick(S.THANKS, hash(n)))], starterChips(4), {});
     if (RE.safety.test(n)) return finish(state, S.SAFETY.map(text), [say('Educational videos', 'educational videos'), contactChip()], { view: 'home' });
+    const intent = smallIntent(state, n, words, raw);
+    if (intent) return intent;
     if (memory && RE.back.test(n)) return back(state);
     if (memory && RE.more.test(n)) return more(state);
 
@@ -590,6 +735,17 @@ export function createEngine(index, { mode = 'chat' } = {}) {
     }
     if (memory && state.view === 'detail' && /^(tell me more|more about it|more about that|go on|and)$/.test(n) && state.cards[0]) return detail(state, state.cards[0]);
 
+    // "which one is the newest", "the oldest", "how many" about the current results
+    if (memory && state.ids.length > 1 && words.length <= 6) {
+      const wantNew = /\b(newest|latest|most recent)\b/.test(n), wantOld = /\b(oldest|earliest)\b/.test(n);
+      if (wantNew || wantOld) {
+        const recs = state.ids.map((id) => prep.byId.get(id)).filter((r) => r && r.ts);
+        recs.sort((a, b) => (wantNew ? b.ts - a.ts : a.ts - b.ts));
+        if (recs.length) return finish(state, chatItem(recs[0], wantNew ? 'The newest of those is' : 'The oldest dated one is'), [act(`Another one (${state.ids.length - 1})`, 'more'), act('Start over', 'reset')], { cards: [recs[0].id] });
+      }
+      if (/\bhow many\b/.test(n)) return finish(state, [text(`That’s ${state.ids.length} in all.`)], [act('Another one', 'more'), act('Start over', 'reset')], {});
+    }
+
     // Questions about the item on screen: "when was it?", "where", "what's it about", "is there a link"
     if (memory && state.cards.length === 1 && (state.view === 'results' || state.view === 'detail') && words.length <= 8) {
       const rec = prep.byId.get(state.cards[0]);
@@ -599,6 +755,7 @@ export function createEngine(index, { mode = 'chat' } = {}) {
 
     if (memory && state.view === 'hats' && words.length <= 5 && (/\b(them|all|each|everything|both|every)\b/.test(n) || /^(yes|yeah|yep|sure|ok|okay|please)$/.test(n))) return allHats(state);
     if (/\b(her phd|phd on|doctorate|what does she research|her research|research focus|what did she study)\b/.test(n)) return persona(state, 'immunologist');
+    if (memory && /\bhats?\b/.test(n) && words.length <= 4) return hats(state);
     if (RE.help.test(n) && words.length <= 8) return finish(state, S.HELP.map(text), starterChips(), { view: 'home' });
     if (RE.books.test(n)) {
       const r = resultsReply(state, { kinds: ['article'], year: 0, terms: [], venue: '' }, 'books');
@@ -616,8 +773,14 @@ export function createEngine(index, { mode = 'chat' } = {}) {
     }
     if (RE.outreach.test(n) && !/\b(talk|podcast|article|paper)\b/.test(n)) return programsList(state);
 
+    // "what do b cells do", "how do vaccines work", "tell me about macrophages"
+    if (words.length <= 8 && /\b(what|how|why|explain|tell me|define|meaning)\b/.test(n) && !/\b(talk|podcast|article|paper|award|course|video|press|explained)\w*\b/.test(n)) {
+      const ex2 = S.EXPLAINERS.find((e) => e.words.some((w) => n.includes(normalize(w))));
+      if (ex2 && !/\bvaccin/.test(n) || ex2 && /\b(how do vaccines? work|what (is|are) (a )?vaccines?)\b/.test(n)) return explainer(state, ex2.lines);
+    }
+
     // "what is a vaccine?"
-    const em = n.match(RE.explain);
+    const em = /\bexplained\b/.test(n) ? null : n.match(RE.explain);
     if (em) {
       const ex = S.EXPLAINERS.find((e) => e.words.some((w) => normalize(em[4]).includes(normalize(w))));
       if (ex) return explainer(state, ex.lines);
@@ -635,7 +798,8 @@ export function createEngine(index, { mode = 'chat' } = {}) {
     }
 
     // Refine the last search: "2024", "just the talks", or a topic added to a kind ("talks" then "vaccines")
-    let f = { kinds: parsed.kinds, year: parsed.year, terms: dedupeTerms(parsed.terms), venue: '' };
+    let f = { kinds: parsed.kinds, year: parsed.year, terms: dedupeTerms(parsed.terms), venue: '', oldest: !!parsed.oldest, recent: !!parsed.recent };
+    if (parsed.manyYears) return yearsHelp(state, parsed);
     let merged = false;
     if (memory && state.view === 'results') {
       const prior = state.f;
@@ -648,9 +812,19 @@ export function createEngine(index, { mode = 'chat' } = {}) {
         merged = true;
       }
     }
-    if (merged && !hasResults(f)) f = { kinds: parsed.kinds, year: parsed.year, terms: dedupeTerms(parsed.terms), venue: '' };
-    if (!f.terms.length && !f.kinds.length && !f.year) return fallback(state, f);
-    return resultsReply(state, f, n);
+    let mergeNote = '';
+    if (merged && !hasResults(f)) {
+      const wasTopic = f.terms.length ? `about “${topicWords(f)}”` : '';
+      const wasYear = f.year && f.year !== parsed.year ? `from ${f.year}` : '';
+      const k0 = parsed.kinds[0] ?? f.kinds[0];
+      const kindW = k0 ? (S.KIND_PLURAL[k0] ?? 'those') : 'those';
+      const what = [kindW, wasTopic, wasYear].filter(Boolean).join(' ');
+      mergeNote = `I don’t have ${what}. Here’s ${parsed.kinds.length ? 'all my ' + kindW : 'everything I have'}${parsed.year ? ' from ' + parsed.year : ''} instead:`;
+      f = { kinds: parsed.kinds, year: parsed.year, terms: dedupeTerms(parsed.terms), venue: '', oldest: !!parsed.oldest, recent: !!parsed.recent };
+    }
+    if (!f.terms.length && !f.kinds.length && !f.year && !f.recent && !f.oldest) return fallback(state, f);
+    const out = resultsReply(state, f, n);
+    return mergeNote && hasResults(f) ? { ...out, blocks: [text(mergeNote), ...out.blocks] } : out;
   }
 
   return {
