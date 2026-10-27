@@ -5,6 +5,7 @@ import { sanityClient } from "sanity:client";
 import snapshot from "@/data/work-snapshot.json";
 import { PROGRAMS } from "@/data/outreach-programs";
 import { FACTS, SOCIALS } from "@/data/aimee-facts";
+import { factsFromDocs, socialsFromDocs, type BotFactDoc, type BotSocialDoc } from "@/lib/botFacts";
 import { yearOf } from "@/utils/sanity";
 
 export type AskRecord = {
@@ -100,7 +101,23 @@ async function readTopics(): Promise<AskRecord[]> {
   }
 }
 
+const FACT_QUERY = `*[_type == "botFact"] | order(title asc){ _id, phrases, answer, links[]{ label, url } }`;
+const SOCIAL_QUERY = `*[_type == "botSocial"] | order(_createdAt asc, label asc){ _id, label, handle, url, words }`;
+
+/** Facts and social links Aimee keeps in Studio; the hand-written ones in aimee-facts.ts stand in until she has added any. */
+async function readFacts() {
+  try {
+    const [factDocs, socialDocs]: [BotFactDoc[], BotSocialDoc[]] = await Promise.all([sanityClient.fetch(FACT_QUERY), sanityClient.fetch(SOCIAL_QUERY)]);
+    const facts = factsFromDocs(factDocs);
+    const socials = socialsFromDocs(socialDocs);
+    return { facts: facts.length ? facts : FACTS, socials: socials.length ? socials : SOCIALS };
+  } catch (err) {
+    console.warn("Ask index: facts unavailable in Sanity, using the ones in code.", err);
+    return { facts: FACTS, socials: SOCIALS };
+  }
+}
+
 export async function buildAskIndex() {
-  const [work, topics] = await Promise.all([readWork(), readTopics()]);
-  return { records: [...work, ...topics], programs: PROGRAMS, facts: FACTS, socials: SOCIALS, generatedAt: new Date().toISOString() };
+  const [work, topics, { facts, socials }] = await Promise.all([readWork(), readTopics(), readFacts()]);
+  return { records: [...work, ...topics], programs: PROGRAMS, facts, socials, generatedAt: new Date().toISOString() };
 }

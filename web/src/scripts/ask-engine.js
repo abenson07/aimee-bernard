@@ -460,11 +460,16 @@ export function createEngine(index, { mode = 'chat' } = {}) {
   };
   const PICKS = [/tedx/i, /immunology explained/i, /substack/i];
 
+  /* Patterns come from content people edit; one bad pattern must not break the chat. */
+  function safeTest(pattern, n) {
+    try { return new RegExp(pattern).test(n); } catch { return false; }
+  }
+
   /* Where to find Aimee online. She uses the same handle on each network. */
   function socialIntent(state, n) {
     const socials = prep.socials;
     if (!socials.length) return null;
-    const hit = socials.find((x) => x.words.some((w) => new RegExp(`\\b${w}\\b`).test(n)));
+    const hit = socials.find((x) => x.words.some((w) => safeTest(`\\b${w}\\b`, n)));
     const other = /\b(twitter|facebook|linkedin|threads|snapchat|x com|youtube channel|pinterest|reddit)\b/.test(n);
     const general = /\b(social media|socials|her handle|handle|follow her|follow aimee|where can i follow|find her online|online)\b/.test(n);
     if (!hit && !other && !general) return null;
@@ -474,14 +479,16 @@ export function createEngine(index, { mode = 'chat' } = {}) {
       ? 'I don’t see that one for Aimee. She is on these:'
       : hit && hit.id === 'substack'
         ? 'Aimee writes the Science Crosstalk newsletter on Substack:'
-        : `Aimee is @funsizeimmuninja on ${insta.slice(0, -1).join(', ')} and ${insta.slice(-1)}, and writes the Science Crosstalk newsletter on Substack:`;
+        : insta.length < 2
+          ? 'You can find Aimee here:'
+          : `Aimee is @funsizeimmuninja on ${insta.slice(0, -1).join(', ')} and ${insta.slice(-1)}, and writes the Science Crosstalk newsletter on Substack:`;
     return finish(state, [text(lead), cards(links, { link: true })], [say('Her podcasts', 'podcasts'), say('Her articles', 'articles'), act('Start over', 'reset')], { view: 'home' });
   }
 
   /* Hand-written answers about Aimee (data/aimee-facts.ts). */
   function factIntent(state, n) {
     for (const f of prep.facts) {
-      if (f.match.some((m) => new RegExp(`\\b(${m})\\b`).test(n))) {
+      if (f.match.some((m) => safeTest(`\\b(${m})\\b`, n))) {
         const blocks = f.answer.map(text);
         if (f.links?.length) blocks.push(cards(f.links.map((l, i) => ({ id: `${f.id}-${i}`, title: l.label, meta: '', desc: '', href: l.href })), { link: true }));
         return finish(state, blocks, starterChips(4), { view: 'home' });
