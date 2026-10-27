@@ -122,6 +122,8 @@
 
   /* ---- Typing straight onto the page ---- */
   const startTyping = (el) => {
+    // A number that counts up when scrolled into view shows its real value while being edited.
+    if (el.dataset.final) el.textContent = el.dataset.final;
     const original = textOf(el);
     el.setAttribute('contenteditable', 'plaintext-only');
     el.focus();

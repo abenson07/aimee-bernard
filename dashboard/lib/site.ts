@@ -5,9 +5,16 @@ import { createHmac } from "node:crypto";
 export const SITE_PAGES = [
   { id: "site-page-home", title: "Home", path: "/" },
   { id: "site-page-educator", title: "Educator", path: "/educator" },
+  { id: "site-page-communicator", title: "Communicator", path: "/communicator" },
+  { id: "site-page-immunologist", title: "Immunologist", path: "/immunology" },
+  { id: "site-page-contact", title: "Contact", path: "/contact" },
 ] as const;
 
 export type SitePageId = (typeof SITE_PAGES)[number]["id"];
+
+export function sitePageTitle(id: string) {
+  return SITE_PAGES.find((p) => p.id === id)?.title ?? id;
+}
 
 export function isSitePageId(id: unknown): id is SitePageId {
   return typeof id === "string" && SITE_PAGES.some((p) => p.id === id);

@@ -22,7 +22,7 @@ const Tag = feature?.href ? "a" : "div";
 
 {
   feature && (
-    <Tag class="press-feature fade" href={feature.href ?? undefined} target={external ? "_blank" : undefined} rel={external ? "noopener" : undefined}>
+    <Tag class="press-feature fade" data-doc={feature._id} data-doc-type="contentItem" data-doc-label="Feature" href={feature.href ?? undefined} target={external ? "_blank" : undefined} rel={external ? "noopener" : undefined}>
       <div class="press-feature__body">
         <div><h3 class="press-feature__title">{feature.title}</h3>{feature.venue && <p class="press-feature__sub">{feature.venue}</p>}</div>
         <div class="press-feature__foot"><hr /><div class="press-feature__meta"><div class="meta"><span>{KIND[feature.kind ?? ""] ?? ""}</span>{feature.date && <span>{feature.date}</span>}</div>{feature.href && <span class="glass-btn"><span class="button-text-mask"><span class="button-text t1">Read now</span><span class="button-text t2">Read now</span></span></span>}</div></div>

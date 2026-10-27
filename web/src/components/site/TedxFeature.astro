@@ -17,7 +17,7 @@ const label = [item?.venue, item?.date].filter(Boolean).join(" · ");
       <div class="tedx__stage">
         <div class="tedx__cover" aria-hidden="true">{img && <img src={img} alt="" />}</div>
         <div class="wrap" style="width:100%">
-          <div class="tedx__plate">
+          <div class="tedx__plate" data-doc={item._id} data-doc-type="contentItem" data-doc-label="Feature">
             <div class="tedx__head">
               {label && <span class="label">{label}</span>}
               <h2 class="tedx__title">

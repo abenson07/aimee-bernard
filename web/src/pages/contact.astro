@@ -3,6 +3,14 @@ import SiteLayout from "@/layouts/SiteLayout.astro";
 import SiteHeader from "@/components/SiteHeader.astro";
 import "@/styles/site/shared.css";
 import "@/styles/site/contact.css";
+import { getSitePage } from "@/lib/siteContent";
+// Text and the photo are editable in the dashboard's Site editor; the values here are the fallbacks.
+export const prerender = false;
+const site = await getSitePage("site-page-contact", Astro.request);
+site.applyCaching(Astro.response);
+const t = site.text;
+const e = site.edit;
+const photo = site.image("hero-photo", { src: "/site/photos/contact-portrait-1388.webp", srcset: "/site/photos/contact-portrait-700.webp 700w, /site/photos/contact-portrait-1388.webp 1388w", pos: "50% 22%", alt: "Aimee Pugh-Bernard" });
 ---
 
 <SiteLayout title="Contact">
@@ -12,22 +20,22 @@ import "@/styles/site/contact.css";
 <main id="page">
 <section class="contact" aria-label="Contact">
   <div class="contact__grid">
-    <aside class="contact__panel fade">
-      <img class="contact__photo" src="/site/photos/contact-portrait-1388.webp" srcset="/site/photos/contact-portrait-700.webp 700w, /site/photos/contact-portrait-1388.webp 1388w" sizes="(max-width: 900px) 100vw, 680px" alt="Aimee Pugh-Bernard" />
+    <aside class="contact__panel fade" {...e("hero-photo", "image")}>
+      <img class="contact__photo" src={photo.src} srcset={photo.srcset} sizes="(max-width: 900px) 100vw, 680px" alt={photo.alt} style={`object-position:${photo.pos}`} />
     </aside>
 
     <div class="contact__form-side fade">
       <form class="contact__form" id="contactForm" method="post" action="#">
         <div class="contact__intro">
-          <h1 class="display contact__title">Let’s connect.</h1>
-          <p class="contact__lede">Have a talk, workshop, or collaboration in mind? Want to talk about teaching, science communication, or outreach? I’d love to hear from you. Send me a note and let’s explore how we can share the wonder of science together.</p>
+          <h1 class="display contact__title" {...e("title")}>{t("title", "Let’s connect.")}</h1>
+          <p class="contact__lede" {...e("lede")}>{t("lede", "Have a talk, workshop, or collaboration in mind? Want to talk about teaching, science communication, or outreach? I’d love to hear from you. Send me a note and let’s explore how we can share the wonder of science together.")}</p>
         </div>
         <hr />
         <div class="contact__fields">
-          <label class="field"><span class="field__label">Name</span><input name="name" type="text" placeholder="Your name" required maxlength="256" /></label>
-          <label class="field"><span class="field__label">Email</span><input name="email" type="email" placeholder="Email address" required maxlength="256" /></label>
+          <label class="field"><span class="field__label" {...e("label-name")}>{t("label-name", "Name")}</span><input name="name" type="text" placeholder="Your name" required maxlength="256" /></label>
+          <label class="field"><span class="field__label" {...e("label-email")}>{t("label-email", "Email")}</span><input name="email" type="email" placeholder="Email address" required maxlength="256" /></label>
           <label class="field">
-            <span class="field__label">What is this about?</span>
+            <span class="field__label" {...e("label-topic")}>{t("label-topic", "What is this about?")}</span>
             <select name="topic">
               <option value="">Choose one</option>
               <option>Speaking engagement</option>
@@ -36,7 +44,7 @@ import "@/styles/site/contact.css";
               <option>Something else</option>
             </select>
           </label>
-          <label class="field"><span class="field__label">Message</span><textarea name="message" placeholder="Message" maxlength="5000" required></textarea></label>
+          <label class="field"><span class="field__label" {...e("label-message")}>{t("label-message", "Message")}</span><textarea name="message" placeholder="Message" maxlength="5000" required></textarea></label>
         </div>
         <div class="contact__actions">
           <button type="submit" class="glass-btn contact__send"><span class="button-text-mask"><span class="button-text t1">Send message</span><span class="button-text t2">Send message</span></span></button>
@@ -51,4 +59,5 @@ import "@/styles/site/contact.css";
 <script>
   import "@/scripts/shared.js";
 </script>
+{site.preview && <script is:inline src="/edit-mode.js" data-origin={site.dashboardOrigin}></script>}
 </SiteLayout>
