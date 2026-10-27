@@ -24,5 +24,5 @@ export async function login(_prevState: LoginState, formData: FormData): Promise
     maxAge: SESSION_DURATION_MS / 1000,
   });
 
-  redirect("/");
+  redirect("/site");
 }

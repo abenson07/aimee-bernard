@@ -160,13 +160,13 @@ export function getPapers(): Promise<CardItem[]> {
   );
 }
 
-export type StripLogo = { name: string; logo: string; url: string | null };
+export type StripLogo = { _id: string; name: string; logo: string; url: string | null };
 
 /** Logos for the scrolling strips, in the order set on each publication. */
 export async function getStripLogos(): Promise<StripLogo[]> {
   try {
-    const rows: { name: string; logo: string | null; url: string | null }[] = await sanityClient.fetch(
-      `*[_type == "publication" && defined(stripOrder) && defined(logo)] | order(stripOrder asc){ name, "logo": logo.asset->url, url }`,
+    const rows: { _id: string; name: string; logo: string | null; url: string | null }[] = await sanityClient.fetch(
+      `*[_type == "publication" && defined(stripOrder) && defined(logo)] | order(stripOrder asc){ _id, name, "logo": logo.asset->url, url }`,
     );
     return rows.filter((r): r is StripLogo => !!r.logo);
   } catch (err) {

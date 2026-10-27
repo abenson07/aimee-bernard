@@ -3,6 +3,7 @@ import SiteLayout from "@/layouts/SiteLayout.astro";
 import SiteHeader from "@/components/SiteHeader.astro";
 import "@/styles/site/home.css";
 import { getImage } from "astro:assets";
+import { getSitePage } from "@/lib/siteContent";
 import heroSrc from "@/assets/site/aimee-hero.png";
 import LogoStrip from "@/components/site/LogoStrip.astro";
 import LogoStripSkeleton from "@/components/site/LogoStripSkeleton.astro";
@@ -11,22 +12,58 @@ import AwardsSkeleton from "@/components/site/AwardsSkeleton.astro";
 import PressCards from "@/components/site/PressCards.astro";
 import PressCardSkeleton from "@/components/site/PressCardSkeleton.astro";
 const heroUrl = (await getImage({ src: heroSrc, format: "webp", width: 1040 })).src;
+// Photos, speech bubbles and the "working on" cards are editable in the dashboard's Site editor;
+// the values here are the fallbacks.
+export const prerender = false;
+const site = await getSitePage("site-page-home", Astro.request);
+site.applyCaching(Astro.response);
+const ph = (file: string, pos: string, alt = "") => ({ src: `/site/photos/${file}`, pos, alt });
+const hover = {
+  educator: { photo: site.wideImage("hover-educator-photo", ph("edu-thc-antibody-2400.webp", "50% 45%")), text: site.text("hover-educator-text", "Class is in session! Aimee’s been teaching since 2007!") },
+  immunologist: { photo: site.wideImage("hover-immunologist-photo", ph("immu-lab-tubes-2400.webp", "60% 40%")), text: site.text("hover-immunologist-text", "Meet a published immunologist! Aimee studied B cell development and autoimmunity for her PhD") },
+  communicator: { photo: site.wideImage("hover-communicator-photo", ph("tedx-scientist-2400.webp", "50% 64%")), text: site.text("hover-communicator-text", "Aimee is passionate about making all science, especially immunology, accessible for everyone!") },
+};
+const workCards = [
+  { n: 1, href: "https://tlasprogram.wordpress.com/", file: "tlas-ask-a-q", w: [700, 1148], pos: "50% 40%", name: "Think Like a Scientist", sub: "Science outreach program" },
+  { n: 2, href: "https://www.instagram.com/funsizeimmuninja/?hl=en", file: "funsize-ig-collage", w: [800, 1600], pos: "50% 50%", name: "Fun Size Immuninja", sub: "Immunology on Instagram" },
+  { n: 3, href: "https://medschool.cuanschutz.edu/immunology-and-microbiology/dept-resources/teaching-resources/teacher-training-program", file: "ttp-teaching", w: [800, 1600], pos: "76% 50%", name: "Teacher Training Program", sub: "Mentoring PhD students and postdocs" },
+  { n: 4, href: "https://aimeepughbernard.substack.com/", file: "substack-collage", w: [800, 1600], pos: "50% 50%", name: "Science Crosstalk", sub: "Where Science and Communication Collide" },
+].map((c) => ({
+  ...c,
+  photo: site.image(`working-${c.n}-photo`, { src: `/site/photos/${c.file}-${c.w[1]}.webp`, srcset: `/site/photos/${c.file}-${c.w[0]}.webp ${c.w[0]}w, /site/photos/${c.file}-${c.w[1]}.webp ${c.w[1]}w`, pos: c.pos, alt: "" }),
+  name: site.text(`working-${c.n}-name`, c.name),
+  sub: site.text(`working-${c.n}-sub`, c.sub),
+}));
+// Every other heading, paragraph and label in the page body (not the nav, banner or footer).
+const t = site.text;
+const e = site.edit;
+const word = (n: "educator" | "immunologist" | "communicator", label: string) => ({
+  text: t(`word-${n}`, label),
+  attrs: e(`word-${n}`, "text", [`hover-${n}-text`, `hover-${n}-photo`]),
+});
+const words = { educator: word("educator", "Educator"), immunologist: word("immunologist", "Immunologist"), communicator: word("communicator", "Communicator") };
+const stats = [
+  { n: 1, num: "25+", label: "Years as an Educator,\nImmunologist & Communicator" },
+  { n: 2, num: "30+", label: "Courses taught" },
+  { n: 3, num: "100+", label: "Talks given" },
+  { n: 4, num: "9+", label: "Awards received" },
+];
 ---
 
 <SiteLayout title="Home">
 <!-- structure + style: Direction 2 (first pass) -->
 <SiteHeader />
 
-<section class="hero" id="hero-section">
+<section class="hero" id="hero-section" aria-label="Intro">
   <div class="hero-role-bg" aria-hidden="true"></div>
   <div class="hero-role-bg" aria-hidden="true"></div>
 
   <div>
-    <h1 class="display hero-name">Aimee <span class="surname">Pugh-Bernard</span></h1>
+    <h1 class="display hero-name"><span {...e("hero-first")}>{t("hero-first", "Aimee")}</span> <span class="surname" {...e("hero-surname")}>{t("hero-surname", "Pugh-Bernard")}</span></h1>
     <ul class="identity-words" id="identityWords">
-      <li><a href="/educator" class="identity-word" data-bg="/site/photos/edu-thc-antibody-2400.webp" data-pos="50% 45%" data-text="Class is in session! Aimee’s been teaching since 2007!">Educator</a></li>
-      <li><a href="/immunology" class="identity-word" data-bg="/site/photos/immu-lab-tubes-2400.webp" data-pos="60% 40%" data-text="Meet a published immunologist! Aimee studied B cell development and autoimmunity for her PhD">Immunologist</a></li>
-      <li><a href="/communicator" class="identity-word" data-bg="/site/photos/tedx-scientist-2400.webp" data-pos="50% 64%" data-text="Aimee is passionate about making all science, especially immunology, accessible for everyone!">Communicator</a></li>
+      <li><a href="/educator" class="identity-word" data-bg={hover.educator.photo.src} data-pos={hover.educator.photo.pos} data-text={hover.educator.text} {...words.educator.attrs}>{words.educator.text}</a></li>
+      <li><a href="/immunology" class="identity-word" data-bg={hover.immunologist.photo.src} data-pos={hover.immunologist.photo.pos} data-text={hover.immunologist.text} {...words.immunologist.attrs}>{words.immunologist.text}</a></li>
+      <li><a href="/communicator" class="identity-word" data-bg={hover.communicator.photo.src} data-pos={hover.communicator.photo.pos} data-text={hover.communicator.text} {...words.communicator.attrs}>{words.communicator.text}</a></li>
     </ul>
   </div>
 
@@ -48,52 +85,42 @@ const heroUrl = (await getImage({ src: heroSrc, format: "webp", width: 1040 })).
     <section class="byq-gem--inline-media-text-01" aria-label="Mission statement">
       <h2 class="byq-gem--inline-media-text-01__line">
         <span class="byq-gem--inline-media-text-01__row">
-          <span class="byq-gem--inline-media-text-01__seg">The immune system is</span>
-          <span class="byq-gem--inline-media-text-01__seg">endlessly fascinating<span class="ninja__slot" aria-hidden="true"></span>,</span>
+          <span class="byq-gem--inline-media-text-01__seg"><span {...e("mission-1")}>{t("mission-1", "The immune system is")}</span></span>
+          <span class="byq-gem--inline-media-text-01__seg"><span {...e("mission-2")}>{t("mission-2", "endlessly fascinating")}</span><span class="ninja__slot" aria-hidden="true"></span>,</span>
         </span>
         <span class="byq-gem--inline-media-text-01__row">
-          <span class="byq-gem--inline-media-text-01__seg">and my job &mdash;</span>
-          <span class="byq-gem--inline-media-text-01__seg">across teaching<span class="ninja__slot" aria-hidden="true"></span>,</span>
+          <span class="byq-gem--inline-media-text-01__seg"><span {...e("mission-3")}>{t("mission-3", "and my job —")}</span></span>
+          <span class="byq-gem--inline-media-text-01__seg"><span {...e("mission-4")}>{t("mission-4", "across teaching")}</span><span class="ninja__slot" aria-hidden="true"></span>,</span>
         </span>
         <span class="byq-gem--inline-media-text-01__row">
-          <span class="byq-gem--inline-media-text-01__seg">communication<span class="ninja__slot" aria-hidden="true"></span>,</span>
-          <span class="byq-gem--inline-media-text-01__seg">and outreach &mdash;</span>
+          <span class="byq-gem--inline-media-text-01__seg"><span {...e("mission-5")}>{t("mission-5", "communication")}</span><span class="ninja__slot" aria-hidden="true"></span>,</span>
+          <span class="byq-gem--inline-media-text-01__seg"><span {...e("mission-6")}>{t("mission-6", "and outreach —")}</span></span>
         </span>
         <span class="byq-gem--inline-media-text-01__row">
-          <span class="byq-gem--inline-media-text-01__seg">is to inspire you</span>
-          <span class="byq-gem--inline-media-text-01__seg">to think so too!<span class="ninja__slot" aria-hidden="true"></span></span>
+          <span class="byq-gem--inline-media-text-01__seg"><span {...e("mission-7")}>{t("mission-7", "is to inspire you")}</span></span>
+          <span class="byq-gem--inline-media-text-01__seg"><span {...e("mission-8")}>{t("mission-8", "to think so too!")}</span><span class="ninja__slot" aria-hidden="true"></span></span>
         </span>
       </h2>
     </section>
     <canvas aria-hidden="true"></canvas>
-    <p class="ninja__hint">Swipe the germs &middot; cells just shake it off &middot; <span data-popped>0</span> popped</p>
+    <p class="ninja__hint"><span {...e("ninja-hint")}>{t("ninja-hint", "Swipe the germs · cells just shake it off ·")}</span> <span data-popped>0</span> <span {...e("ninja-hint-count")}>{t("ninja-hint-count", "popped")}</span></p>
     </div>
   </div>
 </section>
 
 <section class="section" id="outreach-section" aria-label="What Aimee's working on">
   <div class="workon">
-    <div class="workon__head"><h2 class="workon__title">What Aimee's Working On</h2></div>
+    <div class="workon__head"><h2 class="workon__title" {...site.edit("working-heading")}>{site.text("working-heading", "What Aimee's Working On")}</h2></div>
     <div class="workon__row">
-      <a class="workon__card" href="https://tlasprogram.wordpress.com/" target="_blank" rel="noopener">
-        <div class="workon__media"><img src="/site/photos/tlas-ask-a-q-1148.webp" srcset="/site/photos/tlas-ask-a-q-700.webp 700w, /site/photos/tlas-ask-a-q-1148.webp 1148w" sizes="(max-width: 767px) 100vw, 30vw" alt="" style="object-position:50% 40%" loading="lazy"></div>
-        <div class="workon__info"><h3 class="workon__name">Think Like a Scientist</h3><p class="workon__role">Science outreach program</p></div>
-      </a>
-      <a class="workon__card" href="https://www.instagram.com/funsizeimmuninja/?hl=en" target="_blank" rel="noopener">
-        <div class="workon__media"><img src="/site/photos/funsize-ig-collage-1600.webp" srcset="/site/photos/funsize-ig-collage-800.webp 800w, /site/photos/funsize-ig-collage-1600.webp 1600w" sizes="(max-width: 767px) 100vw, 30vw" alt="" style="object-position:50% 50%" loading="lazy"></div>
-        <div class="workon__info"><h3 class="workon__name">Fun Size Immuninja</h3><p class="workon__role">Immunology on Instagram</p></div>
-      </a>
-      <a class="workon__card" href="https://medschool.cuanschutz.edu/immunology-and-microbiology/dept-resources/teaching-resources/teacher-training-program" target="_blank" rel="noopener">
-        <div class="workon__media"><img src="/site/photos/ttp-teaching-1600.webp" srcset="/site/photos/ttp-teaching-800.webp 800w, /site/photos/ttp-teaching-1600.webp 1600w" sizes="(max-width: 767px) 100vw, 30vw" alt="" style="object-position:76% 50%" loading="lazy"></div>
-        <div class="workon__info"><h3 class="workon__name">Teacher Training Program</h3><p class="workon__role">Mentoring PhD students and postdocs</p></div>
-      </a>
-      <a class="workon__card" href="https://aimeepughbernard.substack.com/" target="_blank" rel="noopener">
-        <div class="workon__media"><img src="/site/photos/substack-collage-1600.webp" srcset="/site/photos/substack-collage-800.webp 800w, /site/photos/substack-collage-1600.webp 1600w" sizes="(max-width: 767px) 100vw, 30vw" alt="" style="object-position:50% 50%" loading="lazy"></div>
-        <div class="workon__info"><h3 class="workon__name">Science Crosstalk</h3><p class="workon__role">Where Science and Communication Collide</p></div>
-      </a>
+      {workCards.map((c) => (
+        <a class="workon__card" href={c.href} target="_blank" rel="noopener">
+          <div class="workon__media" {...site.edit(`working-${c.n}-photo`, "image")}><img src={c.photo.src} srcset={c.photo.srcset} sizes="(max-width: 767px) 100vw, 30vw" alt={c.photo.alt} style={`object-position:${c.photo.pos}`} loading="lazy"></div>
+          <div class="workon__info"><h3 class="workon__name" {...site.edit(`working-${c.n}-name`)}>{c.name}</h3><p class="workon__role" {...site.edit(`working-${c.n}-sub`)}>{c.sub}</p></div>
+        </a>
+      ))}
     </div>
     <a class="outreach-all" href="/work">
-      See all
+      <span {...e("working-see-all")}>{t("working-see-all", "See all")}</span>
       <span class="outreach-all__icon" aria-hidden="true">
         <svg viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </span>
@@ -106,31 +133,21 @@ const heroUrl = (await getImage({ src: heroSrc, format: "webp", width: 1040 })).
     <div class="stats-pin__pin-target">
       <div class="stats-pin__viewport">
         <div class="stats-pin__panel is-active" data-panel-index="0" aria-label="By the numbers">
-          <div class="panel-label label">By the numbers</div>
-          <p class="panel-title display display-md">Twenty-five years in, my goal hasn&rsquo;t changed: make immunology make sense to the people in front of me.</p>
+          <div class="panel-label label" {...e("numbers-label")}>{t("numbers-label", "By the numbers")}</div>
+          <p class="panel-title display display-md" {...e("numbers-title")}>{t("numbers-title", "Twenty-five years in, my goal hasn’t changed: make immunology make sense to the people in front of me.")}</p>
           <div class="stats-thirds">
-            <div class="stat">
-              <div class="mask" data-reveal><div class="display stat-num slide">25+</div></div>
-              <div class="label muted">Years as an Educator,<br>Immunologist &amp; Communicator</div>
-            </div>
-            <div class="stat">
-              <div class="mask" data-reveal><div class="display stat-num slide">30+</div></div>
-              <div class="label muted">Courses taught</div>
-            </div>
-            <div class="stat">
-              <div class="mask" data-reveal><div class="display stat-num slide">100+</div></div>
-              <div class="label muted">Talks given</div>
-            </div>
-            <div class="stat">
-              <div class="mask" data-reveal><div class="display stat-num slide">9+</div></div>
-              <div class="label muted">Awards received</div>
-            </div>
+            {stats.map((st) => (
+              <div class="stat">
+                <div class="mask" data-reveal><div class="display stat-num slide" {...e(`stat-${st.n}-num`)}>{t(`stat-${st.n}-num`, st.num)}</div></div>
+                <div class="label muted" {...e(`stat-${st.n}-label`)}>{site.lines(`stat-${st.n}-label`, st.label).map((line, i) => <>{i > 0 && <br />}{line}</>)}</div>
+              </div>
+            ))}
           </div>
         </div>
 
         <div class="stats-pin__panel" data-panel-index="1" aria-label="Trusted by / appeared with">
-          <div class="panel-label label">Trusted by / appeared with</div>
-          <p class="panel-title display display-md">I&rsquo;ve shared science in classrooms, at conferences, and in newsrooms, from TEDx to The Conversation.</p>
+          <div class="panel-label label" {...e("trusted-label")}>{t("trusted-label", "Trusted by / appeared with")}</div>
+          <p class="panel-title display display-md" {...e("trusted-title")}>{t("trusted-title", "I’ve shared science in classrooms, at conferences, and in newsrooms, from TEDx to The Conversation.")}</p>
           <div class="cred-marquee" aria-hidden="true">
             <div class="cred-track">
               <LogoStrip server:defer variant="home"><LogoStripSkeleton slot="fallback" variant="home" /></LogoStrip>
@@ -140,7 +157,7 @@ const heroUrl = (await getImage({ src: heroSrc, format: "webp", width: 1040 })).
 
         <div class="stats-pin__panel" data-panel-index="2" aria-label="Award-winning educator">
           <div class="awards-panel">
-          <p class="panel-title display display-md">The explaining works. Teaching awards.</p>
+          <p class="panel-title display display-md" {...e("teaching-awards-title")}>{t("teaching-awards-title", "The explaining works. Teaching awards.")}</p>
             <svg width="0" height="0" style="position: absolute" aria-hidden="true">
               <defs>
                 <symbol id="wreath" viewBox="0 0 1280 1222">
@@ -282,7 +299,7 @@ l-6 30 23 -22 c22 -19 27 -20 61 -9 93 33 242 180 306 304 122 236 167 543
 
         <div class="stats-pin__panel" data-panel-index="3" aria-label="Outreach and mentoring awards">
           <div class="awards-panel">
-            <p class="panel-title display display-md">Outreach and mentoring that makes a difference.</p>
+            <p class="panel-title display display-md" {...e("outreach-awards-title")}>{t("outreach-awards-title", "Outreach and mentoring that makes a difference.")}</p>
             <div class="award-grid">
               <Awards server:defer variant="home" group="outreach"><AwardsSkeleton slot="fallback" variant="home" count={4} /></Awards>
             </div>
@@ -296,7 +313,7 @@ l-6 30 23 -22 c22 -19 27 -20 61 -9 93 33 242 180 306 304 122 236 167 543
 <section id="press-section" aria-label="Press">
   <div class="press-inner">
     <div class="press-head fade" data-reveal>
-      <h2>In the press</h2>
+      <h2 {...e("press-heading")}>{t("press-heading", "In the press")}</h2>
     </div>
     <div class="press-grid fade" data-reveal>
       <PressCards server:defer><PressCardSkeleton slot="fallback" count={6} /></PressCards>
@@ -304,10 +321,10 @@ l-6 30 23 -22 c22 -19 27 -20 61 -9 93 33 242 180 306 304 122 236 167 543
   </div>
 </section>
 
-<div class="cell-field" id="cellField">
+<div class="cell-field" id="cellField" data-se-section="Germ game">
   <canvas aria-hidden="true"></canvas>
 
-  <div class="cell-field-score" aria-live="polite"><span class="cell-field-score__num" data-cleared>0</span><span class="cell-field-score__label">cleared</span></div>
+  <div class="cell-field-score" aria-live="polite"><span class="cell-field-score__num" data-cleared>0</span><span class="cell-field-score__label" {...e("game-score-label")}>{t("game-score-label", "cleared")}</span></div>
 
   <div class="cell-field-band">
     <button type="button" class="cell-field-hold" aria-label="Press and hold to play the germ game">
@@ -315,9 +332,9 @@ l-6 30 23 -22 c22 -19 27 -20 61 -9 93 33 242 180 306 304 122 236 167 543
         <svg viewBox="0 0 76 76" aria-hidden="true"><circle class="track" cx="38" cy="38" r="34"></circle><circle class="ring" cx="38" cy="38" r="34"></circle></svg>
         <img src="/site/cells/coronavirus.svg" alt="" draggable="false" />
       </span>
-      <span class="cell-field-hold__label">Hold to play</span>
+      <span class="cell-field-hold__label" {...e("game-hold")}>{t("game-hold", "Hold to play")}</span>
     </button>
-    <p class="cell-field-hint">Swipe fast to clear the germs &middot; spare your own cells &middot; <span data-cleared>0</span> cleared</p>
+    <p class="cell-field-hint"><span {...e("game-hint")}>{t("game-hint", "Swipe fast to clear the germs · spare your own cells ·")}</span> <span data-cleared>0</span> <span {...e("game-hint-count")}>{t("game-hint-count", "cleared")}</span></p>
   </div>
 </div>
 
@@ -361,4 +378,5 @@ l-6 30 23 -22 c22 -19 27 -20 61 -9 93 33 242 180 306 304 122 236 167 543
   import "@/scripts/immune-game.js";
   import "@/scripts/immune-swipe.js";
 </script>
+{site.preview && <script is:inline src="/edit-mode.js" data-origin={site.dashboardOrigin}></script>}
 </SiteLayout>

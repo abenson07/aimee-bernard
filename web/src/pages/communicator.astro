@@ -4,6 +4,7 @@ import SiteHeader from "@/components/SiteHeader.astro";
 import "@/styles/site/shared.css";
 import "@/styles/site/science-communication.css";
 import { getImage } from "astro:assets";
+import { getSitePage } from "@/lib/siteContent";
 import bwSrc from "@/assets/site/aimee-bw.png";
 import LogoStrip from "@/components/site/LogoStrip.astro";
 import LogoStripSkeleton from "@/components/site/LogoStripSkeleton.astro";
@@ -12,6 +13,26 @@ import TedxFeatureSkeleton from "@/components/site/TedxFeatureSkeleton.astro";
 import SciCommFeed from "@/components/site/SciCommFeed.astro";
 import SciCommFeedSkeleton from "@/components/site/SciCommFeedSkeleton.astro";
 const bwUrl = (await getImage({ src: bwSrc, format: "webp", width: 936 })).src;
+// Text and photos are editable in the dashboard's Site editor; the values here are the fallbacks.
+export const prerender = false;
+const site = await getSitePage("site-page-communicator", Astro.request);
+site.applyCaching(Astro.response);
+const t = site.text;
+const e = site.edit;
+const heroWide = site.image("hero-photo", { src: "/site/photos/tedx-front-stage-1200.webp", srcset: "/site/photos/tedx-front-stage-1200.webp 1200w, /site/photos/tedx-front-stage-1900.webp 1900w", pos: "50% 58%", alt: "Aimee on stage at TEDxCU" });
+const heroSide = site.image("hero-photo-2", { src: bwUrl, pos: "50% 50%", alt: "" });
+const stats = [
+  { n: 1, num: "25+", desc: "Years as an Educator, Immunologist & Communicator" },
+  { n: 2, num: "30+", desc: "Courses taught" },
+  { n: 3, num: "100+", desc: "Talks given" },
+  { n: 4, num: "9+", desc: "Awards received" },
+];
+const contrib = [
+  { n: 1, href: "https://immunologyexplained.aai.org/", name: "Immunology Explained", role: "", photo: { src: "/site/photos/immu-hall-smile-1200.webp", pos: "60% 35%", alt: "Aimee smiling in a lab coat" } },
+  { n: 2, href: "https://aimeepughbernard.substack.com/", name: "Science Crosstalk", role: "My Substack", photo: { src: "/site/photos/substack-collage-800.webp", pos: "50% 50%", alt: "" } },
+  { n: 3, href: "https://www.unbiasedscience.com/the-team", name: "Unbiased Science", role: "Immunology Expert", photo: { src: bwUrl, pos: "50% 25%", alt: "" } },
+  { n: 4, href: "https://www.instagram.com/funsizeimmuninja/?hl=en", name: "@funsizeimmuninja", role: "My Instagram", photo: { src: "/site/photos/funsize-ig-collage-800.webp", pos: "50% 50%", alt: "" } },
+].map((c) => ({ ...c, photo: site.image(`contrib-${c.n}-photo`, c.photo), nameText: t(`contrib-${c.n}-name`, c.name), roleText: c.role ? t(`contrib-${c.n}-role`, c.role) : "" }));
 ---
 
 <SiteLayout title="Science Communication">
@@ -21,20 +42,19 @@ const bwUrl = (await getImage({ src: bwSrc, format: "webp", width: 936 })).src;
 <section class="hero-split is-fade">
   <div class="wrap" style="padding:0">
     <div class="hero-split__head">
-      <h1 class="display hero-split__title">Talking about science so people listen</h1>
-      <div class="hero-split__side is-info"><p>Talks, keynotes, and workshops on making immunology clear, honest, and human.</p></div>
+      <h1 class="display hero-split__title" {...e("hero-title")}>{t("hero-title", "Talking about science so people listen")}</h1>
+      <div class="hero-split__side is-info"><p {...e("hero-blurb")}>{t("hero-blurb", "Talks, keynotes, and workshops on making immunology clear, honest, and human.")}</p></div>
     </div>
-    <div class="hero-split__media hero-split__media--small-first"><div><img src="/site/photos/tedx-front-stage-1200.webp" srcset="/site/photos/tedx-front-stage-1200.webp 1200w, /site/photos/tedx-front-stage-1900.webp 1900w" sizes="(max-width: 767px) 100vw, 912px" alt="Aimee on stage at TEDxCU" style="object-position:50% 58%"></div><div><img src={bwUrl} alt=""></div></div>
+    <div class="hero-split__media hero-split__media--small-first"><div {...e("hero-photo", "image")}><img src={heroWide.src} srcset={heroWide.srcset} sizes="(max-width: 767px) 100vw, 912px" alt={heroWide.alt} style={`object-position:${heroWide.pos}`}></div><div {...e("hero-photo-2", "image")}><img src={heroSide.src} srcset={heroSide.srcset} sizes="448px" alt={heroSide.alt} style={`object-position:${heroSide.pos}`}></div></div>
   </div>
 </section>
 
 <section class="mission-sec has-stats fade-into" aria-label="Mission and numbers">
-  <p class="mission" data-mission>Science belongs to everyone. <span class="m-el m-cell" data-mx="14" data-my="10"><img src="/site/cells/t-cell.svg" alt=""></span> Through teaching, communication, and outreach, my goal is the same: to empower my audience <span class="m-el m-cell" data-mx="12" data-my="9"><img src="/site/cells/antibody.svg" alt=""></span> to use science and evidence to make everyday decisions that positively impact their lives and their communities.</p>
+  <p class="mission" data-mission><span {...e("mission-1")}>{t("mission-1", "Science belongs to everyone.")}</span> <span class="m-el m-cell" data-mx="14" data-my="10"><img src="/site/cells/t-cell.svg" alt=""></span> <span {...e("mission-2")}>{t("mission-2", "Through teaching, communication, and outreach, my goal is the same: to empower my audience")}</span> <span class="m-el m-cell" data-mx="12" data-my="9"><img src="/site/cells/antibody.svg" alt=""></span> <span {...e("mission-3")}>{t("mission-3", "to use science and evidence to make everyday decisions that positively impact their lives and their communities.")}</span></p>
   <div class="stats-row is-tight">
-    <div class="stat fade"><div class="stat__num">25+</div><p class="stat__desc">Years as an Educator, Immunologist &amp; Communicator</p></div>
-    <div class="stat fade"><div class="stat__num">30+</div><p class="stat__desc">Courses taught</p></div>
-    <div class="stat fade"><div class="stat__num">100+</div><p class="stat__desc">Talks given</p></div>
-    <div class="stat fade"><div class="stat__num">9+</div><p class="stat__desc">Awards received</p></div>
+    {stats.map((st) => (
+      <div class="stat fade"><div class="stat__num" {...e(`stat-${st.n}-num`)}>{t(`stat-${st.n}-num`, st.num)}</div><p class="stat__desc" {...e(`stat-${st.n}-desc`)}>{t(`stat-${st.n}-desc`, st.desc)}</p></div>
+    ))}
   </div>
 </section>
 
@@ -42,12 +62,11 @@ const bwUrl = (await getImage({ src: bwSrc, format: "webp", width: 936 })).src;
 
 <section class="contrib" aria-label="Regularly contributes to">
   <div class="wrap">
-    <div class="contrib__head fade"><h2 class="contrib__title">Aimee regularly contributes to...</h2></div>
+    <div class="contrib__head fade"><h2 class="contrib__title" {...e("contrib-heading")}>{t("contrib-heading", "Aimee regularly contributes to...")}</h2></div>
     <div class="contrib__row fade">
-      <a class="contrib__card" href="https://immunologyexplained.aai.org/" target="_blank" rel="noopener"><div class="contrib__media"><img src="/site/photos/immu-hall-smile-1200.webp" alt="Aimee smiling in a lab coat" style="object-position:60% 35%" loading="lazy"></div><div class="contrib__info"><h3 class="contrib__name">Immunology Explained</h3></div></a>
-      <a class="contrib__card" href="https://aimeepughbernard.substack.com/" target="_blank" rel="noopener"><div class="contrib__media"><img src="/site/photos/substack-collage-800.webp" alt="" loading="lazy"></div><div class="contrib__info"><h3 class="contrib__name">Science Crosstalk</h3><p class="contrib__role">My Substack</p></div></a>
-      <a class="contrib__card" href="https://www.unbiasedscience.com/the-team" target="_blank" rel="noopener"><div class="contrib__media"><img src={bwUrl} alt="" style="object-position:50% 25%" loading="lazy"></div><div class="contrib__info"><h3 class="contrib__name">Unbiased Science</h3><p class="contrib__role">Immunology Expert</p></div></a>
-      <a class="contrib__card" href="https://www.instagram.com/funsizeimmuninja/?hl=en" target="_blank" rel="noopener"><div class="contrib__media"><img src="/site/photos/funsize-ig-collage-800.webp" alt="" loading="lazy"></div><div class="contrib__info"><h3 class="contrib__name">@funsizeimmuninja</h3><p class="contrib__role">My Instagram</p></div></a>
+      {contrib.map((c) => (
+        <a class="contrib__card" href={c.href} target="_blank" rel="noopener"><div class="contrib__media" {...e(`contrib-${c.n}-photo`, "image")}><img src={c.photo.src} srcset={c.photo.srcset} alt={c.photo.alt} style={`object-position:${c.photo.pos}`} loading="lazy"></div><div class="contrib__info"><h3 class="contrib__name" {...e(`contrib-${c.n}-name`)}>{c.nameText}</h3>{c.roleText && <p class="contrib__role" {...e(`contrib-${c.n}-role`)}>{c.roleText}</p>}</div></a>
+      ))}
     </div>
   </div>
 </section>
@@ -81,4 +100,5 @@ const bwUrl = (await getImage({ src: bwSrc, format: "webp", width: 936 })).src;
 <script>
   import "@/scripts/shared.js";
 </script>
+{site.preview && <script is:inline src="/edit-mode.js" data-origin={site.dashboardOrigin}></script>}
 </SiteLayout>

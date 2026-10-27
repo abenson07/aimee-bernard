@@ -21,6 +21,6 @@ Astro.response.headers.set("Cache-Control", ISLAND_CACHE);
         {p.href && <svg class="paper__arrow" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M4 12L12 4M12 4H5.5M12 4v6.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" /></svg>}
       </>
     );
-    return <li class="paper">{p.href ? <a class="paper__link" href={p.href} target="_blank" rel="noopener">{inner}</a> : <div class="paper__row">{inner}</div>}</li>;
+    return <li class="paper" data-doc={p._id} data-doc-type="contentItem" data-doc-label="Paper">{p.href ? <a class="paper__link" href={p.href} target="_blank" rel="noopener">{inner}</a> : <div class="paper__row">{inner}</div>}</li>;
   })
 }
