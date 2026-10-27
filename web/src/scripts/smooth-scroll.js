@@ -13,9 +13,9 @@ import Lenis from '../vendor/lenis.mjs';
   const raf = (t) => { lenis.raf(t); requestAnimationFrame(raf); };
   requestAnimationFrame(raf);
 
-  // Hold still whenever the page itself is locked (phone menu, germ game) or the window is phone-sized.
+  // Hold still whenever the page itself is locked (phone menu, germ game, course panel) or the window is phone-sized.
   const sync = () => {
-    const locked = document.body.classList.contains('menu-open') || document.body.classList.contains('game-open') || !desktop.matches;
+    const locked = document.body.classList.contains('menu-open') || document.body.classList.contains('game-open') || document.body.classList.contains('panel-open') || !desktop.matches;
     locked ? lenis.stop() : lenis.start();
   };
   new MutationObserver(sync).observe(document.body, { attributes: true, attributeFilter: ['class'] });
