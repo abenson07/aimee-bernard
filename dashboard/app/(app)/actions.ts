@@ -5,12 +5,17 @@ import { cookies } from "next/headers";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { verifySession } from "@/lib/dal";
+import { findDuplicateTitles } from "@/lib/duplicates";
 import { categorizationEnabled } from "@/lib/flags";
 import { sanityClient } from "@/lib/sanity";
 import { SESSION_COOKIE } from "@/lib/session";
+import { normalizeTitle } from "@/lib/titles";
+import type { DuplicateMatch } from "@/lib/types";
 import { withHttps } from "@/lib/url";
 
-export type FormState = { error?: string; ok?: boolean; key?: string } | undefined;
+export type FormState =
+  | { error?: string; ok?: boolean; key?: string; duplicates?: DuplicateMatch[] }
+  | undefined;
 
 type PortableTextBlock = {
   _type: string;
@@ -114,6 +119,17 @@ export async function createContentItem(
   }
   if (sourceCount > 1) {
     return { error: "Add just one source: a file, a link, or content." };
+  }
+
+  /* Warn before saving a second copy of something already here. The form
+     sends confirmDuplicate once she has seen the warning and chosen to go on. */
+  if (formData.get("confirmDuplicate") !== "1") {
+    try {
+      const duplicates = await findDuplicateTitles(title);
+      if (duplicates.length > 0) return { duplicates };
+    } catch {
+      /* If the check itself fails, don't block her from saving. */
+    }
   }
 
   const doc: { _type: string } & Record<string, unknown> = {
@@ -267,6 +283,20 @@ export async function updateContentItem(
   if (typeof title === "string") {
     if (!title.trim()) return { error: "Give this a title." };
     set.title = title.trim();
+
+    /* Only check when the title actually changed — otherwise every save of an
+       item that already has a twin would nag her. */
+    if (formData.get("confirmDuplicate") !== "1") {
+      try {
+        const current = await sanityClient.fetch<string | null>(`*[_id == $id][0].title`, { id });
+        if (normalizeTitle(current ?? "") !== normalizeTitle(title)) {
+          const duplicates = await findDuplicateTitles(title, id);
+          if (duplicates.length > 0) return { duplicates };
+        }
+      } catch {
+        /* If the check itself fails, don't block her from saving. */
+      }
+    }
   }
   if (typeof kind === "string" && kind) {
     set.kind = kind;

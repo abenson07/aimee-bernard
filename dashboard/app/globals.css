@@ -1531,3 +1531,19 @@ textarea.input {
     justify-content: center;
   }
 }
+
+/* Same-title warning (duplicate-warning.tsx) */
+.duplicate-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: 14px;
+}
+.duplicate-list li {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}

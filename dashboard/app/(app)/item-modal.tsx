@@ -5,6 +5,7 @@ import { KIND_OPTIONS, type Category, type ContentItem, type ContentLink } from 
 import { withHttps } from "@/lib/url";
 import { deleteContentItem, updateContentItem } from "./actions";
 import { itemContext } from "./category-suggestion";
+import { DuplicateWarning } from "./duplicate-warning";
 import { CloseIcon, DropIcon, FileIcon, PlusIcon } from "./icons";
 import { ModalShell } from "./modal-shell";
 
@@ -34,6 +35,12 @@ export function ItemModal({
   const [state, formAction, pending] = useActionState(updateContentItem, undefined);
   const [replacementName, setReplacementName] = useState<string | null>(null);
   const fileRef = useRef<HTMLInputElement>(null);
+  const formRef = useRef<HTMLFormElement>(null);
+  const [, startSubmit] = useTransition();
+  /* The same-title warning shows until she goes back; a fresh save that finds
+     a match produces a new state, so it shows again. */
+  const [dismissed, setDismissed] = useState<typeof state>(undefined);
+  const showDuplicates = Boolean(state?.duplicates?.length) && dismissed !== state;
   const link = item.url || item.firstLinkUrl || "";
   const [links, setLinks] = useState<ContentLink[]>(item.links ?? []);
   const updateLink = (key: string, field: "label" | "url", value: string) => {
@@ -59,6 +66,15 @@ export function ItemModal({
     }
   }, [state, onClose, onSaved]);
 
+  /* Sent by hand instead of as the form's `action` so the form is not reset
+     when the warning comes back — her edits would otherwise snap back. */
+  const submit = (confirmDuplicate: boolean) => {
+    if (!formRef.current) return;
+    const data = new FormData(formRef.current);
+    if (confirmDuplicate) data.set("confirmDuplicate", "1");
+    startSubmit(() => formAction(data));
+  };
+
   const handleDelete = () => {
     startDelete(async () => {
       const result = await deleteContentItem(item._id);
@@ -78,7 +94,13 @@ export function ItemModal({
       onClose={onClose}
       inline={inline}
     >
-      <form action={formAction}>
+      <form
+        ref={formRef}
+        onSubmit={(event) => {
+          event.preventDefault();
+          submit(false);
+        }}
+      >
         <input type="hidden" name="id" value={item._id} />
 
         <div className="modal-body">
@@ -292,7 +314,16 @@ export function ItemModal({
           {state?.error && <p className="form-error">{state.error}</p>}
         </div>
 
-        {confirmDelete ? (
+        {showDuplicates && state?.duplicates ? (
+          <DuplicateWarning
+            matches={state.duplicates}
+            confirmLabel="Save anyway"
+            pendingLabel="Saving…"
+            pending={pending}
+            onConfirm={() => submit(true)}
+            onBack={() => setDismissed(state)}
+          />
+        ) : confirmDelete ? (
           <div className="modal-foot confirm-delete">
             <p className="confirm-delete-text">Delete this item? This can&apos;t be undone.</p>
             {deleteError && <p className="form-error">{deleteError}</p>}

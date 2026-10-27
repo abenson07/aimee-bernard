@@ -68,3 +68,12 @@ export interface ContentItem {
   categoryStatus?: CategoryReviewStatus;
   description?: string;
 }
+
+/** An existing content item that has the same title as one being saved. */
+export interface DuplicateMatch {
+  _id: string;
+  title: string;
+  kind?: string;
+  venue?: string;
+  date?: string;
+}

@@ -1,9 +1,10 @@
 "use client";
 
-import { useActionState, useEffect, useRef, useState } from "react";
+import { useActionState, useEffect, useRef, useState, useTransition } from "react";
 import type { Category, SourceKind } from "@/lib/types";
 import { withHttps } from "@/lib/url";
 import { createContentItem } from "./actions";
+import { DuplicateWarning } from "./duplicate-warning";
 import { ChevronDownIcon, DropIcon, LockIcon } from "./icons";
 import { ModalShell } from "./modal-shell";
 import { RichText } from "./rich-text";
@@ -25,6 +26,12 @@ export function UploadModal({
   const [tab, setTab] = useState<SourceKind>("file");
   const [fileName, setFileName] = useState<string | null>(null);
   const fileRef = useRef<HTMLInputElement>(null);
+  const formRef = useRef<HTMLFormElement>(null);
+  const [, startSubmit] = useTransition();
+  /* The same-title warning shows until she goes back; a fresh submit that
+     finds a match produces a new state, so it shows again. */
+  const [dismissed, setDismissed] = useState<typeof state>(undefined);
+  const showDuplicates = Boolean(state?.duplicates?.length) && dismissed !== state;
   /* Controlled, rather than left to defaultValue/refs, so a failed submit
      (e.g. missing category) doesn't wipe what she already typed — React
      resets uncontrolled fields on every form action dispatch, success or
@@ -33,6 +40,15 @@ export function UploadModal({
   const [title, setTitle] = useState("");
   const [url, setUrl] = useState("");
   const [description, setDescription] = useState("");
+
+  /* Sent by hand instead of as the form's `action` so the form is not reset
+     when the warning comes back — the chosen file would otherwise be lost. */
+  const submit = (confirmDuplicate: boolean) => {
+    if (!formRef.current) return;
+    const data = new FormData(formRef.current);
+    if (confirmDuplicate) data.set("confirmDuplicate", "1");
+    startSubmit(() => formAction(data));
+  };
 
   const locked = categories.find((category) => category._id === lockedCategoryId) ?? null;
 
@@ -49,7 +65,13 @@ export function UploadModal({
       subtitle="Add a file, a link, or something you have written."
       onClose={onClose}
     >
-      <form action={formAction}>
+      <form
+        ref={formRef}
+        onSubmit={(event) => {
+          event.preventDefault();
+          submit(false);
+        }}
+      >
         <div className="modal-body">
           <label className="field">
             <span className="label">Title</span>
@@ -202,14 +224,25 @@ export function UploadModal({
           {state?.error && <p className="form-error">{state.error}</p>}
         </div>
 
-        <div className="modal-foot">
-          <button type="button" className="btn-quiet" onClick={onClose}>
-            Cancel
-          </button>
-          <button type="submit" className="btn-primary" disabled={pending}>
-            {pending ? "Uploading…" : "Upload"}
-          </button>
-        </div>
+        {showDuplicates && state?.duplicates ? (
+          <DuplicateWarning
+            matches={state.duplicates}
+            confirmLabel="Add it anyway"
+            pendingLabel="Uploading…"
+            pending={pending}
+            onConfirm={() => submit(true)}
+            onBack={() => setDismissed(state)}
+          />
+        ) : (
+          <div className="modal-foot">
+            <button type="button" className="btn-quiet" onClick={onClose}>
+              Cancel
+            </button>
+            <button type="submit" className="btn-primary" disabled={pending}>
+              {pending ? "Uploading…" : "Upload"}
+            </button>
+          </div>
+        )}
       </form>
     </ModalShell>
   );
