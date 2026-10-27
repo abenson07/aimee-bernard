@@ -34,7 +34,8 @@ export function ItemModal({
   const [state, formAction, pending] = useActionState(updateContentItem, undefined);
   const [replacementName, setReplacementName] = useState<string | null>(null);
   const fileRef = useRef<HTMLInputElement>(null);
-  const [editingDetails, setEditingDetails] = useState(false);
+  // In the Site editor's side panel the fields start expanded; the full window starts with the short view.
+  const [editingDetails, setEditingDetails] = useState(inline);
   const link = item.url || item.firstLinkUrl || "";
   const [links, setLinks] = useState<ContentLink[]>(item.links ?? []);
   const updateLink = (key: string, field: "label" | "url", value: string) => {
@@ -257,7 +258,7 @@ export function ItemModal({
             <textarea
               name="description"
               className="input"
-              rows={2}
+              rows={inline ? 9 : 2}
               defaultValue={item.description ?? ""}
             />
           </label>

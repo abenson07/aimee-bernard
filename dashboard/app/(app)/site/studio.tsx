@@ -1064,7 +1064,7 @@ function PhotoFields({
         </FieldLabel>
         <textarea
           className="st-input"
-          rows={2}
+          rows={5}
           value={draft}
           placeholder="What’s in the photo (read aloud to people who can’t see it)"
           onChange={(e) => setDraft(e.target.value)}
