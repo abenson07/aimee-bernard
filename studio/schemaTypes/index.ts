@@ -1,3 +1,5 @@
+import { botFact } from "./documents/botFact";
+import { botSocial } from "./documents/botSocial";
 import { category } from "./documents/category";
 import { courseGroup } from "./documents/courseGroup";
 import { contentItem } from "./documents/contentItem";
@@ -8,4 +10,4 @@ import { publication } from "./documents/publication";
 import { quizResponse } from "./documents/quizResponse";
 import { testimonial } from "./documents/testimonial";
 
-export const schemaTypes = [category, contentItem, courseGroup, publication, testimonial, quizResponse, pageComment, pageCommunicator, sitePage];
+export const schemaTypes = [category, contentItem, courseGroup, publication, testimonial, quizResponse, pageComment, pageCommunicator, sitePage, botFact, botSocial];

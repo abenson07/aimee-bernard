@@ -145,5 +145,28 @@ check('followup "when" after podcasts', /April 2025/.test(flat(say2('when was it
 say2('talks');
 check('refine to an empty year says so', /I don.t have/.test(flat(say2('what about 1999'))) || /dated 1999/.test(flat(say2('1999'))));
 
+// ---- Facts written in Studio (plain phrases, escaped by askIndex) work, and a bad pattern cannot break the chat
+{
+  const sanityShaped = {
+    ...index,
+    facts: [
+      { id: 'botFact-bad', match: ['(unclosed', '[oops'], answer: ['never shown'] },
+      { id: 'botFact-lab', match: ['where is her lab', 'lab location'], answer: ['Aimee’s lab is on the Anschutz Medical Campus.', 'Come say hi.'], links: [{ label: 'Contact Aimee', href: '/contact' }] },
+      ...(index.facts ?? []),
+    ],
+    socials: [{ id: 'bad', label: 'Bad', handle: '@bad', href: 'https://example.com', words: ['(broken'] }, ...(index.socials ?? [])],
+  };
+  for (const mode of ['search', 'chat']) {
+    const e = createEngine(sanityShaped, { mode });
+    const r1 = e.say('Where is her lab?', e.initialState());
+    check(`studio fact (${mode}): answers with both lines and the link`, /Anschutz/.test(flat(r1)) && /Come say hi/.test(flat(r1)) && /Contact Aimee/.test(flat(r1)), flat(r1).slice(0, 200));
+    const r2 = e.say('what is her lab location', e.initialState());
+    check(`studio fact (${mode}): second phrase matches`, /Anschutz/.test(flat(r2)), flat(r2).slice(0, 200));
+    let threw = false, r3;
+    try { r3 = e.say('tell me about vaccines', e.initialState()); } catch { threw = true; }
+    check(`invalid pattern (${mode}): chat keeps working`, !threw && !/never shown/.test(flat(r3)), threw ? 'threw' : flat(r3).slice(0, 200));
+  }
+}
+
 console.log(`\n${failures ? failures + ' FAILED' : 'ALL PASSED'}`);
 process.exit(failures ? 1 : 0);

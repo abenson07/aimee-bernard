@@ -101,6 +101,9 @@ export function Dashboard({
           <Link href="/site" className="btn-secondary">
             Edit site
           </Link>
+          <Link href="/bot-gaps" className="btn-secondary">
+            Bot content gaps
+          </Link>
           <Link href="/questionnaire" className="btn-secondary">
             Voice &amp; Tone Questionnaire
           </Link>
