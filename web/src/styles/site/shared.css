@@ -370,6 +370,8 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 .tedx__track { position: relative; height: 260vh; }
 .tedx__stage { position: sticky; top: 0; height: 100vh; min-height: 640px; padding-top: var(--nav-h); display: flex; align-items: center; overflow: hidden; }
 .tedx__plate { width: min(1144px, 100%); margin: 0 auto; display: flex; flex-direction: column; gap: 32px; }
+a.tedx__plate { color: inherit; text-decoration: none; cursor: pointer; }
+a.tedx__plate:hover .tedx__title { text-decoration: underline; text-underline-offset: 6px; }
 .tedx__head { display: flex; flex-direction: column; gap: 16px; }
 .tedx__title { font-family: var(--headline); font-weight: 600; font-size: clamp(1.8rem, 3.3vw, 3.1rem); line-height: 1.04; letter-spacing: -0.01em; max-width: 30ch; }
 .tedx__frame { position: relative; height: min(522px, 46vh); min-height: 280px; border-radius: 16px; overflow: hidden; background: var(--line); }
@@ -472,8 +474,6 @@ body.panel-open #page { transform: scale(0.97); filter: brightness(0.9); }
 .ctl__event { display: flex; flex-direction: column; gap: 12px; }
 .ctl__label { font-family: var(--mono); font-weight: 500; font-size: 12px; line-height: 16px; letter-spacing: 0.75px; text-transform: uppercase; }
 .ctl__topics { display: flex; flex-direction: column; gap: 16px; font-size: 14px; line-height: 20px; }
-.ctl__topics .ctl__topic-head { margin: 12px 0 -4px; font-family: var(--mono); font-weight: 500; font-size: 12px; line-height: 16px; letter-spacing: 0.75px; text-transform: uppercase; }
-.ctl__topics .ctl__topic-head:first-child { margin-top: 0; }
 .ctl__pills { display: flex; flex-wrap: wrap; gap: 4px; }
 .ctl__pill { padding: 4px 8px; border-radius: 40px; background: #e1e0de; font-family: var(--mono); font-weight: 500; font-size: 10px; line-height: 12px; letter-spacing: 0.75px; text-transform: uppercase; }
 .ctl__pill.cyan { background: #d0edfc; } .ctl__pill.green { background: #ddfcd0; } .ctl__pill.purple { background: #d5d0fc; }
