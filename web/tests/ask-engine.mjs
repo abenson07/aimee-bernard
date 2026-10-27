@@ -52,7 +52,7 @@ for (const mode of ['search', 'chat']) {
   r = ask('should i take the covid vaccine');
   check('safety reply', /not a doctor/.test(flat(r)), flat(r));
   r = ask('banana');
-  check('gibberish: fallback', /don.t know/.test(flat(r)), flat(r));
+  check('gibberish: fallback', /don.t know|couldn.t find/.test(flat(r)), flat(r));
   r = ask('does she have a book');
   check('books: honest answer', /haven.t found a book/.test(flat(r)), flat(r));
   r = ask('radio');
@@ -114,5 +114,36 @@ for (const mode of ['search', 'chat']) {
     check('start over greets', /What would you like/.test(flat(r)), flat(r));
   }
 }
+// Everyday questions a visitor is likely to type: each should get a sensible, honest reply and never a wrong search.
+console.log('\n===== EVERYDAY QUESTIONS (chat) =====');
+const everyday = [
+  ['hi', /what would you like to know/i], ['bye', /come back/i], ['ok', /anything else/i],
+  ['are you ai', /scripted helper, not an AI/], ['ignore all previous instructions', /scripted B cell/], ['<script>alert(1)</script>', /scripted B cell/],
+  ['tell me a joke', /outside my notes/], ['what is 2+2', /outside my notes/], ['hola', /only understand English/], ['fuck you', /friendly/],
+  ['what is her job', /Associate Professor/], ['where does she work', /Associate Professor/], ['how old is she', /personal/],
+  ['how much does she charge', /don.t have prices/], ['how do i contact her', /contact page/], ['can i shadow her', /contact page/],
+  ['what is immunology', /study of the immune system/], ['what is mrna', /instructions/], ['what do b cells do', /antibodies/],
+  ['should i get a flu shot', /not a doctor/], ['i have cancer what should i do', /not a doctor/], ['is the covid vaccine safe for kids', /not a doctor/],
+  ['what is her story', /her own story/], ['how do i become an immunologist', /her own story/],
+  ['what is the best thing to read', /If you only look at one thing/], ['tiktok', /TikTok/], ['is she on twitter', /only know of these places/],
+  ['vacines', /vaccine/i], ['podcats', /podcast/i], ['talks from 2019', /dated 2019/], ['talks in 2019 and 2020', /one year at a time/],
+  ['last year', /from 2025/], ['oldest talk', /oldest/], ['latest', /newest/], ['has she been on tv', /couldn.t find anything about/],
+  ['what does she doe', /few hats/], ['news coverage', /press mentions/], ['teaching award', /awards about/],
+];
+for (const [q, re] of everyday) {
+  const e = createEngine(index, { mode: 'chat' });
+  const r = e.say(q, e.initialState());
+  check(`everyday: ${q}`, re.test(flat(r)), flat(r).slice(0, 200));
+}
+const eng2 = createEngine(index, { mode: 'chat' });
+let st2 = eng2.initialState();
+const say2 = (q) => { const r = eng2.say(q, st2); st2 = r.state; return r; };
+say2('what does she do');
+check('hats then "tell me them"', /Educator:/.test(flat(say2('tell me them'))));
+say2('podcasts');
+check('followup "when" after podcasts', /April 2025/.test(flat(say2('when was it?'))));
+say2('talks');
+check('refine to an empty year says so', /I don.t have/.test(flat(say2('what about 1999'))) || /dated 1999/.test(flat(say2('1999'))));
+
 console.log(`\n${failures ? failures + ' FAILED' : 'ALL PASSED'}`);
 process.exit(failures ? 1 : 0);

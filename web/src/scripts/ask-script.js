@@ -26,6 +26,35 @@ export const FALLBACK = [
   'Try a word like “podcasts” or “vaccines”, pick one below, or send Aimee a note.',
 ];
 
+export const HI = ['Hi there! What would you like to know about Aimee?'];
+export const BYE = ['Bye! Come back any time. Antibodies never forget a friend.'];
+export const ACK = ['Anything else you’d like to look at?'];
+export const IDENTITY = [
+  'I’m a B cell, a cartoon one! I’m a scripted helper, not an AI.',
+  'Everything I say comes from the notes on this site and what Aimee has put in them, so I only know about her work.',
+];
+export const PERSONAL = [
+  'That’s personal, and I only know about Aimee’s work!',
+  'If you’d like to ask her something directly, the contact page is the best way.',
+];
+export const NOPRICE = [
+  'I don’t have prices or availability. Those depend on the event.',
+  'The contact page is the way to ask Aimee directly.',
+];
+export const NETWORKS = 'I only know of these places to follow Aimee:';
+export const SIGNUP_LEAD = 'Each program has its own page with details on how to take part:';
+
+export const OFFTOPIC = [
+  'That’s outside my notes! I only know about Aimee’s work and a little about how the immune system works.',
+  'Try one of these, or ask me something about her talks, podcasts, writing, teaching or outreach.',
+];
+export const RUDE = ['Let’s keep it friendly! Antibodies are team players.', 'I’m happy to help you find Aimee’s work.'];
+export const ENGLISH = ['I only understand English for now, sorry!', 'You can still tap one of the buttons below.'];
+export const INJECTION = ['I’m a scripted B cell, so I only follow my notes about Aimee’s work.', 'Ask me about her talks, podcasts, writing, awards, teaching or outreach.'];
+export const CONTACT = [
+  'I don’t have that one. Aimee’s contact page is the best way to ask her directly.',
+];
+
 export const THANKS = ['Anytime! Antibodies love to help.', 'You’re welcome! Want to look at something else?'];
 
 export const SAFETY = [
@@ -94,6 +123,9 @@ export const EXPLAINERS = [
   { words: ['t cell', 'tcell', 't-cell'], lines: ['T cells patrol for infected cells.', 'They mature in the thymus, and each T cell recognizes one specific antigen.'] },
   { words: ['antibod'], lines: ['Antibodies are Y-shaped, and B cells make them.', 'Each tip grabs one exact target, and they tag germs so other cells know what to eat.'] },
   { words: ['neutrophil'], lines: ['Neutrophils are usually first on the scene.', 'They’re the most common white blood cell in your body, and they eat bacteria whole.'] },
+  { words: ['immunology'], lines: ['Immunology is the study of the immune system.', 'It covers how the body defends itself against germs, and what happens when that defense goes wrong.'] },
+  { words: ['immune system'], lines: ['The immune system is the body’s defense team.', 'It finds germs, remembers them, and keeps your own cells safe from the attack.'] },
+  { words: ['mrna'], lines: ['mRNA is a set of instructions that tells your cells how to build one protein.', 'mRNA vaccines use it to show your cells a harmless piece of a germ, so your immune system can practice.'] },
   { words: ['vaccine', 'vaccin'], lines: ['A vaccine is a practice round.', 'It shows your immune system a harmless preview of a germ, so your memory cells are ready for the real thing.'] },
   { words: ['interferon'], lines: ['Interferon is a warning signal between cells.', 'It tells nearby cells: “Virus around, lock it down!”'] },
 ];
@@ -133,13 +165,13 @@ export const KIND_LABEL = {
 
 /* Words that mean a kind of content. Matched after light stemming (see the engine). */
 export const KIND_WORDS = {
-  talk: ['talk', 'speak', 'spoke', 'speaking', 'keynote', 'lecture', 'presentation', 'webinar', 'seminar', 'grand rounds'],
+  talk: ['talk', 'speaks', 'speak', 'spoke', 'speaking', 'keynote', 'lecture', 'presentation', 'webinar', 'seminar', 'grand rounds'],
   podcast: ['podcast', 'episode', 'interviewed'],
   'press-mentions': ['press', 'news', 'media', 'quoted', 'interview', 'newspaper'],
   article: ['article', 'write', 'writing', 'wrote', 'blog', 'essay', 'editorial', 'substack', 'column'],
   'research-publication': ['paper', 'publication', 'published', 'journal', 'research paper', 'study', 'studies'],
   award: ['award', 'honor', 'honour', 'prize', 'recognition', 'won', 'win'],
-  course: ['course', 'class', 'curriculum', 'teach', 'taught', 'teaching', 'syllabus'],
+  course: ['course', 'class', 'curriculum', 'teaches', 'teach', 'taught', 'teaching', 'syllabus'],
   'educational-content': ['video', 'educational', 'resource', 'explainer'],
   position: ['position', 'role', 'job', 'appointment', 'worked'],
   social: ['instagram', 'tiktok', 'bluesky', 'social', 'social media', 'follow'],
