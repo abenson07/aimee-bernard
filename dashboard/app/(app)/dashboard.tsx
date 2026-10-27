@@ -82,6 +82,9 @@ export function Dashboard({
               Sign out
             </button>
           </form>
+          <Link href="/bot-gaps" className="btn-secondary">
+            Bot content gaps
+          </Link>
           <Link href="/questionnaire" className="btn-secondary">
             Voice &amp; Tone Questionnaire
           </Link>

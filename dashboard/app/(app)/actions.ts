@@ -334,3 +334,33 @@ export async function updateContentItem(
   revalidatePath("/");
   return { ok: true };
 }
+
+/** Inline fix from the "Bot content gaps" page: only link and description.
+ *  An empty field leaves what's saved alone — this view never clears content. */
+export async function updateBotContent(
+  _prevState: FormState,
+  formData: FormData,
+): Promise<FormState> {
+  await verifySession();
+
+  const id = formData.get("id");
+  const url = formData.get("url");
+  const description = formData.get("description");
+
+  if (typeof id !== "string" || !id) return { error: "Something went wrong." };
+
+  const set: Record<string, unknown> = {};
+  if (typeof url === "string" && url.trim()) set.url = withHttps(url);
+  if (typeof description === "string" && description.trim()) set.description = description.trim();
+  if (Object.keys(set).length === 0) return { error: "Add a link or a description first." };
+
+  try {
+    await sanityClient.patch(id).set(set).commit();
+  } catch {
+    return { error: "That didn't save. Try again." };
+  }
+
+  revalidatePath("/bot-gaps");
+  revalidatePath("/");
+  return { ok: true, key: id };
+}
