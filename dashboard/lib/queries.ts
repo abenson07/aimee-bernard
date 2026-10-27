@@ -6,6 +6,7 @@ export const CONTENT_ITEM_FIELDS = `
   kind,
   venue,
   date,
+  alsoShown,
   url,
   "firstLinkUrl": links[0].url,
   links[]{_key, label, url},

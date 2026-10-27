@@ -40,7 +40,20 @@ const CATEGORIES: Record<string, { slug: string }> = {
   "Community Outreach": { slug: "community-outreach" },
 };
 
-const items = source.map((item) => {
+// Books box (above the filter): every Book, plus Educational Content marked "also show in Books".
+const isBook = (i: WorkItem) => i.kind === "book" || (i.kind === "educational-content" && i.alsoShown);
+const books = source.filter(isBook).map((i) => ({
+  title: i.title ?? "",
+  meta: [i.venue, i.date].filter(Boolean).join(" · ") || null,
+  description: i.description ?? null,
+  href: i.url ?? i.fileUrl ?? null,
+}));
+// The grid below: a Book shows there (as Educational Content) only when marked "also show in Educational Content".
+const gridSource = source
+  .filter((i) => i.kind !== "book" || i.alsoShown)
+  .map((i) => (i.kind === "book" ? { ...i, kind: "educational-content" } : i));
+
+const items = gridSource.map((item) => {
   const cat = item.category ? CATEGORIES[item.category] : undefined;
   const href = item.url ?? item.fileUrl ?? null;
   return {
@@ -71,6 +84,25 @@ const counts = items.reduce<Record<string, number>>((acc, i) => ((acc[i.kind] = 
     <h1 class="display">Work</h1>
     <p>Talks, courses, publications, positions, press, and more. Pick a type to narrow it down.</p>
   </div>
+
+  {books.length > 0 && (
+    <section class="books-box" aria-label="Books">
+      <h2 class="books-box__title">Books</h2>
+      <div class="books-box__row">
+        {books.map((b) => {
+          const Tag = b.href ? "a" : "div";
+          return (
+            <Tag class="book-card" href={b.href ?? undefined} target={b.href ? "_blank" : undefined} rel={b.href ? "noopener" : undefined}>
+              <h3 class="book-card__title">{b.title}</h3>
+              {b.meta && <p class="book-card__meta">{b.meta}</p>}
+              {b.description && <p class="book-card__text">{b.description}</p>}
+              {b.href && <span class="book-card__link">View book &rarr;</span>}
+            </Tag>
+          );
+        })}
+      </div>
+    </section>
+  )}
 
   <div class="work-filters">
     <div class="filter-row">

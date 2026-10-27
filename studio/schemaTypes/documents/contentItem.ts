@@ -7,6 +7,7 @@ const KIND_OPTIONS = [
   { title: "Press Mentions", value: "press-mentions" },
   { title: "Article", value: "article" },
   { title: "Educational Content", value: "educational-content" },
+  { title: "Book", value: "book" },
   { title: "Position", value: "position" },
   { title: "Course", value: "course" },
   { title: "Award", value: "award" },
@@ -33,6 +34,15 @@ export const contentItem = defineType({
       type: "string",
       options: { list: KIND_OPTIONS },
       validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: "alsoShown",
+      title: "Also show in the other list",
+      description:
+        "For Educational Content: also show this in the Books box. For a Book: also show it in Educational Content.",
+      type: "boolean",
+      initialValue: false,
+      hidden: ({ document }) => document?.kind !== "educational-content" && document?.kind !== "book",
     }),
     defineField({
       name: "awardGroup",

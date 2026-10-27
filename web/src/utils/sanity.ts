@@ -17,7 +17,7 @@ export async function getRecentDocuments() {
 }
 
 const WORK_ITEMS_QUERY = defineQuery(`*[_type == "contentItem" && defined(kind)] | order(_createdAt asc){
-  _id, title, kind, venue, date, "url": coalesce(url, links[0].url), "fileUrl": file.asset->url, "image": image.asset->url, "category": category->name
+  _id, title, kind, venue, date, alsoShown, description, "url": coalesce(url, links[0].url), "fileUrl": file.asset->url, "image": image.asset->url, "category": category->name
 }`);
 
 export type WorkItem = {
@@ -26,6 +26,9 @@ export type WorkItem = {
   kind: string | null;
   venue: string | null;
   date: string | null;
+  /** Educational Content / Book only: also show in the other list. */
+  alsoShown?: boolean | null;
+  description?: string | null;
   url: string | null;
   fileUrl: string | null;
   /** Optional hover image from the dashboard. */

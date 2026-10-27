@@ -264,6 +264,7 @@ export async function updateContentItem(
   const kind = formData.get("kind");
   const venue = formData.get("venue");
   const date = formData.get("date");
+  const alsoShown = formData.get("alsoShown");
   const url = formData.get("url");
   const file = formData.get("file");
   const body = formData.get("body");
@@ -300,6 +301,13 @@ export async function updateContentItem(
   }
   if (typeof kind === "string" && kind) {
     set.kind = kind;
+    /* "Also show in the other list" only means something for Educational
+       Content and Books; clear it for any other kind or when unchecked. */
+    if ((kind === "educational-content" || kind === "book") && alsoShown === "on") {
+      set.alsoShown = true;
+    } else {
+      unset.push("alsoShown");
+    }
   }
   if (typeof venue === "string") {
     if (venue.trim()) set.venue = venue.trim();

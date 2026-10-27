@@ -24,6 +24,7 @@ export const KIND_OPTIONS = [
   { title: "Press Mentions", value: "press-mentions" },
   { title: "Article", value: "article" },
   { title: "Educational Content", value: "educational-content" },
+  { title: "Book", value: "book" },
   { title: "Position", value: "position" },
   { title: "Course", value: "course" },
   { title: "Award", value: "award" },
@@ -46,6 +47,7 @@ export interface ContentItem {
   kind?: string;
   venue?: string;
   date?: string;
+  alsoShown?: boolean;
   url?: string;
   firstLinkUrl?: string;
   links?: ContentLink[];

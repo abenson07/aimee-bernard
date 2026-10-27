@@ -35,6 +35,7 @@ export function ItemModal({
   const [state, formAction, pending] = useActionState(updateContentItem, undefined);
   const [replacementName, setReplacementName] = useState<string | null>(null);
   const fileRef = useRef<HTMLInputElement>(null);
+  const [kind, setKind] = useState(item.kind ?? "");
   const formRef = useRef<HTMLFormElement>(null);
   const [, startSubmit] = useTransition();
   /* The same-title warning shows until she goes back; a fresh save that finds
@@ -117,7 +118,13 @@ export function ItemModal({
 
           <label className="field">
             <span className="label">Kind</span>
-            <select name="kind" className="input" defaultValue={item.kind ?? ""} required>
+            <select
+              name="kind"
+              className="input"
+              value={kind}
+              onChange={(event) => setKind(event.target.value)}
+              required
+            >
               <option value="" disabled>
                 Choose a kind
               </option>
@@ -128,6 +135,21 @@ export function ItemModal({
               ))}
             </select>
           </label>
+
+          {(kind === "educational-content" || kind === "book") && (
+            <label className="field field-check">
+              <input
+                type="checkbox"
+                name="alsoShown"
+                defaultChecked={Boolean(item.alsoShown)}
+              />
+              <span>
+                {kind === "book"
+                  ? "Also show in Educational Content"
+                  : "Also show in the Books box"}
+              </span>
+            </label>
+          )}
 
           <label className="field">
             <span className="label">
