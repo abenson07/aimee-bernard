@@ -20,6 +20,7 @@ import { KIND_OPTIONS } from "@/lib/types";
 import { logout } from "../actions";
 import { Dashboard } from "../dashboard";
 import { ItemModal } from "../item-modal";
+import { ModalShell } from "../modal-shell";
 import {
   discardDraft,
   listPhotos,
@@ -142,6 +143,7 @@ export function Studio({
   const [selRef, setSelRef] = useState<number | null>(null);
   const [selection, setSelection] = useState<Selection | null>(null);
   const [doc, setDoc] = useState<SiteDoc | null>(null);
+  const [confirmDiscard, setConfirmDiscard] = useState(false);
   const [picker, setPicker] = useState<{
     key: string;
     initial: Photo | null;
@@ -306,7 +308,10 @@ export function Studio({
       <header className="st-titlebar">
         <AccountMenu />
         <span className="st-spacer" />
-        <span className={`st-dot ${page?.hasDraft ? "draft" : "live"}`} aria-hidden="true" />
+        <span
+          className={`st-dot ${page?.hasDraft ? "draft" : "live"}`}
+          aria-hidden="true"
+        />
         <span
           className={`st-status ${error ? "error" : ""}`}
           aria-live="polite"
@@ -318,18 +323,7 @@ export function Studio({
           type="button"
           className="st-btn ghost"
           disabled={!page?.hasDraft || pending}
-          onClick={() => {
-            if (
-              window.confirm(
-                "Throw away your unpublished changes on this page?",
-              )
-            )
-              run(
-                () => discardDraft(currentId),
-                "Changes discarded",
-                reloadFrame,
-              );
-          }}
+          onClick={() => setConfirmDiscard(true)}
         >
           Discard
         </button>
@@ -521,6 +515,41 @@ export function Studio({
             applyPhoto(pickerSlot._key, photo, focus, alt)
           }
         />
+      )}
+
+      {confirmDiscard && (
+        <ModalShell
+          title="Discard changes?"
+          subtitle={`Your unpublished changes on ${current.title} will be thrown away. The live page isn’t affected.`}
+          onClose={() => setConfirmDiscard(false)}
+        >
+          <div className="modal-foot">
+            <span />
+            <div className="modal-foot-actions">
+              <button
+                type="button"
+                className="st-btn ghost"
+                onClick={() => setConfirmDiscard(false)}
+              >
+                Keep editing
+              </button>
+              <button
+                type="button"
+                className="st-btn primary"
+                onClick={() => {
+                  setConfirmDiscard(false);
+                  run(
+                    () => discardDraft(currentId),
+                    "Changes discarded",
+                    reloadFrame,
+                  );
+                }}
+              >
+                Discard
+              </button>
+            </div>
+          </div>
+        </ModalShell>
       )}
 
       {doc?.type === "contentItem" && (
