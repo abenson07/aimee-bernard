@@ -21,7 +21,11 @@ export function PhotoPicker({
 }) {
   const [photos, setPhotos] = useState<Photo[] | null>(null);
   const [chosen, setChosen] = useState<Photo | null>(initial);
-  const [focus, setFocus] = useState(initial ? { x: 0.5, y: 0.5 } : { x: slot.image?.hotspot?.x ?? 0.5, y: slot.image?.hotspot?.y ?? 0.5 });
+  const [focus, setFocus] = useState(
+    initial
+      ? { x: 0.5, y: 0.5 }
+      : { x: slot.image?.hotspot?.x ?? 0.5, y: slot.image?.hotspot?.y ?? 0.5 },
+  );
   const [alt, setAlt] = useState(slot.alt ?? "");
   const [err, setErr] = useState("");
   const [busy, setBusy] = useState(false);
@@ -49,27 +53,53 @@ export function PhotoPicker({
       <div className="modal-body">
         {chosen ? (
           <div>
-            <p className="mb-2 text-sm">Click the most important part of the photo. That spot stays in view when the page crops it.</p>
+            <p className="mb-2 text-sm">
+              Click the most important part of the photo. That spot stays in
+              view when the page crops it.
+            </p>
             <div
               className="relative mx-auto max-w-[640px] cursor-crosshair overflow-hidden rounded-lg"
               onClick={(e) => {
                 const r = e.currentTarget.getBoundingClientRect();
-                setFocus({ x: (e.clientX - r.left) / r.width, y: (e.clientY - r.top) / r.height });
+                setFocus({
+                  x: (e.clientX - r.left) / r.width,
+                  y: (e.clientY - r.top) / r.height,
+                });
               }}
             >
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={thumb(chosen.url, 900)} alt="" className="block w-full" draggable={false} />
-              <span className="pointer-events-none absolute h-8 w-8 -translate-x-1/2 -translate-y-1/2 rounded-full border-4 border-white shadow-[0_0_0_2px_rgba(0,0,0,.5)]" style={{ left: `${focus.x * 100}%`, top: `${focus.y * 100}%` }} />
+              <img
+                src={thumb(chosen.url, 900)}
+                alt=""
+                className="block w-full"
+                draggable={false}
+              />
+              <span
+                className="pointer-events-none absolute h-8 w-8 -translate-x-1/2 -translate-y-1/2 rounded-full border-4 border-white shadow-[0_0_0_2px_rgba(0,0,0,.5)]"
+                style={{ left: `${focus.x * 100}%`, top: `${focus.y * 100}%` }}
+              />
             </div>
             <label className="mt-3 block text-sm">
               Describe the photo (read aloud to people who can’t see it)
-              <input value={alt} onChange={(e) => setAlt(e.target.value)} className="mt-1 w-full rounded-lg border border-neutral-300 p-2" />
+              <input
+                value={alt}
+                onChange={(e) => setAlt(e.target.value)}
+                className="mt-1 w-full rounded-lg border border-neutral-300 p-2"
+              />
             </label>
             <div className="mt-4 flex gap-3">
-              <button type="button" className="btn-primary" onClick={() => onUse(chosen, focus, alt)}>
+              <button
+                type="button"
+                className="btn-primary"
+                onClick={() => onUse(chosen, focus, alt)}
+              >
                 Use this photo
               </button>
-              <button type="button" className="btn-secondary" onClick={() => setChosen(null)}>
+              <button
+                type="button"
+                className="btn-secondary"
+                onClick={() => setChosen(null)}
+              >
                 Back
               </button>
             </div>
@@ -78,19 +108,40 @@ export function PhotoPicker({
           <div>
             <label className="btn-secondary inline-block cursor-pointer">
               {busy ? "Uploading…" : "Upload a new photo"}
-              <input type="file" accept="image/*" className="hidden" disabled={busy} onChange={(e) => upload(e.target.files?.[0])} />
+              <input
+                type="file"
+                accept="image/*"
+                className="hidden"
+                disabled={busy}
+                onChange={(e) => upload(e.target.files?.[0])}
+              />
             </label>
             {err && <p className="mt-2 text-sm text-red-700">{err}</p>}
-            <h3 className="mb-2 mt-5 text-sm font-semibold">Photos you’ve already uploaded</h3>
+            <h3 className="mb-2 mt-5 text-sm font-semibold">
+              Photos you’ve already uploaded
+            </h3>
             {!photos ? (
               <p className="text-sm">Loading…</p>
             ) : (
               <ul className="grid grid-cols-3 gap-2 sm:grid-cols-4">
                 {photos.map((p) => (
                   <li key={p.id}>
-                    <button type="button" className="block w-full overflow-hidden rounded-lg border border-neutral-200 hover:border-blue-500" title={p.name} onClick={() => { setChosen(p); setFocus({ x: 0.5, y: 0.5 }); }}>
+                    <button
+                      type="button"
+                      className="block w-full overflow-hidden rounded-lg border border-neutral-200 hover:border-blue-500"
+                      title={p.name}
+                      onClick={() => {
+                        setChosen(p);
+                        setFocus({ x: 0.5, y: 0.5 });
+                      }}
+                    >
                       {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img src={thumb(p.url, 240)} alt={p.name} loading="lazy" className="aspect-square w-full object-cover" />
+                      <img
+                        src={thumb(p.url, 240)}
+                        alt={p.name}
+                        loading="lazy"
+                        className="aspect-square w-full object-cover"
+                      />
                     </button>
                   </li>
                 ))}

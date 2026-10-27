@@ -70,49 +70,6 @@
   const sectionName = (s) => (s ? s.getAttribute('aria-label') || s.dataset.seSection : 'Page');
   const keyOf = (el) => (el.dataset.edit || '').split(':')[1] || '';
   const textOf = (el) => el.innerText.replace(/\s+\n/g, '\n').trim();
-  const preview = (el) => {
-    const kind = kindOf(el);
-    if (kind === 'image') return (el.querySelector('img') || {}).alt || '';
-    return textOf(el).replace(/\s+/g, ' ').slice(0, 70);
-  };
-
-  /* ---- The list of editable things, for the Navigator ---- */
-  let items = [];
-  const scan = () => {
-    // Logo strips repeat each logo to loop; only the first copy is listed.
-    const seen = new Set();
-    items = [...document.querySelectorAll(PICK)].filter((el) => {
-      if (el.closest('#se-layer')) return false;
-      const id = el.dataset.edit || `doc:${el.dataset.doc}`;
-      if (!el.dataset.edit && !el.dataset.doc) return false;
-      if (seen.has(id)) return false;
-      seen.add(id);
-      return true;
-    });
-    const groups = [];
-    const bySection = new Map();
-    items.forEach((el, ref) => {
-      el.dataset.seRef = String(ref);
-      const s = sectionOf(el);
-      if (!bySection.has(s)) {
-        const g = { name: sectionName(s), items: [] };
-        bySection.set(s, g);
-        groups.push(g);
-      }
-      bySection.get(s).items.push({ ref, kind: kindOf(el), name: nameOf(el), text: preview(el), key: keyOf(el) });
-    });
-    send({ type: 'structure', sections: groups });
-  };
-  let scanTimer = 0;
-  let lastCount = -1;
-  new MutationObserver(() => {
-    clearTimeout(scanTimer);
-    scanTimer = setTimeout(() => {
-      // Server islands (awards, press, courses) arrive after the page; rescan when they do.
-      const count = document.querySelectorAll(PICK).length;
-      if (count !== lastCount) { lastCount = count; scan(); }
-    }, 250);
-  }).observe(document.body, { childList: true, subtree: true });
 
   /* ---- Hover and selection boxes ---- */
   let hovered = null;
@@ -140,17 +97,12 @@
   requestAnimationFrame(tick);
 
   document.addEventListener('mouseover', (e) => {
-    const el = e.target.closest && e.target.closest(PICK);
-    if (el !== hovered) {
-      hovered = el;
-      send({ type: 'hover', ref: el ? Number(el.dataset.seRef) : null });
-    }
+    hovered = (e.target.closest && e.target.closest(PICK)) || null;
   });
-  document.addEventListener('mouseleave', () => { hovered = null; send({ type: 'hover', ref: null }); });
+  document.addEventListener('mouseleave', () => { hovered = null; });
 
   const selectMsg = (el) => ({
     type: 'select',
-    ref: Number(el.dataset.seRef),
     key: keyOf(el),
     kind: kindOf(el) === 'image' ? 'image' : 'text',
     name: nameOf(el),
@@ -160,7 +112,7 @@
     alt: (el.querySelector('img') || {}).alt || '',
     extras: (el.dataset.editExtra || '').split(' ').filter(Boolean),
   });
-  const docMsg = (el) => ({ type: 'doc', ref: Number(el.dataset.seRef), id: el.dataset.doc, docType: el.dataset.docType, label: el.dataset.docLabel });
+  const docMsg = (el) => ({ type: 'doc', id: el.dataset.doc, docType: el.dataset.docType, label: el.dataset.docLabel });
 
   const choose = (el) => {
     selected = el;
@@ -195,9 +147,17 @@
   };
 
   // Links and buttons stay put while editing, so the page never navigates or opens a panel.
+  // The editor itself opens a course tile's sheet (see 'open-panel' below); `allow` lets that click through.
+  let allow = false;
   document.addEventListener('click', (e) => {
+    if (allow) return;
     const target = e.target.closest ? e.target : e.target.parentElement;
     const el = target.closest(PICK);
+    // Inside an open course sheet, its own buttons (close) work as normal; its links stay blocked.
+    if (!el && target.closest('.cpanel')) {
+      if (target.closest('a')) e.preventDefault();
+      return;
+    }
     if (target.closest('a, button') || el) { e.preventDefault(); e.stopPropagation(); }
     if (el && el.hasAttribute('contenteditable')) return;
     choose(el);
@@ -210,21 +170,20 @@
 
   /* ---- Messages from the editor ---- */
   const byKey = (key) => document.querySelector(`[data-edit$=":${CSS.escape(key)}"]`);
-  const byRef = (ref) => items[Number(ref)];
 
   window.addEventListener('message', (e) => {
     if (e.origin !== ORIGIN || !e.data || e.data.source !== 'site-editor-parent') return;
     const d = e.data;
     if (d.type === 'scroll-to') window.scrollTo(0, Number(d.y) || 0);
-    // Picked in the Navigator: show it and select it (text is then edited in the side panel).
-    if (d.type === 'select-ref') {
-      const el = byRef(d.ref);
-      if (!el) return;
-      el.scrollIntoView({ block: 'center', behavior: 'smooth' });
-      choose(el);
-    }
-    if (d.type === 'hover-ref') hovered = d.ref === null ? null : byRef(d.ref) || null;
     if (d.type === 'deselect') selected = null;
+    // Show a course tile's sheet (the panel that opens from the tile) so it can be looked at and its courses picked.
+    if (d.type === 'open-panel') {
+      const tile = document.querySelector(`.ctile[data-doc="${CSS.escape(String(d.id))}"]`);
+      if (tile) {
+        selected = null; // its outline would float over the sheet
+        allow = true; try { tile.click(); } finally { allow = false; }
+      }
+    }
     const el = d.key && byKey(d.key);
     if (!el) return;
     if (d.type === 'focus') {
@@ -251,7 +210,5 @@
   let scrollTimer = 0;
   window.addEventListener('scroll', () => { clearTimeout(scrollTimer); scrollTimer = setTimeout(() => send({ type: 'scroll', y: window.scrollY }), 150); }, { passive: true });
 
-  lastCount = document.querySelectorAll(PICK).length;
-  scan();
   send({ type: 'ready' });
 })();

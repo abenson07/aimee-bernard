@@ -9,6 +9,7 @@ import { useRouter } from "next/navigation";
 import {
   useCallback,
   useEffect,
+  useId,
   useMemo,
   useRef,
   useState,
@@ -41,7 +42,6 @@ import {
   AssetManagerIcon,
   CheckIcon,
   ChevronDownIcon,
-  ChevronRightIcon,
   CmsIcon,
   CollectionIcon,
   DesktopIcon,
@@ -49,9 +49,8 @@ import {
   ElementH2Icon,
   ElementImageIcon,
   ElementPIcon,
-  ElementSectionIcon,
   ExternalIcon,
-  NavigatorIcon,
+  InfoIcon,
   PagePanelIcon,
   PhoneIcon,
   TabletIcon,
@@ -61,17 +60,8 @@ import {
 import { PhotoPicker, thumb } from "./photo-picker";
 
 type PageTab = { id: string; title: string; slug: string; path: string };
-type NavItem = {
-  ref: number;
-  kind: "text" | "image" | "doc";
-  name: string;
-  text: string;
-  key: string;
-};
-type NavSection = { name: string; items: NavItem[] };
-/** What is selected on the page (text or a photo; Sanity items open a window instead). */
+/** What is selected on the page (text or a photo; Sanity items show their own form instead). */
 type Selection = {
-  ref: number;
   key: string;
   kind: "text" | "image";
   name: string;
@@ -81,7 +71,7 @@ type Selection = {
   alt: string;
   extras: string[];
 };
-type RailTab = "pages" | "navigator" | "content" | "photos";
+type RailTab = "pages" | "content" | "photos";
 
 const RAIL: {
   id: RailTab;
@@ -89,7 +79,6 @@ const RAIL: {
   Icon: (p: { size?: number }) => ReactNode;
 }[] = [
   { id: "pages", title: "Pages", Icon: PagePanelIcon },
-  { id: "navigator", title: "Navigator", Icon: NavigatorIcon },
   { id: "content", title: "Content log", Icon: CmsIcon },
   { id: "photos", title: "Photos", Icon: AssetManagerIcon },
 ];
@@ -135,12 +124,9 @@ export function Studio({
   const [status, setStatus] = useState("");
   const [error, setError] = useState("");
   const [pending, startTransition] = useTransition();
-  const [tab, setTab] = useState<RailTab | null>("navigator");
+  const [tab, setTab] = useState<RailTab | null>(null);
   const [contentKind, setContentKind] = useState<string | null>(null);
   const [device, setDevice] = useState<Device>("desktop");
-  const [sections, setSections] = useState<NavSection[]>([]);
-  const [hoverRef, setHoverRef] = useState<number | null>(null);
-  const [selRef, setSelRef] = useState<number | null>(null);
   const [selection, setSelection] = useState<Selection | null>(null);
   const [doc, setDoc] = useState<SiteDoc | null>(null);
   const [confirmDiscard, setConfirmDiscard] = useState(false);
@@ -165,7 +151,7 @@ export function Studio({
   /** Reload the page in the frame (it comes back at the same scroll position). */
   const reloadFrame = useCallback(() => {
     setSelection(null);
-    setSelRef(null);
+    setDoc(null);
     setFrameKey((n) => n + 1);
   }, []);
 
@@ -209,14 +195,9 @@ export function Studio({
       const d = e.data;
       if (d.type === "ready") post({ type: "scroll-to", y: scrollY.current });
       if (d.type === "scroll") scrollY.current = Number(d.y) || 0;
-      if (d.type === "structure" && Array.isArray(d.sections))
-        setSections(d.sections);
-      if (d.type === "hover")
-        setHoverRef(typeof d.ref === "number" ? d.ref : null);
       if (d.type === "select") {
-        setSelRef(d.ref);
+        setDoc(null);
         setSelection({
-          ref: d.ref,
           key: String(d.key),
           kind: d.kind === "image" ? "image" : "text",
           name: String(d.name ?? ""),
@@ -228,8 +209,8 @@ export function Studio({
         });
       }
       if (d.type === "deselect") {
-        setSelRef(null);
         setSelection(null);
+        setDoc(null);
       }
       if (d.type === "typing")
         setSelection((s) =>
@@ -238,7 +219,6 @@ export function Studio({
       if (d.type === "text")
         commitText(String(d.key), String(d.value ?? ""), String(d.label ?? ""));
       if (d.type === "doc") {
-        setSelRef(d.ref);
         setSelection(null);
         setError("");
         loadDoc(String(d.id), String(d.docType)).then((loaded) =>
@@ -266,11 +246,21 @@ export function Studio({
       })
     : null;
 
-  const closeDoc = () => {
+  // Closing the panel just deselects. After a save the page is reloaded to show the saved version.
+  const closeDoc = useCallback(() => {
     setDoc(null);
-    reloadFrame(); // the lists come from the content log, so show the saved version
+    post({ type: "deselect" });
+  }, [post]);
+  const docSaved = useCallback(() => {
+    reloadFrame();
     router.refresh();
-  };
+  }, [reloadFrame, router]);
+
+  // Names a photo that isn't in the page's slot list yet (it gets added on first save).
+  const photoLabel = (key: string) =>
+    selection && selection.key === key
+      ? `${selection.section} · ${selection.name}`
+      : "";
 
   const applyPhoto = (
     key: string,
@@ -281,7 +271,7 @@ export function Studio({
     setPicker(null);
     const onPage = selection?.key === key; // its own photo; a hover photo isn't on the page until hovered
     run(
-      () => savePhoto(currentId, key, photo.id, focus, alt),
+      () => savePhoto(currentId, key, photo.id, focus, alt, photoLabel(key)),
       "Saved to your draft",
       () => {
         if (!onPage) return reloadFrame();
@@ -367,15 +357,6 @@ export function Studio({
           >
             {tab === "pages" && (
               <PagesPanel pages={pages} currentId={currentId} />
-            )}
-            {tab === "navigator" && (
-              <NavigatorPanel
-                sections={sections}
-                selRef={selRef}
-                hoverRef={hoverRef}
-                onHover={(ref) => post({ type: "hover-ref", ref })}
-                onPick={(ref) => post({ type: "select-ref", ref })}
-              />
             )}
             {tab === "content" && (
               <ContentPanel
@@ -465,7 +446,57 @@ export function Studio({
         {/* Inspector */}
         {!showingContent && (
           <aside className="st-panel right" aria-label="Selected item">
-            {selection ? (
+            {doc ? (
+              <div className="st-panel-body st-doc">
+                {doc.type === "contentItem" && (
+                  <ItemModal
+                    key={doc.item._id}
+                    inline
+                    item={doc.item}
+                    categories={categories}
+                    categorizationEnabled={categorizationEnabled}
+                    onClose={closeDoc}
+                    onSaved={docSaved}
+                  />
+                )}
+                {doc.type === "courseGroup" && (
+                  <>
+                    <div className="st-doc-open">
+                      <button
+                        type="button"
+                        className="st-btn block"
+                        onClick={() => post({ type: "open-panel", id: doc.id })}
+                      >
+                        Show this tile’s panel on the page
+                      </button>
+                      <p className="st-hint">
+                        Opens the sheet that slides up from the tile. Click a
+                        course inside it to edit that course here.
+                      </p>
+                    </div>
+                    <CourseGroupModal
+                      key={doc.id}
+                      inline
+                      id={doc.id}
+                      initial={doc.fields}
+                      onClose={closeDoc}
+                      onSaved={docSaved}
+                    />
+                  </>
+                )}
+                {doc.type === "publication" && (
+                  <PublicationModal
+                    key={doc.id}
+                    inline
+                    id={doc.id}
+                    logo={doc.logo}
+                    initial={doc.fields}
+                    onClose={closeDoc}
+                    onSaved={docSaved}
+                  />
+                )}
+              </div>
+            ) : selection ? (
               <Inspector
                 key={selection.key}
                 selection={selection}
@@ -477,7 +508,7 @@ export function Studio({
                 onPhoto={(key) => setPicker({ key, initial: null })}
                 onAlt={(key, alt) =>
                   run(
-                    () => saveAlt(currentId, key, alt),
+                    () => saveAlt(currentId, key, alt, photoLabel(key)),
                     "Saved to your draft",
                     () => {
                       if (key === selection.key)
@@ -497,7 +528,7 @@ export function Studio({
                 </p>
                 <p>
                   <span className="st-swatch purple" /> Awards, press, courses
-                  and logos come from your content log. They open in a window
+                  and logos come from your content log. Their details open here
                   and save straight away.
                 </p>
               </div>
@@ -550,26 +581,6 @@ export function Studio({
             </div>
           </div>
         </ModalShell>
-      )}
-
-      {doc?.type === "contentItem" && (
-        <ItemModal
-          item={doc.item}
-          categories={categories}
-          categorizationEnabled={categorizationEnabled}
-          onClose={closeDoc}
-        />
-      )}
-      {doc?.type === "courseGroup" && (
-        <CourseGroupModal id={doc.id} initial={doc.fields} onClose={closeDoc} />
-      )}
-      {doc?.type === "publication" && (
-        <PublicationModal
-          id={doc.id}
-          logo={doc.logo}
-          initial={doc.fields}
-          onClose={closeDoc}
-        />
       )}
     </div>
   );
@@ -717,92 +728,6 @@ function PagesPanel({
         <p className="st-panel-note">
           More pages (Communicator, Immunologist, Contact) come next.
         </p>
-      </div>
-    </>
-  );
-}
-
-function NavigatorPanel({
-  sections,
-  selRef,
-  hoverRef,
-  onHover,
-  onPick,
-}: {
-  sections: NavSection[];
-  selRef: number | null;
-  hoverRef: number | null;
-  onHover: (ref: number | null) => void;
-  onPick: (ref: number) => void;
-}) {
-  const [closed, setClosed] = useState<Set<string>>(new Set());
-  const rowRefs = useRef(new Map<number, HTMLButtonElement>());
-  // Keep the selected row in view when something is clicked on the page.
-  useEffect(() => {
-    if (selRef !== null)
-      rowRefs.current.get(selRef)?.scrollIntoView({ block: "nearest" });
-  }, [selRef]);
-
-  if (!sections.length) {
-    return (
-      <>
-        <PanelHeader title="Navigator" />
-        <p className="st-panel-note">Loading the page…</p>
-      </>
-    );
-  }
-  return (
-    <>
-      <PanelHeader title="Navigator" />
-      <div className="st-panel-body" onMouseLeave={() => onHover(null)}>
-        {sections.map((s, i) => {
-          const isClosed = closed.has(s.name);
-          return (
-            <div key={`${s.name}-${i}`}>
-              <button
-                type="button"
-                className="st-row section"
-                aria-expanded={!isClosed}
-                onClick={() =>
-                  setClosed((c) => {
-                    const next = new Set(c);
-                    if (next.has(s.name)) next.delete(s.name);
-                    else next.add(s.name);
-                    return next;
-                  })
-                }
-              >
-                <span className={`st-caret ${isClosed ? "" : "open"}`}>
-                  <ChevronRightIcon size={11} />
-                </span>
-                <span className="st-row-icon">
-                  <ElementSectionIcon size={14} />
-                </span>
-                <span className="st-row-label">{s.name}</span>
-                <span className="st-row-meta">{s.items.length}</span>
-              </button>
-              {!isClosed &&
-                s.items.map((item) => (
-                  <button
-                    key={item.ref}
-                    ref={(el) => {
-                      if (el) rowRefs.current.set(item.ref, el);
-                      else rowRefs.current.delete(item.ref);
-                    }}
-                    type="button"
-                    className={`st-row child ${item.kind === "doc" ? "is-doc" : ""} ${selRef === item.ref ? "selected" : ""} ${hoverRef === item.ref ? "hovered" : ""}`}
-                    title={item.text}
-                    onMouseEnter={() => onHover(item.ref)}
-                    onClick={() => onPick(item.ref)}
-                  >
-                    <span className="st-row-icon">{itemIcon(item)}</span>
-                    <span className="st-row-label">{item.name}</span>
-                    <span className="st-row-text">{item.text}</span>
-                  </button>
-                ))}
-            </div>
-          );
-        })}
       </div>
     </>
   );
@@ -1077,6 +1002,26 @@ function TextField({
   );
 }
 
+/** A small "i" that explains a field on hover or keyboard focus. */
+function InfoTip({ children }: { children: ReactNode }) {
+  const id = useId();
+  return (
+    <span className="st-info">
+      <button
+        type="button"
+        className="st-info-btn"
+        aria-label="Why is this needed?"
+        aria-describedby={id}
+      >
+        <InfoIcon size={12} />
+      </button>
+      <span role="tooltip" id={id} className="st-info-tip">
+        {children}
+      </span>
+    </span>
+  );
+}
+
 function PhotoFields({
   src,
   alt,
@@ -1093,23 +1038,27 @@ function PhotoFields({
     <>
       <div className="st-field">
         <FieldLabel icon={<ElementImageIcon size={11} />}>Photo</FieldLabel>
-        <button
-          type="button"
-          className="st-photo-preview"
-          onClick={onChange}
-          title="Change photo"
-        >
+        <div className="st-photo-preview">
           {src ? (
             // eslint-disable-next-line @next/next/no-img-element
             <img src={src} alt="" />
           ) : (
             <span />
           )}
-          <span className="st-photo-change">Change photo</span>
+        </div>
+        <button type="button" className="st-btn block" onClick={onChange}>
+          Change photo
         </button>
       </div>
       <div className="st-field">
-        <FieldLabel icon={<TextIcon size={11} />}>Description</FieldLabel>
+        <FieldLabel icon={<TextIcon size={11} />}>
+          Description
+          <InfoTip>
+            A short sentence saying what’s in the photo. Screen readers read it
+            aloud for people who can’t see the photo, it shows if the photo
+            fails to load, and search engines use it to understand the page.
+          </InfoTip>
+        </FieldLabel>
         <textarea
           className="st-input"
           rows={2}

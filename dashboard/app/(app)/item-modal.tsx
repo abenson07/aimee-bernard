@@ -19,11 +19,17 @@ export function ItemModal({
   categories,
   categorizationEnabled,
   onClose,
+  onSaved,
+  inline = false,
 }: {
   item: ContentItem;
   categories: Category[];
   categorizationEnabled: boolean;
   onClose: () => void;
+  /** Called after a save or delete went through, just before onClose. */
+  onSaved?: () => void;
+  /** Sit in a side panel instead of floating over the page. */
+  inline?: boolean;
 }) {
   const [state, formAction, pending] = useActionState(updateContentItem, undefined);
   const [replacementName, setReplacementName] = useState<string | null>(null);
@@ -48,8 +54,11 @@ export function ItemModal({
   const [isDeleting, startDelete] = useTransition();
 
   useEffect(() => {
-    if (state?.ok) onClose();
-  }, [state, onClose]);
+    if (state?.ok) {
+      onSaved?.();
+      onClose();
+    }
+  }, [state, onClose, onSaved]);
 
   const handleDelete = () => {
     startDelete(async () => {
@@ -57,6 +66,7 @@ export function ItemModal({
       if (result?.error) {
         setDeleteError(result.error);
       } else {
+        onSaved?.();
         onClose();
       }
     });
@@ -67,6 +77,7 @@ export function ItemModal({
       title={item.title}
       subtitle={itemContext(item) || "Edit how this is filed."}
       onClose={onClose}
+      inline={inline}
     >
       <form action={formAction}>
         <input type="hidden" name="id" value={item._id} />
