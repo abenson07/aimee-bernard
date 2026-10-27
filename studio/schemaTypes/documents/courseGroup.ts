@@ -66,6 +66,13 @@ export const courseGroup = defineType({
             defineField({ name: "description", title: "Description", type: "text", rows: 2 }),
             defineField({ name: "linkUrl", title: "Course details link", type: "url" }),
             defineField({
+              name: "topics",
+              title: "Topics",
+              description: "Optional. A short list shown on the right of this section, for when the section is a topic group rather than a course. Leave empty if you pick courses below.",
+              type: "array",
+              of: [defineArrayMember({ type: "string" })],
+            }),
+            defineField({
               name: "courses",
               title: "Courses",
               type: "array",

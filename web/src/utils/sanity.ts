@@ -179,6 +179,7 @@ export type CourseYear = {
   label: string | null;
   description: string | null;
   linkUrl: string | null;
+  topics: string[] | null;
   courses: { _id: string; title: string | null; topics: string[] | null }[];
 };
 
@@ -202,7 +203,7 @@ export async function getCourseGroups(): Promise<CourseGroup[]> {
     return await sanityClient.fetch(`*[_type == "courseGroup"] | order(order asc){
       _id, name, icon, tileMeta, pill, dates, intro, body, tags,
       "image": image.asset->url,
-      "years": years[]{ label, description, linkUrl, "courses": courses[]->{ _id, title, topics } }
+      "years": years[]{ label, description, linkUrl, topics, "courses": courses[]->{ _id, title, topics } }
     }`);
   } catch (err) {
     console.warn("Sanity read failed for the course groups.", err);
