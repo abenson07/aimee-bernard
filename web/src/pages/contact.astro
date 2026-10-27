@@ -4,8 +4,9 @@ import SiteHeader from "@/components/SiteHeader.astro";
 import "@/styles/site/shared.css";
 import "@/styles/site/contact.css";
 
-// Web3Forms access key (public by design; Aimee gets hers at web3forms.com). Set PUBLIC_WEB3FORMS_KEY.
-const web3formsKey = import.meta.env.PUBLIC_WEB3FORMS_KEY ?? "";
+// Web3Forms access key for aepbernard@gmail.com. Public by design (Web3Forms puts it in page HTML), so it
+// is safe in the code. PUBLIC_WEB3FORMS_KEY overrides it if she ever creates a new one.
+const web3formsKey = import.meta.env.PUBLIC_WEB3FORMS_KEY || "ded050fd-7fe3-4956-84f1-bb9ab855ab0b";
 ---
 
 <SiteLayout title="Contact">
