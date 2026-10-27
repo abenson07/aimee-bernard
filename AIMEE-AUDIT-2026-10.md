@@ -318,19 +318,19 @@ Answer: SUBSTACK BOX (Alex, 10/27). Built at the bottom of Immunologist: dark bo
 Answer: TILES ONLY (Alex, 10/27). Built: Talks, Courses, Positions, Awards, Publications, Articles, Podcasts, Press, Educational Content, Socials.
 
 **Q35. Missing talk links.** I will list every talk without a link. Who finds the links, Aimee in the dashboard or me?
-Answer:
+Answer: B, AIMEE ADDS THE LINKS HERSELF (Alex, 10/27), which depends on Q39. List of the 6 talks without a link: Toronto Mississauga (Mar 2024), CU Denver Biology Club, Immunize for Good (Jul 2024), FRCC biology students, DMRSEF science fair, CO Vaccine Equity Taskforce.
 
 **Q36. Which "Your Shot at Protection" talk to keep.** She says keep "September 2023 Immunize Colorado". Sanity has September 2023 at "CU Alumni 'Healthy & Happy Hour'" (YouTube link) and January 2022 at Tattered Cover. Neither is Immunize Colorado. Keep the September 2023 one and change its venue to Immunize Colorado, or is the Immunize Colorado talk missing from the data?
-Answer:
+Answer: KEEP THE ONE WITH THE VIDEO (Alex, 10/27): September 2023, CU Alumni, YouTube. Done in Sanity: January 2022 Tattered Cover item (`contentItem-talk-015`) deleted, its related-item link on the kept talk removed; backups in `audit-review/sanity-backup-talk-015-*.json` and `-019-*.json`. Title still reads "How Vaccines Train…" (hers says "Work with"); not changed. TELL AIMEE the venue is CU Alumni, not Immunize Colorado.
 
 **Q37. Research Day Keynote.** I could not find the item she wants removed (the one titled "Research Day Keynote Speaker"). Is it one of the Sanity talks whose venue or title says "Keynote Speaker"? To confirm before deleting.
-Answer:
+Answer: DONE EXACTLY AS SHE WROTE (Alex, 10/27). Deleted "Research Day Keynote Speaker" (`contentItem-talk-002`); kept item renamed "Research Day Keynote. From Data to Dialogue: Research Communication for the Real World". Alex then asked to bring the deleted card's venue and date over: the kept card now shows "Colorado State University, College of Health & Human Sciences" and "March 2026". Backup `audit-review/sanity-backup-research-day-*.json`.
 
 **Q38. myHub card.** Venue "University of Rochester", date "October 2025", and the University of Rochester logo top right. Does Alex have the logo file, or use the existing outlet-logo mapping?
-Answer:
+Answer: OPTION A first, then CHANGED TO B AS THE RULE FOR ALL CARDS (Alex, 10/27): every Work card now shows its venue and date from the data, with the logo added on top (one line changed in `work.astro`; about 25 cards gain a venue line). The myHub card reads "University of Rochester · October 2025" with the logo. Earlier note: OPTION A (Alex, 10/27). Done in Sanity: plain "From Data to Dialogue" (`contentItem-talk-004`) deleted; kept item retitled "myHub Career Development Retreat. From Data to Dialogue: Science Communication for the Real World", venue "University of Rochester", date "October 2025". The card shows the Rochester logo top right and "October 2025" below (the site hides the venue text when a logo is shown). Backup `audit-review/sanity-backup-myhub-*.json`. TELL AIMEE the venue shows as the logo.
 
 **Q39. Publications access.** She cannot edit entries in the dashboard. Is that the dashboard (`/dashboard`) or Sanity Studio, and does she want to edit them herself or want me to fill in journal and year? Journal and year are missing from some publications.
-Answer:
+Answer: TREATED AS AN ACCESS PROBLEM (Alex, 10/27): the dashboard item window no longer hides Title, Kind, Venue (journal), Date (year) and the link behind an "Edit details" button; they are always shown (`dashboard/app/(app)/item-modal.tsx`). Not tested in the browser (needs a login). Still hidden from her in the dashboard: start/end dates, topics, related items, uncertain. 9 of 19 publications lack a journal or year; she can now fill them in. TELL AIMEE the edit fields are now always visible. The CREATE-ive duplicate (`contentItem-research-publication-002`) is NOT deleted yet: the auto-delete was blocked and is waiting on Alex's go-ahead.
 
 **Q40. Books box.** Placement on the Work page (above the cards, next to the kind tiles, or inside the Educational Content filter), and the Parham book needs a cover photo and link (publisher page?). "My Tiny Helpers" is already there (Lupe Science).
 Answer:

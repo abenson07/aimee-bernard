@@ -51,8 +51,8 @@ const items = source.map((item) => {
     title: item.title ?? "",
     venue: item.venue,
     logo: outletLogo(item.venue, item.title),
-    // Courses keep the venue text because the detail (e.g. "Year 1") matters.
-    meta: [outletLogo(item.venue, item.title) && item.kind !== "course" ? null : item.venue, item.date].filter(Boolean).join(" · ") || null,
+    // Every card shows its venue and date when the data has them; the logo is added on top.
+    meta: [item.venue, item.date].filter(Boolean).join(" · ") || null,
     href,
     // Optional: only items with an image in the dashboard get one.
     photo: item.image ? `${item.image}?w=900&auto=format` : null,
