@@ -626,6 +626,9 @@ function AccountMenu() {
           <Link className="st-menu-item" href="/content" role="menuitem">
             Content log (full page)
           </Link>
+          <Link className="st-menu-item" href="/bot-gaps" role="menuitem">
+            Bot content gaps
+          </Link>
           <Link className="st-menu-item" href="/questionnaire" role="menuitem">
             Voice &amp; Tone Questionnaire
           </Link>

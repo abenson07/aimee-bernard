@@ -145,6 +145,7 @@ export async function createContentItem(
   }
 
   revalidatePath("/content");
+  revalidatePath("/site");
   return { ok: true };
 }
 
@@ -178,6 +179,7 @@ export async function answerQuestion(
   }
 
   revalidatePath("/content");
+  revalidatePath("/site");
   return { ok: true, key };
 }
 
@@ -222,6 +224,7 @@ export async function reviewCategory(
   }
 
   revalidatePath("/content");
+  revalidatePath("/site");
   return { ok: true, key: id };
 }
 
@@ -235,6 +238,7 @@ export async function deleteContentItem(id: string): Promise<{ error?: string } 
   }
 
   revalidatePath("/content");
+  revalidatePath("/site");
 }
 
 export async function updateContentItem(
@@ -332,6 +336,7 @@ export async function updateContentItem(
   }
 
   revalidatePath("/content");
+  revalidatePath("/site");
   return { ok: true };
 }
 
@@ -361,6 +366,7 @@ export async function updateBotContent(
   }
 
   revalidatePath("/bot-gaps");
-  revalidatePath("/");
+  revalidatePath("/content");
+  revalidatePath("/site");
   return { ok: true, key: id };
 }

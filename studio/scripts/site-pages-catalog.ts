@@ -29,7 +29,7 @@ export const PAGES: { id: string; title: string; slots: Slot[] }[] = [
       { key: "working-2-photo", label: "Working on, card 2: photo", kind: "image", file: "funsize-ig-collage-1600.webp", pos: [50, 50], alt: "" },
       { key: "working-2-name", label: "Working on, card 2: title", kind: "text", text: "Fun Size Immuninja" },
       { key: "working-2-sub", label: "Working on, card 2: line under the title", kind: "text", text: "Immunology on Instagram" },
-      { key: "working-3-photo", label: "Working on, card 3: photo", kind: "image", file: "ttp-aimee-1600.webp", pos: [50, 50], alt: "" },
+      { key: "working-3-photo", label: "Working on, card 3: photo", kind: "image", file: "ttp-teaching-1600.webp", pos: [76, 50], alt: "" },
       { key: "working-3-name", label: "Working on, card 3: title", kind: "text", text: "Teacher Training Program" },
       { key: "working-3-sub", label: "Working on, card 3: line under the title", kind: "text", text: "Mentoring PhD students and postdocs" },
       { key: "working-4-photo", label: "Working on, card 4: photo", kind: "image", file: "substack-collage-1600.webp", pos: [50, 50], alt: "" },
