@@ -9,17 +9,27 @@ import "./studio.css";
 
 export const metadata = { title: "Site editor" };
 
-type CategoryRow = Omit<Category, "pending"> & { refinementQA?: RefinementQuestion[] };
+type CategoryRow = Omit<Category, "pending"> & {
+  refinementQA?: RefinementQuestion[];
+};
 
-export default async function SitePage({ searchParams }: { searchParams: Promise<{ page?: string }> }) {
+export default async function SitePage({
+  searchParams,
+}: {
+  searchParams: Promise<{ page?: string }>;
+}) {
   const { page } = await searchParams;
-  const current = SITE_PAGES.find((p) => p.id === `site-page-${page}`) ?? SITE_PAGES[0];
+  const current =
+    SITE_PAGES.find((p) => p.id === `site-page-${page}`) ?? SITE_PAGES[0];
   const base = process.env.SITE_URL;
 
   if (!base || !process.env.SITE_PREVIEW_SECRET) {
     return (
       <main className="p-10">
-        <p>The Site editor isn’t set up yet: SITE_URL and SITE_PREVIEW_SECRET are missing from this app’s settings.</p>
+        <p>
+          The Site editor isn’t set up yet: SITE_URL and SITE_PREVIEW_SECRET are
+          missing from this app’s settings.
+        </p>
       </main>
     );
   }
@@ -27,7 +37,9 @@ export default async function SitePage({ searchParams }: { searchParams: Promise
   // The content log lives in the editor too (the Content rail tab), so its items load here as well.
   const [state, categoryRows, items] = await Promise.all([
     loadPage(current.id),
-    categorizationEnabled ? sanityClient.fetch<CategoryRow[]>(CATEGORIES_QUERY) : Promise.resolve([]),
+    categorizationEnabled
+      ? sanityClient.fetch<CategoryRow[]>(CATEGORIES_QUERY)
+      : Promise.resolve([]),
     sanityClient.fetch<ContentItem[]>(ITEMS_QUERY),
   ]);
   const categories: Category[] = categoryRows.map((row) => ({
@@ -40,7 +52,12 @@ export default async function SitePage({ searchParams }: { searchParams: Promise
   return (
     <Studio
       key={current.id}
-      pages={SITE_PAGES.map((p) => ({ id: p.id, title: p.title, slug: p.id.replace("site-page-", ""), path: p.path }))}
+      pages={SITE_PAGES.map((p) => ({
+        id: p.id,
+        title: p.title,
+        slug: p.id.replace("site-page-", ""),
+        path: p.path,
+      }))}
       currentId={current.id}
       initial={state}
       iframeBase={siteUrl(current.path, signPreviewToken())}

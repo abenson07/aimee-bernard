@@ -72,7 +72,7 @@ export async function getSitePage(id: string, request: Request) {
     /** A photo for a slot (resized Sanity URLs with a focus point), or the fallback. */
     image(key: string, fallback: SitePhoto): SitePhoto {
       const s = slots.get(key);
-      if (!s?.image?.url) return fallback;
+      if (!s?.image?.url) return s?.alt ? { ...fallback, alt: s.alt } : fallback;
       const u = s.image.url;
       const h = s.image.hotspot;
       return {

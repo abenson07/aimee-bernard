@@ -22,6 +22,7 @@ const prog2 = site.image("program-2-photo", { src: "/site/photos/cctsi-slide-swa
 const t = site.text;
 const e = site.edit;
 const bwUrl = (await getImage({ src: bwSrc, format: "webp", width: 936 })).src;
+const heroSide = site.image("hero-photo-2", { src: bwUrl, pos: "50% 50%", alt: "" });
 ---
 
 <SiteLayout title="Educator">
@@ -35,7 +36,7 @@ const bwUrl = (await getImage({ src: bwSrc, format: "webp", width: 936 })).src;
       <h1 class="display hero-split__title" {...site.edit("hero-title")}>{site.text("hero-title", "Teaching immunology so it sticks")}</h1>
       <div class="hero-split__side is-info"><p {...site.edit("hero-blurb")}>{site.text("hero-blurb", `Since 2007, Aimee has taught ${coursesTaught} courses, from first-year medical students and PhD trainees to faculty and community members.`)}</p></div>
     </div>
-    <div class="hero-split__media"><div {...site.edit("hero-photo", "image")}><img src={heroPhoto.src} srcset={heroPhoto.srcset} sizes="(max-width: 767px) 100vw, 60vw" alt={heroPhoto.alt} style={`object-position:${heroPhoto.pos}`}></div><div><img src={bwUrl} alt=""></div></div>
+    <div class="hero-split__media"><div {...site.edit("hero-photo", "image")}><img src={heroPhoto.src} srcset={heroPhoto.srcset} sizes="(max-width: 767px) 100vw, 60vw" alt={heroPhoto.alt} style={`object-position:${heroPhoto.pos}`}></div><div {...site.edit("hero-photo-2", "image")}><img src={heroSide.src} srcset={heroSide.srcset} sizes="448px" alt={heroSide.alt} style={`object-position:${heroSide.pos}`}></div></div>
   </div>
 </section>
 

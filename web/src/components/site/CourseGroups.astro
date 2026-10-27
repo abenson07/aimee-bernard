@@ -59,7 +59,7 @@ const external = (u: string) => /^https?:/.test(u);
                 </div>
                 <div class="ctl__right"><div class="ctl__lines" aria-hidden="true"></div><div class="ctl__events">
                   {(y.courses ?? []).map((c) => (
-                    <div class="ctl__event">
+                    <div class="ctl__event" data-doc={c._id} data-doc-type="contentItem" data-doc-label="Course">
                       <div class="ctl__label">{courseLabel(c.title)}</div>
                       {/* A topic that starts with "# " is a small group heading inside the list (not counted as a session). */}
                       {c.topics?.length ? <div class="ctl__topics">{c.topics.map((t) => (t.startsWith("# ") ? <p class="ctl__topic-head">{t.slice(2)}</p> : <p>{t}</p>))}</div> : null}
