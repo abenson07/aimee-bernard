@@ -18,7 +18,7 @@ export const PAGES: { id: string; title: string; slots: Slot[] }[] = [
     slots: [
       { key: "hover-educator-photo", label: "Portrait hover: Educator photo", kind: "image", file: "edu-thc-antibody-2400.webp", pos: [50, 45], alt: "Aimee presenting to an audience, a slide about B cells and antibodies behind her" },
       { key: "hover-educator-text", label: "Portrait hover: Educator speech bubble", kind: "longtext", text: "Class is in session! Aimee’s been teaching since 2007!" },
-      { key: "hover-immunologist-photo", label: "Portrait hover: Immunologist photo", kind: "image", file: "immu-lab-tubes-2400.webp", pos: [60, 40], alt: "Aimee in a lab coat holding a sample tube" },
+      { key: "hover-immunologist-photo", label: "Portrait hover: Immunologist photo", kind: "image", file: "immu-hall-smile-1200.webp", pos: [60, 35], alt: "Aimee smiling in a lab coat" },
       { key: "hover-immunologist-text", label: "Portrait hover: Immunologist speech bubble", kind: "longtext", text: "Meet a published immunologist! Aimee studied B cell development and autoimmunity for her PhD" },
       { key: "hover-communicator-photo", label: "Portrait hover: Communicator photo", kind: "image", file: "tedx-scientist-2400.webp", pos: [50, 64], alt: "Aimee on stage at TEDxCU" },
       { key: "hover-communicator-text", label: "Portrait hover: Communicator speech bubble", kind: "longtext", text: "Aimee is passionate about making all science, especially immunology, accessible for everyone!" },

@@ -20,7 +20,7 @@ site.applyCaching(Astro.response);
 const ph = (file: string, pos: string, alt = "") => ({ src: `/site/photos/${file}`, pos, alt });
 const hover = {
   educator: { photo: site.wideImage("hover-educator-photo", ph("edu-thc-antibody-2400.webp", "50% 45%")), text: site.text("hover-educator-text", "Class is in session! Aimee’s been teaching since 2007!") },
-  immunologist: { photo: site.wideImage("hover-immunologist-photo", ph("immu-lab-tubes-2400.webp", "60% 40%")), text: site.text("hover-immunologist-text", "Meet a published immunologist! Aimee studied B cell development and autoimmunity for her PhD") },
+  immunologist: { photo: site.wideImage("hover-immunologist-photo", ph("immu-hall-smile-1200.webp", "60% 35%", "Aimee smiling in a lab coat")), text: site.text("hover-immunologist-text", "Meet a published immunologist! Aimee studied B cell development and autoimmunity for her PhD") },
   communicator: { photo: site.wideImage("hover-communicator-photo", ph("tedx-scientist-2400.webp", "50% 64%")), text: site.text("hover-communicator-text", "Aimee is passionate about making all science, especially immunology, accessible for everyone!") },
 };
 const workCards = [

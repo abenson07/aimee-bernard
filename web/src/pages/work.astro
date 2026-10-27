@@ -85,43 +85,43 @@ const counts = items.reduce<Record<string, number>>((acc, i) => ((acc[i.kind] = 
         <button type="button" class="kind-tile" data-filter-value="talk" style="background:#dce3ee">
           
           <svg class="tile-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><path d="M12 19v3"/></svg>
-          <span class="tile-label">Talk</span>
+          <span class="tile-label">Talks</span>
           <span class="tile-count">{counts["talk"] ?? 0}</span>
         </button>
         <button type="button" class="kind-tile" data-filter-value="course" style="background:#dfe7d6">
           
           <svg class="tile-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21.42 10.922a1 1 0 0 0-.019-1.838L12.83 5.18a2 2 0 0 0-1.66 0L2.6 9.08a1 1 0 0 0 0 1.832l8.57 3.908a2 2 0 0 0 1.66 0z"/><path d="M22 10v6"/><path d="M6 12.5V16a6 3 0 0 0 12 0v-3.5"/></svg>
-          <span class="tile-label">Course</span>
+          <span class="tile-label">Courses</span>
           <span class="tile-count">{counts["course"] ?? 0}</span>
         </button>
         <button type="button" class="kind-tile" data-filter-value="position" style="background:#e8d9cf">
           
           <svg class="tile-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 20V4a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/><rect width="20" height="14" x="2" y="6" rx="2"/></svg>
-          <span class="tile-label">Position</span>
+          <span class="tile-label">Positions</span>
           <span class="tile-count">{counts["position"] ?? 0}</span>
         </button>
         <button type="button" class="kind-tile" data-filter-value="award" style="background:#f0e2b8">
           
           <svg class="tile-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/></svg>
-          <span class="tile-label">Award</span>
+          <span class="tile-label">Awards</span>
           <span class="tile-count">{counts["award"] ?? 0}</span>
         </button>
         <button type="button" class="kind-tile" data-filter-value="research-publication" style="background:#e2d6df">
           
           <svg class="tile-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg>
-          <span class="tile-label">Publication</span>
+          <span class="tile-label">Publications</span>
           <span class="tile-count">{counts["research-publication"] ?? 0}</span>
         </button>
         <button type="button" class="kind-tile" data-filter-value="article" style="background:#d7e0e6">
           
           <svg class="tile-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
-          <span class="tile-label">Article</span>
+          <span class="tile-label">Articles</span>
           <span class="tile-count">{counts["article"] ?? 0}</span>
         </button>
         <button type="button" class="kind-tile" data-filter-value="podcast" style="background:#f1dbd7">
           
           <svg class="tile-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 14h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-7a9 9 0 0 1 18 0v7a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3"/></svg>
-          <span class="tile-label">Podcast</span>
+          <span class="tile-label">Podcasts</span>
           <span class="tile-count">{counts["podcast"] ?? 0}</span>
         </button>
         <button type="button" class="kind-tile" data-filter-value="press-mentions" style="background:#dfe0d0">
@@ -139,7 +139,7 @@ const counts = items.reduce<Record<string, number>>((acc, i) => ((acc[i.kind] = 
         <button type="button" class="kind-tile" data-filter-value="social" style="background:#dde5e3">
           
           <svg class="tile-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2"/><circle cx="10" cy="7" r="4"/><path d="M21 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-          <span class="tile-label">Social</span>
+          <span class="tile-label">Socials</span>
           <span class="tile-count">{counts["social"] ?? 0}</span>
         </button>
       </div>
