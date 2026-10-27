@@ -4,6 +4,7 @@
 import { sanityClient } from "sanity:client";
 import snapshot from "@/data/work-snapshot.json";
 import { PROGRAMS } from "@/data/outreach-programs";
+import { FACTS, SOCIALS } from "@/data/aimee-facts";
 import { yearOf } from "@/utils/sanity";
 
 export type AskRecord = {
@@ -101,5 +102,5 @@ async function readTopics(): Promise<AskRecord[]> {
 
 export async function buildAskIndex() {
   const [work, topics] = await Promise.all([readWork(), readTopics()]);
-  return { records: [...work, ...topics], programs: PROGRAMS, generatedAt: new Date().toISOString() };
+  return { records: [...work, ...topics], programs: PROGRAMS, facts: FACTS, socials: SOCIALS, generatedAt: new Date().toISOString() };
 }
