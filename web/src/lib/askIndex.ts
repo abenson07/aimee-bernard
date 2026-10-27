@@ -26,7 +26,7 @@ export type AskRecord = {
 
 const WORK_QUERY = `*[_type == "contentItem" && defined(kind)]{
   _id, title, kind, venue, date, description,
-  "href": coalesce(url, file.asset->url),
+  "href": coalesce(url, links[0].url, file.asset->url),
   "category": category->name,
   "featured": coalesce(featuredInSearch, false)
 }`;

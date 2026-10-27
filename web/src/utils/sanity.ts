@@ -17,7 +17,7 @@ export async function getRecentDocuments() {
 }
 
 const WORK_ITEMS_QUERY = defineQuery(`*[_type == "contentItem" && defined(kind)] | order(_createdAt asc){
-  _id, title, kind, venue, date, url, "fileUrl": file.asset->url, "image": image.asset->url, "category": category->name
+  _id, title, kind, venue, date, "url": coalesce(url, links[0].url), "fileUrl": file.asset->url, "image": image.asset->url, "category": category->name
 }`);
 
 export type WorkItem = {
@@ -60,7 +60,7 @@ export type CardItem = {
 };
 
 const CARD_FIELDS = `_id, title, kind, venue, date,
-  "href": coalesce(url, file.asset->url),
+  "href": coalesce(url, links[0].url, file.asset->url),
   "image": image.asset->url,
   "logo": publication->logo.asset->url,
   "logoName": publication->name`;
