@@ -125,7 +125,7 @@ const everyday = [
   ['what is immunology', /study of the immune system/], ['what is mrna', /instructions/], ['what do b cells do', /antibodies/],
   ['should i get a flu shot', /not a doctor/], ['i have cancer what should i do', /not a doctor/], ['is the covid vaccine safe for kids', /not a doctor/],
   ['what is her story', /her own story/], ['how do i become an immunologist', /her own story/],
-  ['what is the best thing to read', /If you only look at one thing/], ['tiktok', /TikTok/], ['is she on twitter', /only know of these places/],
+  ['what is the best thing to read', /If you only look at one thing/], ['tiktok', /TikTok/], ['is she on twitter', /don.t see that one/], ['bluesky', /Bluesky/], ['substack', /Science Crosstalk/], ['instagram', /funsizeimmuninja/], ['what is her handle', /funsizeimmuninja/], ['what does she teach', /MIMS7530/], ['i have cancer what should i do', /so sorry/],
   ['vacines', /vaccine/i], ['podcats', /podcast/i], ['talks from 2019', /dated 2019/], ['talks in 2019 and 2020', /one year at a time/],
   ['last year', /from 2025/], ['oldest talk', /oldest/], ['latest', /newest/], ['has she been on tv', /couldn.t find anything about/],
   ['what does she doe', /few hats/], ['news coverage', /press mentions/], ['teaching award', /awards about/],

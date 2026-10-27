@@ -83,7 +83,7 @@ export function prepare(index) {
   const vocab = new Map();
   for (const r of recs) for (const set of [r._t, r._v, r._d]) for (const w of set) vocab.set(w, (vocab.get(w) ?? 0) + 1);
   for (const k of KIND_STEM.keys()) vocab.set(k, (vocab.get(k) ?? 0) + 50);
-  return { recs, byId, programs, vocab };
+  return { recs, byId, programs, vocab, facts: index.facts ?? [], socials: index.socials ?? [] };
 }
 
 const has = (set, t) => {
@@ -460,6 +460,36 @@ export function createEngine(index, { mode = 'chat' } = {}) {
   };
   const PICKS = [/tedx/i, /immunology explained/i, /substack/i];
 
+  /* Where to find Aimee online. She uses the same handle on each network. */
+  function socialIntent(state, n) {
+    const socials = prep.socials;
+    if (!socials.length) return null;
+    const hit = socials.find((x) => x.words.some((w) => new RegExp(`\\b${w}\\b`).test(n)));
+    const other = /\b(twitter|facebook|linkedin|threads|snapchat|x com|youtube channel|pinterest|reddit)\b/.test(n);
+    const general = /\b(social media|socials|her handle|handle|follow her|follow aimee|where can i follow|find her online|online)\b/.test(n);
+    if (!hit && !other && !general) return null;
+    const links = socials.map((x) => ({ id: 'soc-' + x.id, title: `${x.label} · ${x.handle}`, meta: '', desc: '', href: x.href }));
+    const insta = socials.filter((x) => x.handle.startsWith('@')).map((x) => x.label);
+    const lead = other
+      ? 'I don’t see that one for Aimee. She is on these:'
+      : hit && hit.id === 'substack'
+        ? 'Aimee writes the Science Crosstalk newsletter on Substack:'
+        : `Aimee is @funsizeimmuninja on ${insta.slice(0, -1).join(', ')} and ${insta.slice(-1)}, and writes the Science Crosstalk newsletter on Substack:`;
+    return finish(state, [text(lead), cards(links, { link: true })], [say('Her podcasts', 'podcasts'), say('Her articles', 'articles'), act('Start over', 'reset')], { view: 'home' });
+  }
+
+  /* Hand-written answers about Aimee (data/aimee-facts.ts). */
+  function factIntent(state, n) {
+    for (const f of prep.facts) {
+      if (f.match.some((m) => new RegExp(`\\b(${m})\\b`).test(n))) {
+        const blocks = f.answer.map(text);
+        if (f.links?.length) blocks.push(cards(f.links.map((l, i) => ({ id: `${f.id}-${i}`, title: l.label, meta: '', desc: '', href: l.href })), { link: true }));
+        return finish(state, blocks, starterChips(4), { view: 'home' });
+      }
+    }
+    return null;
+  }
+
   function smallIntent(state, n, words, raw = '') {
     if (RE2.injection.test(n)) return finish(state, S.INJECTION.map(text), starterChips(4), { view: 'home' });
     if (RE2.rude.test(n)) return finish(state, S.RUDE.map(text), starterChips(4), { view: 'home' });
@@ -504,10 +534,10 @@ export function createEngine(index, { mode = 'chat' } = {}) {
       if (rec) return finish(state, chatItem(rec, 'Aimee tells her own story on a podcast:'), [act('Immunologist', 'persona:immunologist'), act('Educator', 'persona:educator'), act('Start over', 'reset')], { view: 'results', ids: [rec.id], shown: 1, cards: [rec.id] });
     }
     if (RE2.contact.test(n)) return finish(state, [...S.CONTACT.map(text), cards([S.BOOKING_CARD], { link: true })], starterChips(3), { view: 'home' });
-    if (RE2.network.test(n)) {
-      const r = resultsReply(state, { kinds: ['social'], year: 0, terms: [], venue: '' }, 'network');
-      return { ...r, blocks: [text(S.NETWORKS), ...r.blocks] };
-    }
+    const soc = socialIntent(state, n);
+    if (soc) return soc;
+    const fact = factIntent(state, n);
+    if (fact) return fact;
     if (RE2.recommend.test(n) && !/\b(kind|type)\b/.test(n)) {
       let picks = prep.recs.filter((r) => r.featured && r.type !== 'topic');
       if (!picks.length) picks = PICKS.map((re) => prep.recs.find((r) => re.test(r.title) && r.type !== 'topic')).filter(Boolean);
@@ -717,7 +747,10 @@ export function createEngine(index, { mode = 'chat' } = {}) {
     if (RE.reset.test(n)) return greetAgain(state);
     if (RE.hi.test(n) && words.length <= 3) return finish(state, S.HI.map(text), starterChips(), { view: 'home' });
     if (RE.thanks.test(n) && words.length <= 5) return finish(state, [text(pick(S.THANKS, hash(n)))], starterChips(4), {});
-    if (RE.safety.test(n)) return finish(state, S.SAFETY.map(text), [say('Educational videos', 'educational videos'), contactChip()], { view: 'home' });
+    if (RE.safety.test(n)) {
+      const personal = /\b(i have|i ve got|i was diagnosed|i feel|i m (sick|ill|scared|worried)|what should i do|diagnose me|my (daughter|son|mom|dad|mother|father|wife|husband|friend|baby)|my (symptoms?|doctor|health|child|kid))\b/.test(n);
+      return finish(state, (personal ? S.SAFETY_PERSONAL : S.SAFETY).map(text), [say('Educational videos', 'educational videos'), say('How vaccines work', 'how do vaccines work'), contactChip()], { view: 'home' });
+    }
     const intent = smallIntent(state, n, words, raw);
     if (intent) return intent;
     if (memory && RE.back.test(n)) return back(state);

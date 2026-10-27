@@ -57,9 +57,15 @@ export const CONTACT = [
 
 export const THANKS = ['Anytime! Antibodies love to help.', 'You’re welcome! Want to look at something else?'];
 
+/* Health questions. Kind first, then the honest limit: a B cell is not a doctor. */
 export const SAFETY = [
-  'I’m a B cell, not a doctor! For health questions, please talk with your own healthcare provider.',
-  'I can point you to Aimee’s educational videos and articles about how the immune system works.',
+  'That’s a really common and fair question. I’m a B cell, not a doctor, so I can’t say what’s right for you.',
+  'Your own healthcare provider is the best person to ask. I can point you to Aimee’s articles and talks about how vaccines and the immune system work.',
+];
+export const SAFETY_PERSONAL = [
+  'I’m so sorry you’re dealing with that. I’m a B cell, not a doctor, so I can’t give medical advice, and you deserve a real person who can.',
+  'Please talk with your own healthcare provider. If it feels urgent, call your doctor or your local emergency number.',
+  'When you’re ready, I’m here to point you to Aimee’s plain-language videos and articles about how the immune system works.',
 ];
 
 /* The three hats on the Home page, plus the immunologist. */
