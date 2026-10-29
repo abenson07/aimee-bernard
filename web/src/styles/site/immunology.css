@@ -54,3 +54,7 @@ a.paper__link:hover .paper__arrow { opacity: 1; transform: translate(2px, -2px);
 .hero-split__media--landscape > div:last-child { flex: 1.562 1 0; width: auto; aspect-ratio: 889 / 569; }
 .hero-split__media--landscape a { position: absolute; inset: 0; display: block; }
 @media (max-width: 767px) { .hero-split__media--landscape > div, .hero-split__media--landscape > div:first-child { height: auto; } }
+
+/* Immunologist intro: more breathing room around the cartoons than the default mission line */
+.mission--spread .m-el { margin: 0 0.45em; }
+@media (max-width: 767px) { .mission--spread .m-el { margin: 0 0.25em; } }
