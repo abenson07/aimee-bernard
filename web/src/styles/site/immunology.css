@@ -37,7 +37,8 @@ a.paper__link:hover .paper__arrow { opacity: 1; transform: translate(2px, -2px);
 .tlas__feature-title { font-family: var(--headline); font-weight: 600; font-size: 22px; line-height: 26px; letter-spacing: -0.01em; }
 .tlas__feature-text { font-size: 15px; line-height: 22px; color: rgba(247, 247, 242, 0.64); }
 .tlas__foot { display: flex; flex-direction: column; align-items: flex-start; gap: 24px; }
-@media (max-width: 991px) { .tlas__media { min-height: 520px; } .tlas__content { padding-left: 16px; } .tlas__features { grid-template-columns: 1fr; gap: 24px; } }
+.tlas--slim .tlas__media { min-height: 380px; }
+@media (max-width: 991px) { .tlas__media { min-height: 520px; } .tlas--slim .tlas__media { min-height: 320px; } .tlas__content { padding-left: 16px; } .tlas__features { grid-template-columns: 1fr; gap: 24px; } }
 @media (max-width: 767px) {
   .tlas-sec { padding: 56px 20px 88px; }
   .tlas { padding: 16px; }
@@ -46,3 +47,14 @@ a.paper__link:hover .paper__arrow { opacity: 1; transform: translate(2px, -2px);
   .tlas__content { padding: 0; }
   .tlas__sub { font-size: 18px; }
 }
+
+/* Immunologist opening: two landscape pictures side by side (911 slide + video still) */
+.hero-split__media--landscape { height: auto; min-height: 0; }
+.hero-split__media--landscape > div:first-child { flex: 1.773 1 0; aspect-ratio: 929 / 524; }
+.hero-split__media--landscape > div:last-child { flex: 1.562 1 0; width: auto; aspect-ratio: 889 / 569; }
+.hero-split__media--landscape a { position: absolute; inset: 0; display: block; }
+@media (max-width: 767px) { .hero-split__media--landscape > div, .hero-split__media--landscape > div:first-child { height: auto; } }
+
+/* Immunologist intro: more breathing room around the cartoons than the default mission line */
+.mission--spread .m-el { margin: 0 0.45em; }
+@media (max-width: 767px) { .mission--spread .m-el { margin: 0 0.25em; } }

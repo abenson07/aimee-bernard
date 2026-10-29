@@ -17,7 +17,7 @@ export async function getRecentDocuments() {
 }
 
 const WORK_ITEMS_QUERY = defineQuery(`*[_type == "contentItem" && defined(kind)] | order(_createdAt asc){
-  _id, title, kind, venue, date, url, "fileUrl": file.asset->url, "image": image.asset->url, "category": category->name
+  _id, title, kind, venue, date, alsoShown, description, "url": coalesce(url, links[0].url), "fileUrl": file.asset->url, "image": image.asset->url, "category": category->name
 }`);
 
 export type WorkItem = {
@@ -26,6 +26,9 @@ export type WorkItem = {
   kind: string | null;
   venue: string | null;
   date: string | null;
+  /** Educational Content / Book only: also show in the other list. */
+  alsoShown?: boolean | null;
+  description?: string | null;
   url: string | null;
   fileUrl: string | null;
   /** Optional hover image from the dashboard. */
@@ -60,7 +63,7 @@ export type CardItem = {
 };
 
 const CARD_FIELDS = `_id, title, kind, venue, date,
-  "href": coalesce(url, file.asset->url),
+  "href": coalesce(url, links[0].url, file.asset->url),
   "image": image.asset->url,
   "logo": publication->logo.asset->url,
   "logoName": publication->name`;
@@ -160,13 +163,13 @@ export function getPapers(): Promise<CardItem[]> {
   );
 }
 
-export type StripLogo = { name: string; logo: string; url: string | null };
+export type StripLogo = { _id: string; name: string; logo: string; url: string | null };
 
 /** Logos for the scrolling strips, in the order set on each publication. */
 export async function getStripLogos(): Promise<StripLogo[]> {
   try {
-    const rows: { name: string; logo: string | null; url: string | null }[] = await sanityClient.fetch(
-      `*[_type == "publication" && defined(stripOrder) && defined(logo)] | order(stripOrder asc){ name, "logo": logo.asset->url, url }`,
+    const rows: { _id: string; name: string; logo: string | null; url: string | null }[] = await sanityClient.fetch(
+      `*[_type == "publication" && defined(stripOrder) && defined(logo)] | order(stripOrder asc){ _id, name, "logo": logo.asset->url, url }`,
     );
     return rows.filter((r): r is StripLogo => !!r.logo);
   } catch (err) {
@@ -179,6 +182,7 @@ export type CourseYear = {
   label: string | null;
   description: string | null;
   linkUrl: string | null;
+  topics: string[] | null;
   courses: { _id: string; title: string | null; topics: string[] | null }[];
 };
 
@@ -202,7 +206,7 @@ export async function getCourseGroups(): Promise<CourseGroup[]> {
     return await sanityClient.fetch(`*[_type == "courseGroup"] | order(order asc){
       _id, name, icon, tileMeta, pill, dates, intro, body, tags,
       "image": image.asset->url,
-      "years": years[]{ label, description, linkUrl, "courses": courses[]->{ _id, title, topics } }
+      "years": years[]{ label, description, linkUrl, topics, "courses": courses[]->{ _id, title, topics } }
     }`);
   } catch (err) {
     console.warn("Sanity read failed for the course groups.", err);

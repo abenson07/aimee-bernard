@@ -1,4 +1,10 @@
 ---
+// Prerendered for the public site; rendered on the server only when visual
+// editing is on (Studio > Presentation needs live, draft-aware pages).
+export const prerender = import.meta.env.PUBLIC_SANITY_VISUAL_EDITING_ENABLED !== "true";
+
+import { loadQuery } from "@/lib/loadQuery";
+import type { PageCommunicator } from "@/types";
 import SiteLayout from "@/layouts/SiteLayout.astro";
 import SiteHeader from "@/components/SiteHeader.astro";
 import "@/styles/site/shared.css";
@@ -12,6 +18,28 @@ import TedxFeatureSkeleton from "@/components/site/TedxFeatureSkeleton.astro";
 import SciCommFeed from "@/components/site/SciCommFeed.astro";
 import SciCommFeedSkeleton from "@/components/site/SciCommFeedSkeleton.astro";
 const bwUrl = (await getImage({ src: bwSrc, format: "webp", width: 936 })).src;
+
+// Copy comes from the pageCommunicator document (edit it in Studio > Presentation).
+// Falls back to the original text until the document is seeded.
+const page = await loadQuery<PageCommunicator | null>({
+  query: `*[_id == "pageCommunicator"][0]{heroTitle, heroBlurb, stats[]{_key, value, label}, contributesHeading, contributesCards[]{_key, name, role}}`,
+});
+const stats = page?.stats?.length ? page.stats : [
+  { _key: "years", value: "25+", label: "Years as an Educator, Immunologist & Communicator" },
+  { _key: "courses", value: "30+", label: "Courses taught" },
+  { _key: "talks", value: "100+", label: "Talks given" },
+  { _key: "awards", value: "9+", label: "Awards received" },
+];
+const cards = page?.contributesCards?.length ? page.contributesCards : [
+  { _key: "unbiased", name: "Unbiased Science", role: "Immunology Expert" },
+  { _key: "podcast", name: "The Immunology Podcast", role: "Guest Expert" },
+  { _key: "conversation", name: "The Conversation", role: "Contributing Author" },
+];
+const cardImages = [
+  { src: bwUrl, pos: "50% 25%" },
+  { src: "/site/immunologist.webp", pos: "70% 50%" },
+  { src: "/site/communicator.webp", pos: "62% 40%" },
+];
 ---
 
 <SiteLayout title="Science Communication">
@@ -21,8 +49,8 @@ const bwUrl = (await getImage({ src: bwSrc, format: "webp", width: 936 })).src;
 <section class="hero-split is-fade">
   <div class="wrap" style="padding:0">
     <div class="hero-split__head">
-      <h1 class="display hero-split__title">Talking about science so people listen</h1>
-      <div class="hero-split__side is-info"><p>Talks, keynotes, and workshops on making immunology clear, honest, and human.</p></div>
+      <h1 class="display hero-split__title">{page?.heroTitle ?? "Talking about science so people listen"}</h1>
+      <div class="hero-split__side is-info"><p>{page?.heroBlurb ?? "Talks, keynotes, and workshops on making immunology clear, honest, and human."}</p></div>
     </div>
     <div class="hero-split__media hero-split__media--small-first"><div><img src="/site/photos/tedx-front-stage-1200.webp" srcset="/site/photos/tedx-front-stage-1200.webp 1200w, /site/photos/tedx-front-stage-1900.webp 1900w" sizes="(max-width: 767px) 100vw, 912px" alt="Aimee on stage at TEDxCU" style="object-position:50% 58%"></div><div><img src={bwUrl} alt=""></div></div>
   </div>
@@ -31,10 +59,9 @@ const bwUrl = (await getImage({ src: bwSrc, format: "webp", width: 936 })).src;
 <section class="mission-sec has-stats fade-into" aria-label="Mission and numbers">
   <p class="mission" data-mission>Science belongs to everyone. <span class="m-el m-cell" data-mx="14" data-my="10"><img src="/site/cells/t-cell.svg" alt=""></span> Through teaching, communication, and outreach, my goal is the same: to empower my audience <span class="m-el m-cell" data-mx="12" data-my="9"><img src="/site/cells/antibody.svg" alt=""></span> to use science and evidence to make everyday decisions that positively impact their lives and their communities.</p>
   <div class="stats-row is-tight">
-    <div class="stat fade"><div class="stat__num">25+</div><p class="stat__desc">Years as an Educator, Immunologist &amp; Communicator</p></div>
-    <div class="stat fade"><div class="stat__num">30+</div><p class="stat__desc">Courses taught</p></div>
-    <div class="stat fade"><div class="stat__num">100+</div><p class="stat__desc">Talks given</p></div>
-    <div class="stat fade"><div class="stat__num">9+</div><p class="stat__desc">Awards received</p></div>
+    {stats.map((st) => (
+      <div class="stat fade"><div class="stat__num">{st.value}</div><p class="stat__desc">{st.label}</p></div>
+    ))}
   </div>
 </section>
 
@@ -42,9 +69,9 @@ const bwUrl = (await getImage({ src: bwSrc, format: "webp", width: 936 })).src;
 
 <section class="contrib" aria-label="Regularly contributes to">
   <div class="wrap">
-    <div class="contrib__head fade"><h2 class="contrib__title">Aimee regularly contributes to...</h2></div>
+    <div class="contrib__head fade"><h2 class="contrib__title">{page?.contributesHeading ?? "Aimee regularly contributes to..."}</h2></div>
     <div class="contrib__row fade">
-      <a class="contrib__card" href="https://immunologyexplained.aai.org/" target="_blank" rel="noopener"><div class="contrib__media"><img src="/site/photos/immu-hall-smile-1200.webp" alt="Aimee smiling in a lab coat" style="object-position:60% 35%" loading="lazy"></div><div class="contrib__info"><h3 class="contrib__name">Immunology Explained</h3></div></a>
+      <a class="contrib__card" href="https://immunologyexplained.aai.org/" target="_blank" rel="noopener"><div class="contrib__media"><img src="/site/photos/immu-hall-smile-1200.webp" alt="Aimee smiling in a lab coat" style="object-position:60% 35%" loading="lazy"></div><div class="contrib__info"><h3 class="contrib__name">Immunology Explained</h3><p class="contrib__role">Content Contributor</p></div></a>
       <a class="contrib__card" href="https://aimeepughbernard.substack.com/" target="_blank" rel="noopener"><div class="contrib__media"><img src="/site/photos/substack-collage-800.webp" alt="" loading="lazy"></div><div class="contrib__info"><h3 class="contrib__name">Science Crosstalk</h3><p class="contrib__role">My Substack</p></div></a>
       <a class="contrib__card" href="https://www.unbiasedscience.com/the-team" target="_blank" rel="noopener"><div class="contrib__media"><img src={bwUrl} alt="" style="object-position:50% 25%" loading="lazy"></div><div class="contrib__info"><h3 class="contrib__name">Unbiased Science</h3><p class="contrib__role">Immunology Expert</p></div></a>
       <a class="contrib__card" href="https://www.instagram.com/funsizeimmuninja/?hl=en" target="_blank" rel="noopener"><div class="contrib__media"><img src="/site/photos/funsize-ig-collage-800.webp" alt="" loading="lazy"></div><div class="contrib__info"><h3 class="contrib__name">@funsizeimmuninja</h3><p class="contrib__role">My Instagram</p></div></a>

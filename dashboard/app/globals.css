@@ -569,6 +569,19 @@ a.wrap-cell:hover {
   flex-direction: column;
   gap: 7px;
 }
+.field-check {
+  flex-direction: row;
+  align-items: center;
+  gap: 9px;
+  font-size: 14px;
+  cursor: pointer;
+}
+.field-check input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  margin: 0;
+  flex: none;
+}
 .label {
   font-size: 13px;
   font-weight: 500;
@@ -1530,4 +1543,20 @@ textarea.input {
   .scale-pips {
     justify-content: center;
   }
+}
+
+/* Same-title warning (duplicate-warning.tsx) */
+.duplicate-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: 14px;
+}
+.duplicate-list li {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
 }

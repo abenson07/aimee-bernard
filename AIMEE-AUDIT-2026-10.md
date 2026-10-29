@@ -33,7 +33,7 @@ Screenshots and candidate photos are saved in `audit-review/` (not committed; `s
 | # | Question | Status |
 |---|---|---|
 | 1 | Q23 Graduate School: rename the second pill to "Introduction to Science Communication" | RESOLVED: yes, rename it; her nine topics fill the empty list; photo 'EDU THC Antibody' applied (file in hand) |
-| 2 | Q22 Fun-Size: "Immunotherapy" as a group heading (four groups) | RESOLVED: four groups; going with Option A (groups as labeled blocks in the right-hand list). Fun-size candy bag photo applied. Option B saved to ask Aimee (see "Questions to ask Aimee") |
+| 2 | Q22 Fun-Size: "Immunotherapy" as a group heading (four groups) | RESOLVED: four groups; SWITCHED TO OPTION B (Alex, 10/26): each of the four groups is its own section (left title, right topic list), like Graduate School. Done with a new optional `topics` field on each course-tile section in Sanity; no special typing needed. Fun-size candy bag photo applied |
 | 3 | Q16 Awards stat "9+" as written | RESOLVED: all four approved: label "Years as an Educator, Immunologist & Communicator" 25+, Courses taught 30+, Talks given 100+, new fourth stat Awards received 9+ |
 | 4 | Q17 "All work" blue shade | RESOLVED: option B, #6aa8ff (T cell cartoon blue), text and arrow bigger. Applies to BOTH "All work" buttons: Home (`index.astro`) and Educator (`educator.astro`); a color scan of all 7 pages found no other yellow-green element. CSS in `home.css` and `educator.css` |
 | 5 | Q11 optimize images, don't commit originals | RESOLVED: yes. Web-sized copies (desktop + phone sizes, about 200-600KB each), ALL converted to WebP including the HEIC. Originals stay local in `images/`, not committed |
@@ -53,22 +53,23 @@ Screenshots and candidate photos are saved in `audit-review/` (not committed; `s
 | 19 | Q8 "Read now" feature | RESOLVED + BUILT (Alex: Option A): TEDx scientist photo and link to https://aimeepughbernard.substack.com/p/confessions-of-a-scientist; applied in code to the item titled "Confessions of a Scientist…" |
 | 20 | Q9, Q10 photos | queued |
 | 21 | Q5 CCTSI slide | RESOLVED + BUILT (Alex: Option 2): her CCTSI slide with Aimee and Wendy's photos swapped so Aimee is on the left, the Anschutz/CCTSI header strip painted out, aligned left in the card; card links to her CCTSI URL. NOTE: these are edits to her slide that she did not ask for; tell her. Teacher Training card = TTP Aimee |
-| 22 | Q27 Immunologist and Work audits | queued |
+| 22 | Q27 Immunologist and Work audits | RECEIVED 10/27; change lists are in section 1, new questions Q28 to Q40 |
 
 Resolved so far: Q1, Q2, Q3, Q4, Q11, Q12, Q14, Q16, Q17, Q18, Q19, Q21, Q22, Q23, Q26 (see log above).
 
 Rule from Alex (10/24): where she named a photo and the file is in `images/`, just apply it; don't ask again. Applies to: Medical School, Graduate School = 'EDU THC Antibody'; PA, Dental = 'EDU THC Thymus'; Human Immunology = fun-size bag; Home cards TLaS / FUNSIZE IG / TTP / SUBSTACK; Home Communicator hover = 'SCI COMM TEDx scientist'; Contact portrait; Teacher Training = 'TTP Aimee'; CU Denver = DMRSEF.
 
 ## 0d. Questions to ask Aimee (collected as we go)
-1. **Fun-Size workshop details layout (from Q22).** We're building Option A: her four groups as labeled blocks in the right-hand list of the one "Fun-Size Immunology Workshop" section. Option B: the four groups as purple-circle items on the left, each with its own section, like Graduate School. Which does she prefer? Screenshots (preview mocks): `audit-review/screenshots/q22-optionA-groups-in-right-list.png` and `q22-optionB-groups-as-left-items.png`. Her third group is written as a bullet ("IMMUNOTHERAPY Harnessing the Immune System"); we're treating it as a group heading.
+1. ~~**Fun-Size workshop details layout (from Q22).**~~ DECIDED 10/26 (Alex): Option B is built; just tell Aimee. Old notes: Option A was: her four groups as labeled blocks in the right-hand list of the one "Fun-Size Immunology Workshop" section. Option B: the four groups as purple-circle items on the left, each with its own section, like Graduate School. Which does she prefer? Screenshots (preview mocks): `audit-review/screenshots/q22-optionA-groups-in-right-list.png` and `q22-optionB-groups-as-left-items.png`. Her third group is written as a bullet ("IMMUNOTHERAPY Harnessing the Immune System"); we're treating it as a group heading.
 
 
-## WAITING ON
-1. (Done 10/24) Upscaled photos are in place; see `PHOTOS-TO-UPSCALE.md`. Still on the list for later: the two stock photos (`immunologist.webp`, `educator.webp`) still used elsewhere, if any remain.
-2. Her Immunologist and Work audits (Q27), if still coming.
-3. Alex's layout for the Outreach page (a first version was built as commit 8d365d5 but is not merged).
-
-**Her real lab-coat photos arrived (Alex, 10/24) and are placed:** `IMMU Lab 3 tubes` = Immunologist hero (big left photo) and Home hover on "Immunologist"; `IMMU Hall 3 smile` = Communicator "Immunology Explained" card. `IMMU Lab 1 body` (same scene as tubes, full-length, portrait) is not used anywhere yet. All three are .heic in `images/` (not committed; web versions in `web/public/site/photos/`).
+## WAITING ON / DECISIONS (updated 10/25)
+- **Her Immunologist and Work audits:** RECEIVED 10/27 (see section 1, Q28 to Q40). Still coming from her: Articles, Press, Educational Content review, more talks.
+- **Ask Aimee:** (1) Fun-Size workshop: Alex chose Option B (built, 10/26); tell her, don't ask. (2) Role line for the "Immunology Explained" card: Alex chose "Content Contributor" (10/27, built); tell her.
+- **Tell Aimee (not a question):** the CCTSI slide card. Photos swapped so she's on the left and the Anschutz header removed, because the cards grow on hover and the original slide either looked odd shrunk or cut off the title when grown. Open to re-laying out the slide if she had something else in mind.
+- **Resolved by Alex 10/25:** Awards stat stays 9+ (stop asking). Fourth outreach award stays "CU" (University of Colorado; no logo). Lab-coat photo guesses are fine (smile = Communicator card; tubes = hero and hover); she'll say if not.
+- **Alex:** Outreach page layout (his to design; her text and links are in `community-outreach.astro`, commit 8d365d5, not in the PR). Contact form service (five options sent 10/25). "Ask me a Q?" bot: planning 10/25 (see `PLAN-ask-me-a-q-bot.md`). How Aimee swaps images in Sanity (discussed 10/25).
+- Upscaled photos: done 10/24.
 
 ## 0e. Build log (building happens as we go, per Alex 10/24)
 Built, checked in the browser, committed locally (not pushed):
@@ -180,8 +181,32 @@ Kept as is (she loves them): hero-portrait hover concept, the cell/germ "fruit n
 - [ ] [CODE] Photo: `Aimee Pugh Bernard-444.png` (the vest portrait, received). Keep or drop the TEDx card on it? [Q25]
 - Not in her audit but still open: the form doesn't send anything (BEN-1704).
 
-### Immunologist and Work
-No audit received. [Q27]
+### Immunologist (page file `web/src/pages/immunology.astro`)
+Source: `audit-review/round2/WEBSITE AUDIT_Immunologist_APBernard.docx` (received 10/27; her screenshots are in `audit-review/round2/*_media/`). Her words in quotes.
+- [ ] [CODE/DB] Opening text. Large: "Activating the immune system is like dialing 911". Small: "Your immune system works like a mobile defense force. When you get a cut, a splinter, or an infection, immune cells at the scene sense the damage and send out chemical distress signals, like a call to 911. Within minutes, those signals recruit immune cells to the site to fight germs, clear away debris, and start the repair." (Today's H1 is "Why the immune system is worth understanding".)
+- [ ] [CODE] Opening photos: "Please remove the current photos and add the photos below". Left: her "Immune System" ambulance slide (`image1.png`). Right: the video still "Activating the Immune System is Like Dialing 911" (`image2.png`). "(I know it's a screenshot but don't have the original file to get a better photo – I like this one)". Both are screenshots, low resolution. [Q28]
+- [ ] [CODE] Link the video still to https://immunologyexplained.aai.org/videos/how-your-immune-system-acts-like-dialing-911/ ("Can you link to the video below?").
+- [ ] Her note on the tube photo: "Not a huge fan of the photo of me in a lab coat holding the tube. If we use it, please make it small". This overlaps with the lab-coat photo guesses already in place (tubes = hero and hover, per Alex 10/25). [Q29]
+- [ ] [CODE/DB] Mission text. "I loved the text you drafted but I don't do bench science anymore and want to frame disease in a slightly different way." New text: "Every moment of every day, your immune system has to answer one question: friend or foe? It has to spot and attack real threats like viruses and bacteria while leaving your own healthy cells alone. That is much harder than it sounds, because invaders can look a lot like the body they're trying to break into. Most of the time, your immune system gets it right. But sometimes it gets confused. In allergies, it sounds the alarm over something harmless, like pollen or peanuts. In autoimmune diseases, it mistakes the body's own tissues for the enemy and attacks them." Closing line: "Aimee thinks the immune system is endlessly fascinating, and she hopes to inspire you to think so too!" Replaces today's "Every allergy, infection and autoimmune disease comes down to one question..." (`image3.png`). Keep the three cartoon icons? [Q30]
+- [ ] [CODE/DB] "Q: Can you add the Teaching Awards here too? Above the mentoring awards?" Add the teaching awards section above "Mentoring and outreach, recognized." Awards already come from Sanity with an Award group (teaching / outreach & mentoring), so this is the same data shown a second time. [Q31]
+- [ ] [DB] "1 small edit to outreach, mentoring and service awards – change text to 'TLaS Community Partner Spotlight Award'". Sanity item `contentItem-award-outreach-2026` is "Community Partner Spotlight Award" (venue "Aurora Public Schools"). [Q32]
+- [ ] Publications: "LOVE all the publications!!" No change.
+- [ ] [CODE] "REMOVE the Think Like a Scientist box from the bottom of this page. That makes more sense for Outreach." (Alex's earlier Outreach layout note applies: the TLaS box was already removed from Immunologist in commit 8d365d5, so check it is really gone from this branch.)
+- [ ] [CODE] "What should we add instead? My Substack? Or can we add the immune cell pathogen fruit ninja like at the bottom of the Home page?" [Q33]
+
+### Work (page file `web/src/pages/work.astro`)
+Source: `audit-review/round2/WEBSITE AUDIT_Work Tab_APBernard.docx` (received 10/27). Her words in quotes.
+- [ ] [CODE] "WORK – please make them plural 'Talks' etc." The filter tiles use singular labels (Talk, Course, Position, Award, Publication, Article, Podcast, Press, Educational Content, Social). Plural: Talks, Courses, Positions, Awards, Publications, Articles, Podcasts, Press (already plural), Educational Content, Socials ("Socials" is her own word further down). The card tag in `KIND_LABELS` is separate; plural applies to the tiles. [Q34]
+- [ ] [DB] Talks: "Please add links to websites if available". Needs a pass over every talk with no link. Alex or Aimee supplies the links; I list which talks have none. [Q35]
+- [ ] [DB] Duplicate: "'Your Shot at Protection: How Vaccines Work with the Immune System to Fight Disease' KEEP September 2023 Immunize Colorado and REMOVE duplicates (I've given this same talk ~6 times but just 1 on this page is fine)". In Sanity the title is "Your Shot at Protection. How Vaccines Train the Immune System to Fight Disease", two items: `contentItem-talk-019` (September 2023, venue "CU Alumni 'Healthy & Happy Hour'", YouTube link) and `contentItem-talk-015` (January 2022, Tattered Cover). Neither says "Immunize Colorado", so the one to keep is not clear. [Q36]
+- [ ] [DB] Duplicate: "REMOVE 'Research Day Keynote Speaker' (screenshot on right) and KEEP other box with the link to the website (screenshot on left). Please edit title to 'Research Day Keynote. From Data to Dialogue: Research Communication for the Real World'". Kept item is `mlvUgjlufG0gMlJUjoYLLK` (today "2026 College of Health and Human Sciences Research Day Keynote, From Data to Dialogue: ...", Colorado State link). The other one has to be found and deleted. [Q37]
+- [ ] [DB] Duplicate: "REMOVE 'From Data to Dialogue' (screenshot on right) and KEEP other box with link to the website (screenshot on left). Please edit title to 'myHub Career Development Retreat. From Data to Dialogue: Science Communication for the Real World' and add 'University of Rochester, October 2025' below with logo in top right corner". Kept item is `JjpsDhPX3u6UD60BLpZo9P` (link events.rochester.edu); remove `contentItem-talk-004` (October 2025, University of Rochester myHub). Set venue/date to "University of Rochester", "October 2025". Logo in the top right corner of the card: the University of Rochester logo is needed. [Q38]
+- Courses, Positions, Awards, Podcasts: "added all to the dashboard". Socials: "added more to the dashboard". Nothing to build; counts will change (Award 6, Social 3 in her screenshot).
+- Articles, Press, Educational Content: "not yet reviewed" / "net yet reviewed". Still coming from her. Talks: "Still reviewing and adding".
+- [DB] Publications: "Please add journal and year to each publication – I am happy to add this info to the dashboard if missing. I am unable to edit any entries so may need altered access." [Q39]
+- [DB] "Please remove the duplicate of 'A CREATE-ive Use of Primary Literature in the Science Classroom'". Two items: `3D2eTzEwbOdAIHeIqdwaRZ` (Neuroscience Letters, January 2021, PubMed link) and `contentItem-research-publication-002` (no venue or date). Delete the second and keep the first, since it has journal and date.
+- [CODE+DB] "ADD a 'Books' section (the Parham book is a BIG deal)": "'The Immune System' Parham 6e, WW Norton" and "My Tiny Helpers". "KEEP them both under 'Educational content' but create a separate call out box for books please". "My Tiny Helpers" exists as an educational-content item (Lupe Science, https://lupe.science/books/). The Parham book is not in Sanity. This also answers the "does she have books?" blocker in `PLAN-ask-me-a-q-bot.md` (Q13): yes, two. [Q40]
+
 
 ## 2. Open questions (write your answer under each)
 
@@ -265,8 +290,51 @@ Answer:
 **Q26. CU Anschutz logo.** On Educator she says "We should remove the CU Anschutz logo (they are very protective of it!)". The same logo appears on the Work page cards (for CU and School of Medicine items), in the Home logo strip, and inside the CCTSI slide. Remove only the Educator chip, or everywhere?
 Answer:
 
+
 **Q27. Immunologist and Work.** Her 10/19 email said she'd review those on 10/20–10/21. No files came. Is that feedback truly done, or still coming?
 Answer:
+
+**Q27 (answered 10/27).** Both audits received. Immunologist and Work are now in section 1 above. Still coming from her: Articles, Press, Educational Content review, and more talks.
+
+**Q28. Opening photos are screenshots.** She wants the ambulance slide (left) and the video still (right), and says she has no better originals. Use them as they are, or ask her for the slide file (the ambulance slide is a PowerPoint slide, so the original should exist)?
+Answer: USE THEM AS THEY ARE (Alex, 10/27): "that is what she included in her email originally". Built: ambulance slide left, 911 video still right (linked to her video), shown whole, side by side.
+
+**Q29. Tube photo.** "If we use it, please make it small." Is it still used anywhere on Immunologist once the two new photos go in, or only on Home (hero and hover)?
+Answer: REMOVE FROM IMMUNOLOGIST; HOME HOVER USES THE SMILE PHOTO; DELETE THE TUBE PHOTO (Alex, 10/27). Built: tube photo removed from Immunologist and from Home (hover now the smile photo, changed in Sanity; backup `audit-review/sanity-backup-hover-immu-*.json`), web copies of the tube photo deleted (original stays in local `images/`). TELL AIMEE.
+
+**Q30. Mission text icons.** The old sentence had three cartoon icons (cell, virus, antibody) inline. Her new text is longer and has no spots for them. Keep an icon or two inline, or plain text?
+Answer: PARKED 10/27, waiting on Aimee. Four options shown to her: (1) today's sentence, (2) her full text at headline size (crowded, ~15 lines), (3) shorter 30-word version with the cells, (4) left/right: her opening question left in headline type with cells, detail paragraph + closing line right in body text. Screenshots: `audit-review/screenshots/q30-1` to `q30-5`. Nothing built.
+
+**Q31. Teaching awards on Immunologist.** She asks "Can you add the Teaching Awards here too?" with a question mark. Show the same six most recent teaching awards as on Home and Educator?
+Answer: NO, PUSH BACK (Alex, 10/27). Teaching awards stay on Educator and Home; each persona page keeps its own focus, Home is where everything blends, and visitors will see more than one page. Not built. TELL AIMEE: Alex is writing a short paragraph for his email.
+
+**Q32. Award name.** "TLaS Community Partner Spotlight Award": rename the 2026 outreach award in Sanity (venue stays Aurora Public Schools)? "TLaS" is not spelled out anywhere on the card.
+Answer: EXACTLY AS SHE WROTE (Alex, 10/27). Done in Sanity: "TLaS Community Partner Spotlight Award".
+
+**Q33. What replaces the Think Like a Scientist box?** Her options: "My Substack" or the immune cell and pathogen game from the bottom of Home. Which one?
+Answer: SUBSTACK BOX (Alex, 10/27). Built at the bottom of Immunologist: dark box, Substack collage, "Science Crosstalk / Where Science and Communication Collide.", button to her Substack.
+
+**Q34. Plural filter labels.** Make only the filter tiles plural, or the tag on each card too (e.g. "Talks" on a single talk card would read oddly)?
+Answer: TILES ONLY (Alex, 10/27). Built: Talks, Courses, Positions, Awards, Publications, Articles, Podcasts, Press, Educational Content, Socials.
+
+**Q35. Missing talk links.** I will list every talk without a link. Who finds the links, Aimee in the dashboard or me?
+Answer: B, AIMEE ADDS THE LINKS HERSELF (Alex, 10/27), which depends on Q39. List of the 6 talks without a link: Toronto Mississauga (Mar 2024), CU Denver Biology Club, Immunize for Good (Jul 2024), FRCC biology students, DMRSEF science fair, CO Vaccine Equity Taskforce.
+
+**Q36. Which "Your Shot at Protection" talk to keep.** She says keep "September 2023 Immunize Colorado". Sanity has September 2023 at "CU Alumni 'Healthy & Happy Hour'" (YouTube link) and January 2022 at Tattered Cover. Neither is Immunize Colorado. Keep the September 2023 one and change its venue to Immunize Colorado, or is the Immunize Colorado talk missing from the data?
+Answer: KEEP THE ONE WITH THE VIDEO (Alex, 10/27): September 2023, CU Alumni, YouTube. Done in Sanity: January 2022 Tattered Cover item (`contentItem-talk-015`) deleted, its related-item link on the kept talk removed; backups in `audit-review/sanity-backup-talk-015-*.json` and `-019-*.json`. Title still reads "How Vaccines Train…" (hers says "Work with"); not changed. TELL AIMEE the venue is CU Alumni, not Immunize Colorado.
+
+**Q37. Research Day Keynote.** I could not find the item she wants removed (the one titled "Research Day Keynote Speaker"). Is it one of the Sanity talks whose venue or title says "Keynote Speaker"? To confirm before deleting.
+Answer: DONE EXACTLY AS SHE WROTE (Alex, 10/27). Deleted "Research Day Keynote Speaker" (`contentItem-talk-002`); kept item renamed "Research Day Keynote. From Data to Dialogue: Research Communication for the Real World". Alex then asked to bring the deleted card's venue and date over: the kept card now shows "Colorado State University, College of Health & Human Sciences" and "March 2026". Backup `audit-review/sanity-backup-research-day-*.json`.
+
+**Q38. myHub card.** Venue "University of Rochester", date "October 2025", and the University of Rochester logo top right. Does Alex have the logo file, or use the existing outlet-logo mapping?
+Answer: OPTION A first, then CHANGED TO B AS THE RULE FOR ALL CARDS (Alex, 10/27): every Work card now shows its venue and date from the data, with the logo added on top (one line changed in `work.astro`; about 25 cards gain a venue line). The myHub card reads "University of Rochester · October 2025" with the logo. Earlier note: OPTION A (Alex, 10/27). Done in Sanity: plain "From Data to Dialogue" (`contentItem-talk-004`) deleted; kept item retitled "myHub Career Development Retreat. From Data to Dialogue: Science Communication for the Real World", venue "University of Rochester", date "October 2025". The card shows the Rochester logo top right and "October 2025" below (the site hides the venue text when a logo is shown). Backup `audit-review/sanity-backup-myhub-*.json`. TELL AIMEE the venue shows as the logo.
+
+**Q39. Publications access.** She cannot edit entries in the dashboard. Is that the dashboard (`/dashboard`) or Sanity Studio, and does she want to edit them herself or want me to fill in journal and year? Journal and year are missing from some publications.
+Answer: TREATED AS AN ACCESS PROBLEM (Alex, 10/27): the dashboard item window no longer hides Title, Kind, Venue (journal), Date (year) and the link behind an "Edit details" button; they are always shown (`dashboard/app/(app)/item-modal.tsx`). Not tested in the browser (needs a login). Still hidden from her in the dashboard: start/end dates, topics, related items, uncertain. 9 of 19 publications lack a journal or year; she can now fill them in. TELL AIMEE the edit fields are now always visible. The CREATE-ive duplicate: DELETED 10/27 on Alex's go-ahead (`contentItem-research-publication-002`, the copy with no journal or year; kept `3D2eTzEwbOdAIHeIqdwaRZ`, Neuroscience Letters, January 2021). Aimee did not say which copy to keep; Alex chose. Backup `audit-review/sanity-backup-create-ive-*.json`. TELL AIMEE which copy was kept.
+
+**Q40. Books box.** Placement on the Work page (above the cards, next to the kind tiles, or inside the Educational Content filter), and the Parham book needs a cover photo and link (publisher page?). "My Tiny Helpers" is already there (Lupe Science).
+Answer: OPTION A, NO COVERS (Alex, 10/27). Built: a "Books" box above the filter tiles (cards with title, venue/date, description, "View book"); new "Book" kind; a checkbox on the item in the dashboard: for Educational Content "Also show in the Books box", for Book "Also show in Educational Content" (field `alsoShown`). The two books (The Immune System, My Tiny Helpers) are marked and still show in Educational Content. Also fixed the filter tile labels wrapping mid-word. Not tested in the dashboard itself (needs a login).
+
 
 ## 3. Aimee's question: Dashboard vs code
 She asked (10/19): "Let me know if any of the content within the documents needs to be added to the Dashboard… I am not sure what you can add vs. what needs to be in the Dashboard."

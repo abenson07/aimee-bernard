@@ -17,3 +17,12 @@ export interface SeoProps {
    */
   noindex?: boolean;
 }
+
+// Shape of the pageCommunicator document as queried by communicator.astro.
+export interface PageCommunicator {
+  heroTitle?: string;
+  heroBlurb?: string;
+  stats?: { _key: string; value?: string; label?: string }[];
+  contributesHeading?: string;
+  contributesCards?: { _key: string; name?: string; role?: string }[];
+}

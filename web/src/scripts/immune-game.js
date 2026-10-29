@@ -70,7 +70,7 @@ import { ART, KINDS, BAD, SELF } from './immune-art.js';
       const d = cells.reduce((m, c) => Math.min(m, Math.hypot(c.x - x, c.y - y) - c.r), Infinity);
       if (d > bestD) { bestD = d; bestSpot = { x, y }; }
     }
-    return bestSpot;
+    return bestSpot ?? { x: W / 2, y: H / 2 }; // a field with no size yet (hidden) has no open spot
   }
 
   function add(kind, fromEdge) {

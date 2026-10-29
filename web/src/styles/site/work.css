@@ -57,7 +57,7 @@
   .kind-tile:hover { transform: translateY(-2px); }
   .kind-tile.is-active { border-color: var(--ink); }
   .kind-tile.is-all { background: var(--ink); color: var(--paper); }
-  .tile-label { font-size: clamp(11px, 1vw, 13px); font-weight: 700; text-align: center; padding: 0 0.35rem; overflow-wrap: anywhere; }
+  .tile-label { font-size: clamp(10px, 0.9vw, 12.5px); font-weight: 700; text-align: center; padding: 0 0.15rem; letter-spacing: -0.01em; overflow-wrap: break-word; }
   .tile-count { font-size: 11px; opacity: 0.6; }
   .tile-icon { width: clamp(22px, 2.6vw, 34px); height: auto; aspect-ratio: 1; margin-bottom: 0.35rem; opacity: 0.85; transition: transform 0.3s ease; }
   .kind-tile:hover .tile-icon { transform: scale(1.12) rotate(-4deg); }
@@ -190,3 +190,14 @@
     .dock-item .tile-icon { width: 16px; margin: 0; opacity: 1; }
     .dock-item.is-active { background: var(--ink); color: #8ec0ff; }
   }
+
+/* ---------- Books box (above the filters) ---------- */
+.books-box { padding-bottom: 2rem; }
+.books-box__title { font-family: var(--headline, inherit); font-size: clamp(1.5rem, 2.6vw, 2rem); font-weight: 600; letter-spacing: -0.02em; margin: 0 0 0.9rem; }
+.books-box__row { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.1rem; }
+.book-card { display: flex; flex-direction: column; gap: 0.5rem; padding: 1.5rem; border-radius: 16px; background: #efe6d3; border: 1px solid transparent; color: var(--ink); text-decoration: none; transition: transform 0.3s var(--ease-out, ease), box-shadow 0.3s var(--ease-out, ease); }
+a.book-card:hover { transform: translateY(-3px); box-shadow: 0 14px 30px rgba(0, 0, 0, 0.1); }
+.book-card__title { font-family: var(--headline, inherit); font-size: 1.6rem; font-weight: 600; letter-spacing: -0.02em; line-height: 1.1; margin: 0; }
+.book-card__meta { font-size: 13px; color: var(--muted); margin: 0; }
+.book-card__text { font-size: 14px; line-height: 1.5; margin: 0.25rem 0 0; display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden; }
+.book-card__link { margin-top: auto; padding-top: 0.75rem; font-size: 14px; font-weight: 600; }

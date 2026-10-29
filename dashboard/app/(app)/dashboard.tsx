@@ -41,15 +41,27 @@ function SourceCell({ item }: { item: ContentItem }) {
 
 export function Dashboard({
   categories,
-  items,
+  items: allItems,
   categorizationEnabled,
+  embedded = false,
+  kind = null,
+  heading = "Content log",
+  onChanged,
 }: {
   categories: Category[];
   items: ContentItem[];
   categorizationEnabled: boolean;
+  /** Shown inside the Site editor: no page header, and Upload sits beside the search. */
+  embedded?: boolean;
+  /** Only items of this kind (the Site editor's Content list picks it). */
+  kind?: string | null;
+  heading?: string;
+  /** Called when a window closes, so the Site editor can fetch the saved items. */
+  onChanged?: () => void;
 }) {
   const [modal, setModal] = useState<Modal>(null);
   const [query, setQuery] = useState("");
+  const items = useMemo(() => (kind ? allItems.filter((item) => item.kind === kind) : allItems), [allItems, kind]);
 
   /* Category still drives the table column, item modal, and the review
      view — just keeping the cards + banner off the main page for now. */
@@ -70,10 +82,14 @@ export function Dashboard({
     );
   }, [items, query]);
 
-  const close = () => setModal(null);
+  const close = () => {
+    setModal(null);
+    onChanged?.();
+  };
 
   return (
     <>
+      {!embedded && (
       <header className="topbar">
         <div className="wordmark">Aimee Pugh Bernard</div>
         <div className="topbar-actions">
@@ -82,6 +98,9 @@ export function Dashboard({
               Sign out
             </button>
           </form>
+          <Link href="/site" className="btn-secondary">
+            Edit site
+          </Link>
           <Link href="/bot-gaps" className="btn-secondary">
             Bot content gaps
           </Link>
@@ -98,8 +117,9 @@ export function Dashboard({
           </button>
         </div>
       </header>
+      )}
 
-      <main className="page">
+      <main className={embedded ? "page page-embedded" : "page"}>
         {categorizationEnabled && showCategoryOverview && (
         <div className="cat-grid">
           {categories.map((category) => (
@@ -160,14 +180,14 @@ export function Dashboard({
         )}
 
         <section className="log">
-          <div className="log-head">
+          <div className={embedded ? "log-head st-toolbar" : "log-head"}>
             <div className="log-title">
-              <h2>Content log</h2>
+              <h2>{heading}</h2>
               <span className="log-count">
                 {items.length} {items.length === 1 ? "item" : "items"}
               </span>
             </div>
-            <label className="search">
+            <label className={embedded ? "search st-search" : "search"}>
               <SearchIcon />
               <input
                 type="search"
@@ -177,6 +197,12 @@ export function Dashboard({
                 aria-label="Search content"
               />
             </label>
+            {embedded && (
+              <button type="button" className="st-btn primary" onClick={() => setModal({ kind: "upload", categoryId: null })}>
+                <UploadIcon />
+                Upload
+              </button>
+            )}
           </div>
 
           {visible.length > 0 ? (

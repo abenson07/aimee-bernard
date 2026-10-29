@@ -7,6 +7,8 @@ import "@/styles/site/footer-word.css";
 import "@/styles/site/award-seal.css";
 import "@/styles/site/skeleton.css";
 import BaseHead from "@/components/BaseHead.astro";
+import { VisualEditing } from "@sanity/astro/visual-editing";
+import { visualEditingEnabled } from "@/lib/loadQuery";
 import ReviewOverlay from "@/components/ReviewOverlay.astro";
 import type { SeoProps } from "@/types.ts";
 
@@ -30,5 +32,6 @@ const seo = Astro.props;
   <body>
     <slot />
     <ReviewOverlay />
+    <VisualEditing enabled={visualEditingEnabled} />
   </body>
 </html>

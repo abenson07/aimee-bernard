@@ -5,12 +5,17 @@ import { cookies } from "next/headers";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { verifySession } from "@/lib/dal";
+import { findDuplicateTitles } from "@/lib/duplicates";
 import { categorizationEnabled } from "@/lib/flags";
 import { sanityClient } from "@/lib/sanity";
 import { SESSION_COOKIE } from "@/lib/session";
+import { normalizeTitle } from "@/lib/titles";
+import type { DuplicateMatch } from "@/lib/types";
 import { withHttps } from "@/lib/url";
 
-export type FormState = { error?: string; ok?: boolean; key?: string } | undefined;
+export type FormState =
+  | { error?: string; ok?: boolean; key?: string; duplicates?: DuplicateMatch[] }
+  | undefined;
 
 type PortableTextBlock = {
   _type: string;
@@ -116,6 +121,17 @@ export async function createContentItem(
     return { error: "Add just one source: a file, a link, or content." };
   }
 
+  /* Warn before saving a second copy of something already here. The form
+     sends confirmDuplicate once she has seen the warning and chosen to go on. */
+  if (formData.get("confirmDuplicate") !== "1") {
+    try {
+      const duplicates = await findDuplicateTitles(title);
+      if (duplicates.length > 0) return { duplicates };
+    } catch {
+      /* If the check itself fails, don't block her from saving. */
+    }
+  }
+
   const doc: { _type: string } & Record<string, unknown> = {
     _type: "contentItem",
     title: title.trim(),
@@ -144,7 +160,7 @@ export async function createContentItem(
     return { error: "That didn't save. Try again." };
   }
 
-  revalidatePath("/");
+  revalidatePath("/content");
   return { ok: true };
 }
 
@@ -177,7 +193,7 @@ export async function answerQuestion(
     return { error: "That didn't save. Try again." };
   }
 
-  revalidatePath("/");
+  revalidatePath("/content");
   return { ok: true, key };
 }
 
@@ -221,7 +237,7 @@ export async function reviewCategory(
     return { error: "That didn't save. Try again." };
   }
 
-  revalidatePath("/");
+  revalidatePath("/content");
   return { ok: true, key: id };
 }
 
@@ -234,7 +250,7 @@ export async function deleteContentItem(id: string): Promise<{ error?: string } 
     return { error: "That didn't delete. Try again." };
   }
 
-  revalidatePath("/");
+  revalidatePath("/content");
 }
 
 export async function updateContentItem(
@@ -248,6 +264,7 @@ export async function updateContentItem(
   const kind = formData.get("kind");
   const venue = formData.get("venue");
   const date = formData.get("date");
+  const alsoShown = formData.get("alsoShown");
   const url = formData.get("url");
   const file = formData.get("file");
   const body = formData.get("body");
@@ -267,9 +284,30 @@ export async function updateContentItem(
   if (typeof title === "string") {
     if (!title.trim()) return { error: "Give this a title." };
     set.title = title.trim();
+
+    /* Only check when the title actually changed — otherwise every save of an
+       item that already has a twin would nag her. */
+    if (formData.get("confirmDuplicate") !== "1") {
+      try {
+        const current = await sanityClient.fetch<string | null>(`*[_id == $id][0].title`, { id });
+        if (normalizeTitle(current ?? "") !== normalizeTitle(title)) {
+          const duplicates = await findDuplicateTitles(title, id);
+          if (duplicates.length > 0) return { duplicates };
+        }
+      } catch {
+        /* If the check itself fails, don't block her from saving. */
+      }
+    }
   }
   if (typeof kind === "string" && kind) {
     set.kind = kind;
+    /* "Also show in the other list" only means something for Educational
+       Content and Books; clear it for any other kind or when unchecked. */
+    if ((kind === "educational-content" || kind === "book") && alsoShown === "on") {
+      set.alsoShown = true;
+    } else {
+      unset.push("alsoShown");
+    }
   }
   if (typeof venue === "string") {
     if (venue.trim()) set.venue = venue.trim();
@@ -331,7 +369,7 @@ export async function updateContentItem(
     return { error: "That didn't save. Try again." };
   }
 
-  revalidatePath("/");
+  revalidatePath("/content");
   return { ok: true };
 }
 

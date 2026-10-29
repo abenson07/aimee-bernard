@@ -24,6 +24,7 @@ export const KIND_OPTIONS = [
   { title: "Press Mentions", value: "press-mentions" },
   { title: "Article", value: "article" },
   { title: "Educational Content", value: "educational-content" },
+  { title: "Book", value: "book" },
   { title: "Position", value: "position" },
   { title: "Course", value: "course" },
   { title: "Award", value: "award" },
@@ -46,6 +47,7 @@ export interface ContentItem {
   kind?: string;
   venue?: string;
   date?: string;
+  alsoShown?: boolean;
   url?: string;
   firstLinkUrl?: string;
   links?: ContentLink[];
@@ -67,4 +69,13 @@ export interface ContentItem {
   categoryReviewedAt?: string;
   categoryStatus?: CategoryReviewStatus;
   description?: string;
+}
+
+/** An existing content item that has the same title as one being saved. */
+export interface DuplicateMatch {
+  _id: string;
+  title: string;
+  kind?: string;
+  venue?: string;
+  date?: string;
 }

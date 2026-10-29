@@ -140,7 +140,7 @@ export function QuestionnaireWizard({
   return (
     <div className="q-page">
       <header className="q-header">
-        <Link href="/" className="x-btn" aria-label="Back to dashboard">
+        <Link href="/site" className="x-btn" aria-label="Back to dashboard">
           <CloseIcon />
         </Link>
         <div>

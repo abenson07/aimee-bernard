@@ -5,6 +5,7 @@ import { KIND_OPTIONS, type Category, type ContentItem, type ContentLink } from 
 import { withHttps } from "@/lib/url";
 import { deleteContentItem, updateContentItem } from "./actions";
 import { itemContext } from "./category-suggestion";
+import { DuplicateWarning } from "./duplicate-warning";
 import { CloseIcon, DropIcon, FileIcon, PlusIcon } from "./icons";
 import { ModalShell } from "./modal-shell";
 
@@ -19,16 +20,28 @@ export function ItemModal({
   categories,
   categorizationEnabled,
   onClose,
+  onSaved,
+  inline = false,
 }: {
   item: ContentItem;
   categories: Category[];
   categorizationEnabled: boolean;
   onClose: () => void;
+  /** Called after a save or delete went through, just before onClose. */
+  onSaved?: () => void;
+  /** Sit in a side panel instead of floating over the page. */
+  inline?: boolean;
 }) {
   const [state, formAction, pending] = useActionState(updateContentItem, undefined);
   const [replacementName, setReplacementName] = useState<string | null>(null);
   const fileRef = useRef<HTMLInputElement>(null);
-  const [editingDetails, setEditingDetails] = useState(false);
+  const [kind, setKind] = useState(item.kind ?? "");
+  const formRef = useRef<HTMLFormElement>(null);
+  const [, startSubmit] = useTransition();
+  /* The same-title warning shows until she goes back; a fresh save that finds
+     a match produces a new state, so it shows again. */
+  const [dismissed, setDismissed] = useState<typeof state>(undefined);
+  const showDuplicates = Boolean(state?.duplicates?.length) && dismissed !== state;
   const link = item.url || item.firstLinkUrl || "";
   const [links, setLinks] = useState<ContentLink[]>(item.links ?? []);
   const updateLink = (key: string, field: "label" | "url", value: string) => {
@@ -48,8 +61,20 @@ export function ItemModal({
   const [isDeleting, startDelete] = useTransition();
 
   useEffect(() => {
-    if (state?.ok) onClose();
-  }, [state, onClose]);
+    if (state?.ok) {
+      onSaved?.();
+      onClose();
+    }
+  }, [state, onClose, onSaved]);
+
+  /* Sent by hand instead of as the form's `action` so the form is not reset
+     when the warning comes back — her edits would otherwise snap back. */
+  const submit = (confirmDuplicate: boolean) => {
+    if (!formRef.current) return;
+    const data = new FormData(formRef.current);
+    if (confirmDuplicate) data.set("confirmDuplicate", "1");
+    startSubmit(() => formAction(data));
+  };
 
   const handleDelete = () => {
     startDelete(async () => {
@@ -57,6 +82,7 @@ export function ItemModal({
       if (result?.error) {
         setDeleteError(result.error);
       } else {
+        onSaved?.();
         onClose();
       }
     });
@@ -67,134 +93,129 @@ export function ItemModal({
       title={item.title}
       subtitle={itemContext(item) || "Edit how this is filed."}
       onClose={onClose}
+      inline={inline}
     >
-      <form action={formAction}>
+      <form
+        ref={formRef}
+        onSubmit={(event) => {
+          event.preventDefault();
+          submit(false);
+        }}
+      >
         <input type="hidden" name="id" value={item._id} />
 
         <div className="modal-body">
-          {editingDetails ? (
-            <>
-              <label className="field">
-                <span className="label">Title</span>
-                <input
-                  type="text"
-                  name="title"
-                  className="input"
-                  defaultValue={item.title}
-                  required
-                />
-              </label>
+          <label className="field">
+            <span className="label">Title</span>
+            <input
+              type="text"
+              name="title"
+              className="input"
+              defaultValue={item.title}
+              required
+            />
+          </label>
 
-              <label className="field">
-                <span className="label">Kind</span>
-                <select name="kind" className="input" defaultValue={item.kind ?? ""} required>
-                  <option value="" disabled>
-                    Choose a kind
-                  </option>
-                  {KIND_OPTIONS.map((option) => (
-                    <option key={option.value} value={option.value}>
-                      {option.title}
-                    </option>
-                  ))}
-                </select>
-              </label>
+          <label className="field">
+            <span className="label">Kind</span>
+            <select
+              name="kind"
+              className="input"
+              value={kind}
+              onChange={(event) => setKind(event.target.value)}
+              required
+            >
+              <option value="" disabled>
+                Choose a kind
+              </option>
+              {KIND_OPTIONS.map((option) => (
+                <option key={option.value} value={option.value}>
+                  {option.title}
+                </option>
+              ))}
+            </select>
+          </label>
 
-              <label className="field">
-                <span className="label">
-                  Venue <span className="opt-tag">— optional</span>
-                </span>
-                <input type="text" name="venue" className="input" defaultValue={item.venue ?? ""} />
-              </label>
+          {(kind === "educational-content" || kind === "book") && (
+            <label className="field field-check">
+              <input
+                type="checkbox"
+                name="alsoShown"
+                defaultChecked={Boolean(item.alsoShown)}
+              />
+              <span>
+                {kind === "book"
+                  ? "Also show in Educational Content"
+                  : "Also show in the Books box"}
+              </span>
+            </label>
+          )}
 
-              <label className="field">
-                <span className="label">
-                  Date <span className="opt-tag">— optional</span>
-                </span>
-                <input
-                  type="text"
-                  name="date"
-                  className="input"
-                  defaultValue={item.date ?? ""}
-                  placeholder="e.g. April 2026"
-                />
-              </label>
+          <label className="field">
+            <span className="label">
+              Venue <span className="opt-tag">— optional</span>
+            </span>
+            <input type="text" name="venue" className="input" defaultValue={item.venue ?? ""} />
+          </label>
 
-              {item.fileUrl ? (
-                <div className="field">
-                  <span className="label">File</span>
-                  <a
-                    className="locked-chip"
-                    href={item.fileUrl}
-                    target="_blank"
-                    rel="noreferrer"
-                    style={{ color: "inherit" }}
-                  >
-                    <FileIcon size={13} />
-                    {item.fileName ?? "File"}
-                  </a>
-                  <input
-                    type="file"
-                    name="file"
-                    ref={fileRef}
-                    hidden
-                    onChange={(event) => setReplacementName(event.target.files?.[0]?.name ?? null)}
-                  />
-                  <button
-                    type="button"
-                    className="dropzone"
-                    onClick={() => fileRef.current?.click()}
-                  >
-                    <DropIcon size={18} />
-                    <span className="dz-strong">
-                      {replacementName ? replacementName : "Replace with a different file"}
-                    </span>
-                  </button>
-                </div>
-              ) : (
-                <label className="field">
-                  <span className="label">Link</span>
-                  <input
-                    type="text"
-                    name="url"
-                    className="input"
-                    defaultValue={link}
-                    placeholder="https://…"
-                    onBlur={(event) => {
-                      event.target.value = withHttps(event.target.value);
-                    }}
-                  />
-                </label>
-              )}
+          <label className="field">
+            <span className="label">
+              Date <span className="opt-tag">— optional</span>
+            </span>
+            <input
+              type="text"
+              name="date"
+              className="input"
+              defaultValue={item.date ?? ""}
+              placeholder="e.g. April 2026"
+            />
+          </label>
 
+          {item.fileUrl ? (
+            <div className="field">
+              <span className="label">File</span>
+              <a
+                className="locked-chip"
+                href={item.fileUrl}
+                target="_blank"
+                rel="noreferrer"
+                style={{ color: "inherit" }}
+              >
+                <FileIcon size={13} />
+                {item.fileName ?? "File"}
+              </a>
+              <input
+                type="file"
+                name="file"
+                ref={fileRef}
+                hidden
+                onChange={(event) => setReplacementName(event.target.files?.[0]?.name ?? null)}
+              />
               <button
                 type="button"
-                className="btn-quiet btn-sm details-toggle"
-                onClick={() => setEditingDetails(false)}
+                className="dropzone"
+                onClick={() => fileRef.current?.click()}
               >
-                Hide details
-              </button>
-            </>
-          ) : (
-            <div className="field field-row">
-              {item.fileUrl ? (
-                <a className="label link-label" href={item.fileUrl} target="_blank" rel="noreferrer">
-                  File
-                </a>
-              ) : link ? (
-                <a className="label link-label" href={link} target="_blank" rel="noreferrer">
-                  Link
-                </a>
-              ) : (
-                <span className="label">Link</span>
-              )}
-              <button
-                type="button"
-                className="btn-quiet btn-sm"
-                onClick={() => setEditingDetails(true)}
-              >
-                Edit details
+                <DropIcon size={18} />
+                <span className="dz-strong">
+                  {replacementName ? replacementName : "Replace with a different file"}
+                </span>
               </button>
             </div>
+          ) : (
+            <label className="field">
+              <span className="label">Link</span>
+              <input
+                type="text"
+                name="url"
+                className="input"
+                defaultValue={link}
+                placeholder="https://…"
+                onBlur={(event) => {
+                  event.target.value = withHttps(event.target.value);
+                }}
+              />
+            </label>
           )}
 
           <div className="field">
@@ -315,7 +336,16 @@ export function ItemModal({
           {state?.error && <p className="form-error">{state.error}</p>}
         </div>
 
-        {confirmDelete ? (
+        {showDuplicates && state?.duplicates ? (
+          <DuplicateWarning
+            matches={state.duplicates}
+            confirmLabel="Save anyway"
+            pendingLabel="Saving…"
+            pending={pending}
+            onConfirm={() => submit(true)}
+            onBack={() => setDismissed(state)}
+          />
+        ) : confirmDelete ? (
           <div className="modal-foot confirm-delete">
             <p className="confirm-delete-text">Delete this item? This can&apos;t be undone.</p>
             {deleteError && <p className="form-error">{deleteError}</p>}
