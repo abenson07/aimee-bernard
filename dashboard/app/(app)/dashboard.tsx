@@ -1,10 +1,8 @@
 "use client";
 
-import { useMemo, useState, type MouseEvent } from "react";
-import Link from "next/link";
+import { useEffect, useMemo, useState, type MouseEvent } from "react";
 import type { Category, ContentItem } from "@/lib/types";
-import { logout } from "./actions";
-import { ChevronRightIcon, PlusIcon, SearchIcon, UploadIcon } from "./icons";
+import { ChevronRightIcon, PlusIcon, SearchIcon } from "./icons";
 import { UploadModal } from "./upload-modal";
 import { QuizModal } from "./quiz-modal";
 import { ItemModal } from "./item-modal";
@@ -44,6 +42,7 @@ export function Dashboard({
   items: allItems,
   categorizationEnabled,
   embedded = false,
+  uploadSignal = 0,
   kind = null,
   heading = "Content log",
   onChanged,
@@ -53,6 +52,8 @@ export function Dashboard({
   categorizationEnabled: boolean;
   /** Shown inside the Site editor: no page header, and Upload sits beside the search. */
   embedded?: boolean;
+  /** Opens the Upload window each time this number goes up (the editor's + button). */
+  uploadSignal?: number;
   /** Only items of this kind (the Site editor's Content list picks it). */
   kind?: string | null;
   heading?: string;
@@ -61,6 +62,9 @@ export function Dashboard({
 }) {
   const [modal, setModal] = useState<Modal>(null);
   const [query, setQuery] = useState("");
+  useEffect(() => {
+    if (uploadSignal > 0) setModal({ kind: "upload", categoryId: null });
+  }, [uploadSignal]);
   const items = useMemo(() => (kind ? allItems.filter((item) => item.kind === kind) : allItems), [allItems, kind]);
 
   /* Category still drives the table column, item modal, and the review
@@ -89,36 +93,6 @@ export function Dashboard({
 
   return (
     <>
-      {!embedded && (
-      <header className="topbar">
-        <div className="wordmark">Aimee Pugh Bernard</div>
-        <div className="topbar-actions">
-          <form action={logout}>
-            <button type="submit" className="btn-quiet">
-              Sign out
-            </button>
-          </form>
-          <Link href="/site" className="btn-secondary">
-            Edit site
-          </Link>
-          <Link href="/bot-gaps" className="btn-secondary">
-            Bot content gaps
-          </Link>
-          <Link href="/questionnaire" className="btn-secondary">
-            Voice &amp; Tone Questionnaire
-          </Link>
-          <button
-            type="button"
-            className="btn-primary"
-            onClick={() => setModal({ kind: "upload", categoryId: null })}
-          >
-            <UploadIcon />
-            Upload
-          </button>
-        </div>
-      </header>
-      )}
-
       <main className={embedded ? "page page-embedded" : "page"}>
         {categorizationEnabled && showCategoryOverview && (
         <div className="cat-grid">
@@ -197,12 +171,6 @@ export function Dashboard({
                 aria-label="Search content"
               />
             </label>
-            {embedded && (
-              <button type="button" className="st-btn primary" onClick={() => setModal({ kind: "upload", categoryId: null })}>
-                <UploadIcon />
-                Upload
-              </button>
-            )}
           </div>
 
           {visible.length > 0 ? (

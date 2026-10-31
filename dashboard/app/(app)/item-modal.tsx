@@ -42,6 +42,8 @@ export function ItemModal({
      a match produces a new state, so it shows again. */
   const [dismissed, setDismissed] = useState<typeof state>(undefined);
   const showDuplicates = Boolean(state?.duplicates?.length) && dismissed !== state;
+  // In the Site editor's side panel the fields start expanded; the full window starts with the short view.
+  const [editingDetails, setEditingDetails] = useState(inline);
   const link = item.url || item.firstLinkUrl || "";
   const [links, setLinks] = useState<ContentLink[]>(item.links ?? []);
   const updateLink = (key: string, field: "label" | "url", value: string) => {
@@ -267,7 +269,7 @@ export function ItemModal({
             <textarea
               name="description"
               className="input"
-              rows={2}
+              rows={inline ? 9 : 2}
               defaultValue={item.description ?? ""}
             />
           </label>

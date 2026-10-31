@@ -9,8 +9,10 @@
 */
 (() => {
   const me = document.currentScript;
-  const ORIGIN = me && me.dataset.origin;
-  if (!ORIGIN || window.parent === window) return;
+  const ORIGINS = ((me && me.dataset.origin) || '').split(',').filter(Boolean);
+  if (!ORIGINS.length || window.parent === window) return;
+  // The dashboard that framed this page (Chrome and Safari report it), else the first one listed.
+  const ORIGIN = (location.ancestorOrigins && [...location.ancestorOrigins].find((o) => ORIGINS.includes(o))) || ORIGINS[0];
   const send = (msg) => window.parent.postMessage({ source: 'site-editor', ...msg }, ORIGIN);
 
   const BLUE = '#6aa8ff';
@@ -122,6 +124,8 @@
 
   /* ---- Typing straight onto the page ---- */
   const startTyping = (el) => {
+    // A number that counts up when scrolled into view shows its real value while being edited.
+    if (el.dataset.final) el.textContent = el.dataset.final;
     const original = textOf(el);
     el.setAttribute('contenteditable', 'plaintext-only');
     el.focus();

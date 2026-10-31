@@ -6,11 +6,16 @@ import { getWorkItems, type WorkItem } from "@/utils/sanity.ts";
 import snapshot from "@/data/work-snapshot.json";
 import "@/styles/site/work.css";
 import { outletLogo } from "@/utils/outletLogos";
+import { getSitePage } from "@/lib/siteContent";
 
 // Rendered on request so dashboard edits show up without a redeploy; Vercel
 // caches the page for a minute and refreshes it in the background.
 export const prerender = false;
-Astro.response.headers.set("Cache-Control", "public, s-maxage=60, stale-while-revalidate=300");
+// The page's own wording is editable in the dashboard's Site editor (the items come from the content log).
+const site = await getSitePage("site-page-work", Astro.request);
+site.applyCaching(Astro.response);
+const t = site.text;
+const e = site.edit;
 
 let source: WorkItem[];
 try {
@@ -81,13 +86,13 @@ const counts = items.reduce<Record<string, number>>((acc, i) => ((acc[i.kind] = 
 
 <main class="main-container">
   <div class="work-header">
-    <h1 class="display">Work</h1>
-    <p>Talks, courses, publications, positions, press, and more. Pick a type to narrow it down.</p>
+    <h1 class="display" {...e("work-title")}>{t("work-title", "Work")}</h1>
+    <p {...e("work-intro")}>{t("work-intro", "Talks, courses, publications, positions, press, and more. Pick a type to narrow it down.")}</p>
   </div>
 
   {books.length > 0 && (
     <section class="books-box" aria-label="Books">
-      <h2 class="books-box__title">Books</h2>
+      <h2 class="books-box__title" {...e("books-title")}>{t("books-title", "Books")}</h2>
       <div class="books-box__row">
         {books.map((b) => {
           const Tag = b.href ? "a" : "div";
@@ -220,4 +225,5 @@ const counts = items.reduce<Record<string, number>>((acc, i) => ((acc[i.kind] = 
   import "@/scripts/nav.js";
   import "@/scripts/work.js";
 </script>
+{site.preview && <script is:inline src="/edit-mode.js" data-origin={site.dashboardOrigin}></script>}
 </SiteLayout>

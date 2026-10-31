@@ -59,7 +59,13 @@ export async function getSitePage(id: string, request: Request) {
   const token = new URL(request.url).searchParams.get("preview");
   const preview = verifyPreviewToken(token);
   const slots = await readSlots(id, preview);
-  const dashboardOrigin = env("DASHBOARD_ORIGIN") ?? "";
+  // One or more dashboard addresses, comma separated. A trailing slash or path is ignored, so
+  // "https://x.vercel.app/" still matches the origin the browser reports.
+  const dashboardOrigin = (env("DASHBOARD_ORIGIN") ?? "")
+    .split(",")
+    .map((o) => { try { return new URL(o.trim()).origin; } catch { return ""; } })
+    .filter(Boolean)
+    .join(",");
 
   return {
     preview,

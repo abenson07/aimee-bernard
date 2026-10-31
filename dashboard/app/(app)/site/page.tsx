@@ -3,6 +3,7 @@ import { CATEGORIES_QUERY, ITEMS_QUERY } from "@/lib/queries";
 import { sanityClient } from "@/lib/sanity";
 import { SITE_PAGES, signPreviewToken, siteUrl } from "@/lib/site";
 import type { Category, ContentItem, RefinementQuestion } from "@/lib/types";
+import { loadBotGapGroups } from "@/lib/bot-gap-groups";
 import { loadPage } from "./actions";
 import { Studio } from "./studio";
 import "./studio.css";
@@ -35,12 +36,13 @@ export default async function SitePage({
   }
 
   // The content log lives in the editor too (the Content rail tab), so its items load here as well.
-  const [state, categoryRows, items] = await Promise.all([
+  const [state, categoryRows, items, botGaps] = await Promise.all([
     loadPage(current.id),
     categorizationEnabled
       ? sanityClient.fetch<CategoryRow[]>(CATEGORIES_QUERY)
       : Promise.resolve([]),
     sanityClient.fetch<ContentItem[]>(ITEMS_QUERY),
+    loadBotGapGroups(),
   ]);
   const categories: Category[] = categoryRows.map((row) => ({
     _id: row._id,
@@ -64,6 +66,7 @@ export default async function SitePage({
       siteOrigin={new URL(base).origin}
       categories={categories}
       items={items}
+      botGaps={botGaps}
       categorizationEnabled={categorizationEnabled}
     />
   );

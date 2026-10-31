@@ -20,6 +20,7 @@ import type { Category, ContentItem } from "@/lib/types";
 import { KIND_OPTIONS } from "@/lib/types";
 import { logout } from "../actions";
 import { Dashboard } from "../dashboard";
+import { BotGaps } from "../bot-gaps/bot-gaps";
 import { ItemModal } from "../item-modal";
 import { ModalShell } from "../modal-shell";
 import {
@@ -49,10 +50,12 @@ import {
   ElementH2Icon,
   ElementImageIcon,
   ElementPIcon,
+  BugIcon,
   ExternalIcon,
   InfoIcon,
   PagePanelIcon,
   PhoneIcon,
+  PlusIcon,
   TabletIcon,
   TextIcon,
   UploadCloudIcon,
@@ -71,16 +74,16 @@ type Selection = {
   alt: string;
   extras: string[];
 };
-type RailTab = "pages" | "content" | "photos";
+type RailTab = "content" | "photos" | "gaps";
 
 const RAIL: {
   id: RailTab;
   title: string;
   Icon: (p: { size?: number }) => ReactNode;
 }[] = [
-  { id: "pages", title: "Pages", Icon: PagePanelIcon },
   { id: "content", title: "Content log", Icon: CmsIcon },
   { id: "photos", title: "Photos", Icon: AssetManagerIcon },
+  { id: "gaps", title: "Bot content gaps", Icon: BugIcon },
 ];
 
 const DEVICES = [
@@ -107,6 +110,7 @@ export function Studio({
   siteOrigin,
   categories,
   items,
+  botGaps,
   categorizationEnabled,
 }: {
   pages: PageTab[];
@@ -116,6 +120,7 @@ export function Studio({
   siteOrigin: string;
   categories: Category[];
   items: ContentItem[];
+  botGaps: React.ComponentProps<typeof BotGaps>["groups"];
   categorizationEnabled: boolean;
 }) {
   const router = useRouter();
@@ -138,7 +143,12 @@ export function Studio({
   const scrollY = useRef(0);
 
   const current = pages.find((p) => p.id === currentId) ?? pages[0];
-  const showingContent = tab === "content";
+  const showingContent = tab === "content" || tab === "gaps";
+  // The page in the frame says "ready" once the editor's hooks are running; if it never does, say so.
+  const [linked, setLinked] = useState(false);
+  const [noLink, setNoLink] = useState(false);
+  // Bumped by the + in the Content log header; the list opens its Upload window when it changes.
+  const [uploadTick, setUploadTick] = useState(0);
 
   const post = useCallback(
     (msg: Record<string, unknown>) =>
@@ -193,7 +203,11 @@ export function Studio({
       if (e.origin !== siteOrigin || !e.data || e.data.source !== "site-editor")
         return;
       const d = e.data;
-      if (d.type === "ready") post({ type: "scroll-to", y: scrollY.current });
+      if (d.type === "ready") {
+        setLinked(true);
+        setNoLink(false);
+        post({ type: "scroll-to", y: scrollY.current });
+      }
       if (d.type === "scroll") scrollY.current = Number(d.y) || 0;
       if (d.type === "select") {
         setDoc(null);
@@ -233,6 +247,16 @@ export function Studio({
     window.addEventListener("message", onMessage);
     return () => window.removeEventListener("message", onMessage);
   }, [commitText, post, siteOrigin]);
+
+  useEffect(() => {
+    setLinked(false);
+    setNoLink(false);
+    const timer = setTimeout(() => setNoLink(true), 6000);
+    return () => clearTimeout(timer);
+  }, [frameKey, currentId]);
+  useEffect(() => {
+    if (linked) setNoLink(false);
+  }, [linked]);
 
   const slotOf = useCallback(
     (key: string) => page?.slots.find((s) => s._key === key),
@@ -298,6 +322,7 @@ export function Studio({
       <header className="st-titlebar">
         <AccountMenu />
         <span className="st-spacer" />
+        <div className="st-tb-side right">
         <span
           className={`st-dot ${page?.hasDraft ? "draft" : "live"}`}
           aria-hidden="true"
@@ -330,39 +355,21 @@ export function Studio({
         >
           Publish
         </button>
+        </div>
       </header>
 
       <div className="st-main">
-        {/* Icon rail: clicking the open panel's icon folds it away */}
-        <nav className="st-rail" aria-label="Panels">
-          {RAIL.map(({ id, title, Icon }) => (
-            <button
-              key={id}
-              type="button"
-              className={`st-rail-btn ${tab === id ? "on" : ""}`}
-              aria-pressed={tab === id}
-              aria-label={title}
-              data-tip={title}
-              onClick={() => setTab((t) => (t === id ? null : id))}
-            >
-              <Icon size={20} />
-            </button>
-          ))}
-        </nav>
-
-        {tab && (
+        {(tab === "content" || tab === "photos") && (
           <aside
             className="st-panel left"
             aria-label={RAIL.find((r) => r.id === tab)?.title}
           >
-            {tab === "pages" && (
-              <PagesPanel pages={pages} currentId={currentId} />
-            )}
             {tab === "content" && (
               <ContentPanel
                 items={items}
                 kind={contentKind}
                 onKind={setContentKind}
+                onAdd={() => setUploadTick((n) => n + 1)}
               />
             )}
             {tab === "photos" && (
@@ -380,10 +387,73 @@ export function Studio({
         {/* Canvas */}
         <section className="st-center" aria-label="Page">
           {/* The page stays loaded under the content log, so coming back keeps its place and selection. */}
-          {showingContent && (
+          <div className="st-toolbar">
+            <div className="st-crumbs st-tools" role="toolbar" aria-label="Panels">
+              <button
+                type="button"
+                className={`st-rail-btn ${!showingContent ? "on" : ""}`}
+                aria-pressed={!showingContent}
+                aria-label="Page"
+                data-tip="Page"
+                onClick={() => setTab(null)}
+              >
+                <PagePanelIcon size={18} />
+              </button>
+              {RAIL.map(({ id, title, Icon }) => (
+                <button
+                  key={id}
+                  type="button"
+                  className={`st-rail-btn ${tab === id ? "on" : ""}`}
+                  aria-pressed={tab === id}
+                  aria-label={title}
+                  data-tip={title}
+                  onClick={() => setTab((t) => (t === id ? null : id))}
+                >
+                  <Icon size={18} />
+                </button>
+              ))}
+            </div>
+            <div className="st-tb-mid">
+              <PageSwitcher pages={pages} current={current} />
+              <a
+                className="st-icon-btn"
+                href={`${siteOrigin}${current.path}`}
+                target="_blank"
+                rel="noreferrer"
+                title="View the live page in a new tab"
+              >
+                <ExternalIcon size={13} />
+              </a>
+            </div>
+            <div className="st-tb-side right">
+            {!showingContent && (
+              <div className="st-devices" role="group" aria-label="Screen size">
+                {DEVICES.map(({ id, title, Icon }) => (
+                  <button
+                    key={id}
+                    type="button"
+                    className={device === id ? "on" : ""}
+                    aria-pressed={device === id}
+                    title={title}
+                    onClick={() => setDevice(id)}
+                  >
+                    <Icon size={16} />
+                  </button>
+                ))}
+              </div>
+            )}
+            </div>
+          </div>
+          {tab === "gaps" && (
+            <div className="st-content">
+              <BotGaps groups={botGaps} />
+            </div>
+          )}
+          {tab === "content" && (
             <div className="st-content">
               <Dashboard
                 embedded
+                uploadSignal={uploadTick}
                 categories={categories}
                 items={items}
                 categorizationEnabled={categorizationEnabled}
@@ -399,34 +469,6 @@ export function Studio({
             </div>
           )}
           <div className="st-canvas" hidden={showingContent}>
-            <div className="st-toolbar">
-              <div className="st-crumbs">
-                <PageSwitcher pages={pages} current={current} />
-                <a
-                  className="st-icon-btn"
-                  href={`${siteOrigin}${current.path}`}
-                  target="_blank"
-                  rel="noreferrer"
-                  title="View the live page in a new tab"
-                >
-                  <ExternalIcon size={13} />
-                </a>
-              </div>
-              <div className="st-devices" role="group" aria-label="Screen size">
-                {DEVICES.map(({ id, title, Icon }) => (
-                  <button
-                    key={id}
-                    type="button"
-                    className={device === id ? "on" : ""}
-                    aria-pressed={device === id}
-                    title={title}
-                    onClick={() => setDevice(id)}
-                  >
-                    <Icon size={16} />
-                  </button>
-                ))}
-              </div>
-            </div>
             <div className="st-frame-wrap">
               <iframe
                 ref={frame}
@@ -520,6 +562,17 @@ export function Studio({
               />
             ) : (
               <div className="st-empty">
+                {noLink && !linked && (
+                  <p className="st-empty-warn" role="alert">
+                    This page isn’t connected to the editor, so nothing on it can
+                    be selected. The editor is trying to load{" "}
+                    <strong>{siteOrigin}</strong>. If that isn’t the website you
+                    expect, fix SITE_URL. Otherwise the website needs the latest deploy, and its
+                    DASHBOARD_ORIGIN must be this dashboard’s address. If you
+                    clicked a link inside the page, pick the page again from the
+                    menu at the top.
+                  </p>
+                )}
                 <p className="st-empty-title">Select something on the page</p>
                 <p>Click any text to type over it, or a photo to swap it.</p>
                 <p>
@@ -623,9 +676,6 @@ function AccountMenu() {
       </button>
       {open && (
         <div className="st-menu" role="menu">
-          <Link className="st-menu-item" href="/content" role="menuitem">
-            Content log (full page)
-          </Link>
           <Link className="st-menu-item" href="/questionnaire" role="menuitem">
             Voice &amp; Tone Questionnaire
           </Link>
@@ -701,46 +751,16 @@ function PanelHeader({
   );
 }
 
-function PagesPanel({
-  pages,
-  currentId,
-}: {
-  pages: PageTab[];
-  currentId: string;
-}) {
-  return (
-    <>
-      <PanelHeader title="Pages" />
-      <div className="st-panel-body">
-        {pages.map((p) => (
-          <Link
-            key={p.id}
-            href={`/site?page=${p.slug}`}
-            className={`st-row ${p.id === currentId ? "selected" : ""}`}
-          >
-            <span className="st-row-icon">
-              <PagePanelIcon size={16} />
-            </span>
-            <span className="st-row-label">{p.title}</span>
-            <span className="st-row-meta">{p.path}</span>
-          </Link>
-        ))}
-        <p className="st-panel-note">
-          More pages (Communicator, Immunologist, Contact) come next.
-        </p>
-      </div>
-    </>
-  );
-}
-
 function ContentPanel({
   items,
   kind,
   onKind,
+  onAdd,
 }: {
   items: ContentItem[];
   kind: string | null;
   onKind: (k: string | null) => void;
+  onAdd: () => void;
 }) {
   const counts = useMemo(() => {
     const m = new Map<string, number>();
@@ -749,7 +769,17 @@ function ContentPanel({
   }, [items]);
   return (
     <>
-      <PanelHeader title="Content log" />
+      <PanelHeader title="Content log">
+        <button
+          type="button"
+          className="st-icon-btn"
+          aria-label="Add content"
+          data-tip="Add content"
+          onClick={onAdd}
+        >
+          <PlusIcon size={16} />
+        </button>
+      </PanelHeader>
       <div className="st-panel-body">
         <button
           type="button"
@@ -1061,7 +1091,7 @@ function PhotoFields({
         </FieldLabel>
         <textarea
           className="st-input"
-          rows={2}
+          rows={5}
           value={draft}
           placeholder="What’s in the photo (read aloud to people who can’t see it)"
           onChange={(e) => setDraft(e.target.value)}
