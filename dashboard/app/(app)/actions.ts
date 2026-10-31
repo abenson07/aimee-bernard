@@ -398,7 +398,7 @@ export async function updateBotContent(
     return { error: "That didn't save. Try again." };
   }
 
-  revalidatePath("/bot-gaps");
+  revalidatePath("/site");
   revalidatePath("/");
   return { ok: true, key: id };
 }

@@ -11,7 +11,7 @@ export default async function proxy(request: NextRequest) {
   }
 
   // The Site editor is home: signing in, and the bare address (and the old /content link), land there.
-  if (isAuthenticated && (isLoginRoute || request.nextUrl.pathname === "/" || request.nextUrl.pathname === "/content")) {
+  if (isAuthenticated && (isLoginRoute || request.nextUrl.pathname === "/" || request.nextUrl.pathname === "/content" || request.nextUrl.pathname === "/bot-gaps")) {
     return NextResponse.redirect(new URL("/site", request.nextUrl));
   }
 

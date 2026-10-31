@@ -850,3 +850,13 @@ a.st-rail-btn { text-decoration: none; }
 .studio .st-doc-open .st-hint {
   margin-top: 8px;
 }
+
+.st-empty-warn {
+  margin: 0 0 12px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  background: #fff4e0;
+  color: #7a4a00;
+  font-size: 12.5px;
+  line-height: 1.45;
+}

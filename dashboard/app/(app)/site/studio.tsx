@@ -20,6 +20,7 @@ import type { Category, ContentItem } from "@/lib/types";
 import { KIND_OPTIONS } from "@/lib/types";
 import { logout } from "../actions";
 import { Dashboard } from "../dashboard";
+import { BotGaps } from "../bot-gaps/bot-gaps";
 import { ItemModal } from "../item-modal";
 import { ModalShell } from "../modal-shell";
 import {
@@ -73,7 +74,7 @@ type Selection = {
   alt: string;
   extras: string[];
 };
-type RailTab = "content" | "photos";
+type RailTab = "content" | "photos" | "gaps";
 
 const RAIL: {
   id: RailTab;
@@ -82,6 +83,7 @@ const RAIL: {
 }[] = [
   { id: "content", title: "Content log", Icon: CmsIcon },
   { id: "photos", title: "Photos", Icon: AssetManagerIcon },
+  { id: "gaps", title: "Bot content gaps", Icon: BugIcon },
 ];
 
 const DEVICES = [
@@ -108,6 +110,7 @@ export function Studio({
   siteOrigin,
   categories,
   items,
+  botGaps,
   categorizationEnabled,
 }: {
   pages: PageTab[];
@@ -117,6 +120,7 @@ export function Studio({
   siteOrigin: string;
   categories: Category[];
   items: ContentItem[];
+  botGaps: React.ComponentProps<typeof BotGaps>["groups"];
   categorizationEnabled: boolean;
 }) {
   const router = useRouter();
@@ -139,7 +143,10 @@ export function Studio({
   const scrollY = useRef(0);
 
   const current = pages.find((p) => p.id === currentId) ?? pages[0];
-  const showingContent = tab === "content";
+  const showingContent = tab === "content" || tab === "gaps";
+  // The page in the frame says "ready" once the editor's hooks are running; if it never does, say so.
+  const [linked, setLinked] = useState(false);
+  const [noLink, setNoLink] = useState(false);
   // Bumped by the + in the Content log header; the list opens its Upload window when it changes.
   const [uploadTick, setUploadTick] = useState(0);
 
@@ -196,7 +203,11 @@ export function Studio({
       if (e.origin !== siteOrigin || !e.data || e.data.source !== "site-editor")
         return;
       const d = e.data;
-      if (d.type === "ready") post({ type: "scroll-to", y: scrollY.current });
+      if (d.type === "ready") {
+        setLinked(true);
+        setNoLink(false);
+        post({ type: "scroll-to", y: scrollY.current });
+      }
       if (d.type === "scroll") scrollY.current = Number(d.y) || 0;
       if (d.type === "select") {
         setDoc(null);
@@ -236,6 +247,16 @@ export function Studio({
     window.addEventListener("message", onMessage);
     return () => window.removeEventListener("message", onMessage);
   }, [commitText, post, siteOrigin]);
+
+  useEffect(() => {
+    setLinked(false);
+    setNoLink(false);
+    const timer = setTimeout(() => setNoLink(true), 6000);
+    return () => clearTimeout(timer);
+  }, [frameKey, currentId]);
+  useEffect(() => {
+    if (linked) setNoLink(false);
+  }, [linked]);
 
   const slotOf = useCallback(
     (key: string) => page?.slots.find((s) => s._key === key),
@@ -338,7 +359,7 @@ export function Studio({
       </header>
 
       <div className="st-main">
-        {tab && (
+        {(tab === "content" || tab === "photos") && (
           <aside
             className="st-panel left"
             aria-label={RAIL.find((r) => r.id === tab)?.title}
@@ -368,6 +389,16 @@ export function Studio({
           {/* The page stays loaded under the content log, so coming back keeps its place and selection. */}
           <div className="st-toolbar">
             <div className="st-crumbs st-tools" role="toolbar" aria-label="Panels">
+              <button
+                type="button"
+                className={`st-rail-btn ${!showingContent ? "on" : ""}`}
+                aria-pressed={!showingContent}
+                aria-label="Page"
+                data-tip="Page"
+                onClick={() => setTab(null)}
+              >
+                <PagePanelIcon size={18} />
+              </button>
               {RAIL.map(({ id, title, Icon }) => (
                 <button
                   key={id}
@@ -381,14 +412,6 @@ export function Studio({
                   <Icon size={18} />
                 </button>
               ))}
-              <Link
-                href="/bot-gaps"
-                className="st-rail-btn"
-                aria-label="Bot content gaps"
-                data-tip="Bot content gaps"
-              >
-                <BugIcon size={18} />
-              </Link>
             </div>
             <div className="st-tb-mid">
               <PageSwitcher pages={pages} current={current} />
@@ -421,7 +444,12 @@ export function Studio({
             )}
             </div>
           </div>
-          {showingContent && (
+          {tab === "gaps" && (
+            <div className="st-content">
+              <BotGaps groups={botGaps} />
+            </div>
+          )}
+          {tab === "content" && (
             <div className="st-content">
               <Dashboard
                 embedded
@@ -534,6 +562,15 @@ export function Studio({
               />
             ) : (
               <div className="st-empty">
+                {noLink && !linked && (
+                  <p className="st-empty-warn" role="alert">
+                    This page isn’t connected to the editor, so nothing on it can
+                    be selected. The website needs the latest deploy, and its
+                    DASHBOARD_ORIGIN must be this dashboard’s address. If you
+                    clicked a link inside the page, pick the page again from the
+                    menu at the top.
+                  </p>
+                )}
                 <p className="st-empty-title">Select something on the page</p>
                 <p>Click any text to type over it, or a photo to swap it.</p>
                 <p>

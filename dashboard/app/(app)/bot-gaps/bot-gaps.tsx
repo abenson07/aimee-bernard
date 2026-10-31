@@ -1,7 +1,6 @@
 "use client";
 
 import { useActionState } from "react";
-import Link from "next/link";
 import type { BotGapItem } from "@/lib/bot-gaps";
 import { updateBotContent } from "../actions";
 
@@ -60,16 +59,7 @@ export function BotGaps({ groups }: { groups: Group[] }) {
   const total = groups.reduce((sum, group) => sum + group.items.length, 0);
 
   return (
-    <>
-      <header className="topbar">
-        <div className="wordmark">Bot content gaps</div>
-        <div className="topbar-actions">
-          <Link href="/site" className="btn-secondary">
-            Back to the editor
-          </Link>
-        </div>
-      </header>
-      <main className="page">
+    <div className="page page-embedded">
         <p className="muted">
           {total} {total === 1 ? "item" : "items"} the &ldquo;Ask me a Q?&rdquo; bot answers poorly: no link, no description, a
           description under 40 characters, or one that starts &ldquo;Written by&rdquo;.
@@ -91,7 +81,6 @@ export function BotGaps({ groups }: { groups: Group[] }) {
             )}
           </section>
         ))}
-      </main>
-    </>
+    </div>
   );
 }
