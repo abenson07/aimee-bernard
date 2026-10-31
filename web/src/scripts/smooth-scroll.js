@@ -26,7 +26,7 @@ import Lenis from '../vendor/lenis.mjs';
       window.__lenis = undefined;
     }
     // Hold still whenever the page itself is locked (germ game).
-    if (lenis) (document.body.classList.contains('menu-open') || document.body.classList.contains('game-open')) ? lenis.stop() : lenis.start();
+    if (lenis) (document.body.classList.contains('menu-open') || document.body.classList.contains('game-open') || document.body.classList.contains('panel-open')) ? lenis.stop() : lenis.start();
   };
   new MutationObserver(sync).observe(document.body, { attributes: true, attributeFilter: ['class'] });
   desktop.addEventListener('change', sync);
