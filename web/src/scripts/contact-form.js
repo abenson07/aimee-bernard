@@ -9,6 +9,17 @@
   const setLabel = (t) => label.forEach((l) => { l.textContent = t; });
   const MAIL = 'aepbernard@gmail.com';
 
+  let sent = false;
+  // After a successful send the button stays on "Sent!" (disabled) until the visitor types again.
+  const resetSent = () => {
+    if (!sent) return;
+    sent = false;
+    btn.disabled = false; btn.classList.remove('is-sent'); setLabel('Send message');
+    status.hidden = true;
+  };
+  form.addEventListener('input', resetSent);
+  form.addEventListener('change', resetSent);
+
   const show = (kind, html) => { status.hidden = false; status.className = `contact__status is-${kind}`; status.innerHTML = html; };
 
   form.addEventListener('submit', async (e) => {
@@ -37,12 +48,14 @@
       const data = await res.json().catch(() => ({}));
       if (res.ok && data.success) {
         form.reset();
+        sent = true;
+        btn.classList.add('is-sent'); setLabel('Sent!');
         show('ok', 'Thanks! Your message is on its way to Aimee.');
       } else throw new Error(data.message || 'send failed');
     } catch (err) {
       show('error', `Something went wrong sending that. Please try again, or email <a href="mailto:${MAIL}">${MAIL}</a> directly.`);
     } finally {
-      btn.disabled = false; setLabel('Send message');
+      if (!sent) { btn.disabled = false; setLabel('Send message'); }
     }
   });
 })();
