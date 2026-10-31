@@ -48,6 +48,7 @@ const CATEGORIES: Record<string, { slug: string }> = {
 // Books box (above the filter): every Book, plus Educational Content marked "also show in Books".
 const isBook = (i: WorkItem) => i.kind === "book" || (i.kind === "educational-content" && i.alsoShown);
 const books = source.filter(isBook).map((i) => ({
+  id: i._id,
   title: i.title ?? "",
   meta: [i.venue, i.date].filter(Boolean).join(" · ") || null,
   description: i.description ?? null,
@@ -62,6 +63,7 @@ const items = gridSource.map((item) => {
   const cat = item.category ? CATEGORIES[item.category] : undefined;
   const href = item.url ?? item.fileUrl ?? null;
   return {
+    id: item._id,
     kind: item.kind!,
     kindLabel: KIND_LABELS[item.kind!] ?? item.kind!,
     category: cat?.slug ?? "none",
@@ -97,7 +99,7 @@ const counts = items.reduce<Record<string, number>>((acc, i) => ((acc[i.kind] = 
         {books.map((b) => {
           const Tag = b.href ? "a" : "div";
           return (
-            <Tag class="book-card" href={b.href ?? undefined} target={b.href ? "_blank" : undefined} rel={b.href ? "noopener" : undefined}>
+            <Tag class="book-card" data-doc={b.id} data-doc-type="contentItem" data-doc-label="Book" href={b.href ?? undefined} target={b.href ? "_blank" : undefined} rel={b.href ? "noopener" : undefined}>
               <h3 class="book-card__title">{b.title}</h3>
               {b.meta && <p class="book-card__meta">{b.meta}</p>}
               {b.description && <p class="book-card__text">{b.description}</p>}
@@ -191,6 +193,9 @@ const counts = items.reduce<Record<string, number>>((acc, i) => ((acc[i.kind] = 
         return (
           <Tag
             class:list={["work-card", item.photo && "has-photo"]}
+            data-doc={item.id}
+            data-doc-type="contentItem"
+            data-doc-label={item.kindLabel}
             data-category={item.category}
             data-kind={item.kind}
             href={item.href ?? undefined}
