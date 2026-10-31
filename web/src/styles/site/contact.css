@@ -53,3 +53,4 @@ body { overflow-x: hidden; }
 .contact__status.is-ok { color: #1f7a45; }
 .contact__status.is-error { color: #b3261e; }
 .contact__send:disabled { opacity: 0.6; cursor: progress; }
+.contact__send.is-sent:disabled { opacity: 0.85; cursor: default; }
