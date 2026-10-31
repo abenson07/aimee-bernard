@@ -208,6 +208,14 @@ export function Studio({
         setNoLink(false);
         post({ type: "scroll-to", y: scrollY.current });
       }
+      if (d.type === "navigate") {
+        // A link in the site's main navigation: open that page, same as the page switcher.
+        const target = pages.find(
+          (p) => p.path.replace(/\/+$/, "") === String(d.path).replace(/\/+$/, ""),
+        );
+        if (target && target.id !== currentId)
+          router.push(`/site?page=${target.slug}`);
+      }
       if (d.type === "scroll") scrollY.current = Number(d.y) || 0;
       if (d.type === "select") {
         setDoc(null);
@@ -246,7 +254,7 @@ export function Studio({
     };
     window.addEventListener("message", onMessage);
     return () => window.removeEventListener("message", onMessage);
-  }, [commitText, post, siteOrigin]);
+  }, [commitText, post, siteOrigin, pages, currentId, router]);
 
   useEffect(() => {
     setLinked(false);
