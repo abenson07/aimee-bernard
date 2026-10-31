@@ -4,7 +4,7 @@ import { verifySession } from "@/lib/dal";
 import { CONTENT_ITEM_FIELDS } from "@/lib/queries";
 import { sanityClient } from "@/lib/sanity";
 import type { ContentItem } from "@/lib/types";
-import { isSitePageId, isSlotKey } from "@/lib/site";
+import { isSitePageId, isSlotKey, sitePageTitle } from "@/lib/site";
 
 export type SlotValue = {
   _key: string;
@@ -74,7 +74,8 @@ export async function loadPage(id: string): Promise<PageState | null> {
     ),
   ]);
   const doc = draft ?? published;
-  if (!doc) return null;
+  // A page nobody has edited yet has no document; it starts empty (the page's code holds everything).
+  if (!doc) return { id, title: sitePageTitle(id), hasDraft: false, slots: [] };
   return {
     id,
     title: doc.title ?? id,
@@ -86,8 +87,11 @@ export async function loadPage(id: string): Promise<PageState | null> {
 /** Makes sure a private draft copy exists, so edits never touch the live page until Publish. */
 async function ensureDraft(id: string) {
   const published = await sanityClient.getDocument(id);
-  if (!published) throw new Error("That page is not set up yet.");
-  await sanityClient.createIfNotExists({ ...published, _id: draftId(id) });
+  if (published) {
+    await sanityClient.createIfNotExists({ ...published, _id: draftId(id) });
+  } else {
+    await sanityClient.createIfNotExists({ _id: draftId(id), _type: "sitePage", title: sitePageTitle(id), slots: [] });
+  }
 }
 
 /** Saves text to the draft. Text the page has never had edited before gets its slot added here

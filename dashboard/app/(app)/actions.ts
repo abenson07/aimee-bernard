@@ -160,7 +160,7 @@ export async function createContentItem(
     return { error: "That didn't save. Try again." };
   }
 
-  revalidatePath("/content");
+  revalidatePath("/site");
   return { ok: true };
 }
 
@@ -193,7 +193,7 @@ export async function answerQuestion(
     return { error: "That didn't save. Try again." };
   }
 
-  revalidatePath("/content");
+  revalidatePath("/site");
   return { ok: true, key };
 }
 
@@ -237,7 +237,7 @@ export async function reviewCategory(
     return { error: "That didn't save. Try again." };
   }
 
-  revalidatePath("/content");
+  revalidatePath("/site");
   return { ok: true, key: id };
 }
 
@@ -250,7 +250,7 @@ export async function deleteContentItem(id: string): Promise<{ error?: string } 
     return { error: "That didn't delete. Try again." };
   }
 
-  revalidatePath("/content");
+  revalidatePath("/site");
 }
 
 export async function updateContentItem(
@@ -369,7 +369,7 @@ export async function updateContentItem(
     return { error: "That didn't save. Try again." };
   }
 
-  revalidatePath("/content");
+  revalidatePath("/site");
   return { ok: true };
 }
 

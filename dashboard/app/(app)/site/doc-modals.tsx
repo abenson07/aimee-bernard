@@ -137,7 +137,7 @@ export function CourseGroupModal({
             <span className="label">Panel intro</span>
             <textarea
               className="input"
-              rows={3}
+              rows={6}
               value={f.intro}
               onChange={set("intro")}
             />
@@ -146,7 +146,7 @@ export function CourseGroupModal({
             <span className="label">Panel text</span>
             <textarea
               className="input"
-              rows={4}
+              rows={8}
               value={f.body}
               onChange={set("body")}
             />

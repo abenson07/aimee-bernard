@@ -3,7 +3,6 @@
 import { useMemo, useState, type MouseEvent } from "react";
 import Link from "next/link";
 import type { Category, ContentItem } from "@/lib/types";
-import { logout } from "./actions";
 import { ChevronRightIcon, PlusIcon, SearchIcon, UploadIcon } from "./icons";
 import { UploadModal } from "./upload-modal";
 import { QuizModal } from "./quiz-modal";
@@ -89,36 +88,6 @@ export function Dashboard({
 
   return (
     <>
-      {!embedded && (
-      <header className="topbar">
-        <div className="wordmark">Aimee Pugh Bernard</div>
-        <div className="topbar-actions">
-          <form action={logout}>
-            <button type="submit" className="btn-quiet">
-              Sign out
-            </button>
-          </form>
-          <Link href="/site" className="btn-secondary">
-            Edit site
-          </Link>
-          <Link href="/bot-gaps" className="btn-secondary">
-            Bot content gaps
-          </Link>
-          <Link href="/questionnaire" className="btn-secondary">
-            Voice &amp; Tone Questionnaire
-          </Link>
-          <button
-            type="button"
-            className="btn-primary"
-            onClick={() => setModal({ kind: "upload", categoryId: null })}
-          >
-            <UploadIcon />
-            Upload
-          </button>
-        </div>
-      </header>
-      )}
-
       <main className={embedded ? "page page-embedded" : "page"}>
         {categorizationEnabled && showCategoryOverview && (
         <div className="cat-grid">
@@ -197,6 +166,11 @@ export function Dashboard({
                 aria-label="Search content"
               />
             </label>
+            {embedded && (
+              <Link href="/bot-gaps" className="st-btn">
+                Bot content gaps
+              </Link>
+            )}
             {embedded && (
               <button type="button" className="st-btn primary" onClick={() => setModal({ kind: "upload", categoryId: null })}>
                 <UploadIcon />

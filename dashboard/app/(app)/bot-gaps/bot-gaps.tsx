@@ -64,8 +64,8 @@ export function BotGaps({ groups }: { groups: Group[] }) {
       <header className="topbar">
         <div className="wordmark">Bot content gaps</div>
         <div className="topbar-actions">
-          <Link href="/" className="btn-secondary">
-            Back to dashboard
+          <Link href="/site" className="btn-secondary">
+            Back to the editor
           </Link>
         </div>
       </header>

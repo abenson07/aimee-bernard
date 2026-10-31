@@ -623,8 +623,8 @@ function AccountMenu() {
       </button>
       {open && (
         <div className="st-menu" role="menu">
-          <Link className="st-menu-item" href="/content" role="menuitem">
-            Content log (full page)
+          <Link className="st-menu-item" href="/bot-gaps" role="menuitem">
+            Bot content gaps
           </Link>
           <Link className="st-menu-item" href="/questionnaire" role="menuitem">
             Voice &amp; Tone Questionnaire
@@ -1061,7 +1061,7 @@ function PhotoFields({
         </FieldLabel>
         <textarea
           className="st-input"
-          rows={2}
+          rows={5}
           value={draft}
           placeholder="What’s in the photo (read aloud to people who can’t see it)"
           onChange={(e) => setDraft(e.target.value)}

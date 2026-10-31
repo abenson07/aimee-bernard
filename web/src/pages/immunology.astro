@@ -10,9 +10,19 @@ import PapersSkeleton from "@/components/site/PapersSkeleton.astro";
 import "@/styles/site/shared.css";
 import "@/styles/site/immunology.css";
 import { getImage } from "astro:assets";
+import { getSitePage } from "@/lib/siteContent";
 import bwSrc from "@/assets/site/aimee-bw.png";
 
 const bwUrl = (await getImage({ src: bwSrc, format: "webp", width: 936 })).src;
+// Text and photos are editable in the dashboard's Site editor; the values here are the fallbacks.
+export const prerender = false;
+const site = await getSitePage("site-page-immunologist", Astro.request);
+site.applyCaching(Astro.response);
+const t = site.text;
+const e = site.edit;
+const slide = site.image("hero-photo", { src: "/site/photos/immu-911-slide.webp", pos: "50% 50%", alt: "Slide: the immune system as a mobile defense system of cells and proteins, with an ambulance labeled Immune Cell saying on my way" });
+const video = site.image("hero-photo-2", { src: "/site/photos/immu-911-video.webp", pos: "50% 40%", alt: "Aimee in the Immunology Explained video Activating the Immune System is Like Dialing 911" });
+const crosstalk = site.image("crosstalk-photo", { src: "/site/photos/substack-collage-1600.webp", pos: "50% 50%", alt: "" });
 ---
 
 <SiteLayout title="Immunologist">
@@ -23,15 +33,15 @@ const bwUrl = (await getImage({ src: bwSrc, format: "webp", width: 936 })).src;
 <section class="hero-split">
   <div class="wrap" style="padding:0">
     <div class="hero-split__head">
-      <h1 class="display hero-split__title">Why the immune system is worth understanding</h1>
-      <div class="hero-split__side is-info"><p>Aimee’s research asks how the body tells friend from foe, and what happens when it gets it wrong.</p></div>
+      <h1 class="display hero-split__title" {...e("hero-title")}>{t("hero-title", "Why the immune system is worth understanding")}</h1>
+      <div class="hero-split__side is-info"><p {...e("hero-blurb")}>{t("hero-blurb", "Aimee’s research asks how the body tells friend from foe, and what happens when it gets it wrong.")}</p></div>
     </div>
-    <div class="hero-split__media hero-split__media--landscape"><div><img src="/site/photos/immu-911-slide.webp" alt="Slide: the immune system as a mobile defense system of cells and proteins, with an ambulance labeled Immune Cell saying on my way" style="object-position:50% 50%"></div><div><a href="https://immunologyexplained.aai.org/videos/how-your-immune-system-acts-like-dialing-911/" target="_blank" rel="noopener" aria-label="Watch the video: Activating the Immune System is Like Dialing 911 (Immunology Explained)"><img src="/site/photos/immu-911-video.webp" alt="Aimee in the Immunology Explained video Activating the Immune System is Like Dialing 911" style="object-position:50% 40%"></a></div></div>
+    <div class="hero-split__media hero-split__media--landscape"><div {...e("hero-photo", "image")}><img src={slide.src} srcset={slide.srcset} alt={slide.alt} style={`object-position:${slide.pos}`}></div><div {...e("hero-photo-2", "image")}><a href="https://immunologyexplained.aai.org/videos/how-your-immune-system-acts-like-dialing-911/" target="_blank" rel="noopener" aria-label="Watch the video: Activating the Immune System is Like Dialing 911 (Immunology Explained)"><img src={video.src} srcset={video.srcset} alt={video.alt} style={`object-position:${video.pos}`}></a></div></div>
   </div>
 </section>
 
 <section class="mission-sec has-stats" aria-label="Mission and numbers">
-  <p class="mission mission--spread" data-mission>Every moment, your immune system answers one question: friend <span class="m-el m-cell" data-mx="14" data-my="10"><img src="/site/cells/t-cell.svg" alt=""></span> or foe? <span class="m-el m-cell m-cell--bad" data-mx="10" data-my="14"><img src="/site/cells/influenza.svg" alt=""></span> Most of the time, it gets it right. <span class="m-el m-cell" data-mx="12" data-my="9"><img src="/site/cells/antibody.svg" alt=""></span> But sometimes it gets confused, as in allergies and autoimmune diseases.</p>
+  <p class="mission mission--spread" data-mission><span {...e("mission-1")}>{t("mission-1", "Every moment, your immune system answers one question: friend")}</span> <span class="m-el m-cell" data-mx="14" data-my="10"><img src="/site/cells/t-cell.svg" alt=""></span> <span {...e("mission-2")}>{t("mission-2", "or foe?")}</span> <span class="m-el m-cell m-cell--bad" data-mx="10" data-my="14"><img src="/site/cells/influenza.svg" alt=""></span> <span {...e("mission-3")}>{t("mission-3", "Most of the time, it gets it right.")}</span> <span class="m-el m-cell" data-mx="12" data-my="9"><img src="/site/cells/antibody.svg" alt=""></span> <span {...e("mission-4")}>{t("mission-4", "But sometimes it gets confused, as in allergies and autoimmune diseases.")}</span></p>
   <div class="stats-row is-tight">
     <PaperStats server:defer><PaperStatsSkeleton slot="fallback" /></PaperStats>
   </div>
@@ -39,8 +49,8 @@ const bwUrl = (await getImage({ src: bwSrc, format: "webp", width: 936 })).src;
 
 <section class="awards-row awards-row--recog" aria-label="Awards and recognition">
   <div class="awards-row__head fade">
-    <span class="tag-chip">Recognition</span>
-    <h2 class="awards-row__title">Mentoring and outreach, recognized.</h2>
+    <span class="tag-chip" {...e("recognition-tag")}>{t("recognition-tag", "Recognition")}</span>
+    <h2 class="awards-row__title" {...e("recognition-title")}>{t("recognition-title", "Mentoring and outreach, recognized.")}</h2>
   </div>
   <div class="award-grid fade">
     <Awards server:defer variant="educator" group="outreach"><AwardsSkeleton slot="fallback" variant="educator" count={4} /></Awards>
@@ -48,7 +58,7 @@ const bwUrl = (await getImage({ src: bwSrc, format: "webp", width: 936 })).src;
 </section>
 
 <section class="papers wrap" aria-label="Papers">
-  <div class="papers__head fade"><span class="tag-chip">Research</span><h2 class="feature-pair__title">The papers behind the questions</h2></div>
+  <div class="papers__head fade"><span class="tag-chip" {...e("research-tag")}>{t("research-tag", "Research")}</span><h2 class="feature-pair__title" {...e("research-title")}>{t("research-title", "The papers behind the questions")}</h2></div>
   <ul class="papers__list fade">
     <Papers server:defer><PapersSkeleton slot="fallback" /></Papers>
   </ul>
@@ -57,12 +67,12 @@ const bwUrl = (await getImage({ src: bwSrc, format: "webp", width: 936 })).src;
 <section class="tlas-sec wrap" aria-label="Science Crosstalk">
   <div class="tlas tlas--slim">
     <div class="tlas__grid">
-      <div class="tlas__media fade"><img src="/site/photos/substack-collage-1600.webp" alt="" loading="lazy"></div>
+      <div class="tlas__media fade" {...e("crosstalk-photo", "image")}><img src={crosstalk.src} srcset={crosstalk.srcset} alt={crosstalk.alt} style={`object-position:${crosstalk.pos}`} loading="lazy"></div>
       <div class="tlas__content">
         <div class="tlas__copy">
-          <span class="tlas__label fade">Substack</span>
-          <h2 class="tlas__title fade">Science Crosstalk</h2>
-          <p class="tlas__sub fade">Where Science and Communication Collide.</p>
+          <span class="tlas__label fade" {...e("crosstalk-label")}>{t("crosstalk-label", "Substack")}</span>
+          <h2 class="tlas__title fade" {...e("crosstalk-title")}>{t("crosstalk-title", "Science Crosstalk")}</h2>
+          <p class="tlas__sub fade" {...e("crosstalk-sub")}>{t("crosstalk-sub", "Where Science and Communication Collide.")}</p>
         </div>
         <div class="tlas__foot fade">
           <a class="glass-btn" href="https://aimeepughbernard.substack.com/" target="_blank" rel="noopener"><span class="button-text-mask"><span class="button-text t1">Read on Substack</span><span class="button-text t2">Read on Substack</span></span></a>
@@ -94,4 +104,5 @@ const bwUrl = (await getImage({ src: bwSrc, format: "webp", width: 936 })).src;
 <script>
   import "@/scripts/shared.js";
 </script>
+{site.preview && <script is:inline src="/edit-mode.js" data-origin={site.dashboardOrigin}></script>}
 </SiteLayout>
