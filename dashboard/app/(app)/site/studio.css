@@ -230,6 +230,22 @@
   background: transparent;
   color: var(--st-dim);
 }
+a.st-rail-btn { text-decoration: none; }
+.st-icon-btn {
+  width: 26px;
+  height: 26px;
+  display: grid;
+  place-items: center;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--st-dim);
+  cursor: pointer;
+}
+.st-icon-btn:hover {
+  background: var(--st-hover);
+  color: var(--st-text);
+}
 .st-rail-btn:hover {
   background: var(--st-hover);
   color: var(--st-text);

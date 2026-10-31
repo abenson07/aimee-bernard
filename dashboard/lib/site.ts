@@ -7,6 +7,8 @@ export const SITE_PAGES = [
   { id: "site-page-educator", title: "Educator", path: "/educator" },
   { id: "site-page-communicator", title: "Communicator", path: "/communicator" },
   { id: "site-page-immunologist", title: "Immunologist", path: "/immunology" },
+  { id: "site-page-work", title: "Work", path: "/work" },
+  { id: "site-page-outreach", title: "Outreach", path: "/community-outreach" },
   { id: "site-page-contact", title: "Contact", path: "/contact" },
 ] as const;
 

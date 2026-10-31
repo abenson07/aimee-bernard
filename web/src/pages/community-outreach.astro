@@ -6,9 +6,22 @@ import "@/styles/site/outreach.css";
 import { getImage } from "astro:assets";
 import tlasTablesSrc from "@/assets/site/tlas-students-working-at-tables.jpg";
 import tlasJellySrc from "@/assets/site/tlas-jellybean-experiment1.jpg";
+import { getSitePage } from "@/lib/siteContent";
 
 const tlasTables = (await getImage({ src: tlasTablesSrc, format: "webp", width: 1400 })).src;
 const tlasJelly = (await getImage({ src: tlasJellySrc, format: "webp", width: 900 })).src;
+
+// Text and photos are editable in the dashboard's Site editor; the values here are the fallbacks.
+// (The link lists stay here: they are changed in the code, not the editor.)
+export const prerender = false;
+const site = await getSitePage("site-page-outreach", Astro.request);
+site.applyCaching(Astro.response);
+const t = site.text;
+const e = site.edit;
+const heroA = site.image("hero-photo", { src: "/site/photos/tlas-ask-a-q-1148.webp", pos: "50% 40%", alt: "Aimee in a classroom with students raising their hands" });
+const heroB = site.image("hero-photo-2", { src: "/site/photos/ttp-aimee-1600.webp", pos: "62% 50%", alt: "Aimee presenting to a room of teachers" });
+const tlasA = site.image("tlas-photo-1", { src: tlasTables, pos: "50% 50%", alt: "Students working at tables in a Think Like a Scientist session" });
+const tlasB = site.image("tlas-photo-2", { src: tlasJelly, pos: "50% 50%", alt: "A hands-on experiment in a Think Like a Scientist session" });
 
 // All text and links below are Aimee's, from her Outreach audit. Link names come from her notes; the two article
 // titles she didn't give (ECHO, START) are taken from the article addresses.
@@ -96,18 +109,18 @@ const cards = [
 
 <section class="o-hero wrap" aria-label="Aimee with students and teachers">
   <div class="o-hero__row">
-    <div class="o-hero__a fade"><img src="/site/photos/tlas-ask-a-q-1148.webp" alt="Aimee in a classroom with students raising their hands" style="object-position:50% 40%"></div>
-    <div class="o-hero__b fade"><img src="/site/photos/ttp-aimee-1600.webp" alt="Aimee presenting to a room of teachers" style="object-position:62% 50%"></div>
+    <div class="o-hero__a fade" {...e("hero-photo", "image")}><img src={heroA.src} srcset={heroA.srcset} alt={heroA.alt} style={`object-position:${heroA.pos}`}></div>
+    <div class="o-hero__b fade" {...e("hero-photo-2", "image")}><img src={heroB.src} srcset={heroB.srcset} alt={heroB.alt} style={`object-position:${heroB.pos}`}></div>
   </div>
 </section>
 
 <section class="o-programs wrap" aria-label="Aimee's outreach programs">
   <div class="o-head o-head--wide fade">
-    <span class="label">Outreach</span>
-    <h1 class="o-head__title">Science belongs to everyone, and curiosity starts early.</h1>
+    <span class="label" {...e("intro-label")}>{t("intro-label", "Outreach")}</span>
+    <h1 class="o-head__title" {...e("intro-title")}>{t("intro-title", "Science belongs to everyone, and curiosity starts early.")}</h1>
     <div class="o-head__text">
-      <p>Aimee has helped create several outreach programs that bring hands-on science to students from elementary school through high school, and to the teachers and families who support them. Together, they help young people see themselves as scientists, explore careers in healthcare and research, and understand how science connects to their health and their communities.</p>
-      <p class="o-head__strong">Each program is built on the belief that anyone can become a scientist.</p>
+      <p {...e("intro-1")}>{t("intro-1", "Aimee has helped create several outreach programs that bring hands-on science to students from elementary school through high school, and to the teachers and families who support them. Together, they help young people see themselves as scientists, explore careers in healthcare and research, and understand how science connects to their health and their communities.")}</p>
+      <p class="o-head__strong" {...e("intro-2")}>{t("intro-2", "Each program is built on the belief that anyone can become a scientist.")}</p>
     </div>
   </div>
   <div class="workon__row o-cards">
@@ -117,7 +130,7 @@ const cards = [
           <div class="workon__media">
             {c.img ? <img src={c.img} alt="" style={`object-position:${c.pos}`} loading="lazy" /> : <div class="photo-soon"><span>Photo coming</span></div>}
           </div>
-          <div class="workon__info"><h3 class="workon__name">{c.title.length > 34 ? c.tag : c.title}</h3><p class="workon__role">{c.role}</p></div>
+          <div class="workon__info"><h3 class="workon__name">{c.title.length > 34 ? t(`${c.id}-tag`, c.tag) : t(`${c.id}-title`, c.title)}</h3><p class="workon__role">{t(`${c.id}-role`, c.role)}</p></div>
         </a>
       ))
     }
@@ -128,15 +141,15 @@ const cards = [
 <section class="o-story wrap" id="tlas" aria-label={programs.tlas.title}>
   <div class="o-story__grid">
     <div class="o-story__copy">
-      <div class="o-head fade"><span class="label">{programs.tlas.tag}</span><h2 class="o-head__title">{programs.tlas.title}</h2></div>
-      <p class="o-story__text fade">{programs.tlas.text}</p>
+      <div class="o-head fade"><span class="label" {...e("tlas-tag")}>{t("tlas-tag", programs.tlas.tag)}</span><h2 class="o-head__title" {...e("tlas-title")}>{t("tlas-title", programs.tlas.title)}</h2></div>
+      <p class="o-story__text fade" {...e("tlas-text")}>{t("tlas-text", programs.tlas.text)}</p>
       <ul class="o-links fade">
         {programs.tlas.links.map((l) => { const p = parts(l.label); return <li><a href={l.href} target="_blank" rel="noopener"><span class="o-links__type">{p.type}</span><span class="o-links__title">{p.title}</span><span aria-hidden="true">↗</span></a></li>; })}
       </ul>
     </div>
-    <div class="o-story__a fade"><img src={tlasTables} alt="Students working at tables in a Think Like a Scientist session" loading="lazy" /></div>
-    <div class="o-story__b fade"><img src={tlasJelly} alt="A hands-on experiment in a Think Like a Scientist session" loading="lazy" /></div>
-    <div class="o-story__note fade"><span class="label">{programs.tlas.note[0]}</span><p>{programs.tlas.note[1]}</p></div>
+    <div class="o-story__a fade" {...e("tlas-photo-1", "image")}><img src={tlasA.src} srcset={tlasA.srcset} alt={tlasA.alt} style={`object-position:${tlasA.pos}`} loading="lazy" /></div>
+    <div class="o-story__b fade" {...e("tlas-photo-2", "image")}><img src={tlasB.src} srcset={tlasB.srcset} alt={tlasB.alt} style={`object-position:${tlasB.pos}`} loading="lazy" /></div>
+    <div class="o-story__note fade"><span class="label" {...e("tlas-note-label")}>{t("tlas-note-label", programs.tlas.note[0])}</span><p {...e("tlas-note")}>{t("tlas-note", programs.tlas.note[1])}</p></div>
   </div>
 </section>
 
@@ -145,8 +158,8 @@ const cards = [
   <div class="o-dark">
     <div class="o-dark__media fade"><div class="photo-soon photo-soon--dark"><span>Photo coming</span></div></div>
     <div class="o-dark__body">
-      <div class="o-head o-head--dark fade"><span class="label">{programs.reach.tag}</span><h2 class="o-head__title">{programs.reach.title}</h2></div>
-      <p class="o-dark__text fade">{programs.reach.text}</p>
+      <div class="o-head o-head--dark fade"><span class="label" {...e("reach-tag")}>{t("reach-tag", programs.reach.tag)}</span><h2 class="o-head__title" {...e("reach-title")}>{t("reach-title", programs.reach.title)}</h2></div>
+      <p class="o-dark__text fade" {...e("reach-text")}>{t("reach-text", programs.reach.text)}</p>
       <ul class="o-links o-links--dark fade">
         {programs.reach.links.map((l) => { const p = parts(l.label); return <li><a href={l.href} target="_blank" rel="noopener"><span class="o-links__type">{p.type}</span><span class="o-links__title">{p.title}</span><span aria-hidden="true">↗</span></a></li>; })}
       </ul>
@@ -156,7 +169,7 @@ const cards = [
 
 <!-- ECHO: approach cards layout -->
 <section class="o-approach wrap" id="echo" aria-label={programs.echo.title}>
-  <div class="o-head o-head--wide fade"><span class="label">{programs.echo.tag}</span><h2 class="o-head__title">{programs.echo.title}</h2><div class="o-head__text"><p>{programs.echo.text}</p></div></div>
+  <div class="o-head o-head--wide fade"><span class="label" {...e("echo-tag")}>{t("echo-tag", programs.echo.tag)}</span><h2 class="o-head__title" {...e("echo-title")}>{t("echo-title", programs.echo.title)}</h2><div class="o-head__text"><p {...e("echo-text")}>{t("echo-text", programs.echo.text)}</p></div></div>
   <div class="o-approach__grid">
     {
       programs.echo.groups.map((g, i) => (
@@ -164,8 +177,8 @@ const cards = [
           <div class="o-acard__ph" aria-hidden="true"><div class="photo-soon photo-soon--dark"><span>Photo coming</span></div></div>
           <span class="label o-acard__num">/ 0{i + 1}</span>
           <div class="o-acard__body">
-            <h3 class="o-acard__title">{g.name}</h3>
-            <p class="o-acard__blurb">{g.blurb}</p>
+            <h3 class="o-acard__title" {...e(`echo-group-${i + 1}-name`)}>{t(`echo-group-${i + 1}-name`, g.name)}</h3>
+            <p class="o-acard__blurb" {...e(`echo-group-${i + 1}-blurb`)}>{t(`echo-group-${i + 1}-blurb`, g.blurb)}</p>
             <ul class="o-links o-links--card">
               {g.links.map((l) => { const p = parts(l.label); return <li><a href={l.href} target="_blank" rel="noopener"><span class="o-links__type">{p.type}</span><span class="o-links__title">{p.title}</span><span aria-hidden="true">↗</span></a></li>; })}
             </ul>
@@ -180,15 +193,15 @@ const cards = [
 <section class="o-story o-story--last wrap" id="start" aria-label={programs.start.title}>
   <div class="o-story__grid">
     <div class="o-story__copy">
-      <div class="o-head fade"><span class="label">{programs.start.tag}</span><h2 class="o-head__title">{programs.start.title}</h2></div>
-      <p class="o-story__text fade">{programs.start.text}</p>
+      <div class="o-head fade"><span class="label" {...e("start-tag")}>{t("start-tag", programs.start.tag)}</span><h2 class="o-head__title" {...e("start-title")}>{t("start-title", programs.start.title)}</h2></div>
+      <p class="o-story__text fade" {...e("start-text")}>{t("start-text", programs.start.text)}</p>
       <ul class="o-links fade">
         {programs.start.links.map((l) => { const p = parts(l.label); return <li><a href={l.href} target="_blank" rel="noopener"><span class="o-links__type">{p.type}</span><span class="o-links__title">{p.title}</span><span aria-hidden="true">↗</span></a></li>; })}
       </ul>
     </div>
     <div class="o-story__a fade"><div class="photo-soon"><span>Photo coming</span></div></div>
     <div class="o-story__b fade"><div class="photo-soon"><span>Photo coming</span></div></div>
-    <div class="o-story__note fade"><span class="label">{programs.start.note[0]}</span><p>{programs.start.note[1]}</p></div>
+    <div class="o-story__note fade"><span class="label" {...e("start-note-label")}>{t("start-note-label", programs.start.note[0])}</span><p {...e("start-note")}>{t("start-note", programs.start.note[1])}</p></div>
   </div>
 </section>
 
@@ -213,4 +226,5 @@ const cards = [
 <script>
   import "@/scripts/shared.js";
 </script>
+{site.preview && <script is:inline src="/edit-mode.js" data-origin={site.dashboardOrigin}></script>}
 </SiteLayout>

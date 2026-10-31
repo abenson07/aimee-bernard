@@ -49,10 +49,12 @@ import {
   ElementH2Icon,
   ElementImageIcon,
   ElementPIcon,
+  BugIcon,
   ExternalIcon,
   InfoIcon,
   PagePanelIcon,
   PhoneIcon,
+  PlusIcon,
   TabletIcon,
   TextIcon,
   UploadCloudIcon,
@@ -139,6 +141,8 @@ export function Studio({
 
   const current = pages.find((p) => p.id === currentId) ?? pages[0];
   const showingContent = tab === "content";
+  // Bumped by the + in the Content log header; the list opens its Upload window when it changes.
+  const [uploadTick, setUploadTick] = useState(0);
 
   const post = useCallback(
     (msg: Record<string, unknown>) =>
@@ -348,6 +352,14 @@ export function Studio({
               <Icon size={20} />
             </button>
           ))}
+          <Link
+            href="/bot-gaps"
+            className="st-rail-btn"
+            aria-label="Bot content gaps"
+            data-tip="Bot content gaps"
+          >
+            <BugIcon size={20} />
+          </Link>
         </nav>
 
         {tab && (
@@ -363,6 +375,7 @@ export function Studio({
                 items={items}
                 kind={contentKind}
                 onKind={setContentKind}
+                onAdd={() => setUploadTick((n) => n + 1)}
               />
             )}
             {tab === "photos" && (
@@ -384,6 +397,7 @@ export function Studio({
             <div className="st-content">
               <Dashboard
                 embedded
+                uploadSignal={uploadTick}
                 categories={categories}
                 items={items}
                 categorizationEnabled={categorizationEnabled}
@@ -623,9 +637,6 @@ function AccountMenu() {
       </button>
       {open && (
         <div className="st-menu" role="menu">
-          <Link className="st-menu-item" href="/bot-gaps" role="menuitem">
-            Bot content gaps
-          </Link>
           <Link className="st-menu-item" href="/questionnaire" role="menuitem">
             Voice &amp; Tone Questionnaire
           </Link>
@@ -737,10 +748,12 @@ function ContentPanel({
   items,
   kind,
   onKind,
+  onAdd,
 }: {
   items: ContentItem[];
   kind: string | null;
   onKind: (k: string | null) => void;
+  onAdd: () => void;
 }) {
   const counts = useMemo(() => {
     const m = new Map<string, number>();
@@ -749,7 +762,17 @@ function ContentPanel({
   }, [items]);
   return (
     <>
-      <PanelHeader title="Content log" />
+      <PanelHeader title="Content log">
+        <button
+          type="button"
+          className="st-icon-btn"
+          aria-label="Add content"
+          data-tip="Add content"
+          onClick={onAdd}
+        >
+          <PlusIcon size={16} />
+        </button>
+      </PanelHeader>
       <div className="st-panel-body">
         <button
           type="button"
