@@ -59,7 +59,7 @@ export function BotGaps({ groups }: { groups: Group[] }) {
   const total = groups.reduce((sum, group) => sum + group.items.length, 0);
 
   return (
-    <div className="page page-embedded">
+    <div className="page page-embedded bot-gaps">
         <p className="muted">
           {total} {total === 1 ? "item" : "items"} the &ldquo;Ask me a Q?&rdquo; bot answers poorly: no link, no description, a
           description under 40 characters, or one that starts &ldquo;Written by&rdquo;.

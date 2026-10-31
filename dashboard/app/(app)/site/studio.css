@@ -860,3 +860,7 @@ a.st-rail-btn { text-decoration: none; }
   font-size: 12.5px;
   line-height: 1.45;
 }
+
+.st-content .bot-gaps {
+  padding: 16px 20px 32px;
+}

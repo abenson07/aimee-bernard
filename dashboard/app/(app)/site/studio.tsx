@@ -358,6 +358,65 @@ export function Studio({
         </div>
       </header>
 
+      {/* Full-width bar: the open tab sits above the panel it controls */}
+        <div className="st-toolbar">
+          <div className="st-crumbs st-tools" role="toolbar" aria-label="Panels">
+            <button
+              type="button"
+              className={`st-rail-btn ${!showingContent ? "on" : ""}`}
+              aria-pressed={!showingContent}
+              aria-label="Page"
+              data-tip="Page"
+              onClick={() => setTab(null)}
+            >
+              <PagePanelIcon size={18} />
+            </button>
+            {RAIL.map(({ id, title, Icon }) => (
+              <button
+                key={id}
+                type="button"
+                className={`st-rail-btn ${tab === id ? "on" : ""}`}
+                aria-pressed={tab === id}
+                aria-label={title}
+                data-tip={title}
+                onClick={() => setTab((t) => (t === id ? null : id))}
+              >
+                <Icon size={18} />
+              </button>
+            ))}
+          </div>
+          <div className="st-tb-mid">
+            <PageSwitcher pages={pages} current={current} />
+            <a
+              className="st-icon-btn"
+              href={`${siteOrigin}${current.path}`}
+              target="_blank"
+              rel="noreferrer"
+              title="View the live page in a new tab"
+            >
+              <ExternalIcon size={13} />
+            </a>
+          </div>
+          <div className="st-tb-side right">
+          {!showingContent && (
+            <div className="st-devices" role="group" aria-label="Screen size">
+              {DEVICES.map(({ id, title, Icon }) => (
+                <button
+                  key={id}
+                  type="button"
+                  className={device === id ? "on" : ""}
+                  aria-pressed={device === id}
+                  title={title}
+                  onClick={() => setDevice(id)}
+                >
+                  <Icon size={16} />
+                </button>
+              ))}
+            </div>
+          )}
+          </div>
+        </div>
+
       <div className="st-main">
         {(tab === "content" || tab === "photos") && (
           <aside
@@ -387,63 +446,6 @@ export function Studio({
         {/* Canvas */}
         <section className="st-center" aria-label="Page">
           {/* The page stays loaded under the content log, so coming back keeps its place and selection. */}
-          <div className="st-toolbar">
-            <div className="st-crumbs st-tools" role="toolbar" aria-label="Panels">
-              <button
-                type="button"
-                className={`st-rail-btn ${!showingContent ? "on" : ""}`}
-                aria-pressed={!showingContent}
-                aria-label="Page"
-                data-tip="Page"
-                onClick={() => setTab(null)}
-              >
-                <PagePanelIcon size={18} />
-              </button>
-              {RAIL.map(({ id, title, Icon }) => (
-                <button
-                  key={id}
-                  type="button"
-                  className={`st-rail-btn ${tab === id ? "on" : ""}`}
-                  aria-pressed={tab === id}
-                  aria-label={title}
-                  data-tip={title}
-                  onClick={() => setTab((t) => (t === id ? null : id))}
-                >
-                  <Icon size={18} />
-                </button>
-              ))}
-            </div>
-            <div className="st-tb-mid">
-              <PageSwitcher pages={pages} current={current} />
-              <a
-                className="st-icon-btn"
-                href={`${siteOrigin}${current.path}`}
-                target="_blank"
-                rel="noreferrer"
-                title="View the live page in a new tab"
-              >
-                <ExternalIcon size={13} />
-              </a>
-            </div>
-            <div className="st-tb-side right">
-            {!showingContent && (
-              <div className="st-devices" role="group" aria-label="Screen size">
-                {DEVICES.map(({ id, title, Icon }) => (
-                  <button
-                    key={id}
-                    type="button"
-                    className={device === id ? "on" : ""}
-                    aria-pressed={device === id}
-                    title={title}
-                    onClick={() => setDevice(id)}
-                  >
-                    <Icon size={16} />
-                  </button>
-                ))}
-              </div>
-            )}
-            </div>
-          </div>
           {tab === "gaps" && (
             <div className="st-content">
               <BotGaps groups={botGaps} />
