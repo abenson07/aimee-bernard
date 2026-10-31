@@ -299,21 +299,8 @@ export function Studio({
     <div className="studio">
       {/* Title bar */}
       <header className="st-titlebar">
-        <div className="st-tb-side">
-          <AccountMenu />
-        </div>
-        <div className="st-tb-mid">
-          <PageSwitcher pages={pages} current={current} />
-          <a
-            className="st-icon-btn"
-            href={`${siteOrigin}${current.path}`}
-            target="_blank"
-            rel="noreferrer"
-            title="View the live page in a new tab"
-          >
-            <ExternalIcon size={13} />
-          </a>
-        </div>
+        <AccountMenu />
+        <span className="st-spacer" />
         <div className="st-tb-side right">
         <span
           className={`st-dot ${page?.hasDraft ? "draft" : "live"}`}
@@ -403,6 +390,19 @@ export function Studio({
                 <BugIcon size={18} />
               </Link>
             </div>
+            <div className="st-tb-mid">
+              <PageSwitcher pages={pages} current={current} />
+              <a
+                className="st-icon-btn"
+                href={`${siteOrigin}${current.path}`}
+                target="_blank"
+                rel="noreferrer"
+                title="View the live page in a new tab"
+              >
+                <ExternalIcon size={13} />
+              </a>
+            </div>
+            <div className="st-tb-side right">
             {!showingContent && (
               <div className="st-devices" role="group" aria-label="Screen size">
                 {DEVICES.map(({ id, title, Icon }) => (
@@ -419,6 +419,7 @@ export function Studio({
                 ))}
               </div>
             )}
+            </div>
           </div>
           {showingContent && (
             <div className="st-content">
