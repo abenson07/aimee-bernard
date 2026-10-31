@@ -358,136 +358,140 @@ export function Studio({
         </div>
       </header>
 
-      {/* Full-width bar: the open tab sits above the panel it controls */}
-        <div className="st-toolbar">
-          <div className="st-crumbs st-tools" role="toolbar" aria-label="Panels">
-            <button
-              type="button"
-              className={`st-rail-btn ${!showingContent ? "on" : ""}`}
-              aria-pressed={!showingContent}
-              aria-label="Page"
-              data-tip="Page"
-              onClick={() => setTab(null)}
-            >
-              <PagePanelIcon size={18} />
-            </button>
-            {RAIL.map(({ id, title, Icon }) => (
+      <div className="st-body">
+        <div className="st-leftcol">
+        {/* The bar spans the left panel and the page; the inspector sits beside it, full height */}
+          <div className="st-toolbar">
+            <div className="st-crumbs st-tools" role="toolbar" aria-label="Panels">
               <button
-                key={id}
                 type="button"
-                className={`st-rail-btn ${tab === id ? "on" : ""}`}
-                aria-pressed={tab === id}
-                aria-label={title}
-                data-tip={title}
-                onClick={() => setTab((t) => (t === id ? null : id))}
+                className={`st-rail-btn ${!showingContent ? "on" : ""}`}
+                aria-pressed={!showingContent}
+                aria-label="Page"
+                data-tip="Page"
+                onClick={() => setTab(null)}
               >
-                <Icon size={18} />
+                <PagePanelIcon size={18} />
               </button>
-            ))}
-          </div>
-          <div className="st-tb-mid">
-            <PageSwitcher pages={pages} current={current} />
-            <a
-              className="st-icon-btn"
-              href={`${siteOrigin}${current.path}`}
-              target="_blank"
-              rel="noreferrer"
-              title="View the live page in a new tab"
-            >
-              <ExternalIcon size={13} />
-            </a>
-          </div>
-          <div className="st-tb-side right">
-          {!showingContent && (
-            <div className="st-devices" role="group" aria-label="Screen size">
-              {DEVICES.map(({ id, title, Icon }) => (
+              {RAIL.map(({ id, title, Icon }) => (
                 <button
                   key={id}
                   type="button"
-                  className={device === id ? "on" : ""}
-                  aria-pressed={device === id}
-                  title={title}
-                  onClick={() => setDevice(id)}
+                  className={`st-rail-btn ${tab === id ? "on" : ""}`}
+                  aria-pressed={tab === id}
+                  aria-label={title}
+                  data-tip={title}
+                  onClick={() => setTab((t) => (t === id ? null : id))}
                 >
-                  <Icon size={16} />
+                  <Icon size={18} />
                 </button>
               ))}
             </div>
-          )}
+            <div className="st-tb-mid">
+              <PageSwitcher pages={pages} current={current} />
+              <a
+                className="st-icon-btn"
+                href={`${siteOrigin}${current.path}`}
+                target="_blank"
+                rel="noreferrer"
+                title="View the live page in a new tab"
+              >
+                <ExternalIcon size={13} />
+              </a>
+            </div>
+            <div className="st-tb-side right">
+            {!showingContent && (
+              <div className="st-devices" role="group" aria-label="Screen size">
+                {DEVICES.map(({ id, title, Icon }) => (
+                  <button
+                    key={id}
+                    type="button"
+                    className={device === id ? "on" : ""}
+                    aria-pressed={device === id}
+                    title={title}
+                    onClick={() => setDevice(id)}
+                  >
+                    <Icon size={16} />
+                  </button>
+                ))}
+              </div>
+            )}
+            </div>
           </div>
-        </div>
 
-      <div className="st-main">
-        {(tab === "content" || tab === "photos") && (
-          <aside
-            className="st-panel left"
-            aria-label={RAIL.find((r) => r.id === tab)?.title}
-          >
+        <div className="st-main">
+          {(tab === "content" || tab === "photos") && (
+            <aside
+              className="st-panel left"
+              aria-label={RAIL.find((r) => r.id === tab)?.title}
+            >
+              {tab === "content" && (
+                <ContentPanel
+                  items={items}
+                  kind={contentKind}
+                  onKind={setContentKind}
+                  onAdd={() => setUploadTick((n) => n + 1)}
+                />
+              )}
+              {tab === "photos" && (
+                <PhotosPanel
+                  target={selection?.kind === "image" ? selection : null}
+                  onPick={(photo) =>
+                    selection?.kind === "image" &&
+                    setPicker({ key: selection.key, initial: photo })
+                  }
+                />
+              )}
+            </aside>
+          )}
+
+          {/* Canvas */}
+          <section className="st-center" aria-label="Page">
+            {/* The page stays loaded under the content log, so coming back keeps its place and selection. */}
+            {tab === "gaps" && (
+              <div className="st-content">
+                <BotGaps groups={botGaps} />
+              </div>
+            )}
             {tab === "content" && (
-              <ContentPanel
-                items={items}
-                kind={contentKind}
-                onKind={setContentKind}
-                onAdd={() => setUploadTick((n) => n + 1)}
-              />
+              <div className="st-content">
+                <Dashboard
+                  embedded
+                  uploadSignal={uploadTick}
+                  categories={categories}
+                  items={items}
+                  categorizationEnabled={categorizationEnabled}
+                  kind={contentKind}
+                  heading={
+                    contentKind
+                      ? (KIND_OPTIONS.find((k) => k.value === contentKind)
+                          ?.title ?? "Content")
+                      : "All content"
+                  }
+                  onChanged={() => router.refresh()}
+                />
+              </div>
             )}
-            {tab === "photos" && (
-              <PhotosPanel
-                target={selection?.kind === "image" ? selection : null}
-                onPick={(photo) =>
-                  selection?.kind === "image" &&
-                  setPicker({ key: selection.key, initial: photo })
-                }
-              />
-            )}
-          </aside>
-        )}
+            <div className="st-canvas" hidden={showingContent}>
+              <div className="st-frame-wrap">
+                <iframe
+                  ref={frame}
+                  key={frameKey}
+                  title="Your site"
+                  src={`${iframeBase}&t=${frameKey}`}
+                  className={`st-frame ${device}`}
+                  style={{
+                    width:
+                      DEVICES.find((d) => d.id === device)?.width ?? undefined,
+                  }}
+                />
+              </div>
+            </div>
+          </section>
 
-        {/* Canvas */}
-        <section className="st-center" aria-label="Page">
-          {/* The page stays loaded under the content log, so coming back keeps its place and selection. */}
-          {tab === "gaps" && (
-            <div className="st-content">
-              <BotGaps groups={botGaps} />
-            </div>
-          )}
-          {tab === "content" && (
-            <div className="st-content">
-              <Dashboard
-                embedded
-                uploadSignal={uploadTick}
-                categories={categories}
-                items={items}
-                categorizationEnabled={categorizationEnabled}
-                kind={contentKind}
-                heading={
-                  contentKind
-                    ? (KIND_OPTIONS.find((k) => k.value === contentKind)
-                        ?.title ?? "Content")
-                    : "All content"
-                }
-                onChanged={() => router.refresh()}
-              />
-            </div>
-          )}
-          <div className="st-canvas" hidden={showingContent}>
-            <div className="st-frame-wrap">
-              <iframe
-                ref={frame}
-                key={frameKey}
-                title="Your site"
-                src={`${iframeBase}&t=${frameKey}`}
-                className={`st-frame ${device}`}
-                style={{
-                  width:
-                    DEVICES.find((d) => d.id === device)?.width ?? undefined,
-                }}
-              />
-            </div>
-          </div>
-        </section>
-
-        {/* Inspector */}
+          {/* Inspector */}
+        </div>
+        </div>
         {!showingContent && (
           <aside className="st-panel right" aria-label="Selected item">
             {doc ? (
