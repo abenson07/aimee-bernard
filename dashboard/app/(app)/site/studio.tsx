@@ -565,7 +565,9 @@ export function Studio({
                 {noLink && !linked && (
                   <p className="st-empty-warn" role="alert">
                     This page isn’t connected to the editor, so nothing on it can
-                    be selected. The website needs the latest deploy, and its
+                    be selected. The editor is trying to load{" "}
+                    <strong>{siteOrigin}</strong>. If that isn’t the website you
+                    expect, fix SITE_URL. Otherwise the website needs the latest deploy, and its
                     DASHBOARD_ORIGIN must be this dashboard’s address. If you
                     clicked a link inside the page, pick the page again from the
                     menu at the top.
