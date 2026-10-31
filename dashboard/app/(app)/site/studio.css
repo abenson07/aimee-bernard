@@ -862,5 +862,7 @@ a.st-rail-btn { text-decoration: none; }
 }
 
 .st-content .bot-gaps {
+  max-width: 720px;
+  margin: 0 auto;
   padding: 16px 20px 32px;
 }
