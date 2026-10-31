@@ -156,6 +156,14 @@
   document.addEventListener('click', (e) => {
     if (allow) return;
     const target = e.target.closest ? e.target : e.target.parentElement;
+    // The main navigation (pill bar and phone menu) works: the editor opens that page. Nothing else on the page navigates.
+    const navLink = target.closest('.pill-nav__link, .menu-sheet__link');
+    if (navLink) {
+      e.preventDefault(); e.stopPropagation();
+      choose(null);
+      send({ type: 'navigate', path: new URL(navLink.href, location.href).pathname });
+      return;
+    }
     const el = target.closest(PICK);
     // Inside an open course sheet, its own buttons (close) work as normal; its links stay blocked.
     if (!el && target.closest('.cpanel')) {
