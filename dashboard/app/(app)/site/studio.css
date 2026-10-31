@@ -225,6 +225,18 @@
 }
 
 /* ---- Body ---- */
+/* Everything under the title bar: the bar + panels on the left, the inspector full height on the right. */
+.st-body {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+}
+.st-leftcol {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
 .st-main {
   flex: 1;
   min-height: 0;
