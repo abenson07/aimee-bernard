@@ -437,7 +437,7 @@ a.tedx__plate:hover .tedx__title { text-decoration: underline; text-underline-of
 .cpanel__scroll { position: absolute; inset: 0; overflow-y: auto; overscroll-behavior: contain; }
 .cpanel__close { position: absolute; z-index: 6; top: 24px; right: 24px; width: 48px; height: 48px; border-radius: 50%; background: rgba(18, 18, 18, 0.85); color: #fff; display: flex; align-items: center; justify-content: center; transition: transform 0.3s var(--ease); }
 .cpanel__close:hover { transform: rotate(90deg); }
-body.panel-open { overflow: hidden; }
+html:has(body.panel-open), body.panel-open { overflow: hidden; }
 body.panel-open .site-header, body.panel-open .pill-nav { z-index: 130; }
 #page { transition: transform 0.65s cubic-bezier(0.22, 0.8, 0.18, 1), filter 0.65s ease; transform-origin: 50% 0; }
 body.panel-open #page { transform: scale(0.97); filter: brightness(0.9); }
