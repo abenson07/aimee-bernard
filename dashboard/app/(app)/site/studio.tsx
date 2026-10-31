@@ -73,14 +73,13 @@ type Selection = {
   alt: string;
   extras: string[];
 };
-type RailTab = "pages" | "content" | "photos";
+type RailTab = "content" | "photos";
 
 const RAIL: {
   id: RailTab;
   title: string;
   Icon: (p: { size?: number }) => ReactNode;
 }[] = [
-  { id: "pages", title: "Pages", Icon: PagePanelIcon },
   { id: "content", title: "Content log", Icon: CmsIcon },
   { id: "photos", title: "Photos", Icon: AssetManagerIcon },
 ];
@@ -300,8 +299,22 @@ export function Studio({
     <div className="studio">
       {/* Title bar */}
       <header className="st-titlebar">
-        <AccountMenu />
-        <span className="st-spacer" />
+        <div className="st-tb-side">
+          <AccountMenu />
+        </div>
+        <div className="st-tb-mid">
+          <PageSwitcher pages={pages} current={current} />
+          <a
+            className="st-icon-btn"
+            href={`${siteOrigin}${current.path}`}
+            target="_blank"
+            rel="noreferrer"
+            title="View the live page in a new tab"
+          >
+            <ExternalIcon size={13} />
+          </a>
+        </div>
+        <div className="st-tb-side right">
         <span
           className={`st-dot ${page?.hasDraft ? "draft" : "live"}`}
           aria-hidden="true"
@@ -334,42 +347,15 @@ export function Studio({
         >
           Publish
         </button>
+        </div>
       </header>
 
       <div className="st-main">
-        {/* Icon rail: clicking the open panel's icon folds it away */}
-        <nav className="st-rail" aria-label="Panels">
-          {RAIL.map(({ id, title, Icon }) => (
-            <button
-              key={id}
-              type="button"
-              className={`st-rail-btn ${tab === id ? "on" : ""}`}
-              aria-pressed={tab === id}
-              aria-label={title}
-              data-tip={title}
-              onClick={() => setTab((t) => (t === id ? null : id))}
-            >
-              <Icon size={20} />
-            </button>
-          ))}
-          <Link
-            href="/bot-gaps"
-            className="st-rail-btn"
-            aria-label="Bot content gaps"
-            data-tip="Bot content gaps"
-          >
-            <BugIcon size={20} />
-          </Link>
-        </nav>
-
         {tab && (
           <aside
             className="st-panel left"
             aria-label={RAIL.find((r) => r.id === tab)?.title}
           >
-            {tab === "pages" && (
-              <PagesPanel pages={pages} currentId={currentId} />
-            )}
             {tab === "content" && (
               <ContentPanel
                 items={items}
@@ -393,6 +379,47 @@ export function Studio({
         {/* Canvas */}
         <section className="st-center" aria-label="Page">
           {/* The page stays loaded under the content log, so coming back keeps its place and selection. */}
+          <div className="st-toolbar">
+            <div className="st-crumbs st-tools" role="toolbar" aria-label="Panels">
+              {RAIL.map(({ id, title, Icon }) => (
+                <button
+                  key={id}
+                  type="button"
+                  className={`st-rail-btn ${tab === id ? "on" : ""}`}
+                  aria-pressed={tab === id}
+                  aria-label={title}
+                  data-tip={title}
+                  onClick={() => setTab((t) => (t === id ? null : id))}
+                >
+                  <Icon size={18} />
+                </button>
+              ))}
+              <Link
+                href="/bot-gaps"
+                className="st-rail-btn"
+                aria-label="Bot content gaps"
+                data-tip="Bot content gaps"
+              >
+                <BugIcon size={18} />
+              </Link>
+            </div>
+            {!showingContent && (
+              <div className="st-devices" role="group" aria-label="Screen size">
+                {DEVICES.map(({ id, title, Icon }) => (
+                  <button
+                    key={id}
+                    type="button"
+                    className={device === id ? "on" : ""}
+                    aria-pressed={device === id}
+                    title={title}
+                    onClick={() => setDevice(id)}
+                  >
+                    <Icon size={16} />
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
           {showingContent && (
             <div className="st-content">
               <Dashboard
@@ -413,34 +440,6 @@ export function Studio({
             </div>
           )}
           <div className="st-canvas" hidden={showingContent}>
-            <div className="st-toolbar">
-              <div className="st-crumbs">
-                <PageSwitcher pages={pages} current={current} />
-                <a
-                  className="st-icon-btn"
-                  href={`${siteOrigin}${current.path}`}
-                  target="_blank"
-                  rel="noreferrer"
-                  title="View the live page in a new tab"
-                >
-                  <ExternalIcon size={13} />
-                </a>
-              </div>
-              <div className="st-devices" role="group" aria-label="Screen size">
-                {DEVICES.map(({ id, title, Icon }) => (
-                  <button
-                    key={id}
-                    type="button"
-                    className={device === id ? "on" : ""}
-                    aria-pressed={device === id}
-                    title={title}
-                    onClick={() => setDevice(id)}
-                  >
-                    <Icon size={16} />
-                  </button>
-                ))}
-              </div>
-            </div>
             <div className="st-frame-wrap">
               <iframe
                 ref={frame}
@@ -709,38 +708,6 @@ function PanelHeader({
       <h2>{title}</h2>
       {children}
     </div>
-  );
-}
-
-function PagesPanel({
-  pages,
-  currentId,
-}: {
-  pages: PageTab[];
-  currentId: string;
-}) {
-  return (
-    <>
-      <PanelHeader title="Pages" />
-      <div className="st-panel-body">
-        {pages.map((p) => (
-          <Link
-            key={p.id}
-            href={`/site?page=${p.slug}`}
-            className={`st-row ${p.id === currentId ? "selected" : ""}`}
-          >
-            <span className="st-row-icon">
-              <PagePanelIcon size={16} />
-            </span>
-            <span className="st-row-label">{p.title}</span>
-            <span className="st-row-meta">{p.path}</span>
-          </Link>
-        ))}
-        <p className="st-panel-note">
-          More pages (Communicator, Immunologist, Contact) come next.
-        </p>
-      </div>
-    </>
   );
 }
 

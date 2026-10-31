@@ -56,6 +56,28 @@
   padding: 0 12px;
   border-bottom: 1px solid var(--st-line);
 }
+.st-tb-side {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.st-tb-side.right {
+  justify-content: flex-end;
+}
+.st-tb-mid {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+.st-tools {
+  gap: 2px;
+}
+.st-tools .st-rail-btn {
+  width: 30px;
+  height: 30px;
+}
 .st-spacer {
   flex: 1;
 }
@@ -258,9 +280,9 @@ a.st-rail-btn { text-decoration: none; }
 .st-rail-btn:hover::after {
   content: attr(data-tip);
   position: absolute;
-  left: calc(100% + 10px);
-  top: 50%;
-  transform: translateY(-50%);
+  left: 50%;
+  top: calc(100% + 6px);
+  transform: translateX(-50%);
   z-index: 60;
   padding: 6px 10px;
   border-radius: 7px;
