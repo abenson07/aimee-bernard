@@ -6,10 +6,16 @@ import "@/styles/site/outreach.css";
 import { getImage } from "astro:assets";
 import tlasTablesSrc from "@/assets/site/tlas-students-working-at-tables.jpg";
 import tlasJellySrc from "@/assets/site/tlas-jellybean-experiment1.jpg";
+import echoSrc from "@/assets/site/echo-collage.jpg";
+import startSrc from "@/assets/site/start-collage.jpg";
+import reachSrc from "@/assets/site/reach-collage.jpg";
 import { getSitePage } from "@/lib/siteContent";
 
 const tlasTables = (await getImage({ src: tlasTablesSrc, format: "webp", width: 1400 })).src;
 const tlasJelly = (await getImage({ src: tlasJellySrc, format: "webp", width: 900 })).src;
+const echoImg = (await getImage({ src: echoSrc, format: "webp", width: 1200 })).src;
+const startImg = (await getImage({ src: startSrc, format: "webp", width: 1200 })).src;
+const reachImg = (await getImage({ src: reachSrc, format: "webp", width: 1200 })).src;
 
 // Text and photos are editable in the dashboard's Site editor; the values here are the fallbacks.
 // (The link lists stay here: they are changed in the code, not the editor.)
@@ -21,6 +27,9 @@ const e = site.edit;
 const heroA = site.image("hero-photo", { src: "/site/photos/tlas-ask-a-q-1148.webp", pos: "50% 40%", alt: "Aimee in a classroom with students raising their hands" });
 const heroB = site.image("hero-photo-2", { src: "/site/photos/ttp-aimee-1600.webp", pos: "62% 50%", alt: "Aimee presenting to a room of teachers" });
 const tlasA = site.image("tlas-photo-1", { src: tlasTables, pos: "50% 50%", alt: "Students working at tables in a Think Like a Scientist session" });
+const echoPhoto = site.image("echo-photo", { src: echoImg, pos: "50% 50%", alt: "ECHO volunteers and students building stethoscopes, surgeon’s knot bracelets and more, labeled Cardiology, Surgery, Neurology and Pulmonology" });
+const reachPhoto = site.image("reach-photo", { src: reachImg, pos: "50% 30%", alt: "REACH collage: biodiversity matching, solar oven pizza boxes and the solar oven video" });
+const startPhoto = site.image("start-photo", { src: startImg, pos: "50% 50%", alt: "START students presenting research posters to visitors at the symposium" });
 const tlasB = site.image("tlas-photo-2", { src: tlasJelly, pos: "50% 50%", alt: "A hands-on experiment in a Think Like a Scientist session" });
 
 // All text and links below are Aimee's, from her Outreach audit. Link names come from her notes; the two article
@@ -50,6 +59,7 @@ const programs = {
     links: [
       { label: "YouTube: Solar Oven Pizza Box", href: "https://www.youtube.com/watch?v=MQywKKl7aRk&list=PLgEJUjPvTME_6vaaeFvpLzVHsYGP4MT-7&index=18&t=1s" },
       { label: "Curriculum on MERLOT", href: "https://www.merlot.org/merlot/viewMaterial.htm?id=773469511" },
+      { label: "Article: REACH journal publication", href: "https://www.tandfonline.com/doi/abs/10.1080/24758779.2025.2588485" },
     ] as Link[],
   },
   echo: {
@@ -70,7 +80,10 @@ const programs = {
         ],
       },
       { name: "Curriculum", blurb: "The ECHO lessons, free for teachers.", links: [{ label: "Curriculum on MERLOT", href: "https://www.merlot.org/merlot/viewMaterial.htm?id=773475218" }] },
-      { name: "Read", blurb: "A story from the program.", links: [{ label: "Article: From ice rinks to clinics, Ariel Davydov finds her path in medicine and education", href: "https://news.cuanschutz.edu/campus-community/from-ice-rinks-to-clinics-ariel-davydov-finds-her-path-in-medicine-and-education" }] },
+      { name: "Read", blurb: "A story from the program.", links: [
+        { label: "Article: From ice rinks to clinics, Ariel Davydov finds her path in medicine and education", href: "https://news.cuanschutz.edu/campus-community/from-ice-rinks-to-clinics-ariel-davydov-finds-her-path-in-medicine-and-education" },
+        { label: "Article: ECHO journal publication, Advances in Physiology Education", href: "https://journals.physiology.org/doi/full/10.1152/advan.00039.2026" },
+      ] },
     ] as { name: string; blurb: string; links: Link[] }[],
   },
   start: {
@@ -93,11 +106,11 @@ const parts = (label: string) => {
   return i > 0 ? { type: label.slice(0, i), title: label.slice(i + 2) } : { type: "", title: label };
 };
 
-const cards = [
+const cards: { id: string; tag: string; title: string; role: string; img?: string; pos?: string; photo?: typeof echoPhoto }[] = [
   { id: "tlas", ...programs.tlas, img: "/site/photos/tlas-ask-a-q-1148.webp", pos: "50% 40%" },
-  { id: "reach", ...programs.reach },
-  { id: "echo", ...programs.echo },
-  { id: "start", ...programs.start },
+  { id: "reach", ...programs.reach, photo: reachPhoto },
+  { id: "echo", ...programs.echo, photo: echoPhoto },
+  { id: "start", ...programs.start, photo: startPhoto },
 ];
 ---
 
@@ -127,8 +140,8 @@ const cards = [
     {
       cards.map((c) => (
         <a class="workon__card fade" href={`#${c.id}`}>
-          <div class="workon__media">
-            {c.img ? <img src={c.img} alt="" style={`object-position:${c.pos}`} loading="lazy" /> : <div class="photo-soon"><span>Photo coming</span></div>}
+          <div class="workon__media" {...(c.photo ? e(`${c.id}-photo`, "image") : {})}>
+            {c.photo ? <img src={c.photo.src} srcset={c.photo.srcset} alt={c.photo.alt} style={`object-position:${c.photo.pos}`} loading="lazy" /> : c.img ? <img src={c.img} alt="" style={`object-position:${c.pos}`} loading="lazy" /> : <div class="photo-soon"><span>Photo coming</span></div>}
           </div>
           <div class="workon__info"><h3 class="workon__name">{c.title.length > 34 ? t(`${c.id}-tag`, c.tag) : t(`${c.id}-title`, c.title)}</h3><p class="workon__role">{t(`${c.id}-role`, c.role)}</p></div>
         </a>
@@ -156,7 +169,7 @@ const cards = [
 <!-- REACH: dark editorial layout -->
 <section class="o-dark-sec wrap" id="reach" aria-label={programs.reach.title}>
   <div class="o-dark">
-    <div class="o-dark__media fade"><div class="photo-soon photo-soon--dark"><span>Photo coming</span></div></div>
+    <div class="o-dark__media fade" {...e("reach-photo", "image")}><img src={reachPhoto.src} srcset={reachPhoto.srcset} alt={reachPhoto.alt} style={`object-position:${reachPhoto.pos}`} loading="lazy" /></div>
     <div class="o-dark__body">
       <div class="o-head o-head--dark fade"><span class="label" {...e("reach-tag")}>{t("reach-tag", programs.reach.tag)}</span><h2 class="o-head__title" {...e("reach-title")}>{t("reach-title", programs.reach.title)}</h2></div>
       <p class="o-dark__text fade" {...e("reach-text")}>{t("reach-text", programs.reach.text)}</p>
@@ -199,7 +212,7 @@ const cards = [
         {programs.start.links.map((l) => { const p = parts(l.label); return <li><a href={l.href} target="_blank" rel="noopener"><span class="o-links__type">{p.type}</span><span class="o-links__title">{p.title}</span><span aria-hidden="true">↗</span></a></li>; })}
       </ul>
     </div>
-    <div class="o-story__a fade"><div class="photo-soon"><span>Photo coming</span></div></div>
+    <div class="o-story__a fade" {...e("start-photo", "image")}><img src={startPhoto.src} srcset={startPhoto.srcset} alt={startPhoto.alt} style={`object-position:${startPhoto.pos}`} loading="lazy" /></div>
     <div class="o-story__b fade"><div class="photo-soon"><span>Photo coming</span></div></div>
     <div class="o-story__note fade"><span class="label" {...e("start-note-label")}>{t("start-note-label", programs.start.note[0])}</span><p {...e("start-note")}>{t("start-note", programs.start.note[1])}</p></div>
   </div>
