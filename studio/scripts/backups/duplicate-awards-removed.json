@@ -1,0 +1,35 @@
+[
+ {
+  "_createdAt": "2026-10-20T13:14:15Z",
+  "_id": "RXvWhSu4bvU0zg15rccqgT",
+  "_rev": "2kc6g01YDGvU468In8JuQN",
+  "_type": "contentItem",
+  "_updatedAt": "2026-10-29T13:50:46Z",
+  "description": "Aimee was selected for her outstanding contribution to the STEM community through community service, public outreach, and science communication. This award was in 2023 (not 2024)",
+  "kind": "award",
+  "title": "Women in STEM Outstanding Community Service Award 2024",
+  "url": "https://www.cuanschutz.edu/services/women-in-stem/awards"
+ },
+ {
+  "_createdAt": "2026-10-20T13:15:54Z",
+  "_id": "ShrCJf5rHqXLRoWITt07do",
+  "_rev": "2kc6g01YDGvU468In8JuQN",
+  "_type": "contentItem",
+  "_updatedAt": "2026-10-29T13:50:46Z",
+  "description": "Aimee was selected for her outstanding leadership and support for trainees in STEM.",
+  "kind": "award",
+  "title": "Women in STEM Outstanding Mentorship Award 2024",
+  "url": "https://www.cuanschutz.edu/services/women-in-stem/awards"
+ },
+ {
+  "_createdAt": "2026-10-20T13:18:29Z",
+  "_id": "ShrCJf5rHqXLRoWITt0gPM",
+  "_rev": "2kc6g01YDGvU468In8JuQN",
+  "_type": "contentItem",
+  "_updatedAt": "2026-10-29T13:50:46Z",
+  "description": "The award honors a University of Colorado faculty member who, in addition to their university responsibilities, has, pro bono, provided exceptional educational, humanitarian, civics or other service in the community.",
+  "kind": "award",
+  "title": "CU Chase Faculty Community Service Award 2022",
+  "url": "https://connections.cu.edu/spotlights/chase-faculty-community-service-award-honors-educator-s-science-and-health-care-outreach"
+ }
+]

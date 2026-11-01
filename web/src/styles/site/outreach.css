@@ -54,6 +54,7 @@ section[id] { scroll-margin-top: 96px; }
 .o-dark-sec { padding: 24px 32px; max-width: 1800px; margin: 0 auto; }
 .o-dark { display: grid; grid-template-columns: 1fr 1fr; gap: 56px; align-items: center; padding: 48px; border-radius: 24px; background: #1e1c1b; color: #f7f7f2; }
 .o-dark__media { position: relative; aspect-ratio: 5 / 4; border-radius: 12px; overflow: hidden; }
+.o-dark__media img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
 .o-dark__body { display: flex; flex-direction: column; gap: 28px; align-items: flex-start; }
 .o-dark__text { margin: 0; font-size: 18px; line-height: 1.5; color: rgba(247, 247, 242, 0.7); }
 .o-head--dark .label { color: rgba(247, 247, 242, 0.64); }
