@@ -6,6 +6,7 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { verifySession } from "@/lib/dal";
 import { findDuplicateTitles } from "@/lib/duplicates";
+import { findBrokenLinks, type BrokenLink } from "@/lib/link-check";
 import { categorizationEnabled } from "@/lib/flags";
 import { sanityClient } from "@/lib/sanity";
 import { SESSION_COOKIE } from "@/lib/session";
@@ -355,6 +356,10 @@ export async function updateContentItem(
       unset.push("categoryNote");
     }
   }
+  if (formData.get("hiddenPresent") === "1") {
+    if (formData.get("hiddenFromSite") === "on") set.hiddenFromSite = true;
+    else unset.push("hiddenFromSite");
+  }
   if (typeof description === "string" && description.trim()) {
     set.description = description.trim();
   } else {
@@ -401,4 +406,45 @@ export async function updateBotContent(
   revalidatePath("/site");
   revalidatePath("/");
   return { ok: true, key: id };
+}
+
+/** Runs the link check for the "Check links" window. */
+export async function checkLinks(): Promise<{ broken?: BrokenLink[]; checked?: number; error?: string }> {
+  await verifySession();
+  try {
+    return await findBrokenLinks();
+  } catch {
+    return { error: "The check didn't run. Try again." };
+  }
+}
+
+/** Saves one replacement link straight away (the window has no Save button). A link can be replaced, never cleared. */
+export async function replaceLink(itemId: string, linkKey: string | null, url: string): Promise<{ error?: string; url?: string }> {
+  await verifySession();
+  const next = withHttps(url);
+  try {
+    if (!/^https?:\/\/[^\s/]+\.[^\s/]+/i.test(next) || new URL(next).hostname.length < 3) throw new Error("bad");
+  } catch {
+    return { error: "That doesn't look like a web address." };
+  }
+  try {
+    const patch = sanityClient.patch(itemId);
+    await (linkKey ? patch.set({ [`links[_key=="${linkKey}"].url`]: next }) : patch.set({ url: next })).commit();
+  } catch {
+    return { error: "That didn't save. Try again." };
+  }
+  revalidatePath("/site");
+  return { url: next };
+}
+
+/** Takes an item off the public website (or puts it back). Nothing is deleted. */
+export async function setItemHidden(itemId: string, hidden: boolean): Promise<{ error?: string }> {
+  await verifySession();
+  try {
+    await sanityClient.patch(itemId).set({ hiddenFromSite: hidden }).commit();
+  } catch {
+    return { error: "That didn't save. Try again." };
+  }
+  revalidatePath("/site");
+  return {};
 }

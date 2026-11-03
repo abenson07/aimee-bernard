@@ -36,6 +36,13 @@ export const contentItem = defineType({
       validation: (rule) => rule.required(),
     }),
     defineField({
+      name: "hiddenFromSite",
+      title: "Hide from the website",
+      description: "Turn on to take this off the public website without deleting it. Turn it off to show it again.",
+      type: "boolean",
+      initialValue: false,
+    }),
+    defineField({
       name: "alsoShown",
       title: "Also show in the other list",
       description:

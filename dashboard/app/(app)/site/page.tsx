@@ -9,6 +9,8 @@ import { Studio } from "./studio";
 import "./studio.css";
 
 export const metadata = { title: "Site editor" };
+/* The Check links window runs as an action on this page and visits ~160 sites. */
+export const maxDuration = 60;
 
 type CategoryRow = Omit<Category, "pending"> & {
   refinementQA?: RefinementQuestion[];

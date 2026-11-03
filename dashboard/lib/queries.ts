@@ -7,6 +7,7 @@ export const CONTENT_ITEM_FIELDS = `
   venue,
   date,
   alsoShown,
+  hiddenFromSite,
   url,
   "firstLinkUrl": links[0].url,
   links[]{_key, label, url},

@@ -153,6 +153,12 @@ export function ItemModal({
             </label>
           )}
 
+          <label className="field field-check">
+            <input type="hidden" name="hiddenPresent" value="1" />
+            <input type="checkbox" name="hiddenFromSite" defaultChecked={Boolean(item.hiddenFromSite)} />
+            <span>Hide from the website</span>
+          </label>
+
           <label className="field">
             <span className="label">
               Venue <span className="opt-tag">— optional</span>
