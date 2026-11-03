@@ -7,12 +7,14 @@ import { UploadModal } from "./upload-modal";
 import { QuizModal } from "./quiz-modal";
 import { ItemModal } from "./item-modal";
 import { CategoryLedgerView } from "./category-ledger";
+import { LinkCheckModal } from "./link-check-modal";
 
 type Modal =
   | { kind: "upload"; categoryId: string | null }
   | { kind: "quiz"; category: Category }
   | { kind: "item"; item: ContentItem }
   | { kind: "review" }
+  | { kind: "links" }
   | null;
 
 function SourceCell({ item }: { item: ContentItem }) {
@@ -171,6 +173,9 @@ export function Dashboard({
                 aria-label="Search content"
               />
             </label>
+            <button type="button" className={embedded ? "st-btn" : "btn-secondary"} onClick={() => setModal({ kind: "links" })}>
+              Check links
+            </button>
           </div>
 
           {visible.length > 0 ? (
@@ -198,7 +203,7 @@ export function Dashboard({
                   >
                     <td>
                       <div className="cell cell-stack">
-                        <span className="row-title">{item.title}</span>
+                        <span className="row-title">{item.title}{item.hiddenFromSite && <span className="chip" style={{ marginLeft: 8 }}>Hidden</span>}</span>
                         <span className="row-desc">{item.description || "—"}</span>
                       </div>
                     </td>
@@ -257,6 +262,8 @@ export function Dashboard({
           onClose={close}
         />
       )}
+
+      {modal?.kind === "links" && <LinkCheckModal onClose={close} />}
 
       {modal?.kind === "review" && categorizationEnabled && (
         <CategoryLedgerView items={items} categories={categories} onClose={close} />

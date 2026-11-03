@@ -16,7 +16,7 @@ export async function getRecentDocuments() {
   return sanityClient.fetch(DOCUMENTS_QUERY);
 }
 
-const WORK_ITEMS_QUERY = defineQuery(`*[_type == "contentItem" && defined(kind)] | order(_createdAt asc){
+const WORK_ITEMS_QUERY = defineQuery(`*[_type == "contentItem" && hiddenFromSite != true && defined(kind)] | order(_createdAt asc){
   _id, title, kind, venue, date, alsoShown, description, "url": coalesce(url, links[0].url), "fileUrl": file.asset->url, "image": image.asset->url, "category": category->name
 }`);
 
@@ -91,7 +91,7 @@ async function withSnapshot(read: () => Promise<CardItem[]>, pick: (rows: Snapsh
 /** Press items, most recently updated first. */
 export function getPressItems(limit: number): Promise<CardItem[]> {
   return withSnapshot(
-    () => sanityClient.fetch(`*[_type == "contentItem" && kind == "press-mentions"] | order(_updatedAt desc)[0...$limit]{ ${CARD_FIELDS} }`, { limit }),
+    () => sanityClient.fetch(`*[_type == "contentItem" && hiddenFromSite != true && kind == "press-mentions"] | order(_updatedAt desc)[0...$limit]{ ${CARD_FIELDS} }`, { limit }),
     (rows) => rows.filter((r) => r.kind === "press-mentions").slice(0, limit),
   );
 }
@@ -103,7 +103,7 @@ export function getSciCommItems(limit: number): Promise<CardItem[]> {
   return withSnapshot(
     () =>
       sanityClient.fetch(
-        `*[_type == "contentItem" && category->name == "Science Communicator" && kind in $kinds] | order(_updatedAt desc)[0...$limit]{ ${CARD_FIELDS} }`,
+        `*[_type == "contentItem" && hiddenFromSite != true && category->name == "Science Communicator" && kind in $kinds] | order(_updatedAt desc)[0...$limit]{ ${CARD_FIELDS} }`,
         { limit, kinds: SCI_COMM_KINDS },
       ),
     (rows) => rows.filter((r) => r.category === "Science Communicator" && SCI_COMM_KINDS.includes(r.kind ?? "")).slice(0, limit),
@@ -113,7 +113,7 @@ export function getSciCommItems(limit: number): Promise<CardItem[]> {
 /** The item switched on as "Feature on Communicator page" (most recently updated wins). */
 export async function getFeaturedCommunicatorItem(): Promise<CardItem | null> {
   try {
-    return await sanityClient.fetch(`*[_type == "contentItem" && featuredOnCommunicator == true] | order(_updatedAt desc)[0]{ ${CARD_FIELDS} }`);
+    return await sanityClient.fetch(`*[_type == "contentItem" && hiddenFromSite != true && featuredOnCommunicator == true] | order(_updatedAt desc)[0]{ ${CARD_FIELDS} }`);
   } catch (err) {
     console.warn("Sanity read failed for the featured item.", err);
     return null;
@@ -135,7 +135,7 @@ export function getAwards(group: AwardGroup = "teaching"): Promise<CardItem[]> {
   return withSnapshot(
     async () => {
       const items: CardItem[] = await sanityClient.fetch(
-        `*[_type == "contentItem" && kind == "award" && coalesce(awardGroup, "teaching") == $group]{ ${CARD_FIELDS} }`,
+        `*[_type == "contentItem" && hiddenFromSite != true && kind == "award" && coalesce(awardGroup, "teaching") == $group]{ ${CARD_FIELDS} }`,
         { group },
       );
       return newestSix(items);
@@ -158,7 +158,7 @@ export function getPapers(): Promise<CardItem[]> {
     return [...seen.values()];
   };
   return withSnapshot(
-    async () => dedupe(await sanityClient.fetch(`*[_type == "contentItem" && kind == "research-publication" && defined(title)]{ ${CARD_FIELDS} }`)),
+    async () => dedupe(await sanityClient.fetch(`*[_type == "contentItem" && hiddenFromSite != true && kind == "research-publication" && defined(title)]{ ${CARD_FIELDS} }`)),
     (rows) => rows.filter((r) => r.kind === "research-publication" && r.title),
   );
 }

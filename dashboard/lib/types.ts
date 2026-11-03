@@ -48,6 +48,7 @@ export interface ContentItem {
   venue?: string;
   date?: string;
   alsoShown?: boolean;
+  hiddenFromSite?: boolean;
   url?: string;
   firstLinkUrl?: string;
   links?: ContentLink[];

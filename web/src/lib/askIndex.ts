@@ -25,7 +25,7 @@ export type AskRecord = {
   parent: string | null;
 };
 
-const WORK_QUERY = `*[_type == "contentItem" && defined(kind)]{
+const WORK_QUERY = `*[_type == "contentItem" && hiddenFromSite != true && defined(kind)]{
   _id, title, kind, venue, date, description,
   "href": coalesce(url, links[0].url, file.asset->url),
   "category": category->name,
