@@ -8,6 +8,9 @@ import tlasTablesSrc from "@/assets/site/tlas-students-working-at-tables.jpg";
 import tlasJellySrc from "@/assets/site/tlas-jellybean-experiment1.jpg";
 import echoSrc from "@/assets/site/echo-collage.jpg";
 import startSrc from "@/assets/site/start-collage.jpg";
+import startPosterSrc from "@/assets/site/start-poster.jpg";
+import echoCurriculumSrc from "@/assets/site/echo-curriculum.jpg";
+import echoReadSrc from "@/assets/site/echo-read.jpg";
 import reachSrc from "@/assets/site/reach-collage.jpg";
 import { getSitePage } from "@/lib/siteContent";
 
@@ -15,6 +18,9 @@ const tlasTables = (await getImage({ src: tlasTablesSrc, format: "webp", width: 
 const tlasJelly = (await getImage({ src: tlasJellySrc, format: "webp", width: 900 })).src;
 const echoImg = (await getImage({ src: echoSrc, format: "webp", width: 1200 })).src;
 const startImg = (await getImage({ src: startSrc, format: "webp", width: 1200 })).src;
+const startPosterImg = (await getImage({ src: startPosterSrc, format: "webp", width: 1200 })).src;
+const echoCurriculumImg = (await getImage({ src: echoCurriculumSrc, format: "webp", width: 1000 })).src;
+const echoReadImg = (await getImage({ src: echoReadSrc, format: "webp", width: 1000 })).src;
 const reachImg = (await getImage({ src: reachSrc, format: "webp", width: 1200 })).src;
 
 // Text and photos are editable in the dashboard's Site editor; the values here are the fallbacks.
@@ -30,6 +36,12 @@ const tlasA = site.image("tlas-photo-1", { src: tlasTables, pos: "50% 50%", alt:
 const echoPhoto = site.image("echo-photo", { src: echoImg, pos: "50% 50%", alt: "ECHO volunteers and students building stethoscopes, surgeon’s knot bracelets and more, labeled Cardiology, Surgery, Neurology and Pulmonology" });
 const reachPhoto = site.image("reach-photo", { src: reachImg, pos: "50% 30%", alt: "REACH collage: biodiversity matching, solar oven pizza boxes and the solar oven video" });
 const startPhoto = site.image("start-photo", { src: startImg, pos: "50% 50%", alt: "START students presenting research posters to visitors at the symposium" });
+const startPoster = site.image("start-photo-2", { src: startPosterImg, pos: "40% 35%", alt: "A START student explaining his research poster to visitors" });
+const echoCards = [
+  null,
+  site.image("echo-group-2-photo", { src: echoCurriculumImg, pos: "50% 45%", alt: "ECHO, Exploring Careers in Healthcare and Onward: Educational Curriculum" }),
+  site.image("echo-group-3-photo", { src: echoReadImg, pos: "50% 30%", alt: "Advances in Physiology Education article: Exploring Careers in Healthcare and Onward (ECHO)" }),
+];
 const tlasB = site.image("tlas-photo-2", { src: tlasJelly, pos: "50% 50%", alt: "A hands-on experiment in a Think Like a Scientist session" });
 
 // All text and links below are Aimee's, from her Outreach audit. Link names come from her notes; the two article
@@ -187,7 +199,7 @@ const cards: { id: string; tag: string; title: string; role: string; img?: strin
     {
       programs.echo.groups.map((g, i) => (
         <article class="o-acard fade">
-          <div class="o-acard__ph" aria-hidden="true"><div class="photo-soon photo-soon--dark"><span>Photo coming</span></div></div>
+          <div class="o-acard__ph" aria-hidden="true" {...(echoCards[i] ? e(`echo-group-${i + 1}-photo`, "image") : {})}>{echoCards[i] ? <img src={echoCards[i].src} srcset={echoCards[i].srcset} alt="" style={`object-position:${echoCards[i].pos}`} loading="lazy" /> : <div class="photo-soon photo-soon--dark"><span>Photo coming</span></div>}</div>
           <span class="label o-acard__num">/ 0{i + 1}</span>
           <div class="o-acard__body">
             <h3 class="o-acard__title" {...e(`echo-group-${i + 1}-name`)}>{t(`echo-group-${i + 1}-name`, g.name)}</h3>
@@ -213,7 +225,7 @@ const cards: { id: string; tag: string; title: string; role: string; img?: strin
       </ul>
     </div>
     <div class="o-story__a fade" {...e("start-photo", "image")}><img src={startPhoto.src} srcset={startPhoto.srcset} alt={startPhoto.alt} style={`object-position:${startPhoto.pos}`} loading="lazy" /></div>
-    <div class="o-story__b fade"><div class="photo-soon"><span>Photo coming</span></div></div>
+    <div class="o-story__b fade" {...e("start-photo-2", "image")}><img src={startPoster.src} srcset={startPoster.srcset} alt={startPoster.alt} style={`object-position:${startPoster.pos}`} loading="lazy" /></div>
     <div class="o-story__note fade"><span class="label" {...e("start-note-label")}>{t("start-note-label", programs.start.note[0])}</span><p {...e("start-note")}>{t("start-note", programs.start.note[1])}</p></div>
   </div>
 </section>
