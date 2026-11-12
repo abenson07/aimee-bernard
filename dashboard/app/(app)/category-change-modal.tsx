@@ -2,7 +2,11 @@
 
 import { useActionState, useEffect, useState } from "react";
 import type { Category, ContentItem } from "@/lib/types";
+import { guardAction } from "@/lib/guard";
 import { reviewCategory } from "./actions";
+import { useToast } from "./toast";
+
+const reviewGuarded = guardAction(reviewCategory);
 import { itemContext } from "./category-suggestion";
 import { ModalShell } from "./modal-shell";
 
@@ -15,12 +19,16 @@ export function CategoryChangeModal({
   categories: Category[];
   onClose: () => void;
 }) {
-  const [state, formAction, pending] = useActionState(reviewCategory, undefined);
+  const [state, formAction, pending] = useActionState(reviewGuarded, undefined);
+  const toast = useToast();
   const [primary, setPrimary] = useState("");
 
   useEffect(() => {
-    if (state?.ok) onClose();
-  }, [state, onClose]);
+    if (state?.ok) {
+      toast.success(`Moved “${item.title}” to its new category.`);
+      onClose();
+    }
+  }, [state, onClose, toast, item.title]);
 
   const primaryOptions = categories.filter((category) => category._id !== item.categoryId);
   const secondaryOptions = categories.filter((category) => category._id !== primary);

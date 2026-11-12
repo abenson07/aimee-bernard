@@ -11,7 +11,7 @@ import { categorizationEnabled } from "@/lib/flags";
 import { sanityClient } from "@/lib/sanity";
 import { SESSION_COOKIE } from "@/lib/session";
 import { normalizeTitle } from "@/lib/titles";
-import type { DuplicateMatch } from "@/lib/types";
+import { KIND_OPTIONS, type DuplicateMatch } from "@/lib/types";
 import { withHttps } from "@/lib/url";
 
 export type FormState =
@@ -102,9 +102,16 @@ export async function createContentItem(
   const body = formData.get("body");
   const categoryId = formData.get("category");
   const description = formData.get("description");
+  const kind = formData.get("kind");
 
   if (typeof title !== "string" || !title.trim()) {
     return { error: "Give this a title." };
+  }
+  /* Without a kind the item is saved but never shows in any list (the log
+     filters by kind, and so does the website), which looks like the upload
+     silently failed. */
+  if (typeof kind !== "string" || !KIND_OPTIONS.some((option) => option.value === kind)) {
+    return { error: "Pick what kind of content this is." };
   }
   if (categorizationEnabled && (typeof categoryId !== "string" || !categoryId)) {
     return { error: "Pick a category." };
@@ -136,6 +143,7 @@ export async function createContentItem(
   const doc: { _type: string } & Record<string, unknown> = {
     _type: "contentItem",
     title: title.trim(),
+    kind,
   };
 
   if (categorizationEnabled && typeof categoryId === "string" && categoryId) {
@@ -157,7 +165,8 @@ export async function createContentItem(
     }
 
     await sanityClient.create(doc);
-  } catch {
+  } catch (error) {
+    console.error("createContentItem failed:", error);
     return { error: "That didn't save. Try again." };
   }
 
@@ -190,7 +199,8 @@ export async function answerQuestion(
         [`refinementQA[_key=="${key}"].answeredAt`]: new Date().toISOString(),
       })
       .commit();
-  } catch {
+  } catch (error) {
+    console.error("answerQuestion failed:", error);
     return { error: "That didn't save. Try again." };
   }
 
@@ -234,7 +244,8 @@ export async function reviewCategory(
     let patch = sanityClient.patch(id).set(set);
     if (unset.length) patch = patch.unset(unset);
     await patch.commit();
-  } catch {
+  } catch (error) {
+    console.error("reviewCategory failed:", error);
     return { error: "That didn't save. Try again." };
   }
 
@@ -247,7 +258,8 @@ export async function deleteContentItem(id: string): Promise<{ error?: string } 
 
   try {
     await sanityClient.delete(id);
-  } catch {
+  } catch (error) {
+    console.error("deleteContentItem failed:", error);
     return { error: "That didn't delete. Try again." };
   }
 
@@ -329,7 +341,8 @@ export async function updateContentItem(
     try {
       const asset = await sanityClient.assets.upload("file", file, { filename: file.name });
       set.file = { _type: "file", asset: { _type: "reference", _ref: asset._id } };
-    } catch {
+    } catch (error) {
+      console.error("updateContentItem failed:", error);
       return { error: "That file didn't upload. Try again." };
     }
   }
@@ -370,7 +383,8 @@ export async function updateContentItem(
     let patch = sanityClient.patch(id).set(set);
     if (unset.length) patch = patch.unset(unset);
     await patch.commit();
-  } catch {
+  } catch (error) {
+    console.error("updateContentItem failed:", error);
     return { error: "That didn't save. Try again." };
   }
 
@@ -399,7 +413,8 @@ export async function updateBotContent(
 
   try {
     await sanityClient.patch(id).set(set).commit();
-  } catch {
+  } catch (error) {
+    console.error("updateBotContent failed:", error);
     return { error: "That didn't save. Try again." };
   }
 
@@ -413,7 +428,8 @@ export async function checkLinks(): Promise<{ broken?: BrokenLink[]; checked?: n
   await verifySession();
   try {
     return await findBrokenLinks();
-  } catch {
+  } catch (error) {
+    console.error("checkLinks failed:", error);
     return { error: "The check didn't run. Try again." };
   }
 }
@@ -430,7 +446,8 @@ export async function replaceLink(itemId: string, linkKey: string | null, url: s
   try {
     const patch = sanityClient.patch(itemId);
     await (linkKey ? patch.set({ [`links[_key=="${linkKey}"].url`]: next }) : patch.set({ url: next })).commit();
-  } catch {
+  } catch (error) {
+    console.error("replaceLink failed:", error);
     return { error: "That didn't save. Try again." };
   }
   revalidatePath("/site");
@@ -442,7 +459,8 @@ export async function setItemHidden(itemId: string, hidden: boolean): Promise<{ 
   await verifySession();
   try {
     await sanityClient.patch(itemId).set({ hiddenFromSite: hidden }).commit();
-  } catch {
+  } catch (error) {
+    console.error("setItemHidden failed:", error);
     return { error: "That didn't save. Try again." };
   }
   revalidatePath("/site");

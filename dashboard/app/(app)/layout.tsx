@@ -1,6 +1,7 @@
 import { verifySession } from "@/lib/dal";
+import { ToastProvider } from "./toast";
 
 export default async function AppLayout({ children }: { children: React.ReactNode }) {
   await verifySession();
-  return <>{children}</>;
+  return <ToastProvider>{children}</ToastProvider>;
 }

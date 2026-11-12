@@ -18,11 +18,14 @@ import {
 } from "react";
 import type { Category, ContentItem } from "@/lib/types";
 import { KIND_OPTIONS } from "@/lib/types";
+import { callAction } from "@/lib/guard";
+import { fileTooBig } from "@/lib/upload";
 import { logout } from "../actions";
 import { Dashboard } from "../dashboard";
 import { BotGaps } from "../bot-gaps/bot-gaps";
 import { ItemModal } from "../item-modal";
 import { ModalShell } from "../modal-shell";
+import { useToast } from "../toast";
 import {
   discardDraft,
   listPhotos,
@@ -129,6 +132,7 @@ export function Studio({
   const [status, setStatus] = useState("");
   const [error, setError] = useState("");
   const [pending, startTransition] = useTransition();
+  const toast = useToast();
   const [tab, setTab] = useState<RailTab | null>(null);
   const [contentKind, setContentKind] = useState<string | null>(null);
   const [device, setDevice] = useState<Device>("desktop");
@@ -174,18 +178,25 @@ export function Studio({
       setError("");
       setStatus("Saving…");
       startTransition(async () => {
-        const r = await work();
+        const r = await callAction(work);
         if (!r.ok) {
-          setError((r as { error: string }).error);
+          const message = (r as { error: string }).error;
+          setError(message);
           setStatus("");
+          toast.error(message);
           return;
         }
-        setPage(await loadPage(currentId));
+        try {
+          setPage(await loadPage(currentId));
+        } catch {
+          /* The save went through; the panel just didn't refresh. */
+        }
         setStatus(done);
+        toast.success(done);
         after?.();
       });
     },
-    [currentId],
+    [currentId, toast],
   );
 
   const commitText = useCallback(
@@ -243,13 +254,15 @@ export function Studio({
       if (d.type === "doc") {
         setSelection(null);
         setError("");
-        loadDoc(String(d.id), String(d.docType)).then((loaded) =>
-          loaded
-            ? setDoc(loaded)
-            : setError(
-                "That item couldn’t be found. It may have been deleted.",
-              ),
-        );
+        loadDoc(String(d.id), String(d.docType))
+          .then((loaded) =>
+            loaded
+              ? setDoc(loaded)
+              : setError(
+                  "That item couldn’t be found. It may have been deleted.",
+                ),
+          )
+          .catch(() => setError("That item didn’t open. Try clicking it again."));
       }
     };
     window.addEventListener("message", onMessage);
@@ -835,19 +848,31 @@ function PhotosPanel({
   const [photos, setPhotos] = useState<Photo[] | null>(null);
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState("");
+  const toast = useToast();
   useEffect(() => {
     listPhotos().then(setPhotos);
   }, []);
   const upload = async (file: File | undefined) => {
     if (!file) return;
+    const tooBig = fileTooBig(file);
+    if (tooBig) {
+      setErr(tooBig);
+      toast.error(tooBig);
+      return;
+    }
     setBusy(true);
     setErr("");
     const fd = new FormData();
     fd.set("file", file);
-    const r = await uploadPhoto(fd);
+    const r = await callAction(() => uploadPhoto(fd));
     setBusy(false);
-    if (!r.ok) return setErr(r.error);
+    if (!r.ok) {
+      setErr(r.error);
+      toast.error(r.error);
+      return;
+    }
     setPhotos((p) => [r.photo, ...(p ?? [])]);
+    toast.success("Photo added to the library.");
   };
   return (
     <>

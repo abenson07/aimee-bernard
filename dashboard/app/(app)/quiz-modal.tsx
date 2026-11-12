@@ -2,7 +2,10 @@
 
 import { useActionState, useEffect, useRef, useState } from "react";
 import type { Category } from "@/lib/types";
+import { guardAction } from "@/lib/guard";
 import { answerQuestion } from "./actions";
+
+const answerGuarded = guardAction(answerQuestion);
 import { CheckIcon } from "./icons";
 import { ModalShell } from "./modal-shell";
 
@@ -18,7 +21,7 @@ export function QuizModal({
   const [questions] = useState(() => category.pending);
   const [index, setIndex] = useState(0);
   const [choice, setChoice] = useState<string | null>(null);
-  const [state, formAction, pending] = useActionState(answerQuestion, undefined);
+  const [state, formAction, pending] = useActionState(answerGuarded, undefined);
   const handledRef = useRef<string | null>(null);
 
   const current = questions[index];

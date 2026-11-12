@@ -1,8 +1,12 @@
 "use client";
 
-import { useActionState } from "react";
+import { useActionState, useEffect } from "react";
 import type { BotGapItem } from "@/lib/bot-gaps";
+import { guardAction } from "@/lib/guard";
 import { updateBotContent } from "../actions";
+import { useToast } from "../toast";
+
+const updateGuarded = guardAction(updateBotContent);
 
 type Group = { kind: string; title: string; total: number; items: BotGapItem[] };
 
@@ -13,7 +17,12 @@ const ISSUE_LABEL = {
 } as const;
 
 function GapRow({ item }: { item: BotGapItem }) {
-  const [state, action, pending] = useActionState(updateBotContent, undefined);
+  const [state, action, pending] = useActionState(updateGuarded, undefined);
+  const toast = useToast();
+  useEffect(() => {
+    if (state?.ok) toast.success(`Saved “${item.title || "Untitled"}”.`);
+    else if (state?.error) toast.error(state.error);
+  }, [state, toast, item.title]);
   const missingLink = item.missing.includes("link");
 
   return (

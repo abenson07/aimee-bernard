@@ -246,6 +246,7 @@ export function Dashboard({
           categories={categories}
           lockedCategoryId={modal.categoryId}
           categorizationEnabled={categorizationEnabled}
+          defaultKind={kind}
           onClose={close}
         />
       )}
