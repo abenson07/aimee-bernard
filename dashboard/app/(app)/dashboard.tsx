@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState, type MouseEvent } from "react";
+import { humanizeTime, useNow } from "@/lib/time";
 import type { Category, ContentItem } from "@/lib/types";
 import { ChevronRightIcon, MoreVerticalIcon, PlusIcon, SearchIcon } from "./icons";
 import { UploadModal } from "./upload-modal";
@@ -67,6 +68,17 @@ function MoreMenu({ onCheckLinks }: { onCheckLinks: () => void }) {
   );
 }
 
+/** "27 minutes ago", with the exact date and time on hover; a week or older shows the date itself. */
+function UpdatedCell({ iso, now }: { iso?: string; now: number }) {
+  if (!iso || now === 0) return <span className="cell cell-updated">—</span>;
+  const { text, exact } = humanizeTime(iso, now);
+  return (
+    <span className="cell cell-updated" title={exact ?? undefined}>
+      <time dateTime={iso}>{text}</time>
+    </span>
+  );
+}
+
 function SourceCell({ item }: { item: ContentItem }) {
   const stop = (event: MouseEvent) => event.stopPropagation();
   if (item.url) {
@@ -114,6 +126,7 @@ export function Dashboard({
 }) {
   const [modal, setModal] = useState<Modal>(null);
   const [query, setQuery] = useState("");
+  const now = useNow();
   useEffect(() => {
     if (uploadSignal > 0) setModal({ kind: "upload", categoryId: null });
   }, [uploadSignal]);
@@ -246,9 +259,11 @@ export function Dashboard({
             <table>
               <thead>
                 <tr>
-                  <th style={{ width: categorizationEnabled ? "60%" : "80%" }}>Title</th>
-                  <th style={{ width: "20%" }}>Source</th>
-                  {categorizationEnabled && <th style={{ width: "20%" }}>Category</th>}
+                  {/* A 6-column grid: Title 3, Source 2, Updated 1 (Title 2 and Category 1 when categories are on). */}
+                  <th style={{ width: categorizationEnabled ? "33.333%" : "50%" }}>Title</th>
+                  <th style={{ width: "33.333%" }}>Source</th>
+                  {categorizationEnabled && <th style={{ width: "16.667%" }}>Category</th>}
+                  <th style={{ width: "16.667%" }}>Updated</th>
                 </tr>
               </thead>
               <tbody>
@@ -289,6 +304,9 @@ export function Dashboard({
                         </span>
                       </td>
                     )}
+                    <td>
+                      <UpdatedCell iso={item._updatedAt} now={now} />
+                    </td>
                   </tr>
                 ))}
               </tbody>

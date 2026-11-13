@@ -43,6 +43,7 @@ export interface ContentLink {
 export interface ContentItem {
   _id: string;
   _createdAt: string;
+  _updatedAt?: string;
   title: string;
   kind?: string;
   venue?: string;
