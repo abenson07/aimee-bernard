@@ -263,7 +263,7 @@ export function Dashboard({
                   <th style={{ width: categorizationEnabled ? "33.333%" : "50%" }}>Title</th>
                   <th style={{ width: "33.333%" }}>Source</th>
                   {categorizationEnabled && <th style={{ width: "16.667%" }}>Category</th>}
-                  <th style={{ width: "16.667%" }}>Updated</th>
+                  <th className="col-updated" style={{ width: "16.667%" }}>Updated</th>
                 </tr>
               </thead>
               <tbody>
