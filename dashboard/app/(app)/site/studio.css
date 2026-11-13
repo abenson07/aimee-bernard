@@ -189,6 +189,11 @@
   flex-direction: column;
   gap: 1px;
 }
+.st-menu.right {
+  left: auto;
+  right: 0;
+  min-width: 160px;
+}
 .st-menu.center {
   left: 50%;
   transform: translateX(-50%);

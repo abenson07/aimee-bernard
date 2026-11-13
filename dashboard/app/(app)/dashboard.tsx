@@ -1,8 +1,8 @@
 "use client";
 
-import { useEffect, useMemo, useState, type MouseEvent } from "react";
+import { useEffect, useMemo, useRef, useState, type MouseEvent } from "react";
 import type { Category, ContentItem } from "@/lib/types";
-import { ChevronRightIcon, PlusIcon, SearchIcon } from "./icons";
+import { ChevronRightIcon, MoreVerticalIcon, PlusIcon, SearchIcon } from "./icons";
 import { UploadModal } from "./upload-modal";
 import { QuizModal } from "./quiz-modal";
 import { ItemModal } from "./item-modal";
@@ -16,6 +16,56 @@ type Modal =
   | { kind: "review" }
   | { kind: "links" }
   | null;
+
+/** The three-dot button at the end of the Site editor's content toolbar. Holds the less-used actions. */
+function MoreMenu({ onCheckLinks }: { onCheckLinks: () => void }) {
+  const [open, setOpen] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    if (!open) return;
+    const onDown = (event: globalThis.MouseEvent) => {
+      if (!ref.current?.contains(event.target as Node)) setOpen(false);
+    };
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setOpen(false);
+    };
+    document.addEventListener("mousedown", onDown);
+    document.addEventListener("keydown", onKey);
+    return () => {
+      document.removeEventListener("mousedown", onDown);
+      document.removeEventListener("keydown", onKey);
+    };
+  }, [open]);
+  return (
+    <div className="st-menu-anchor" ref={ref}>
+      <button
+        type="button"
+        className="st-icon-btn"
+        aria-label="More actions"
+        aria-haspopup="menu"
+        aria-expanded={open}
+        onClick={() => setOpen((o) => !o)}
+      >
+        <MoreVerticalIcon size={16} />
+      </button>
+      {open && (
+        <div className="st-menu right" role="menu">
+          <button
+            type="button"
+            className="st-menu-item"
+            role="menuitem"
+            onClick={() => {
+              setOpen(false);
+              onCheckLinks();
+            }}
+          >
+            Check links
+          </button>
+        </div>
+      )}
+    </div>
+  );
+}
 
 function SourceCell({ item }: { item: ContentItem }) {
   const stop = (event: MouseEvent) => event.stopPropagation();
@@ -173,9 +223,23 @@ export function Dashboard({
                 aria-label="Search content"
               />
             </label>
-            <button type="button" className={embedded ? "st-btn" : "btn-secondary"} onClick={() => setModal({ kind: "links" })}>
-              Check links
-            </button>
+            {embedded ? (
+              <>
+                <button
+                  type="button"
+                  className="st-btn primary"
+                  onClick={() => setModal({ kind: "upload", categoryId: null })}
+                >
+                  <PlusIcon size={13} />
+                  Add content
+                </button>
+                <MoreMenu onCheckLinks={() => setModal({ kind: "links" })} />
+              </>
+            ) : (
+              <button type="button" className="btn-secondary" onClick={() => setModal({ kind: "links" })}>
+                Check links
+              </button>
+            )}
           </div>
 
           {visible.length > 0 ? (

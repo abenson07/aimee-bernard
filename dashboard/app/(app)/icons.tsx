@@ -78,6 +78,16 @@ export function TextIcon({ size = 15 }: { size?: number }) {
   );
 }
 
+export function MoreVerticalIcon({ size = 15 }: { size?: number }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 16 16" fill="currentColor" stroke="none" aria-hidden="true">
+      <circle cx="8" cy="3.5" r="1.3" />
+      <circle cx="8" cy="8" r="1.3" />
+      <circle cx="8" cy="12.5" r="1.3" />
+    </svg>
+  );
+}
+
 export function CloseIcon({ size = 15 }: { size?: number }) {
   return (
     <svg width={size} height={size} viewBox="0 0 16 16" strokeWidth="1.6" {...stroke}>
