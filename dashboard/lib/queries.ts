@@ -2,6 +2,7 @@
 export const CONTENT_ITEM_FIELDS = `
   _id,
   _createdAt,
+  _updatedAt,
   title,
   kind,
   venue,

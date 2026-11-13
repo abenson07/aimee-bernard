@@ -406,6 +406,11 @@ select {
   padding: 15px 24px;
   min-width: 0;
 }
+.log td > .cell.cell-updated {
+  font-size: 13px;
+  color: var(--text-muted);
+  cursor: default;
+}
 .row-title {
   font-weight: 500;
   letter-spacing: -0.005em;
