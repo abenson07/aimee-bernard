@@ -83,14 +83,14 @@ function SourceCell({ item }: { item: ContentItem }) {
   const stop = (event: MouseEvent) => event.stopPropagation();
   if (item.url) {
     return (
-      <a href={item.url} target="_blank" rel="noreferrer" className="wrap-cell" onClick={stop}>
+      <a href={item.url} target="_blank" rel="noreferrer" className="wrap-cell" title={item.url} onClick={stop}>
         {item.url}
       </a>
     );
   }
   if (item.fileUrl) {
     return (
-      <a href={item.fileUrl} target="_blank" rel="noreferrer" className="wrap-cell" onClick={stop}>
+      <a href={item.fileUrl} target="_blank" rel="noreferrer" className="wrap-cell" title={item.fileUrl} onClick={stop}>
         {item.fileName ?? "File"}
       </a>
     );
@@ -263,7 +263,7 @@ export function Dashboard({
                   <th style={{ width: categorizationEnabled ? "33.333%" : "50%" }}>Title</th>
                   <th style={{ width: "33.333%" }}>Source</th>
                   {categorizationEnabled && <th style={{ width: "16.667%" }}>Category</th>}
-                  <th style={{ width: "16.667%" }}>Updated</th>
+                  <th className="col-updated" style={{ width: "16.667%" }}>Updated</th>
                 </tr>
               </thead>
               <tbody>
