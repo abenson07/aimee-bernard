@@ -225,6 +225,7 @@ export function Dashboard({
             </label>
             {embedded ? (
               <>
+                <MoreMenu onCheckLinks={() => setModal({ kind: "links" })} />
                 <button
                   type="button"
                   className="st-btn primary"
@@ -233,7 +234,6 @@ export function Dashboard({
                   <PlusIcon size={13} />
                   Add content
                 </button>
-                <MoreMenu onCheckLinks={() => setModal({ kind: "links" })} />
               </>
             ) : (
               <button type="button" className="btn-secondary" onClick={() => setModal({ kind: "links" })}>
