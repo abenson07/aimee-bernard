@@ -19,7 +19,7 @@ import {
 import type { Category, ContentItem } from "@/lib/types";
 import { KIND_OPTIONS } from "@/lib/types";
 import { callAction } from "@/lib/guard";
-import { fileTooBig } from "@/lib/upload";
+import { preparePhoto } from "@/lib/upload";
 import { logout } from "../actions";
 import { Dashboard } from "../dashboard";
 import { BotGaps } from "../bot-gaps/bot-gaps";
@@ -854,16 +854,18 @@ function PhotosPanel({
   }, []);
   const upload = async (file: File | undefined) => {
     if (!file) return;
-    const tooBig = fileTooBig(file);
-    if (tooBig) {
-      setErr(tooBig);
-      toast.error(tooBig);
-      return;
-    }
     setBusy(true);
     setErr("");
+    /* Phone photos are often over the host's ~4.5 MB limit, so big ones are shrunk here first. */
+    const prepared = await preparePhoto(file);
+    if (!prepared.file) {
+      setBusy(false);
+      setErr(prepared.error);
+      toast.error(prepared.error);
+      return;
+    }
     const fd = new FormData();
-    fd.set("file", file);
+    fd.set("file", prepared.file);
     const r = await callAction(() => uploadPhoto(fd));
     setBusy(false);
     if (!r.ok) {
