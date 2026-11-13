@@ -1,7 +1,10 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { callAction } from "@/lib/guard";
+import { preparePhoto } from "@/lib/upload";
 import { ModalShell } from "../modal-shell";
+import { useToast } from "../toast";
 import { listPhotos, uploadPhoto, type Photo, type SlotValue } from "./actions";
 
 export const thumb = (url: string, w: number) => `${url}?w=${w}&auto=format`;
@@ -29,6 +32,7 @@ export function PhotoPicker({
   const [alt, setAlt] = useState(slot.alt ?? "");
   const [err, setErr] = useState("");
   const [busy, setBusy] = useState(false);
+  const toast = useToast();
 
   useEffect(() => {
     listPhotos().then(setPhotos);
@@ -38,11 +42,24 @@ export function PhotoPicker({
     if (!file) return;
     setBusy(true);
     setErr("");
+    /* Phone photos are often over the host's ~4.5 MB limit, so big ones are shrunk here first. */
+    const prepared = await preparePhoto(file);
+    if (!prepared.file) {
+      setBusy(false);
+      setErr(prepared.error);
+      toast.error(prepared.error);
+      return;
+    }
     const fd = new FormData();
-    fd.set("file", file);
-    const r = await uploadPhoto(fd);
+    fd.set("file", prepared.file);
+    const r = await callAction(() => uploadPhoto(fd));
     setBusy(false);
-    if (!r.ok) return setErr(r.error);
+    if (!r.ok) {
+      setErr(r.error);
+      toast.error(r.error);
+      return;
+    }
+    toast.success("Photo added to the library.");
     setPhotos((p) => [r.photo, ...(p ?? [])]);
     setChosen(r.photo);
     setFocus({ x: 0.5, y: 0.5 });

@@ -3,6 +3,8 @@
 import { useEffect, useRef, useState } from "react";
 import { checkLinks, replaceLink, setItemHidden } from "./actions";
 import { ModalShell } from "./modal-shell";
+import { useToast } from "./toast";
+import { callAction } from "@/lib/guard";
 import type { BrokenLink } from "@/lib/link-check";
 
 type RowState = { status: "open" | "saving" | "fixed" | "hidden"; error?: string; url: string };
@@ -15,12 +17,13 @@ export function LinkCheckModal({ onClose }: { onClose: () => void }) {
   const [checked, setChecked] = useState(0);
   const [rows, setRows] = useState<Record<string, RowState>>({});
   const started = useRef(false);
+  const toast = useToast();
 
   useEffect(() => {
     if (started.current) return;
     started.current = true;
-    checkLinks().then((res) => {
-      if (res.error || !res.broken) return setPhase("failed");
+    callAction(async () => ({ ok: true as const, ...(await checkLinks()) })).then((res) => {
+      if (res.error || !("broken" in res) || !res.broken) return setPhase("failed");
       setLinks(res.broken);
       setChecked(res.checked ?? 0);
       setRows(Object.fromEntries(res.broken.map((l) => [rowId(l), { status: "open", url: l.url } as RowState])));
@@ -33,16 +36,23 @@ export function LinkCheckModal({ onClose }: { onClose: () => void }) {
   async function save(link: BrokenLink) {
     const id = rowId(link);
     patch(id, { status: "saving", error: undefined });
-    const res = await replaceLink(link.itemId, link.linkKey, rows[id].url);
-    if (res.error) patch(id, { status: "open", error: res.error });
-    else patch(id, { status: "fixed", url: res.url ?? rows[id].url });
+    const res = await callAction(async () => ({ ok: true as const, ...(await replaceLink(link.itemId, link.linkKey, rows[id].url)) }));
+    if (res.error) {
+      patch(id, { status: "open", error: res.error });
+      toast.error(res.error);
+    } else {
+      patch(id, { status: "fixed", url: ("url" in res && res.url) || rows[id].url });
+      toast.success("Link saved.");
+    }
   }
 
   async function hide(link: BrokenLink, hidden: boolean) {
     const id = rowId(link);
     patch(id, { status: "saving", error: undefined });
-    const res = await setItemHidden(link.itemId, hidden);
+    const res = await callAction(async () => ({ ok: true as const, ...(await setItemHidden(link.itemId, hidden)) }));
     patch(id, res.error ? { status: hidden ? "open" : "hidden", error: res.error } : { status: hidden ? "hidden" : "open" });
+    if (res.error) toast.error(res.error);
+    else toast.success(hidden ? "Hidden from the website." : "Showing on the website again.");
   }
 
   const remaining = links.filter((l) => rows[rowId(l)]?.status === "open" || rows[rowId(l)]?.status === "saving").length;

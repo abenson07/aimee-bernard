@@ -2,7 +2,10 @@
 
 import { useActionState, useEffect, useRef, useState, type FormEvent } from "react";
 import type { Category, ContentItem } from "@/lib/types";
+import { guardAction } from "@/lib/guard";
 import { reviewCategory } from "./actions";
+
+const reviewGuarded = guardAction(reviewCategory);
 import { CategorySuggestion, itemContext } from "./category-suggestion";
 import { CheckIcon } from "./icons";
 import { ModalShell } from "./modal-shell";
@@ -27,7 +30,7 @@ export function CategoryReviewModal({
   const [index, setIndex] = useState(0);
   const [changing, setChanging] = useState(false);
   const [validationError, setValidationError] = useState<string | null>(null);
-  const [state, formAction, pending] = useActionState(reviewCategory, undefined);
+  const [state, formAction, pending] = useActionState(reviewGuarded, undefined);
   const handledRef = useRef<string | null>(null);
 
   const current = queue[index];

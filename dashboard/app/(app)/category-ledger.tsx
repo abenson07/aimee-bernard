@@ -2,13 +2,22 @@
 
 import { useActionState, useEffect, useMemo, useState } from "react";
 import type { Category, ContentItem } from "@/lib/types";
+import { guardAction } from "@/lib/guard";
 import { reviewCategory } from "./actions";
+import { useToast } from "./toast";
+
+const reviewGuarded = guardAction(reviewCategory);
 import { CategoryChangeModal } from "./category-change-modal";
 import { itemContext } from "./category-suggestion";
 import { CloseIcon, SearchIcon } from "./icons";
 
 function LedgerRow({ item, onRequestChange }: { item: ContentItem; onRequestChange: () => void }) {
-  const [state, formAction, pending] = useActionState(reviewCategory, undefined);
+  const [state, formAction, pending] = useActionState(reviewGuarded, undefined);
+  const toast = useToast();
+  useEffect(() => {
+    if (state?.ok) toast.success(`Confirmed the category for “${item.title}”.`);
+    else if (state?.error) toast.error(state.error);
+  }, [state, toast, item.title]);
   const changedFromSuggestion = item.categoryStatus === "changed";
 
   return (

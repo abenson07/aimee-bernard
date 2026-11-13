@@ -2,12 +2,17 @@
 
 import { useActionState, useEffect, useRef, useState, useTransition } from "react";
 import { KIND_OPTIONS, type Category, type ContentItem, type ContentLink } from "@/lib/types";
+import { callAction, guardAction } from "@/lib/guard";
+import { fileTooBig } from "@/lib/upload";
 import { withHttps } from "@/lib/url";
 import { deleteContentItem, updateContentItem } from "./actions";
 import { itemContext } from "./category-suggestion";
 import { DuplicateWarning } from "./duplicate-warning";
 import { CloseIcon, DropIcon, FileIcon, PlusIcon } from "./icons";
 import { ModalShell } from "./modal-shell";
+import { useToast } from "./toast";
+
+const updateGuarded = guardAction(updateContentItem);
 
 function newLinkKey() {
   return typeof crypto !== "undefined" && "randomUUID" in crypto
@@ -32,7 +37,9 @@ export function ItemModal({
   /** Sit in a side panel instead of floating over the page. */
   inline?: boolean;
 }) {
-  const [state, formAction, pending] = useActionState(updateContentItem, undefined);
+  const [state, formAction, pending] = useActionState(updateGuarded, undefined);
+  const toast = useToast();
+  const [localError, setLocalError] = useState<string | null>(null);
   const [replacementName, setReplacementName] = useState<string | null>(null);
   const fileRef = useRef<HTMLInputElement>(null);
   const [kind, setKind] = useState(item.kind ?? "");
@@ -64,26 +71,36 @@ export function ItemModal({
 
   useEffect(() => {
     if (state?.ok) {
+      toast.success(`Saved your changes to “${item.title}”.`);
       onSaved?.();
       onClose();
     }
-  }, [state, onClose, onSaved]);
+  }, [state, onClose, onSaved, toast, item.title]);
 
   /* Sent by hand instead of as the form's `action` so the form is not reset
      when the warning comes back — her edits would otherwise snap back. */
   const submit = (confirmDuplicate: boolean) => {
     if (!formRef.current) return;
     const data = new FormData(formRef.current);
+    const replacement = data.get("file");
+    const tooBig = replacement instanceof File ? fileTooBig(replacement) : null;
+    if (tooBig) {
+      setLocalError(tooBig);
+      return;
+    }
+    setLocalError(null);
     if (confirmDuplicate) data.set("confirmDuplicate", "1");
     startSubmit(() => formAction(data));
   };
 
   const handleDelete = () => {
     startDelete(async () => {
-      const result = await deleteContentItem(item._id);
+      const result = await callAction(async () => (await deleteContentItem(item._id)) ?? {});
       if (result?.error) {
         setDeleteError(result.error);
+        toast.error(result.error);
       } else {
+        toast.success(`Deleted “${item.title}”.`);
         onSaved?.();
         onClose();
       }
@@ -341,7 +358,7 @@ export function ItemModal({
             </>
           )}
 
-          {state?.error && <p className="form-error">{state.error}</p>}
+          {(localError ?? state?.error) && <p className="form-error">{localError ?? state?.error}</p>}
         </div>
 
         {showDuplicates && state?.duplicates ? (

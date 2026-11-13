@@ -1,30 +1,39 @@
 "use client";
 
 import { useActionState, useEffect, useRef, useState, useTransition } from "react";
-import type { Category, SourceKind } from "@/lib/types";
+import { guardAction } from "@/lib/guard";
+import { KIND_OPTIONS, type Category, type SourceKind } from "@/lib/types";
+import { fileTooBig } from "@/lib/upload";
 import { withHttps } from "@/lib/url";
 import { createContentItem } from "./actions";
 import { DuplicateWarning } from "./duplicate-warning";
 import { ChevronDownIcon, DropIcon, LockIcon } from "./icons";
 import { ModalShell } from "./modal-shell";
 import { RichText } from "./rich-text";
+import { useToast } from "./toast";
+
+const createGuarded = guardAction(createContentItem);
 
 export function UploadModal({
   categories,
   lockedCategoryId,
   categorizationEnabled,
+  defaultKind = null,
   onClose,
   onCreated,
 }: {
   categories: Category[];
   lockedCategoryId: string | null;
   categorizationEnabled: boolean;
+  /** The kind open in the Site editor's list, so Upload starts on it. */
+  defaultKind?: string | null;
   onClose: () => void;
   onCreated?: (title: string) => void;
 }) {
-  const [state, formAction, pending] = useActionState(createContentItem, undefined);
+  const [state, formAction, pending] = useActionState(createGuarded, undefined);
   const [tab, setTab] = useState<SourceKind>("file");
   const [fileName, setFileName] = useState<string | null>(null);
+  const [localError, setLocalError] = useState<string | null>(null);
   const fileRef = useRef<HTMLInputElement>(null);
   const formRef = useRef<HTMLFormElement>(null);
   const [, startSubmit] = useTransition();
@@ -40,12 +49,23 @@ export function UploadModal({
   const [title, setTitle] = useState("");
   const [url, setUrl] = useState("");
   const [description, setDescription] = useState("");
+  const [kind, setKind] = useState(defaultKind ?? "");
+  const toast = useToast();
 
   /* Sent by hand instead of as the form's `action` so the form is not reset
      when the warning comes back — the chosen file would otherwise be lost. */
   const submit = (confirmDuplicate: boolean) => {
     if (!formRef.current) return;
     const data = new FormData(formRef.current);
+    /* The host rejects request bodies over about 4.5 MB before the app sees
+       them, so a bigger file used to fail with no message at all. */
+    const chosen = data.get("file");
+    const tooBig = chosen instanceof File ? fileTooBig(chosen) : null;
+    if (tooBig) {
+      setLocalError(tooBig);
+      return;
+    }
+    setLocalError(null);
     if (confirmDuplicate) data.set("confirmDuplicate", "1");
     startSubmit(() => formAction(data));
   };
@@ -54,10 +74,12 @@ export function UploadModal({
 
   useEffect(() => {
     if (state?.ok) {
+      const kindTitle = KIND_OPTIONS.find((option) => option.value === kind)?.title;
+      toast.success(`Saved “${title.trim()}”${kindTitle ? ` as a ${kindTitle}` : ""}. It is now in the content log.`);
       onCreated?.(title.trim());
       onClose();
     }
-  }, [state, onClose, onCreated, title]);
+  }, [state, onClose, onCreated, title, kind, toast]);
 
   return (
     <ModalShell
@@ -87,6 +109,42 @@ export function UploadModal({
               onChange={(event) => setTitle(event.target.value)}
             />
           </label>
+
+          <div className="field">
+            <span className="label">Kind</span>
+            {/* Not `required`, for the same reason as Category below: the
+                server validates it and shows a real error. Without a kind the
+                item is saved but appears in no list. */}
+            <div style={{ position: "relative", display: "flex" }}>
+              <select
+                name="kind"
+                className="input"
+                value={kind}
+                onChange={(event) => setKind(event.target.value)}
+              >
+                <option value="">What kind of content is this?</option>
+                {KIND_OPTIONS.map((option) => (
+                  <option key={option.value} value={option.value}>
+                    {option.title}
+                  </option>
+                ))}
+              </select>
+              <span
+                aria-hidden="true"
+                style={{
+                  position: "absolute",
+                  right: 13,
+                  top: "50%",
+                  transform: "translateY(-50%)",
+                  display: "flex",
+                  color: "var(--text-muted)",
+                  pointerEvents: "none",
+                }}
+              >
+                <ChevronDownIcon />
+              </span>
+            </div>
+          </div>
 
           <div className="field">
             <span className="label">Source</span>
@@ -133,7 +191,7 @@ export function UploadModal({
                 {fileName ? (
                   <span className="dz-file">{fileName}</span>
                 ) : (
-                  <span className="dz-hint">PDF, DOC, image, or video — up to 25 MB</span>
+                  <span className="dz-hint">PDF, DOC, image, or video — up to 4 MB; for bigger files, add a link</span>
                 )}
               </button>
             )}
@@ -221,7 +279,7 @@ export function UploadModal({
             />
           </label>
 
-          {state?.error && <p className="form-error">{state.error}</p>}
+          {(localError ?? state?.error) && <p className="form-error">{localError ?? state?.error}</p>}
         </div>
 
         {showDuplicates && state?.duplicates ? (

@@ -1,7 +1,9 @@
 "use client";
 
 import { useState, useTransition } from "react";
+import { callAction } from "@/lib/guard";
 import { ModalShell } from "../modal-shell";
+import { useToast } from "../toast";
 import {
   saveCourseGroup,
   savePublication,
@@ -66,6 +68,7 @@ export function CourseGroupModal({
   });
   const [error, setError] = useState("");
   const [pending, start] = useTransition();
+  const toast = useToast();
   const set =
     (k: keyof typeof f) =>
     (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
@@ -82,15 +85,21 @@ export function CourseGroupModal({
         onSubmit={(e) => {
           e.preventDefault();
           start(async () => {
-            const r = await saveCourseGroup(id, {
-              ...f,
-              tileMeta: unlines(f.tileMeta),
-              tags: unlines(f.tags),
-            });
+            const r = await callAction(() =>
+              saveCourseGroup(id, {
+                ...f,
+                tileMeta: unlines(f.tileMeta),
+                tags: unlines(f.tags),
+              }),
+            );
             if (r.ok) {
+              toast.success(`Saved the “${f.name}” course tile. It is live on the site.`);
               onSaved?.();
               onClose();
-            } else setError(r.error);
+            } else {
+              setError(r.error);
+              toast.error(r.error);
+            }
           });
         }}
       >
@@ -189,6 +198,7 @@ export function PublicationModal({
   });
   const [error, setError] = useState("");
   const [pending, start] = useTransition();
+  const toast = useToast();
 
   return (
     <ModalShell
@@ -201,16 +211,22 @@ export function PublicationModal({
         onSubmit={(e) => {
           e.preventDefault();
           start(async () => {
-            const r = await savePublication(id, {
-              name: f.name,
-              url: f.url,
-              stripOrder:
-                f.stripOrder.trim() === "" ? null : Number(f.stripOrder),
-            });
+            const r = await callAction(() =>
+              savePublication(id, {
+                name: f.name,
+                url: f.url,
+                stripOrder:
+                  f.stripOrder.trim() === "" ? null : Number(f.stripOrder),
+              }),
+            );
             if (r.ok) {
+              toast.success(`Saved “${f.name}”. It is live on the site.`);
               onSaved?.();
               onClose();
-            } else setError(r.error);
+            } else {
+              setError(r.error);
+              toast.error(r.error);
+            }
           });
         }}
       >

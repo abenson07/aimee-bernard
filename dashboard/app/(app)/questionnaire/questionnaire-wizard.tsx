@@ -12,6 +12,7 @@ import {
   type StoredAnswer,
 } from "@/lib/questionnaire";
 import { CheckIcon, CloseIcon } from "../icons";
+import { REQUEST_FAILED } from "@/lib/guard";
 import { saveQuestionnaireAnswers } from "./actions";
 import { ContentLinkControl } from "./content-link-control";
 import {
@@ -85,7 +86,12 @@ export function QuestionnaireWizard({
   const save = (answersToSave: StoredAnswer[], afterSave: () => void) => {
     setSaveStatus("saving");
     startTransition(async () => {
-      const result = await saveQuestionnaireAnswers(answersToSave, current.key);
+      let result: { error?: string } | undefined;
+      try {
+        result = await saveQuestionnaireAnswers(answersToSave, current.key);
+      } catch {
+        result = { error: REQUEST_FAILED };
+      }
       if (result?.error) {
         setError(result.error);
         setSaveStatus("idle");
