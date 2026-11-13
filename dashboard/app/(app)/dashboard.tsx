@@ -83,14 +83,14 @@ function SourceCell({ item }: { item: ContentItem }) {
   const stop = (event: MouseEvent) => event.stopPropagation();
   if (item.url) {
     return (
-      <a href={item.url} target="_blank" rel="noreferrer" className="wrap-cell" onClick={stop}>
+      <a href={item.url} target="_blank" rel="noreferrer" className="wrap-cell" title={item.url} onClick={stop}>
         {item.url}
       </a>
     );
   }
   if (item.fileUrl) {
     return (
-      <a href={item.fileUrl} target="_blank" rel="noreferrer" className="wrap-cell" onClick={stop}>
+      <a href={item.fileUrl} target="_blank" rel="noreferrer" className="wrap-cell" title={item.fileUrl} onClick={stop}>
         {item.fileName ?? "File"}
       </a>
     );

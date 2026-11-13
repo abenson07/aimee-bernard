@@ -429,6 +429,12 @@ select {
   font-size: 13.5px;
   line-height: 1.4;
   color: var(--text-muted);
+  /* At most two lines; the rest is cut off with an ellipsis. */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  overflow: hidden;
 }
 .truncate-cell {
   display: block;
@@ -447,10 +453,14 @@ a.truncate-cell:hover {
   color: var(--text-muted);
 }
 .wrap-cell {
-  display: block;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  overflow: hidden;
   min-width: 0;
   max-width: 100%;
-  overflow-wrap: break-word;
+  overflow-wrap: anywhere;
   color: inherit;
   text-decoration: none;
 }
